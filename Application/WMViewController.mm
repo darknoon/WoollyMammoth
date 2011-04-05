@@ -22,8 +22,6 @@
 
 @implementation WMViewController
 
-@synthesize aboutViewController;
-@synthesize ribbon;
 @synthesize engine;
 @synthesize animating;
 @synthesize debugViewController;

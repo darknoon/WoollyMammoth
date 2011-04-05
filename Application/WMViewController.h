@@ -16,8 +16,6 @@
 
 @class WMEngine;
 @class WMDebugViewController;
-@class SGRibbon;
-@class SGAboutViewController;
 
 @interface WMViewController : UIViewController <UIActionSheetDelegate>
 {
@@ -43,12 +41,10 @@
 	NSUInteger framesSinceLastFPSUpdate;
 }
 
-@property (nonatomic, retain) SGRibbon *ribbon;
 @property (readonly, retain) WMEngine *engine;
 @property (readonly, nonatomic, getter=isAnimating) BOOL animating;
 @property (nonatomic) NSInteger animationFrameInterval;
 @property (nonatomic, retain) IBOutlet WMDebugViewController *debugViewController;
-@property (nonatomic, retain) SGAboutViewController *aboutViewController;
 
 - (UIImage *)screenshotImage;
 
