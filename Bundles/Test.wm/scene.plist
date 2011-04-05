@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>version</key>
+	<integer>1</integer>
+	<key>title</key>
+	<string>Test Game Bundle</string>
+	<key>root</key>
+	<dict>
+		<key>objectId</key>
+		<integer>1</integer>
+		<key>notes</key>
+		<string>Root object!</string>
+		<key>script</key>
+		<string>DebugRotate</string>
+		<key>renderable</key>
+		<dict>
+			<key>shader</key>
+			<string>DebugPositionOnly</string>
+			<key>model</key>
+			<string>GeodesicSphere02</string>
+		</dict>
+		<key>children</key>
+		<array>
+			<dict>
+				<key>objectId</key>
+				<integer>2</integer>
+				<key>scale</key>
+				<array>
+					<integer>30</integer>
+					<integer>30</integer>
+					<integer>30</integer>
+				</array>
+				<key>notes</key>
+				<string>Root object!</string>
+				<key>renderable</key>
+				<dict>
+					<key>shader</key>
+					<string>DebugPositionTexture</string>
+					<key>model</key>
+					<string>WMQuad</string>
+					<key>texture</key>
+					<string>TestTexture.png</string>
+				</dict>
+				<key>children</key>
+				<array/>
+			</dict>
+		</array>
+	</dict>
+</dict>
+</plist>
