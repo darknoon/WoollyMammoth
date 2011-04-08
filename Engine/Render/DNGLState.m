@@ -17,6 +17,8 @@
 
 	//Assumed state
 	glEnable(GL_DEPTH_TEST);
+	depthState = DNGLStateDepthTestEnabled | DNGLStateDepthWriteEnabled;
+	
 	//Assume an source-over mode to start
 	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 	

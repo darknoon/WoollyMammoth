@@ -130,7 +130,7 @@
 {
 	[self setCameraMatrixWithRect:inBounds];
 	
-    glClearColor(0.5f, 0.6f, 0.6f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 	[self drawFrameRecursive:engine.rootObject transform:cameraMatrix];

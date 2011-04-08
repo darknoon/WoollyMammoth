@@ -58,7 +58,7 @@
 
 - (void)awakeFromNib
 {
-    animationFrameInterval = 2;
+    animationFrameInterval = 1;
     
     // Use of CADisplayLink requires iOS version 3.1 or greater.
 	// The NSTimer object is used as fallback when it isn't available.
@@ -205,9 +205,9 @@
 		float fps = framesSinceLastFPSUpdate;
 		framesSinceLastFPSUpdate = 0;
 		
-#if DEBUG
+//TODO: if not release...
 		fpsLabel.text = [NSString stringWithFormat:@"%.0lf fps (%.0lf ms)", fps, timeToDrawFrame * 1000.0];		
-#endif
+
 		lastFPSUpdate = frameEndTime;
 	}
 	
