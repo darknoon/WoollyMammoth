@@ -364,7 +364,7 @@ int particleZCompare(const void *a, const void *b) {
 
 }
 
-- (void)drawWithTransform:(MATRIX)transform API:(EAGLRenderingAPI)API glState:(DNGLState *)inGLState;
+- (void)drawWithTransform:(MATRIX)transform API:(EAGLRenderingAPI)API glState:(DNEAGLContext *)inGLState;
 {	
 	if (particleDataAvailable < 2) return;
 

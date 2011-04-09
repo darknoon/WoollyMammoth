@@ -10,6 +10,8 @@
 
 #import "EAGLView.h"
 
+#import "DNFramebuffer.h"
+
 void releaseScreenshotData(void *info, const void *data, size_t size) {
 	free((void *)data);
 };
@@ -60,12 +62,12 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
     [super dealloc];
 }
 
-- (EAGLContext *)context
+- (DNEAGLContext *)context
 {
     return context;
 }
 
-- (void)setContext:(EAGLContext *)newContext
+- (void)setContext:(DNEAGLContext *)newContext
 {
     if (context != newContext)
     {
@@ -80,32 +82,11 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
 
 - (void)createFramebuffer
 {
-    if (context && !defaultFramebuffer)
+    if (context && !framebuffer)
     {
         [EAGLContext setCurrentContext:context];
         
-        // Create default framebuffer object.
-        glGenFramebuffers(1, &defaultFramebuffer);
-        glBindFramebuffer(GL_FRAMEBUFFER, defaultFramebuffer);
-        
-        // Create color render buffer and allocate backing store.
-        glGenRenderbuffers(1, &colorRenderbuffer);
-        glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer);
-        [context renderbufferStorage:GL_RENDERBUFFER fromDrawable:(CAEAGLLayer *)self.layer];
-        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &framebufferWidth);
-        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &framebufferHeight);
-		//Attach color buffer
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorRenderbuffer);
-
-		//Create depth buffer
-		glGenRenderbuffersOES(1, &depthRenderbuffer);
-		glBindRenderbufferOES(GL_RENDERBUFFER_OES, depthRenderbuffer); 
-		glRenderbufferStorageOES(GL_RENDERBUFFER_OES, GL_DEPTH_COMPONENT16_OES, framebufferWidth, framebufferHeight); 
-		//Attach depth buffer
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
-        
-        if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-            NSLog(@"Failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
+		framebuffer = [[DNFramebuffer alloc] initWithLayerRenderbufferStorage:(CAEAGLLayer *)self.layer];
     }
 }
 
@@ -115,23 +96,8 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
     {
         [EAGLContext setCurrentContext:context];
         
-        if (defaultFramebuffer)
-        {
-            glDeleteFramebuffers(1, &defaultFramebuffer);
-            defaultFramebuffer = 0;
-        }
-        
-        if (colorRenderbuffer)
-        {
-            glDeleteRenderbuffers(1, &colorRenderbuffer);
-            colorRenderbuffer = 0;
-        }
-		
-		if (depthRenderbuffer) {
-			glDeleteRenderbuffers(1, &depthRenderbuffer);
-			depthRenderbuffer = 0;
-		}
-		GL_CHECK_ERROR;
+		[framebuffer release];
+		framebuffer = nil;		
     }
 }
 
@@ -141,12 +107,12 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
     {
         [EAGLContext setCurrentContext:context];
         
-        if (!defaultFramebuffer)
+        if (!framebuffer)
             [self createFramebuffer];
         
-        glBindFramebuffer(GL_FRAMEBUFFER, defaultFramebuffer);
-        
-        glViewport(0, 0, framebufferWidth, framebufferHeight);
+        [framebuffer bind];
+		
+        glViewport(0, 0, framebuffer.framebufferWidth, framebuffer.framebufferHeight);
 		GL_CHECK_ERROR;
     }
 }
@@ -155,19 +121,11 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
 {
     BOOL success = FALSE;
     
-    if (context)
+    if (context && framebuffer)
     {
         [EAGLContext setCurrentContext:context];
         
-        glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer);
-        
-		const GLenum discards[]  = {GL_DEPTH_ATTACHMENT};
-		glBindFramebuffer(GL_FRAMEBUFFER, defaultFramebuffer);
-		glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, discards);
-
-        success = [context presentRenderbuffer:GL_RENDERBUFFER];
-		GL_CHECK_ERROR;
-		
+		[framebuffer presentRenderbuffer];
     }
     
     return success;
@@ -175,6 +133,11 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
 
 - (UIImage *)screenshotImage;
 {
+	
+	[EAGLContext setCurrentContext:context];
+	
+	GLint framebufferWidth = framebuffer.framebufferWidth;
+	GLint framebufferHeight = framebuffer.framebufferHeight;
 	
 	NSInteger myDataLength = framebufferWidth * framebufferHeight * 4;
 	

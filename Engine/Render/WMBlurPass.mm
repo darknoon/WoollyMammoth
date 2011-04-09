@@ -10,7 +10,7 @@
 
 #import "WMAssetManager.h"
 #import "WMEngine.h"
-#import "DNGLState.h"
+#import "DNEAGLContext.h"
 #import "WMShader.h"
 #import "WMRenderEngine.h"
 

@@ -6,23 +6,45 @@
 //  Copyright 2010 Darknoon. All rights reserved.
 //
 
-#import "DNGLState.h"
+#import "DNEAGLContext.h"
 #import "WMShader.h"
+#import "DNFramebuffer.h"
 
-@implementation DNGLState
+@implementation DNEAGLContext
 
-- (id) init {
-	[super init];
+- (id)initWithAPI:(EAGLRenderingAPI)api;
+{
+	return [self initWithAPI:api sharegroup:nil];
+}
+
+- (id) initWithAPI:(EAGLRenderingAPI)api sharegroup:(EAGLSharegroup *)sharegroup {
+	self = [super initWithAPI:api sharegroup:sharegroup];
 	if (self == nil) return self; 
 
-	//Assumed state
-	glEnable(GL_DEPTH_TEST);
-	depthState = DNGLStateDepthTestEnabled | DNGLStateDepthWriteEnabled;
+	BOOL success = [EAGLContext setCurrentContext:self];
 	
-	//Assume an source-over mode to start
-	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+	if (success) {
+		
+		//Assumed state
+		glEnable(GL_DEPTH_TEST);
+		depthState = DNGLStateDepthTestEnabled | DNGLStateDepthWriteEnabled;
+		
+		//Assume an source-over mode to start
+		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+		
+	} else {
+		NSLog(@"Couldn't set current EAGLContext to self in DNEAGLContext initWithAPI:sharegroup:");
+		[self release];
+		return nil;
+	}
 	
 	return self;
+}
+
+- (void)dealloc {
+    [framebufferStack release];
+	
+    [super dealloc];
 }
 
 

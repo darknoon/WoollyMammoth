@@ -14,11 +14,10 @@
 
 @class WMShader;
 @class WMEngine;
-@class DNGLState;
+@class DNEAGLContext;
 
 @interface WMRenderEngine : NSObject {
-	EAGLContext *context;
-	DNGLState *glState;
+	DNEAGLContext *context;
 	
 	MATRIX cameraMatrix;
 	
@@ -26,7 +25,7 @@
 	WMEngine *engine;
 }
 
-@property (nonatomic, retain) EAGLContext *context;
+@property (nonatomic, retain) DNEAGLContext *context;
 
 - (id)initWithEngine:(WMEngine *)inEngine;
 

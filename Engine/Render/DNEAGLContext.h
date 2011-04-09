@@ -29,11 +29,14 @@ typedef enum {
 	DNGLStateDepthWriteEnabled = 1 << 1,
 } DNGLStateDepthMask;
 
-@interface DNGLState : NSObject {
+@class DNFramebuffer;
+
+@interface DNEAGLContext : EAGLContext {
 	//Uses constants from WMShader.h
 	WMRenderableDataMask vertexAttributeEnableState;
 	DNGLStateBlendMask blendState;
 	DNGLStateDepthMask depthState;
+	NSMutableArray *framebufferStack;
 }
 
 - (void)setVertexAttributeEnableState:(int)vertexAttributeEnableState;

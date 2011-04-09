@@ -14,6 +14,8 @@
 #import "WMRenderable.h"
 #import "WMGameObject.h"
 
+#import "DNEAGLContext.h"
+
 #define DEBUG_LOG_RENDER_MATRICES 0
 
 @interface WMRenderEngine ()
@@ -33,9 +35,9 @@
 	
 	engine = inEngine;
 		
-	context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+	context = [[DNEAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
     if (!context) {
-        context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
+        context = [[DNEAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
 		NSLog(@"Falling back to ES 1 context because we could not create ES 2 context.");
     }
     if (!context) {
@@ -45,8 +47,6 @@
 	}
 		
 	[EAGLContext setCurrentContext:context];
-	
-	glState = [[DNGLState alloc] init];
 		
 	return self;
 }
@@ -57,7 +57,6 @@
     if ([EAGLContext currentContext] == context)
         [EAGLContext setCurrentContext:nil];
 	[context release];
-	[glState release];
 	
 	[super dealloc];
 }
@@ -65,6 +64,7 @@
 
 - (void)setCameraMatrixWithRect:(CGRect)inBounds;
 {
+	//TODO: move this state setting to DNEAGLContext
 	glCullFace(GL_BACK);
 	
 	MATRIX projectionMatrix;
@@ -117,7 +117,7 @@
 	WMRenderable *renderable = inObject.renderable;
 	if (!renderable.hidden) {
 		// NSLog(@"before %@:  %@", inObject.notes, glState);
-		[renderable drawWithTransform:transform API:context.API glState:glState];
+		[renderable drawWithTransform:transform API:context.API glState:context];
 		// NSLog(@"after %@: %@", inObject.notes, glState);
 	}
 	

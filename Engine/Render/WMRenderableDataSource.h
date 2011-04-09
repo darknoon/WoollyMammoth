@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "WMRenderCommon.h"
-#import "DNGLState.h"
+#import "DNEAGLContext.h"
 
 @protocol WMRenderableDataSource
 
