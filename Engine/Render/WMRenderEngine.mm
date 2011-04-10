@@ -159,13 +159,9 @@
 		}
 		
 		context.boundFramebuffer = rttFramebuffer;
-		const CGRect renderRect = {CGPointZero, rttTexture.contentSize};
-		
-		CGRect rttBounds = {CGPointZero, rttSize};
-		[self setCameraMatrixWithRect:rttBounds];
+		const CGRect renderRect = {CGPointZero, rttSize};		
+		[self setCameraMatrixWithRect:renderRect];
 		glViewport(0, 0, rttSize.width, rttSize.height);
-		
-		
 	} else {
 		[self setCameraMatrixWithRect:inBounds];
 		
