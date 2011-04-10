@@ -12,6 +12,7 @@
 
 enum {
 	WMRenderableDataAvailablePosition    = 1 << WMShaderAttributePosition,
+	WMRenderableDataAvailablePosition2d  = 1 << WMShaderAttributePosition2d,
 	WMRenderableDataAvailableNormal      = 1 << WMShaderAttributeNormal,
 	WMRenderableDataAvailableColor       = 1 << WMShaderAttributeColor,
 	WMRenderableDataAvailableTexCoord0   = 1 << WMShaderAttributeTexCoord0,

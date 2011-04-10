@@ -15,6 +15,7 @@
 
 typedef enum {
 	WMShaderAttributePosition = 0,
+	WMShaderAttributePosition2d,
 	WMShaderAttributeNormal,
 	WMShaderAttributeColor,
 	WMShaderAttributeTexCoord0,
@@ -23,6 +24,7 @@ typedef enum {
 } WMShaderAttribute;
 
 extern NSString *const WMShaderAttributeNamePosition;  // "position"
+extern NSString *const WMShaderAttributeNamePosition2d;  // "position2d"
 extern NSString *const WMShaderAttributeNameNormal;    // "normal"
 extern NSString *const WMShaderAttributeNameColor;     // "color"
 extern NSString *const WMShaderAttributeNameTexCoord0; // "texCoord0"

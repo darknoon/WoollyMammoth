@@ -18,12 +18,14 @@
 @end
 
 NSString *const WMShaderAttributeNamePosition = @"position";
+NSString *const WMShaderAttributeNamePosition2d = @"position2d";
 NSString *const WMShaderAttributeNameColor = @"color";
 NSString *const WMShaderAttributeNameNormal = @"normal";
 NSString *const WMShaderAttributeNameTexCoord0 = @"texCoord0";
 NSString *const WMShaderAttributeNameTexCoord1 = @"texCoord1";
 
 NSString *const WMShaderAttributeTypePosition = @"vec4";
+NSString *const WMShaderAttributeTypePosition2d = @"vec2";
 NSString *const WMShaderAttributeTypeColor = @"vec4";
 NSString *const WMShaderAttributeTypeNormal = @"vec3";
 NSString *const WMShaderAttributeTypeTexCoord0 = @"vec2";
@@ -73,6 +75,7 @@ NSString *const WMShaderAttributeTypeTexCoord1 = @"vec2";
 {
 	NSString *const WMShaderAttributeNames[] = {
 		WMShaderAttributeNamePosition, 
+		WMShaderAttributeNamePosition2d, 
 		WMShaderAttributeNameNormal, 
 		WMShaderAttributeNameColor, 
 		WMShaderAttributeNameTexCoord0,
@@ -84,6 +87,7 @@ NSString *const WMShaderAttributeTypeTexCoord1 = @"vec2";
 {
 	NSString *const WMShaderAttributeTypes[] = {
 		WMShaderAttributeTypePosition, 
+		WMShaderAttributeTypePosition2d, 
 		WMShaderAttributeTypeNormal, 
 		WMShaderAttributeTypeColor, 
 		WMShaderAttributeTypeTexCoord0,
@@ -162,7 +166,7 @@ NSString *const WMShaderAttributeTypeTexCoord1 = @"vec2";
 
 - (GLuint)attribIndexForName:(NSString *)inName;
 {
-	NSArray *attribArray = [NSArray arrayWithObjects:WMShaderAttributeNamePosition, WMShaderAttributeNameColor, WMShaderAttributeNameNormal, WMShaderAttributeNameTexCoord0, WMShaderAttributeNameTexCoord1, nil];
+	NSArray *attribArray = [NSArray arrayWithObjects:WMShaderAttributeNamePosition, WMShaderAttributeNamePosition2d, WMShaderAttributeNameColor, WMShaderAttributeNameNormal, WMShaderAttributeNameTexCoord0, WMShaderAttributeNameTexCoord1, nil];
 	NSUInteger idx = [attribArray indexOfObject:inName];
 	if (idx == NSNotFound) {
 		NSLog(@"Illegal attribute name: %@", inName);
@@ -280,7 +284,7 @@ NSString *const WMShaderAttributeTypeTexCoord1 = @"vec2";
 	// Bind attribute locations.
 	// This needs to be done prior to linking.
 	attributeMask = 0;
-	for (GLuint attribIndex = WMShaderAttributePosition; attribIndex < WMShaderAttributeCount; attribIndex++) {
+	for (GLuint attribIndex = 0; attribIndex < WMShaderAttributeCount; attribIndex++) {
 		if ([self shaderText:vertexShader hasAttribute:attribIndex]) {
 			//TODO: SECURITY: is utf-8 valid in GL attrib names
 			
