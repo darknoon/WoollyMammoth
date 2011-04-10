@@ -19,6 +19,10 @@
 @class WMEngine;
 
 
+extern NSString *WMRenderableBlendModeAdd;
+extern NSString *WMRenderableBlendModeNormal;
+
+
 @interface WMRenderable : NSObject {
 	WMShader *shader;
 	//TODO: how should we handle multi-texturing?

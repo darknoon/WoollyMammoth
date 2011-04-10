@@ -14,6 +14,11 @@
 #import "WMRenderable.h"
 #import "WMGameObject.h"
 
+#import "DNFramebuffer.h"
+#import "Texture2D.h"
+#import "WMAssetManager.h"
+#import "WMTextureAsset.h"
+
 #import "DNEAGLContext.h"
 
 #define DEBUG_LOG_RENDER_MATRICES 0
@@ -45,8 +50,11 @@
 	}	else if (![EAGLContext setCurrentContext:context]) {
         NSLog(@"Failed to set ES context current");
 	}
-		
 	[EAGLContext setCurrentContext:context];
+	
+	CGSize contentSize = {320, 480};
+	rttTexture = [[Texture2D alloc] initWithData:NULL pixelFormat:kTexture2DPixelFormat_RGBA8888 pixelsWide:512 pixelsHigh:512 contentSize:contentSize];
+	rttFramebuffer = [[DNFramebuffer alloc] initWithTexture:rttTexture depthBufferDepth:0];
 		
 	return self;
 }
@@ -56,6 +64,7 @@
 	// Tear down context.
     if ([EAGLContext currentContext] == context)
         [EAGLContext setCurrentContext:nil];
+		
 	[context release];
 	
 	[super dealloc];
@@ -65,7 +74,7 @@
 - (void)setCameraMatrixWithRect:(CGRect)inBounds;
 {
 	//TODO: move this state setting to DNEAGLContext
-	glCullFace(GL_BACK);
+	//glCullFace(GL_BACK);
 	
 	MATRIX projectionMatrix;
 	GLfloat viewAngle = 35.f * M_PI / 180.0f;
@@ -128,14 +137,97 @@
 
 - (void)drawFrameInRect:(CGRect)inBounds;
 {
-	[self setCameraMatrixWithRect:inBounds];
 	
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	BOOL doRTT = YES;
+	
+	[EAGLContext setCurrentContext:context];
+
+	DNFramebuffer *outputFramebuffer = context.boundFramebuffer;
+	
+	if (doRTT) {
+		context.boundFramebuffer = rttFramebuffer;
+		const CGRect renderRect = {CGPointZero, rttTexture.contentSize};
 		
+		[self setCameraMatrixWithRect:inBounds];
+		glViewport(0, 0, renderRect.size.width, renderRect.size.height);
+		
+	} else {
+		[self setCameraMatrixWithRect:inBounds];
+		
+		glViewport(0, 0, outputFramebuffer.framebufferWidth, outputFramebuffer.framebufferHeight);
+	}
+	
+	//Draw scene
+    glClearColor(0.4f, 0.1f, 0.1f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+	
 	[self drawFrameRecursive:engine.rootObject transform:cameraMatrix];
-	
-	GL_CHECK_ERROR;
+
+	if (doRTT) {
 		
+		context.boundFramebuffer = outputFramebuffer;
+		
+		glViewport(0, 0, outputFramebuffer.framebufferWidth, outputFramebuffer.framebufferHeight);
+		
+		[self setCameraMatrixWithRect:inBounds];
+		
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		
+		context.blendState = DNGLStateBlendEnabled;
+		context.depthState = 0;
+		
+		//Draw a screen quad
+		
+		//TODO: create a class that lets you define geometry programatically...
+		//ie. add vertex A, B, C, D
+		//    add triangles ABC BCD
+		
+		WMShader *shader = [engine.assetManager shaderWithName:@"DebugPositionTexture"];
+		
+		glUseProgram(shader.program);
+		
+		float scale = 1.0f;
+		
+		float quad[4][3] = {
+			{-scale, -scale, 0},
+			{-scale, scale, 0},
+			{scale, -scale, 0},
+			{scale, scale, 0},
+		};
+		float quadTCs[4][2] = {
+			{1, 1},
+			{1.0 - rttTexture.maxT, 1},
+			{1, 1.0 - rttTexture.maxS},
+			{1.0 - rttTexture.maxT, 1.0 - rttTexture.maxS},
+		};
+		
+		[context setVertexAttributeEnableState:WMRenderableDataAvailablePosition | WMRenderableDataAvailableTexCoord0];
+		
+		glVertexAttribPointer(WMShaderAttributePosition, 3, GL_FLOAT, GL_FALSE, 0, quad);
+		glVertexAttribPointer(WMShaderAttributeTexCoord0, 2, GL_FLOAT, GL_FALSE, 0, quadTCs);
+		
+		
+		int textureUniformLocation = [shader uniformLocationForName:@"texture"];
+		if (rttTexture && textureUniformLocation != -1) {
+			glBindTexture(GL_TEXTURE_2D, [rttTexture name]);
+		}
+		
+		MATRIX screenQuadTransform;
+		MatrixIdentity(screenQuadTransform);
+		
+		int matrixUniform = [shader uniformLocationForName:@"modelViewProjectionMatrix"];
+		if (matrixUniform != -1) {
+			glUniformMatrix4fv(matrixUniform, 1, NO, screenQuadTransform.f);
+		}
+		
+		GL_CHECK_ERROR;
+		
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+		
+		[rttTexture discardData];
+		
+		GL_CHECK_ERROR;
+	}
 }
 @end

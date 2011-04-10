@@ -8,6 +8,7 @@
 
 #import "WMRenderable.h"
 #import "DNEAGLContext.h"
+#import "DNFramebuffer.h"
 
 #import "WMShader.h"
 
@@ -110,7 +111,11 @@ NSString *WMRenderableBlendModeNormal = @"normal";
 		unsigned int enableMask = attributeMask & shaderMask;
 		[inGLState setVertexAttributeEnableState:enableMask];
 		
-		[inGLState setDepthState:DNGLStateDepthTestEnabled | DNGLStateDepthWriteEnabled];
+		if (inGLState.boundFramebuffer.hasDepthbuffer) {
+			[inGLState setDepthState:DNGLStateDepthTestEnabled | DNGLStateDepthWriteEnabled];
+		} else {
+			[inGLState setDepthState:0];
+		}
 		
 		if ([blendMode isEqualToString:WMRenderableBlendModeAdd]) {
 			[inGLState setBlendState:DNGLStateBlendEnabled | DNGLStateBlendModeAdd];

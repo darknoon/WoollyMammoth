@@ -16,6 +16,8 @@
 
 #import "Vector.h"
 
+#import "Texture2D.h"
+#import "DNFramebuffer.h"
 
 typedef struct {
 	Vec3 p;
@@ -24,62 +26,51 @@ typedef struct {
 
 @implementation WMBlurPass
 
-
-- (id)initWithResourceName:(NSString *)inResourceName properties:(NSDictionary *)inProperties assetManager:(WMAssetManager *)inAssetManager;
+- (id)init;
 {
-	self = [super initWithResourceName:inResourceName properties:inProperties assetManager:inAssetManager];
+	self = [super init];
+	
 	if (!self) return nil;
-		
-	
-	return self;
-}
 
-- (BOOL)loadWithBundle:(NSBundle *)inBundle error:(NSError **)outError;
-{
-	
-	glGenFramebuffers(1, &framebuffer);
-	glGenTextures(2, blurTextures);
-
-	glBindTexture(GL_TEXTURE_2D, blurTextures[0]);
-	int width = 1024;
-	int height = 1024;
-	//Fill blur texture with red
-	unsigned char *buffer = new unsigned char[4 * width * height];
-	for (int y=0, i=0; y<height; y++) {
-		for (int x=0; x<width; x++, i++) {
-			//Set to medium grey for kicks
-			buffer[4*i + 0] = 255;
-			buffer[4*i + 1] = 51;
-			buffer[4*i + 2] = 51;
-			buffer[4*i + 3] = 255;
-		}
+	const CGSize textureSize = {320, 480};
+	for (int i=0; i<WMBlurPass_NBlurTextures; i++) {
+		blurTextures[i] = [[Texture2D alloc] initWithData:NULL
+											  pixelFormat:kTexture2DPixelFormat_RGBA8888
+											   pixelsWide:textureSize.width
+											   pixelsHigh:textureSize.height
+											  contentSize:textureSize];
 	}
 	
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1024, 1024, 0, GL_BGRA, GL_UNSIGNED_BYTE, buffer);
+	outputTexture = blurTextures[1];
 	
-	delete buffer;
+	framebuffer = [[DNFramebuffer alloc] initWithTexture:outputTexture depthBufferDepth:0];
 	
-	//TODO: error checking
-	isLoaded = YES;
+
+	return self;
 	
-	return YES;
+}
+
+- (void)dealloc {
+    [framebuffer release];
+	
+    [super dealloc];
 }
 
 
-- (void)doBlurPassFromInputTexture:(GLuint)inputTexture textureWidth:(int)inTextureWidth textureHeight:(int)inTextureHeight withGLState:(DNGLState *)inGLState;
+- (Texture2D *)doBlurPassFromInputTexture:(GLuint)inputTexture textureWidth:(int)inTextureWidth textureHeight:(int)inTextureHeight withGLState:(DNEAGLContext *)inGLState;
 {
 	if (!blurShader) {
-		blurShader = [assetManager shaderWithName:@"WMGaussianBlur"];
+		NSArray *uniformNames = [NSArray arrayWithObjects:@"texture", @"invStepWidth1", @"invStepWidth2", nil];
+		NSDictionary *dict = [NSDictionary dictionaryWithObject:uniformNames forKey:@"uniformNames"];
+		
+		blurShader = [[WMShader alloc] initWithResourceName:@"WMGaussianBlur" properties:dict assetManager:nil];
+		NSError *err = nil;
+		[blurShader loadWithBundle:[NSBundle mainBundle] error:&err];
+		if (err) {
+			NSLog(@"load blur shader error: %@", err);
+		}
 	}
-	
-	//TODO optimize out!
-	
-	GLint oldFrameBuffer;
-	glGetIntegerv(GL_FRAMEBUFFER_BINDING, &oldFrameBuffer);
-	
-	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, blurTextures[0], 0);
-	
+			
 	[inGLState setBlendState:0];
 	[inGLState setDepthState:0];
 	[inGLState setVertexAttributeEnableState:WMRenderableDataAvailablePosition | WMRenderableDataAvailableTexCoord0];
@@ -129,13 +120,13 @@ typedef struct {
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, indices);
 	}
 	
-	glBindFramebuffer(GL_FRAMEBUFFER, oldFrameBuffer);
-
+	
+	return outputTexture;
 }
 
 - (GLuint)glTexture;
 {
-	return blurTextures[0];
+	return outputTexture.name;
 }
 
 @end

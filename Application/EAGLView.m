@@ -80,16 +80,6 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
     }
 }
 
-- (void)createFramebuffer
-{
-    if (context && !framebuffer)
-    {
-        [EAGLContext setCurrentContext:context];
-        
-		framebuffer = [[DNFramebuffer alloc] initWithLayerRenderbufferStorage:(CAEAGLLayer *)self.layer];
-    }
-}
-
 - (void)deleteFramebuffer
 {
     if (context)
@@ -107,13 +97,11 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
     {
         [EAGLContext setCurrentContext:context];
         
-        if (!framebuffer)
-            [self createFramebuffer];
+        if (!framebuffer) {
+			framebuffer = [[DNFramebuffer alloc] initWithLayerRenderbufferStorage:(CAEAGLLayer *)self.layer];
+		}
         
-        [framebuffer bind];
-		
-        glViewport(0, 0, framebuffer.framebufferWidth, framebuffer.framebufferHeight);
-		GL_CHECK_ERROR;
+		context.boundFramebuffer = framebuffer;		
     }
 }
 

@@ -10,24 +10,27 @@
 
 #import "WMShader.h"
 
-typedef enum {
+enum {
 	WMRenderableDataAvailablePosition    = 1 << WMShaderAttributePosition,
 	WMRenderableDataAvailableNormal      = 1 << WMShaderAttributeNormal,
 	WMRenderableDataAvailableColor       = 1 << WMShaderAttributeColor,
 	WMRenderableDataAvailableTexCoord0   = 1 << WMShaderAttributeTexCoord0,
 	WMRenderableDataAvailableTexCoord1   = 1 << WMShaderAttributeTexCoord1,
 	WMRenderableDataAvailableIndexBuffer = 1 << (WMShaderAttributeCount + 0),
-}  WMRenderableDataMask;
+};
+typedef int WMRenderableDataMask;
 
-typedef enum {
+enum {
 	DNGLStateBlendEnabled = 1 << 0,
 	DNGLStateBlendModeAdd = 1 << 1, //otherwise blend is source-over
-} DNGLStateBlendMask;
+} ;
+typedef int DNGLStateBlendMask;
 
-typedef enum {
+enum {
 	DNGLStateDepthTestEnabled  = 1 << 0,
 	DNGLStateDepthWriteEnabled = 1 << 1,
-} DNGLStateDepthMask;
+};
+typedef int DNGLStateDepthMask;
 
 @class DNFramebuffer;
 
@@ -36,13 +39,13 @@ typedef enum {
 	WMRenderableDataMask vertexAttributeEnableState;
 	DNGLStateBlendMask blendState;
 	DNGLStateDepthMask depthState;
-	NSMutableArray *framebufferStack;
+	DNFramebuffer *boundFramebuffer;
 }
 
 - (void)setVertexAttributeEnableState:(int)vertexAttributeEnableState;
 
-- (void)setBlendState:(int)inBlendState;
-
-- (void)setDepthState:(int)inDepthState;
+@property (nonatomic) DNGLStateBlendMask blendState;
+@property (nonatomic) DNGLStateDepthMask depthState;
+@property (nonatomic, retain) DNFramebuffer *boundFramebuffer;
 
 @end

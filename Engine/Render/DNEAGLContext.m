@@ -11,6 +11,9 @@
 #import "DNFramebuffer.h"
 
 @implementation DNEAGLContext
+@synthesize blendState;
+@synthesize depthState;
+@synthesize boundFramebuffer;
 
 - (id)initWithAPI:(EAGLRenderingAPI)api;
 {
@@ -42,7 +45,7 @@
 }
 
 - (void)dealloc {
-    [framebufferStack release];
+    [boundFramebuffer release];
 	
     [super dealloc];
 }
@@ -89,9 +92,11 @@
 	if ((inDepthState & DNGLStateDepthTestEnabled) && !(depthState & DNGLStateDepthTestEnabled)) {
 		//Turn on depth testing
 		glDepthFunc(GL_LEQUAL);
+		glEnable(GL_DEPTH_TEST);
 	} else if (!(inDepthState & DNGLStateDepthTestEnabled) && (depthState & DNGLStateDepthTestEnabled)) {
 		//Turn off depth testing
 		glDepthFunc(GL_ALWAYS);
+		glDisable(GL_DEPTH_TEST);
 	}
 	
 	if ((inDepthState & DNGLStateDepthWriteEnabled) && !(depthState & DNGLStateDepthWriteEnabled)) {
@@ -119,6 +124,20 @@
 	[stateDesc appendFormat:@"\tadd mode %@\n", blendState & DNGLStateBlendModeAdd ?  @"enabled" : @"disabled"];
 	
 	return [[super description] stringByAppendingFormat:@"{\n%@\n}", stateDesc];
+}
+
+- (void)setBoundFramebuffer:(DNFramebuffer *)inFramebuffer;
+{
+	if (boundFramebuffer != inFramebuffer) {
+		[boundFramebuffer release];
+		boundFramebuffer = [inFramebuffer retain];
+		
+		if (boundFramebuffer) {
+			[boundFramebuffer bind];
+		} else {
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		}
+	}
 }
 
 @end

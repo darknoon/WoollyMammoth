@@ -15,11 +15,16 @@
 @class WMShader;
 @class WMEngine;
 @class DNEAGLContext;
+@class DNFramebuffer;
+@class Texture2D;
 
 @interface WMRenderEngine : NSObject {
 	DNEAGLContext *context;
 	
 	MATRIX cameraMatrix;
+		
+	Texture2D *rttTexture;
+	DNFramebuffer *rttFramebuffer;
 	
 	//Weak
 	WMEngine *engine;

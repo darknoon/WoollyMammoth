@@ -12,6 +12,8 @@
 
 #import <QuartzCore/CAEAGLLayer.h>
 
+@class Texture2D;
+
 @interface DNFramebuffer : NSObject {
 	GLint framebufferWidth;
     GLint framebufferHeight;
@@ -21,10 +23,12 @@
 	GLuint framebufferObject;
 }
 
+//Use this initializer when being used for display
 - (id)initWithLayerRenderbufferStorage:(CAEAGLLayer *)inLayer;
 
-//Init for rendering to texture
-- (id)init;
+//Init for rendering to the color attachment, mipmap 0 of a Texture2D, with an optional depth buffer
+//Pass in depthBufferDepth = GL_DEPTH_COMPONENT16 or GL_DEPTH_COMPONENT32_OES for a depth buffer, 0 otherwise
+- (id)initWithTexture:(Texture2D *)inTexture depthBufferDepth:(GLuint)inDepthBufferDepth;
 
 - (void)bind;
 
@@ -33,5 +37,6 @@
 
 @property (nonatomic, readonly) GLint framebufferWidth;
 @property (nonatomic, readonly) GLint framebufferHeight;
+@property (nonatomic, readonly) BOOL hasDepthbuffer;
 
 @end

@@ -53,6 +53,9 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 #import "Texture2D.h"
 
+@interface Texture2D ()
+- (void)setData:(const void*)data pixelFormat:(Texture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
+@end
 
 //CONSTANTS:
 
@@ -70,30 +73,42 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 		glGenTextures(1, &_name);
 		glBindTexture(GL_TEXTURE_2D, _name);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		switch(pixelFormat) {
-			
-			case kTexture2DPixelFormat_RGBA8888:
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-				break;
-			case kTexture2DPixelFormat_RGB565:
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, data);
-				break;
-			case kTexture2DPixelFormat_A8:
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, width, height, 0, GL_ALPHA, GL_UNSIGNED_BYTE, data);
-				break;
-			default:
-				[NSException raise:NSInternalInconsistencyException format:@""];
-			
-		}
-	
-		_size = size;
-		_width = width;
-		_height = height;
-		_format = pixelFormat;
-		_maxS = size.width / (float)width;
-		_maxT = size.height / (float)height;
+		
+		[self setData:data pixelFormat:pixelFormat pixelsWide:width pixelsHigh:height contentSize:size];
 	}					
 	return self;
+}
+
+- (void)setData:(const void*)data pixelFormat:(Texture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
+{
+	switch(pixelFormat) {
+			
+		case kTexture2DPixelFormat_RGBA8888:
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+			break;
+		case kTexture2DPixelFormat_RGB565:
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, data);
+			break;
+		case kTexture2DPixelFormat_A8:
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, width, height, 0, GL_ALPHA, GL_UNSIGNED_BYTE, data);
+			break;
+		default:
+			[NSException raise:NSInternalInconsistencyException format:@""];
+			
+	}
+	
+	_size = size;
+	_width = width;
+	_height = height;
+	_format = pixelFormat;
+	_maxS = size.width / (float)width;
+	_maxT = size.height / (float)height;
+
+}
+
+- (void)discardData;
+{
+	[self setData:NULL pixelFormat:_format pixelsWide:_width pixelsHigh:_height contentSize:_size];
 }
 
 - (void) dealloc

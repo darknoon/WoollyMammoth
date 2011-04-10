@@ -7,7 +7,7 @@
 //
 
 #if DEBUG
-#define DEBUG_OPENGL 0
+#define DEBUG_OPENGL 1
 #else
 #define DEBUG_OPENGL 0
 #endif

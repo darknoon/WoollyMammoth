@@ -8,26 +8,63 @@
 
 #import "DNFramebuffer.h"
 
+#import "Texture2D.h"
+#import "DNEAGLContext.h"
 
 @implementation DNFramebuffer
 @synthesize framebufferWidth;
 @synthesize framebufferHeight;
 
-//- (id)init;
-//{
-//
-//}
+- (id)initWithTexture:(Texture2D *)inTexture depthBufferDepth:(GLuint)inDepthBufferDepth;
+{
+	self = [super init];
+	if (!self) return nil;
+	
+	DNEAGLContext *context = (DNEAGLContext *)[EAGLContext currentContext];
+	ZAssert(context, @"nil current context creating RTT DNFramebuffer");
+	ZAssert([context isKindOfClass:[DNEAGLContext class]], @"Cannot use DNFramebuffer without DNEAGLcontext");
+	
+	// Create default framebuffer object.
+	glGenFramebuffers(1, &framebufferObject);
+	context.boundFramebuffer = self;
+
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, inTexture.name, 0);
+	
+	framebufferWidth = inTexture.pixelsWide;
+	framebufferHeight = inTexture.pixelsHigh;
+	
+	if (inDepthBufferDepth > 0) {
+		//Create depth buffer
+		glGenRenderbuffersOES(1, &depthRenderbuffer);
+		glBindRenderbufferOES(GL_RENDERBUFFER_OES, depthRenderbuffer); 
+		glRenderbufferStorageOES(GL_RENDERBUFFER_OES, inDepthBufferDepth, framebufferWidth, framebufferHeight); 
+		//Attach depth buffer
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
+
+	}
+	
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+		NSLog(@"Failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
+		context.boundFramebuffer = nil;
+		[self release];
+		return nil;
+	}
+	
+	return self;
+}
 
 - (id)initWithLayerRenderbufferStorage:(CAEAGLLayer *)inLayer;
 {
 	self = [super init];
 	if (!self) return nil;
 	
-	EAGLContext *context = [EAGLContext currentContext];
+	DNEAGLContext *context = (DNEAGLContext *)[EAGLContext currentContext];
 	
 	// Create default framebuffer object.
 	glGenFramebuffers(1, &framebufferObject);
-	[self bind];
+	context.boundFramebuffer = self;
+	
+	//ASSUMPTION: we don't care about stomping on currently bound renderbuffer state
 	
 	// Create color render buffer and allocate backing store.
 	glGenRenderbuffers(1, &colorRenderbuffer);
@@ -39,14 +76,17 @@
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorRenderbuffer);
 	
 	//Create depth buffer
-	glGenRenderbuffersOES(1, &depthRenderbuffer);
-	glBindRenderbufferOES(GL_RENDERBUFFER_OES, depthRenderbuffer); 
-	glRenderbufferStorageOES(GL_RENDERBUFFER_OES, GL_DEPTH_COMPONENT16_OES, framebufferWidth, framebufferHeight); 
+	glGenRenderbuffers(1, &depthRenderbuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER_OES, depthRenderbuffer); 
+	glRenderbufferStorage(GL_RENDERBUFFER_OES, GL_DEPTH_COMPONENT16_OES, framebufferWidth, framebufferHeight); 
 	//Attach depth buffer
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
 	
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
 		NSLog(@"Failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
+		[self release];
+		return nil;
+	}
 	
 	return self;
 }
@@ -58,16 +98,18 @@
 
 - (BOOL)presentRenderbuffer;
 {
-	EAGLContext *context = [EAGLContext currentContext];
+	DNEAGLContext *context = (DNEAGLContext *)[EAGLContext currentContext];
+	
+	context.boundFramebuffer = self;
 
-	glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer);
-	
+#if 0
 	const GLenum discards[]  = {GL_DEPTH_ATTACHMENT};
-	glBindFramebuffer(GL_FRAMEBUFFER, framebufferObject);
 	glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, discards);
+#endif 
 	
+	glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer);
 	BOOL success = [context presentRenderbuffer:GL_RENDERBUFFER];
-	
+
 	if (!success) {
 		DLog(@"Unable to present renderbuffer");
 	}
@@ -75,6 +117,10 @@
 	return success;
 }
 
+- (BOOL)hasDepthbuffer;
+{
+	return depthRenderbuffer != 0;
+}
 
 - (void)deleteFramebuffer;
 {
@@ -100,8 +146,8 @@
 
 - (void)dealloc;
 {
-	[super dealloc];
 	[self deleteFramebuffer];
+	[super dealloc];
 }
 
 @end

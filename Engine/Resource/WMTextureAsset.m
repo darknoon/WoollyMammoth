@@ -27,6 +27,15 @@ NSString *const WMTextureAssetTypeCubeMap = @"cubemap";
 	return self;
 }
 
+- (id)initWithTexture:(Texture2D *)inTexture;
+{
+	self = [super initWithResourceName:nil properties:nil assetManager:nil];
+	if (!self) return nil;
+	
+	texture = [inTexture retain];
+	return  self;
+}
+
 - (BOOL)loadWithBundle:(NSBundle *)inBundle error:(NSError **)outError;
 {
 	if (isLoaded) return NO;

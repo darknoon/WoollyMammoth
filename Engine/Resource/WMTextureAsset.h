@@ -22,6 +22,9 @@ extern NSString *const WMTextureAssetTypeCubeMap;
 	NSString *type;
 }
 
+//AWFUL HACK::
+- (id)initWithTexture:(Texture2D *)inTexture;
+
 @property (nonatomic, copy) NSString *type;
 
 - (GLuint)glTexture;

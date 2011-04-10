@@ -11,21 +11,22 @@
 #import "WMTextureAsset.h"
 
 //Act as a texture asset for now to input into blah
-@class DNGLState;
+@class DNEAGLContext;
 @class WMShader;
+@class DNFramebuffer;
+@class Texture2D;
 
 #define WMBlurPass_NBlurTextures 2
 
-@interface WMBlurPass : WMTextureAsset {	
-	GLuint framebuffer;
-	GLuint blurTextures[WMBlurPass_NBlurTextures];
+@interface WMBlurPass : NSObject {	
+	DNFramebuffer *framebuffer;
+	Texture2D *blurTextures[WMBlurPass_NBlurTextures];
 	
-	int outputBlurTexture;
+	Texture2D *outputTexture;
 	
 	WMShader *blurShader;
 }
 
-
-- (void)doBlurPassFromInputTexture:(GLuint)inputTexture textureWidth:(int)inTextureWidth textureHeight:(int)inTextureHeight withGLState:(DNGLState *)inGLState;
+- (Texture2D *)doBlurPassFromInputTexture:(GLuint)inputTexture textureWidth:(int)inTextureWidth textureHeight:(int)inTextureHeight withGLState:(DNEAGLContext *)inGLState;
 
 @end
