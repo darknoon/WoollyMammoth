@@ -19,6 +19,8 @@
 #import "WMAssetManager.h"
 #import "WMTextureAsset.h"
 
+#import "WMMathUtil.h"
+
 #import "DNEAGLContext.h"
 
 #define DEBUG_LOG_RENDER_MATRICES 0
@@ -51,11 +53,7 @@
         NSLog(@"Failed to set ES context current");
 	}
 	[EAGLContext setCurrentContext:context];
-	
-	CGSize contentSize = {320, 480};
-	rttTexture = [[Texture2D alloc] initWithData:NULL pixelFormat:kTexture2DPixelFormat_RGBA8888 pixelsWide:512 pixelsHigh:512 contentSize:contentSize];
-	rttFramebuffer = [[DNFramebuffer alloc] initWithTexture:rttTexture depthBufferDepth:0];
-		
+			
 	return self;
 }
 
@@ -144,12 +142,29 @@
 
 	DNFramebuffer *outputFramebuffer = context.boundFramebuffer;
 	
+	CGSize contentSize = {outputFramebuffer.framebufferWidth, outputFramebuffer.framebufferHeight};
+	CGSize rttSize = {contentSize.width / 2, contentSize.height / 2};
+	
 	if (doRTT) {
+		
+		if (!rttFramebuffer) {
+			ZAssert(!rttTexture, @"Invalid RTT state");
+			
+			unsigned int rttTextureWidth = nextPowerOf2(rttSize.width);
+			unsigned int rttTextureHeight = nextPowerOf2(rttSize.height);
+			
+			rttTexture = [[Texture2D alloc] initWithData:NULL pixelFormat:kTexture2DPixelFormat_RGBA8888 pixelsWide:rttTextureWidth pixelsHigh:rttTextureHeight contentSize:rttSize];
+			rttFramebuffer = [[DNFramebuffer alloc] initWithTexture:rttTexture depthBufferDepth:0];
+
+		}
+		
 		context.boundFramebuffer = rttFramebuffer;
 		const CGRect renderRect = {CGPointZero, rttTexture.contentSize};
 		
-		[self setCameraMatrixWithRect:inBounds];
-		glViewport(0, 0, renderRect.size.width, renderRect.size.height);
+		CGRect rttBounds = {CGPointZero, rttSize};
+		[self setCameraMatrixWithRect:rttBounds];
+		glViewport(0, 0, rttSize.width, rttSize.height);
+		
 		
 	} else {
 		[self setCameraMatrixWithRect:inBounds];
@@ -158,7 +173,7 @@
 	}
 	
 	//Draw scene
-    glClearColor(0.4f, 0.1f, 0.1f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 	
 	[self drawFrameRecursive:engine.rootObject transform:cameraMatrix];
@@ -168,7 +183,6 @@
 		context.boundFramebuffer = outputFramebuffer;
 		
 		glViewport(0, 0, outputFramebuffer.framebufferWidth, outputFramebuffer.framebufferHeight);
-		
 		[self setCameraMatrixWithRect:inBounds];
 		
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
