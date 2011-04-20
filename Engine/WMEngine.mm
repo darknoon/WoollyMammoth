@@ -73,7 +73,7 @@
 
 - (void)start;
 {
-	NSString *debugFilePath = [[NSBundle mainBundle] pathForResource:@"BasicBillboard" ofType:@"qtz"];
+	NSString *debugFilePath = [[NSBundle mainBundle] pathForResource:@"BasicCamera" ofType:@"qtz"];
 //	NSString *debugFilePath = [[NSBundle mainBundle] pathForResource:@"BasicColor" ofType:@"qtz"];
 	
 	//Deserialize object graph	

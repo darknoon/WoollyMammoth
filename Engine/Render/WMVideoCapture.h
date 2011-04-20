@@ -20,27 +20,37 @@
 #define USE_BGRA 1
 #define DEBUG_TEXTURE_UPLOAD 0
 
+#import "WMPatch.h"
 
-@interface VideoCapture : NSObject
+@class WMImagePort;
+@class WMBooleanPort;
+@class Texture2D;
+
+@interface WMVideoCapture : WMPatch
 #if TARGET_OS_EMBEDDED
 <AVCaptureVideoDataOutputSampleBufferDelegate> 
 #endif
 {
-#if TARGET_OS_EMBEDDED
-	AVCaptureSession *captureSession;
-	AVCaptureInput  *input;
-	AVCaptureVideoDataOutput  *output;
-	AVCaptureDevice *cameraDevice;
-#else			
-	NSTimer *simulatorDebugTimer;
-#endif
 	BOOL capturing;
 	
-	GLuint textures[VideoCapture_NumTextures];
+	Texture2D *textures[VideoCapture_NumTextures];
 		
 	//Swap between textures to reduce locking issues
 	NSUInteger currentTexture; //This is the texture that was just written into
 	BOOL textureWasRead;
+	
+	WMBooleanPort *inputCapture;
+	
+	WMImagePort *outputImage;
+	
+#if TARGET_OS_EMBEDDED
+	AVCaptureSession *captureSession;
+	AVCaptureInput  *captureInput;
+	AVCaptureVideoDataOutput  *dataOutput;
+	AVCaptureDevice *cameraDevice;
+#else			
+	NSTimer *simulatorDebugTimer;
+#endif
 	
 #if DEBUG_TEXTURE_UPLOAD
 	int logi;
@@ -49,11 +59,6 @@
 }
 
 @property (nonatomic, readonly) BOOL capturing;
-
-+ (VideoCapture *)sharedCapture;
-
-//Will block until AVFoundation is done processing
-- (GLuint)getVideoTexture;
 
 - (void)startCapture;
 - (void)stopCapture;

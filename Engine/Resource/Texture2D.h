@@ -80,6 +80,7 @@ Be aware that the content of the generated textures will be upside-down!
 
 //TODO: does not fill in maxS, maxT, pixelsWide, pixelsHigh!
 //You MUST take care not to call glDeleteTextures outside of this texture's dealloc method when using this initializer
+
 //- (id)initWithTextureName:(GLuint)inTextureName;
 
 - (void)discardData;

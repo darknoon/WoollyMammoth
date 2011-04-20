@@ -182,8 +182,12 @@ typedef struct WMQuadVertex {
 	}
 	
 	int textureUniformLocation = [shader uniformLocationForName:@"texture"];
-	if (textureUniformLocation && inputImage.image) {
-		glBindTexture(GL_TEXTURE_2D, [inputImage.image name]);
+	if (textureUniformLocation) {
+		if (inputImage.image) {
+			glBindTexture(GL_TEXTURE_2D, [inputImage.image name]);
+		} else {
+			glBindTexture(GL_TEXTURE_2D, 0);
+		}
 		glUniform1i(textureUniformLocation, 0); //texture = texture 0
 	}
 	

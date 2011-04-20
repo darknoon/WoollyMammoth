@@ -6,22 +6,32 @@
 //  Copyright 2010 Darknoon. All rights reserved.
 //
 
-#import "VideoCapture.h"
+#import "WMVideoCapture.h"
 
 #import <CoreVideo/CoreVideo.h>
 
-@implementation VideoCapture
+#import "WMEAGLContext.h"
+#import "Texture2D.h"
+
+#import "WMBooleanPort.h"
+#import "WMImagePort.h"
+
+@implementation WMVideoCapture
 
 @synthesize capturing;
 
-- (id) init {
-	[super init];
-	if (self == nil) return self; 
-	
-	//Try to keep the write texture ahead of the read texture
-	// currentReadTexture = 0;
-	// currentWriteTexture = 1;
-	
++ (void)load;
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	[self registerToRepresentClassNames:[NSSet setWithObject:@"QCVideoInput"]];
+	[pool drain];
+}
+
+
+- (id) initWithPlistRepresentation:(id)inPlist {
+	self = [super initWithPlistRepresentation:inPlist];
+	if (!self) return self; 
+		
 	return self;
 }
 
@@ -31,30 +41,18 @@
 	[super dealloc];
 }
 
-+ (VideoCapture *)sharedCapture;
-{
-	static VideoCapture *sharedCapture = nil;
-	@synchronized (self) {
-		if (!sharedCapture) {
-			sharedCapture = [[VideoCapture alloc] init];
-		}
-	}
-	return sharedCapture;
-}
 
-
-- (void)startOGL;
+- (BOOL)setup:(WMEAGLContext *)context;
 {	
 	GL_CHECK_ERROR;
 	
 	//TODO: why does this fail on ES2?
-	if ([EAGLContext currentContext].API == kEAGLRenderingAPIOpenGLES1) {
+	if (context.API == kEAGLRenderingAPIOpenGLES1) {
 		glEnable(GL_TEXTURE_2D);
 	}
 
 	GL_CHECK_ERROR;
 	
-	glGenTextures(VideoCapture_NumTextures, textures);	
 	
 	//TODO: get these from the camera session somehow
 #if USE_LOW_RES_CAMERA
@@ -79,8 +77,9 @@
 
 	//glTexParameterf(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_FALSE);
 
-	for (int texture = 0; texture < VideoCapture_NumTextures; texture++) {
-		glBindTexture(GL_TEXTURE_2D, textures[texture]);
+	for (int i=0; i<VideoCapture_NumTextures; i++) {
+		textures[i] = [[Texture2D alloc] initWithData:buffer pixelFormat:kTexture2DPixelFormat_A8 pixelsWide:0 pixelsHigh:0 contentSize:CGSizeZero];
+		glBindTexture(GL_TEXTURE_2D, [textures[i] name]);
 		
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -98,6 +97,15 @@
 	
 	
 	free(buffer);
+	return YES;
+}
+
+- (void)cleanup:(WMEAGLContext *)context;
+{
+	for (int i=0; i<VideoCapture_NumTextures; i++) {
+		[textures[i] release];
+	}
+	[super cleanup:context];
 }
 
 
@@ -106,7 +114,7 @@
 	//TODO: make this hack less hacky
 	if (capturing) return;
 	
-	[self startOGL];
+	ZAssert(textures[0] != 0, @"Tried to start capture without any textures!");
 	
 #if TARGET_OS_EMBEDDED
 	captureSession = [[AVCaptureSession alloc] init];
@@ -129,15 +137,15 @@
 		}
 	}
 	
-	input = [[AVCaptureDeviceInput alloc] initWithDevice:cameraDevice error:&error];
+	captureInput = [[AVCaptureDeviceInput alloc] initWithDevice:cameraDevice error:&error];
 	
-	if (!input) {
+	if (!captureInput) {
 		NSLog(@"Error making an input from device. %@", error);
 		return;
 	}
 	
-	output = [[AVCaptureVideoDataOutput alloc] init];
-	if (!output) {
+	dataOutput = [[AVCaptureVideoDataOutput alloc] init];
+	if (!dataOutput) {
 		NSLog(@"Error making output.");
 		return;
 	}
@@ -145,15 +153,15 @@
 								   [NSNumber numberWithUnsignedInt:kCVPixelFormatType_32BGRA], (id)kCVPixelBufferPixelFormatTypeKey,
 								   [NSNumber numberWithBool:YES], (id)kCVPixelBufferOpenGLCompatibilityKey, nil];
 	
-	[output setVideoSettings:videoSettings];	
-	[output setAlwaysDiscardsLateVideoFrames:YES];
+	[dataOutput setVideoSettings:videoSettings];	
+	[dataOutput setAlwaysDiscardsLateVideoFrames:YES];
 	//1.0 / 60.0 seconds
-	[output setMinFrameDuration:CMTimeMake(1, 30)];
+	[dataOutput setMinFrameDuration:CMTimeMake(1, 30)];
 
-	[output setSampleBufferDelegate:self queue:dispatch_get_main_queue()];
+	[dataOutput setSampleBufferDelegate:self queue:dispatch_get_main_queue()];
 	
-	[captureSession addInput:input];
-	[captureSession addOutput:output];
+	[captureSession addInput:captureInput];
+	[captureSession addOutput:dataOutput];
 	[captureSession startRunning];
 #endif	
 	capturing = YES;
@@ -164,12 +172,10 @@
 #if TARGET_OS_EMBEDDED
 	[captureSession stopRunning];
 	[captureSession release]; captureSession = nil;
-	[input release]; input = nil;
+	[captureInput release]; captureInput = nil;
 #endif
 	
 	capturing = NO;
-
-	glDeleteTextures(VideoCapture_NumTextures, textures);
 }
 
 #if TARGET_OS_EMBEDDED
@@ -193,7 +199,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 	textureWasRead = NO;
 
 //Get the texture ready
-	glBindTexture(GL_TEXTURE_2D, textures[currentTexture]);
+	glBindTexture(GL_TEXTURE_2D, [textures[currentTexture] name]);
 
 	//Get buffer info
 	CVPixelBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
@@ -239,7 +245,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 	//Advance the current texture
 	currentTexture = (currentTexture+1) % VideoCapture_NumTextures;
 	//Get the texture ready
-	glBindTexture(GL_TEXTURE_2D, textures[currentTexture]);
+	glBindTexture(GL_TEXTURE_2D, [textures[currentTexture] name]);
 	
 	unsigned width = 640;
 	unsigned height = 480;
@@ -269,8 +275,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 #endif
 
 
-- (GLuint)getVideoTexture;
-{	
+
+- (Texture2D *)getVideoTexture;
+{
 	int textureToRead = (currentTexture - 1 + VideoCapture_NumTextures) % VideoCapture_NumTextures;
 	textureWasRead = YES;
 #if DEBUG_TEXTURE_UPLOAD
@@ -283,5 +290,18 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 	return textures[textureToRead];
 }
 
+- (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
+{
+	if (!capturing && inputCapture.value) {
+		[self startCapture];
+	}
+	if (capturing && !inputCapture.value) {
+		[self stopCapture];
+	}
+	
+	outputImage.image = [self getVideoTexture];
+	
+	return YES;
+}
 
 @end
