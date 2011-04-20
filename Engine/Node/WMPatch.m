@@ -9,7 +9,7 @@
 #import "WMPatch.h"
 
 #import "WMConnection.h"
-#import "DNEAGLContext.h"
+#import "WMEAGLContext.h"
 
 #import "WMPort.h"
 
@@ -282,31 +282,31 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 
 #pragma mark -
 #pragma mark Execution
-- (BOOL)setup:(DNEAGLContext *)context;
+- (BOOL)setup:(WMEAGLContext *)context;
 {
 	//Override me
 	return YES;
 }
 
-- (void)enable:(DNEAGLContext*)context;
+- (void)enable:(WMEAGLContext*)context;
 {
 	//Override me
 	return;
 }
 
-- (BOOL)execute:(DNEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
+- (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
 	//Override me
 	return YES;
 }
 
-- (void)disable:(DNEAGLContext*)context;
+- (void)disable:(WMEAGLContext*)context;
 {
 	//Override me
 	return;
 }
 
-- (void)cleanup:(DNEAGLContext *)context;
+- (void)cleanup:(WMEAGLContext *)context;
 {
 	//Override me
 	return;

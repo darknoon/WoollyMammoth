@@ -9,10 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @class WMPatch;
-@class DNEAGLContext;
+@class WMEAGLContext;
 
 @interface WMEngine : NSObject {
-	DNEAGLContext *renderContext;
+	WMEAGLContext *renderContext;
 	
 	CFAbsoluteTime previousAbsoluteTime;
 	CFAbsoluteTime t;
@@ -22,7 +22,7 @@
 	WMPatch *rootObject;
 }
 
-@property (nonatomic, retain, readonly) DNEAGLContext *renderContext;
+@property (nonatomic, retain, readonly) WMEAGLContext *renderContext;
 @property (nonatomic, retain, readonly) WMPatch *rootObject;
 
 - (NSString *)title;

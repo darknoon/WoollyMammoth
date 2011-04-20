@@ -15,7 +15,7 @@
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
 
-#import "DNEAGLContext.h"
+#import "WMEAGLContext.h"
 
 @class DNFramebuffer;
 
@@ -25,14 +25,14 @@
 @interface EAGLView : UIView
 {
 @private
-    DNEAGLContext *context;
+    WMEAGLContext *context;
     
 	DNFramebuffer *framebuffer;
 	
     // The pixel dimensions of the CAEAGLLayer.
 }
 
-@property (nonatomic, retain) DNEAGLContext *context;
+@property (nonatomic, retain) WMEAGLContext *context;
 
 - (void)setFramebuffer;
 - (BOOL)presentFramebuffer;

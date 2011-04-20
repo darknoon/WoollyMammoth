@@ -35,7 +35,7 @@ typedef int DNGLStateDepthMask;
 
 @class DNFramebuffer;
 
-@interface DNEAGLContext : EAGLContext {
+@interface WMEAGLContext : EAGLContext {
 	//Uses constants from WMShader.h
 	WMRenderableDataMask vertexAttributeEnableState;
 	DNGLStateBlendMask blendState;

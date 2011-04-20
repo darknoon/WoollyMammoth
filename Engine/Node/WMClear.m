@@ -9,7 +9,7 @@
 #import "WMClear.h"
 
 #import "WMColorPort.h"
-#import "DNEAGLContext.h"
+#import "WMEAGLContext.h"
 
 @implementation WMClear
 
@@ -28,7 +28,7 @@
 	return self;
 }
 
-- (BOOL)execute:(DNEAGLContext *)inContext time:(CFTimeInterval)time arguments:(NSDictionary *)args;
+- (BOOL)execute:(WMEAGLContext *)inContext time:(CFTimeInterval)time arguments:(NSDictionary *)args;
 {
 	glClearColor(inputColor.red, inputColor.green, inputColor.blue, inputColor.alpha);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

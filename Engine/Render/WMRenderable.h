@@ -44,6 +44,4 @@ extern NSString *WMRenderableBlendModeNormal;
 //Gets called after every frame. do computation here
 - (void)update;
 
-- (void)drawWithTransform:(MATRIX)transform API:(EAGLRenderingAPI)API glState:(DNEAGLContext *)inGLState;
-
 @end

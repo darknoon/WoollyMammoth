@@ -7,7 +7,7 @@
 //
 
 #import "WMRenderable.h"
-#import "DNEAGLContext.h"
+#import "WMEAGLContext.h"
 #import "DNFramebuffer.h"
 
 #import "WMShader.h"
@@ -89,7 +89,7 @@ NSString *WMRenderableBlendModeNormal = @"normal";
 	//Override this
 }
 
-- (void)drawWithTransform:(MATRIX)transform API:(EAGLRenderingAPI)API glState:(DNEAGLContext *)inGLState;
+- (void)drawWithTransform:(MATRIX)transform API:(EAGLRenderingAPI)API glState:(WMEAGLContext *)inGLState;
 {
 	if (!inputModel) return;
 	

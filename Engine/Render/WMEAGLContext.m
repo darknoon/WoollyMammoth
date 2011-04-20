@@ -6,11 +6,11 @@
 //  Copyright 2010 Darknoon. All rights reserved.
 //
 
-#import "DNEAGLContext.h"
+#import "WMEAGLContext.h"
 #import "WMShader.h"
 #import "DNFramebuffer.h"
 
-@implementation DNEAGLContext
+@implementation WMEAGLContext
 @synthesize blendState;
 @synthesize depthState;
 @synthesize boundFramebuffer;
@@ -36,7 +36,7 @@
 		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 		
 	} else {
-		NSLog(@"Couldn't set current EAGLContext to self in DNEAGLContext initWithAPI:sharegroup:");
+		NSLog(@"Couldn't set current EAGLContext to self in WMEAGLContext initWithAPI:sharegroup:");
 		[self release];
 		return nil;
 	}

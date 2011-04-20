@@ -9,7 +9,7 @@
 #import "DNFramebuffer.h"
 
 #import "Texture2D.h"
-#import "DNEAGLContext.h"
+#import "WMEAGLContext.h"
 
 @implementation DNFramebuffer
 @synthesize framebufferWidth;
@@ -20,9 +20,9 @@
 	self = [super init];
 	if (!self) return nil;
 	
-	DNEAGLContext *context = (DNEAGLContext *)[EAGLContext currentContext];
+	WMEAGLContext *context = (WMEAGLContext *)[EAGLContext currentContext];
 	ZAssert(context, @"nil current context creating RTT DNFramebuffer");
-	ZAssert([context isKindOfClass:[DNEAGLContext class]], @"Cannot use DNFramebuffer without DNEAGLcontext");
+	ZAssert([context isKindOfClass:[WMEAGLContext class]], @"Cannot use DNFramebuffer without WMEAGLContext");
 	
 	// Create default framebuffer object.
 	glGenFramebuffers(1, &framebufferObject);
@@ -58,7 +58,7 @@
 	self = [super init];
 	if (!self) return nil;
 	
-	DNEAGLContext *context = (DNEAGLContext *)[EAGLContext currentContext];
+	WMEAGLContext *context = (WMEAGLContext *)[EAGLContext currentContext];
 	
 	// Create default framebuffer object.
 	glGenFramebuffers(1, &framebufferObject);
@@ -104,7 +104,7 @@
 
 - (BOOL)presentRenderbuffer;
 {
-	DNEAGLContext *context = (DNEAGLContext *)[EAGLContext currentContext];
+	WMEAGLContext *context = (WMEAGLContext *)[EAGLContext currentContext];
 	
 	context.boundFramebuffer = self;
 

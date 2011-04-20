@@ -97,7 +97,7 @@ COLOUR HSL2RGB(HSL c1)
 	return [super plistState];
 }
 
-- (BOOL)execute:(DNEAGLContext *)inContext time:(CFTimeInterval)time arguments:(NSDictionary *)args;
+- (BOOL)execute:(WMEAGLContext *)inContext time:(CFTimeInterval)time arguments:(NSDictionary *)args;
 {
 	HSL hsl;
 	COLOUR color;

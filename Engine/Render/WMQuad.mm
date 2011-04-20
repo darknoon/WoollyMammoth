@@ -8,7 +8,7 @@
 
 #import "WMQuad.h"
 
-#import "DNEAGLContext.h"
+#import "WMEAGLContext.h"
 
 #import "WMNumberPort.h"
 #import "WMImagePort.h"
@@ -47,7 +47,7 @@ typedef struct WMQuadVertex {
 	[super dealloc];
 }
 
-- (BOOL)setup:(DNEAGLContext *)context;
+- (BOOL)setup:(WMEAGLContext *)context;
 {
 	//TODO: figure out a good way to generate these programatically with #ifdefs in an omni-shader
 	
@@ -135,7 +135,7 @@ typedef struct WMQuadVertex {
 	return YES;
 }
 
-- (void)cleanup:(DNEAGLContext *)context;
+- (void)cleanup:(WMEAGLContext *)context;
 {
 	if (vbo) glDeleteBuffers(1, &vbo);
 	if (ebo) glDeleteBuffers(1, &ebo);
@@ -146,7 +146,7 @@ typedef struct WMQuadVertex {
 	return WMRenderableDataAvailablePosition | WMRenderableDataAvailableTexCoord0 | WMRenderableDataAvailableIndexBuffer;
 }
 
-- (BOOL)execute:(DNEAGLContext *)inContext time:(CFTimeInterval)time arguments:(NSDictionary *)args;
+- (BOOL)execute:(WMEAGLContext *)inContext time:(CFTimeInterval)time arguments:(NSDictionary *)args;
 {
 	unsigned int attributeMask = WMRenderableDataAvailablePosition | WMRenderableDataAvailableTexCoord0 | WMRenderableDataAvailableIndexBuffer;
 	unsigned int shaderMask = [shader attributeMask];

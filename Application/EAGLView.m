@@ -62,12 +62,12 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
     [super dealloc];
 }
 
-- (DNEAGLContext *)context
+- (WMEAGLContext *)context
 {
     return context;
 }
 
-- (void)setContext:(DNEAGLContext *)newContext
+- (void)setContext:(WMEAGLContext *)newContext
 {
     if (context != newContext)
     {

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class DNEAGLContext;
+@class WMEAGLContext;
 @class WMPort;
 @class WMNumberPort;
 @interface WMPatch : NSObject {
@@ -60,10 +60,10 @@
 - (WMPort *)outputPortWithName:(NSString *)inName;
 
 //Render
-- (BOOL)setup:(DNEAGLContext *)context;
-- (void)enable:(DNEAGLContext *)context;
-- (BOOL)execute:(DNEAGLContext *)context time:(double)time arguments:(NSDictionary*)args;
-- (void)disable:(DNEAGLContext *)context;
-- (void)cleanup:(DNEAGLContext *)context;
+- (BOOL)setup:(WMEAGLContext *)context;
+- (void)enable:(WMEAGLContext *)context;
+- (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary*)args;
+- (void)disable:(WMEAGLContext *)context;
+- (void)cleanup:(WMEAGLContext *)context;
 
 @end

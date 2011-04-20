@@ -9,7 +9,7 @@
 #import "WMBlurPass.h"
 
 #import "WMEngine.h"
-#import "DNEAGLContext.h"
+#import "WMEAGLContext.h"
 #import "WMShader.h"
 
 #import "Vector.h"
@@ -55,7 +55,7 @@ typedef struct {
 }
 
 
-- (Texture2D *)doBlurPassFromInputTexture:(GLuint)inputTexture textureWidth:(int)inTextureWidth textureHeight:(int)inTextureHeight withGLState:(DNEAGLContext *)inGLState;
+- (Texture2D *)doBlurPassFromInputTexture:(GLuint)inputTexture textureWidth:(int)inTextureWidth textureHeight:(int)inTextureHeight withGLState:(WMEAGLContext *)inGLState;
 {
 	if (!blurShader) {
 		NSArray *uniformNames = [NSArray arrayWithObjects:@"texture", @"invStepWidth1", @"invStepWidth2", nil];

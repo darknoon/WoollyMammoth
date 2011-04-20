@@ -8,10 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-#import "DNEAGLContext.h"
+#import "WMEAGLContext.h"
 
 //Act as a texture asset for now to input into blah
-@class DNEAGLContext;
+@class WMEAGLContext;
 @class WMShader;
 @class DNFramebuffer;
 @class Texture2D;
@@ -27,6 +27,6 @@
 	WMShader *blurShader;
 }
 
-- (Texture2D *)doBlurPassFromInputTexture:(GLuint)inputTexture textureWidth:(int)inTextureWidth textureHeight:(int)inTextureHeight withGLState:(DNEAGLContext *)inGLState;
+- (Texture2D *)doBlurPassFromInputTexture:(GLuint)inputTexture textureWidth:(int)inTextureWidth textureHeight:(int)inTextureHeight withGLState:(WMEAGLContext *)inGLState;
 
 @end

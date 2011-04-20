@@ -20,7 +20,7 @@
 	[pool drain];
 }
 
-- (BOOL)execute:(DNEAGLContext *)inContext time:(CFTimeInterval)time arguments:(NSDictionary *)args;
+- (BOOL)execute:(WMEAGLContext *)inContext time:(CFTimeInterval)time arguments:(NSDictionary *)args;
 {
 	//Calculate the output value;
 	switch (inputType.index) {

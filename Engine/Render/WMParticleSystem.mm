@@ -15,7 +15,7 @@
 #import "WMEngine.h"
 #import "Texture2D.h"
 
-#import "DNEAGLContext.h"
+#import "WMEAGLContext.h"
 
 extern "C" {
 #import "SimplexNoise.h"
@@ -365,7 +365,7 @@ int particleZCompare(const void *a, const void *b) {
 
 }
 
-- (void)drawWithTransform:(MATRIX)transform API:(EAGLRenderingAPI)API glState:(DNEAGLContext *)inGLState;
+- (void)drawWithTransform:(MATRIX)transform API:(EAGLRenderingAPI)API glState:(WMEAGLContext *)inGLState;
 {	
 	if (particleDataAvailable < 2) return;
 

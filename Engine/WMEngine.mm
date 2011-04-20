@@ -14,7 +14,7 @@
 #import "WMConnection.h"
 #import "WMPort.h"
 
-#import "DNEAGLContext.h"
+#import "WMEAGLContext.h"
 #import "DNFramebuffer.h"
 #import "DNQCComposition.h"
 
@@ -35,7 +35,7 @@
 	if (self == nil) return self; 
 	
 	patchesByKey = [[NSMutableDictionary alloc] initWithCapacity:256];
-	renderContext = [[DNEAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+	renderContext = [[WMEAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
 
 	return self;
 }
@@ -106,30 +106,78 @@
 	//TODO: this could be made more efficent I think
 }
 
+- (BOOL)_nodeHasIncomingEdges:(WMPatch *)inPatch connections:(NSArray *)inConnections excludedConnections:(NSSet *)inExcludedConnections;
+{
+	for (WMConnection *connection in inConnections) {
+		if (![inExcludedConnections containsObject:connection]) {
+			if ([connection.destinationNode isEqualToString:inPatch.key]) {
+				return YES;
+			}
+		}
+	}
+	return NO;
+}
+
+- (BOOL)_nodeHasOutgoingEdges:(WMPatch *)inPatch connections:(NSArray *)inConnections;
+{
+	for (WMConnection *connection in inConnections) {
+		if ([connection.sourceNode isEqualToString:inPatch.key]) {
+			return YES;
+		}
+	}
+	return NO;
+}
+
+//TODO: make this way more efficent!
+- (WMPatch *)_firstRenderingNodeInSet:(NSSet *)inNodeSet orderedNodes:(NSArray *)inOrderedNodes;
+{
+	NSUInteger minIndex = UINT32_MAX;
+	WMPatch *minPatch = nil;
+	for (WMPatch *patch in inNodeSet) {
+		NSUInteger i = [inOrderedNodes indexOfObject:patch];
+		if (i < minIndex) {
+			i = minIndex;
+			minPatch = patch;
+		}
+	}
+	return minPatch;
+}
+
+//Execute all of these first
+- (NSMutableSet *)_nonConsumerNodesInNodes:(NSArray *)inNodes connections:(NSArray *)inConnections;
+{
+	NSMutableSet *outSet = [NSMutableSet set];
+	for (WMPatch *patch in inNodes) {
+		if ([self _nodeHasOutgoingEdges:patch connections:inConnections]) {
+			[outSet addObject:patch];
+		}
+	}
+	return outSet;
+}
+
 //This only supports children of a node NOT sub-children for now!!
+//Perhaps use an iterator aka NSEnumerator?
 - (NSArray *)executionOrderingOfChildren:(WMPatch *)inPatch;
 {
 	//TODO: reduce complexity of this method
+	//TODO: define this algorithm formally
 
-	NSMutableArray *sorted = [NSMutableArray array];
-	NSMutableSet *noIncomingEdgeNodeSet = [NSMutableSet set];
-	for (WMPatch *node in inPatch.children) {
-		BOOL hasIncomingEdges = NO;
-		for (WMConnection *connection in inPatch.connections) {
-			if ([connection.destinationNode isEqualToString:node.key]) {
-				hasIncomingEdges = YES;
-				break;
-			}
-		}
-		if (!hasIncomingEdges) {
-			[noIncomingEdgeNodeSet addObject:node];
-		}
-	}
-	
+	//The following while loop will only apply to these nodes
+	NSSet *nonConsumerNodes = [self _nonConsumerNodesInNodes:inPatch.children connections:inPatch.connections];
+
 	NSMutableSet *hiddenEdges = [NSMutableSet set]; //hidden WMConnecitions
 	
+	NSMutableArray *sorted = [NSMutableArray array];
+	NSMutableSet *noIncomingEdgeNodeSet = [NSMutableSet set];
+	//Add starting set of no-incoming-edges-and-not-consumer nodes o_O
+	for (WMPatch *node in inPatch.children) {
+		if ([nonConsumerNodes containsObject:node] && ![self _nodeHasIncomingEdges:node connections:inPatch.connections excludedConnections:hiddenEdges]) {
+			[noIncomingEdgeNodeSet addObject:node];		
+		}
+	}
+		
 	while (noIncomingEdgeNodeSet.count > 0) {
-		WMPatch *n = [noIncomingEdgeNodeSet anyObject]; //TODO: require nodes with lower rendering order to be rendered first
+		WMPatch *n = [self _firstRenderingNodeInSet:noIncomingEdgeNodeSet orderedNodes:inPatch.children]; //TODO: require nodes with lower rendering order to be rendered first
 		[noIncomingEdgeNodeSet removeObject:n];
 		[sorted addObject:n];
 		
@@ -144,22 +192,23 @@
 					[hiddenEdges addObject:e];
 					
 					//if m has no other incoming edges then
-					//TODO: also if m has 
-					BOOL hasIncomingEdges = NO;
-					for (WMConnection *connection in inPatch.connections) {
-						if (![hiddenEdges containsObject:connection]) {
-							if ([connection.destinationNode isEqualToString:n.key]) {
-								hasIncomingEdges = YES;
-								break;
-							}
-						}
+					//TODO: also check if m has nodes that need to go before it
+					if ([nonConsumerNodes containsObject:m] && ![self _nodeHasIncomingEdges:m connections:inPatch.connections excludedConnections:hiddenEdges]) {
+						// insert m into S
+						[noIncomingEdgeNodeSet addObject:m];
 					}
-					// insert m into S
-					[noIncomingEdgeNodeSet addObject:m];
 				}
 			}
 		}
 	}
+	
+	//Now add consumer nodes (in render order!)
+	for (WMPatch *patch in inPatch.children) {
+		if (![nonConsumerNodes containsObject:patch]) {
+			[sorted addObject:patch];
+		}
+	}
+	
 	//TODO: assert all connections are hidden (graph has at least one cycle)
 	return sorted;
 }
@@ -170,7 +219,7 @@
 - (MATRIX)cameraMatrixWithRect:(CGRect)inBounds;
 {
 	MATRIX cameraMatrix;
-	//TODO: move this state setting to DNEAGLContext
+	//TODO: move this state setting to WMEAGLContext
 	//glCullFace(GL_BACK);
 	
 	MATRIX projectionMatrix;
@@ -242,7 +291,7 @@
 	//// Render order ////
 	//TODO: generalize to take values from the input ports
 	NSArray *ordering = [self executionOrderingOfChildren:self.rootObject];
-	
+		
 	//// Render       ////
 	BOOL success = YES;
 	for (WMPatch *patch in ordering) {
