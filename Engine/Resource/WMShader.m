@@ -55,7 +55,10 @@ NSString *const WMShaderAttributeTypeTexCoord1 = @"vec2";
 		self.vertexShader = inVertexShader;
 		self.pixelShader = inPixelShader;
 		
-		[self loadShaders];
+		if (![self loadShaders]) {
+			[self release];
+			return nil;
+		}
 		
 		GL_CHECK_ERROR;		
 	} else {
@@ -239,7 +242,7 @@ NSString *const WMShaderAttributeTypeTexCoord1 = @"vec2";
     }
     
     glGetProgramiv(program, GL_VALIDATE_STATUS, &status);
-    if (status == 0)
+    if (status == GL_FALSE)
         return FALSE;
     
     return TRUE;

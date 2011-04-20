@@ -60,6 +60,10 @@
 - (WMPort *)outputPortWithName:(NSString *)inName;
 
 //Render
-- (BOOL)execute:(DNEAGLContext *)inContext time:(CFTimeInterval)time arguments:(NSDictionary *)args;
+- (BOOL)setup:(DNEAGLContext *)context;
+- (void)enable:(DNEAGLContext *)context;
+- (BOOL)execute:(DNEAGLContext *)context time:(double)time arguments:(NSDictionary*)args;
+- (void)disable:(DNEAGLContext *)context;
+- (void)cleanup:(DNEAGLContext *)context;
 
 @end

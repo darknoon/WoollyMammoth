@@ -8,6 +8,16 @@
 
 #import "WMQuad.h"
 
+#import "DNEAGLContext.h"
+
+#import "WMNumberPort.h"
+#import "WMImagePort.h"
+#import "WMColorPort.h"
+#import "Texture2D.h"
+#import "DNFramebuffer.h"
+
+#import "Matrix.h"
+
 typedef struct WMQuadVertex {
 	float v[3];
 	float tc[2];
@@ -16,21 +26,64 @@ typedef struct WMQuadVertex {
 
 @implementation WMQuad
 
-- (id)init;
++ (void)load;
 {
-	self = [super init];
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	[self registerToRepresentClassNames:[NSSet setWithObject:@"QCBillboard"]];
+	[pool drain];
+}
+
+
+- (id)initWithPlistRepresentation:(id)inPlist;
+{
+	self = [super initWithPlistRepresentation:inPlist];
 	if (!self) return nil;
+		
+	return self;
+}
+
+- (void) dealloc
+{	
+	[super dealloc];
+}
+
+- (BOOL)setup:(DNEAGLContext *)context;
+{
+	//TODO: figure out a good way to generate these programatically with #ifdefs in an omni-shader
+	
+	NSString *vertexShader = @"\
+	attribute vec4 position;\
+	attribute vec2 texCoord0;\
+	uniform mat4 modelViewProjectionMatrix;\
+	varying highp vec2 v_textureCoordinate;\
+	void main()\
+	{\
+    gl_Position = modelViewProjectionMatrix * position;\
+	v_textureCoordinate = vec2(1.0) - texCoord0.yx;\
+	}";
+	
+	NSString *fragmentShader = @"\
+	uniform sampler2D texture;\
+	varying highp vec2 v_textureCoordinate;\
+	void main()\
+	{\
+	gl_FragColor = texture2D(texture, v_textureCoordinate);\
+	}";
+	
+	NSArray *uniforms = [NSArray arrayWithObjects:@"texture", @"modelViewProjectionMatrix", nil];
+	
+	shader = [[WMShader alloc] initWithVertexShader:vertexShader pixelShader:fragmentShader uniformNames:uniforms];
 	
 	glGenBuffers(1, &vbo);
 	glGenBuffers(1, &ebo);
 	
 	void *vertexData;
 	unsigned short *indexData;
-
+	
 	vertexData = malloc(sizeof(WMQuadVertex) * 4);
 	if (!vertexData) {
-		[self release];
-		return nil;
+		DLog(@"malloc error");
+		return NO;
 	}
 	
 	const float scale = 1;
@@ -48,17 +101,17 @@ typedef struct WMQuadVertex {
 			vertexDataPtr[i].tc[1] = (float)y;
 		}
 	}
-		
+	
 	indexData = (unsigned short *)malloc(sizeof(indexData[0]) * 2 * 3); 
 	if (!indexData) {
-		[self release];
-		return nil;
+		DLog(@"malloc error");
+		return NO;
 	}
 	//Add triangles
 	indexData[0] = 0;
 	indexData[1] = 1;
 	indexData[2] = 2;
-
+	
 	indexData[3] = 1;
 	indexData[4] = 2;
 	indexData[5] = 3;
@@ -78,16 +131,14 @@ typedef struct WMQuadVertex {
 	
 	if (vertexData) free(vertexData);
 	if (indexData) free(indexData);
-
 	
-	return self;
+	return YES;
 }
 
-- (void) dealloc
-{	
+- (void)cleanup:(DNEAGLContext *)context;
+{
 	if (vbo) glDeleteBuffers(1, &vbo);
 	if (ebo) glDeleteBuffers(1, &ebo);
-	[super dealloc];
 }
 
 - (unsigned int)dataMask;
@@ -95,57 +146,75 @@ typedef struct WMQuadVertex {
 	return WMRenderableDataAvailablePosition | WMRenderableDataAvailableTexCoord0 | WMRenderableDataAvailableIndexBuffer;
 }
 
-- (GLuint)vbo;
+- (BOOL)execute:(DNEAGLContext *)inContext time:(CFTimeInterval)time arguments:(NSDictionary *)args;
 {
-	return vbo;
-}
+	unsigned int attributeMask = WMRenderableDataAvailablePosition | WMRenderableDataAvailableTexCoord0 | WMRenderableDataAvailableIndexBuffer;
+	unsigned int shaderMask = [shader attributeMask];
+	unsigned int enableMask = attributeMask & shaderMask;
+	[inContext setVertexAttributeEnableState:enableMask];
+	
+	[inContext setDepthState:0];
+	
+//	if ([blendMode isEqualToString:WMRenderableBlendModeAdd]) {
+//		[inGLState setBlendState:DNGLStateBlendEnabled | DNGLStateBlendModeAdd];
+//	} else {
+//		[inGLState setBlendState:0];
+//	}
 
-- (GLenum)ebo; //element buffer object
-{
-	return ebo;
-}
+	[inContext setBlendState: 0];
+	
+	glUseProgram(shader.program);
+	
+	size_t stride = sizeof(WMQuadVertex);
+	
+	//Bind VBO, EBO
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
-
-
-- (int)positionOffset;
-{
-	return 0;
+	//Position
+	glVertexAttribPointer(WMShaderAttributePosition, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMQuadVertex, v));
+	ZAssert(enableMask & WMRenderableDataAvailablePosition, @"Position issue");
+	
+	//TexCoord0
+	if (enableMask & WMRenderableDataAvailableTexCoord0) {
+		glVertexAttribPointer(WMShaderAttributeTexCoord0, 2, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMQuadVertex, tc));
+	}
+	
+	int textureUniformLocation = [shader uniformLocationForName:@"texture"];
+	if (textureUniformLocation && inputImage.image) {
+		glBindTexture(GL_TEXTURE_2D, [inputImage.image name]);
+		glUniform1i(textureUniformLocation, 0); //texture = texture 0
+	}
+	
+	int matrixUniform = [shader uniformLocationForName:@"modelViewProjectionMatrix"];
+	if (matrixUniform != -1) {
+		//TODO: support transformation!
+		MATRIX transform;
+		MatrixIdentity(transform);
+		//TODO: support rotation
+		glUniformMatrix4fv(matrixUniform, 1, NO, transform.f);
+	}
+	
+	// Validate program before drawing. This is a good check, but only really necessary in a debug build.
+	// DEBUG macro must be defined in your debug configurations if that's not already the case.
+#if defined(DEBUG)
+	if (![shader validateProgram])
+	{
+		NSLog(@"Failed to validate program in shader: %@", shader);
+		return NO;
+	}
+#endif
+	
+	GL_CHECK_ERROR;
+	
+	glDrawElements(GL_TRIANGLES, 2 * 3, GL_UNSIGNED_SHORT, NULL);
+	
+	GL_CHECK_ERROR;
+	
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	
+	return YES;
 }
-
-- (int)colorOffset;
-{
-	ZAssert(0, @"No color component of quad");
-	return 0;
-}
-- (int)texCoord0Offset;
-{
-	return 3 * sizeof(float);
-}
-
-- (int)normalOffset;
-{
-	ZAssert(0, @"No normal component of quad");
-	return 0;
-}
-
-- (size_t)interleavedDataStride;
-{
-	return sizeof(WMQuadVertex);
-}
-- (size_t)numberOfTriangles;
-{
-	return 2;
-}
-- (size_t)numberOfVertices;
-{
-	return 4;
-}
-
-- (GLenum)triangleIndexType;
-{
-	return GL_UNSIGNED_SHORT;
-}
-
-
 
 @end

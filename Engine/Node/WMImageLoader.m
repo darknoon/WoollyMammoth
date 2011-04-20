@@ -8,9 +8,12 @@
 
 #import "WMImageLoader.h"
 
+#import "Texture2D.h"
+#import "WMImagePort.h"
 
 @implementation WMImageLoader
 @synthesize outputImage;
+
 + (void)load;
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -29,10 +32,11 @@
 
 	NSData *imageData = [state objectForKey:@"imageData"];
 	if (imageData) {
-		outputImage = [[UIImage imageWithData:imageData] retain];
-		if (!outputImage) {
+		UIImage *uiImage = [UIImage imageWithData:imageData];
+		if (!uiImage) {
 			NSLog(@"Couldn't load image data!");
 		}
+		outputImage.image = [[Texture2D alloc] initWithImage:uiImage];
 	}
 	
 	return self;

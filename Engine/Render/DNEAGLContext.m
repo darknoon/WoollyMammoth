@@ -122,6 +122,7 @@
 	
 	[stateDesc appendFormat:@"\tblending %@\n", blendState & DNGLStateBlendEnabled ?  @"enabled" : @"disabled"];
 	[stateDesc appendFormat:@"\tadd mode %@\n", blendState & DNGLStateBlendModeAdd ?  @"enabled" : @"disabled"];
+	[stateDesc appendFormat:@"\tframebuffer: %@\n", boundFramebuffer];
 	
 	return [[super description] stringByAppendingFormat:@"{\n%@\n}", stateDesc];
 }

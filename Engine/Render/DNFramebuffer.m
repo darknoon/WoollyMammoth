@@ -91,6 +91,12 @@
 	return self;
 }
 
+- (void)dealloc;
+{
+	[self deleteFramebuffer];
+	[super dealloc];
+}
+
 - (void)bind;
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, framebufferObject);
@@ -144,10 +150,9 @@
 
 }
 
-- (void)dealloc;
+- (NSString *)description;
 {
-	[self deleteFramebuffer];
-	[super dealloc];
+	return [NSString stringWithFormat:@"<%@ : %p>{fbo: %u, color:%u depth:%u size:{%d, %d}}", NSStringFromClass([self class]), self, framebufferObject, colorRenderbuffer, depthRenderbuffer, framebufferWidth, framebufferHeight];
 }
 
 @end

@@ -10,10 +10,11 @@
 
 #import "WMPatch.h"
 
+@class WMImagePort;
 @interface WMImageLoader : WMPatch {
 }
 
 //TODO: WMImagePort
-@property (retain, nonatomic) WMPort *outputImage;
+@property (retain, nonatomic) WMImagePort *outputImage;
 
 @end

@@ -15,6 +15,7 @@
 #import "WMPort.h"
 
 #import "DNEAGLContext.h"
+#import "DNFramebuffer.h"
 #import "DNQCComposition.h"
 
 
@@ -42,6 +43,14 @@
 
 - (void)dealloc
 {
+	//TODO: expose the idea of cleanup outside of -dealloc
+	//Call cleanup on all patches
+	//TODO: support cleanup on sub-nodes
+	for (WMPatch *patch in rootObject.children) {
+		//This could be done with an "enumerate children recursive with block"
+		[patch cleanup:renderContext];
+	}
+	
 	[rootObject release];
 	[patchesByKey release];
 	[renderContext release];
@@ -64,8 +73,8 @@
 
 - (void)start;
 {
-//	NSString *debugFilePath = [[NSBundle mainBundle] pathForResource:@"BasicBillboard" ofType:@"qtz"];
-	NSString *debugFilePath = [[NSBundle mainBundle] pathForResource:@"BasicColor" ofType:@"qtz"];
+	NSString *debugFilePath = [[NSBundle mainBundle] pathForResource:@"BasicBillboard" ofType:@"qtz"];
+//	NSString *debugFilePath = [[NSBundle mainBundle] pathForResource:@"BasicColor" ofType:@"qtz"];
 	
 	//Deserialize object graph	
 	NSError *sceneReadError = nil;
@@ -76,6 +85,12 @@
 	//Setup patches by key
 	[self _addPatchesToPatchesByKeyRecursive:composition.rootPatch];
 	
+	//Call setup on all patches
+	//TODO: support setup on sub-nodes
+	for (WMPatch *patch in rootObject.children) {
+		//This could be done with an "enumerate children recursive with block"
+		[patch setup:renderContext];
+	}
 	
 	previousAbsoluteTime = CFAbsoluteTimeGetCurrent();
 }
@@ -215,12 +230,20 @@
 
 - (void)drawFrameInRect:(CGRect)inBounds;
 {
+	//TODO: abstract this state out
+	glViewport(0, 0, renderContext.boundFramebuffer.framebufferWidth, renderContext.boundFramebuffer.framebufferHeight);
+
+	//// Time         ////
 	//TODO: support pause / resume
 	CFAbsoluteTime currentAbsoluteTime = CFAbsoluteTimeGetCurrent();
 	t += currentAbsoluteTime - previousAbsoluteTime;
 	previousAbsoluteTime = currentAbsoluteTime;
+	
+	//// Render order ////
 	//TODO: generalize to take values from the input ports
 	NSArray *ordering = [self executionOrderingOfChildren:self.rootObject];
+	
+	//// Render       ////
 	BOOL success = YES;
 	for (WMPatch *patch in ordering) {
 		//Write the values of the input ports from the output ports of the connections

@@ -282,11 +282,34 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 
 #pragma mark -
 #pragma mark Execution
+- (BOOL)setup:(DNEAGLContext *)context;
+{
+	//Override me
+	return YES;
+}
+
+- (void)enable:(DNEAGLContext*)context;
+{
+	//Override me
+	return;
+}
 
 - (BOOL)execute:(DNEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
-	//Default is to do nothing
+	//Override me
 	return YES;
+}
+
+- (void)disable:(DNEAGLContext*)context;
+{
+	//Override me
+	return;
+}
+
+- (void)cleanup:(DNEAGLContext *)context;
+{
+	//Override me
+	return;
 }
 
 #pragma mark -
