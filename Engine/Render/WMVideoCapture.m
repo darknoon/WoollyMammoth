@@ -236,7 +236,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 		NSLog(@"Texture upload time: %.3lf ms %s", mstime, log);
 	}
 	i = (i+1 % 10);
-#endif DEBUG_TEXTURE_UPLOAD
+#endif //DEBUG_TEXTURE_UPLOAD
 }
 #else
 
