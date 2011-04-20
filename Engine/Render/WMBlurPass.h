@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "WMTextureAsset.h"
+#import "DNEAGLContext.h"
 
 //Act as a texture asset for now to input into blah
 @class DNEAGLContext;

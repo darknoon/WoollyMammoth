@@ -23,25 +23,16 @@ NSString *WMRenderableBlendModeNormal = @"normal";
 
 @implementation WMRenderable
 
-@synthesize blendMode;
-@synthesize hidden;
-@synthesize texture;
-@synthesize shader;
-@synthesize model;
+@synthesize inputBlendMode;
+@synthesize inputTexture;
+@synthesize inputModel;
 
 - (void)dealloc
 {
 	[shader release];
-	shader = nil;
-	[model release];
-	model = nil;
-
-	[texture release];
-	texture = nil;
-
-
-	[blendMode release];
-	blendMode = nil;
+	[inputModel release];
+	[inputTexture release];
+	[inputBlendMode release];
 
 	[super dealloc];
 }
@@ -53,42 +44,41 @@ NSString *WMRenderableBlendModeNormal = @"normal";
 	return self;
 }
 
-- (id)initWithEngine:(WMEngine *)inEngine properties:(NSDictionary *)renderableRepresentation;
+- (id)initWithPlistRepresentation:(id)inPlist;
 {
-	self = [self init];
+	self = [super initWithPlistRepresentation:inPlist];
 	if (!self) return nil;
 	
-	NSString *modelName = [renderableRepresentation objectForKey:@"model"];
-	if (modelName) {
-		self.model = [inEngine.assetManager modelWithName:modelName];
-		if (!self.model) {
-			NSLog(@"Couldn't find model %@", modelName);
-			return nil;
-		}
-	}
+	//TODO: make shader
 	
-	NSString *shaderName = [renderableRepresentation objectForKey:@"shader"];
-	if (shaderName) {
-		self.shader = [inEngine.assetManager shaderWithName:shaderName];
-		if (!self.shader) {
-			NSLog(@"Couldn't find shader %@", shaderName);
-			return nil;
-		}
-	}
-	
-	NSString *textureName = [renderableRepresentation objectForKey:@"texture"];
-	if (textureName) {
-		self.texture = [inEngine.assetManager textureWithName:textureName];
-		if (!self.texture) {
-			NSLog(@"Couldn't find texture: %@", textureName);
-			return nil;
-		}
-	}
-	
-	//Default = NO
-	self.hidden = [[renderableRepresentation objectForKey:@"hidden"] boolValue];
-	
-	self.blendMode = [renderableRepresentation objectForKey:@"blendMode"];
+//	NSString *modelName = [renderableRepresentation objectForKey:@"model"];
+//	if (modelName) {
+//		self.model = [inEngine.assetManager modelWithName:modelName];
+//		if (!self.model) {
+//			NSLog(@"Couldn't find model %@", modelName);
+//			return nil;
+//		}
+//	}
+//	
+//	NSString *shaderName = [renderableRepresentation objectForKey:@"shader"];
+//	if (shaderName) {
+//		self.shader = [inEngine.assetManager shaderWithName:shaderName];
+//		if (!self.shader) {
+//			NSLog(@"Couldn't find shader %@", shaderName);
+//			return nil;
+//		}
+//	}
+//	
+//	NSString *textureName = [renderableRepresentation objectForKey:@"texture"];
+//	if (textureName) {
+//		self.texture = [inEngine.assetManager textureWithName:textureName];
+//		if (!self.texture) {
+//			NSLog(@"Couldn't find texture: %@", textureName);
+//			return nil;
+//		}
+//	}
+		
+	self.blendMode = WMRenderableBlendModeNormal;
 	ZAssert([blendMode isEqualToString:WMRenderableBlendModeAdd] || [blendMode isEqualToString:WMRenderableBlendModeNormal] || !blendMode, @"Invalid blending mode");
 	
 	return self;
@@ -101,7 +91,7 @@ NSString *WMRenderableBlendModeNormal = @"normal";
 
 - (void)drawWithTransform:(MATRIX)transform API:(EAGLRenderingAPI)API glState:(DNEAGLContext *)inGLState;
 {
-	if (!model) return;
+	if (!inputModel) return;
 	
 	GL_CHECK_ERROR;
 	if (API == kEAGLRenderingAPIOpenGLES2)

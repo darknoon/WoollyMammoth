@@ -8,42 +8,30 @@
 
 #import <Foundation/Foundation.h>
 
-@class WMDebugChannel;
-@class WMGameObject;
-@class WMScriptingContext;
-@class WMRenderEngine;
-@class WMAssetManager;
+@class WMPatch;
+@class DNEAGLContext;
 
 @interface WMEngine : NSObject {
+	DNEAGLContext *renderContext;
+	
+	CFAbsoluteTime previousAbsoluteTime;
+	CFAbsoluteTime t;
+	
 	UInt64 maxObjectId;
-	WMScriptingContext *scriptingContext;
-	WMDebugChannel *debugChannel;
-	NSMutableDictionary *objectsById;
-	WMGameObject *rootObject;
-	WMRenderEngine *renderEngine;
-	WMAssetManager *assetManager;
+	NSMutableDictionary *patchesByKey;
+	WMPatch *rootObject;
 }
 
-
-//This is set up by the view and set on us. If nil, renderer not ready
-@property (nonatomic, retain) WMRenderEngine *renderEngine;
-
-@property (nonatomic, retain, readonly) WMGameObject *rootObject;
-@property (nonatomic, retain, readonly) WMScriptingContext *scriptingContext;
-@property (nonatomic, retain, readonly) WMDebugChannel *debugChannel;
-
-//Must be set before calling start
-@property (nonatomic, retain) WMAssetManager *assetManager;
+@property (nonatomic, retain, readonly) DNEAGLContext *renderContext;
+@property (nonatomic, retain, readonly) WMPatch *rootObject;
 
 - (NSString *)title;
 
-- (WMGameObject *)createObject;
-- (void)deleteObject:(WMGameObject *)inObject;
-
-- (WMGameObject *)objectWithId:(UInt64)gameObjectId;
+- (WMPatch *)patchWithKey:(NSString *)inPatchKey;
 
 - (void)start;
 
-- (void)update;
+- (void)drawFrameInRect:(CGRect)inBounds;
+
 
 @end

@@ -10,7 +10,6 @@
 
 #import "WMRenderCommon.h"
 
-#import "WMAsset.h"
 //ASSUME: Shader must be used in only one GL context.
 
 typedef enum {
@@ -30,7 +29,7 @@ extern NSString *const WMShaderAttributeNameColor;     // "color"
 extern NSString *const WMShaderAttributeNameTexCoord0; // "texCoord0"
 extern NSString *const WMShaderAttributeNameTexCoord1; // "texCoord1"
 
-@interface WMShader : WMAsset {
+@interface WMShader : NSObject {
 	//TODO: Add ES1 Pipeline features?
 	
 	//If rendering with ES2
@@ -42,6 +41,8 @@ extern NSString *const WMShaderAttributeNameTexCoord1; // "texCoord1"
 	GLuint program;
 	NSMutableDictionary *uniformLocations;
 }
+
+- (id)initWithVertexShader:(NSString *)inVertexShader pixelShader:(NSString *)inPixelShader uniformNames:(NSArray *)inUniforms;
 
 + (NSString *)nameForShaderAttribute:(NSUInteger)shaderAttribute;
 

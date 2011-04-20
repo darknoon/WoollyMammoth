@@ -9,7 +9,6 @@
 #import "WMDebugViewController.h"
 
 #import "WMEngine.h"
-#import "WMAssetManager.h"
 #import "WMViewController.h"
 #import "BrowserViewController.h"
 
@@ -27,7 +26,7 @@
 - (void)updateLabels;
 {
 	gameTitleLabel.text = [parent.engine title];
-	gamePathLabel.text = [parent.engine.assetManager.assetBundle bundlePath];
+//	gamePathLabel.text = [parent.engine.assetManager.assetBundle bundlePath];
 }
 
 - (void)viewDidLoad {

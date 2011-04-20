@@ -11,10 +11,11 @@
 #import "Vector.h"
 
 #import "WMShader.h"
-#import "WMTextureAsset.h"
 #import "WMAccelerometer.h"
 #import "WMEngine.h"
-#import "WMAssetManager.h"
+#import "Texture2D.h"
+
+#import "DNEAGLContext.h"
 
 extern "C" {
 #import "SimplexNoise.h"
@@ -391,8 +392,8 @@ int particleZCompare(const void *a, const void *b) {
         glVertexAttribPointer(WMShaderAttributePosition, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMParticleVertex, position));
 		
 		int textureUniformLocation = [shader uniformLocationForName:@"texture"];
-		if (texture && textureUniformLocation != -1) {
-			glBindTexture(GL_TEXTURE_2D, [texture glTexture]);			
+		if (inputTexture && textureUniformLocation != -1) {
+			glBindTexture(GL_TEXTURE_2D, [inputTexture name]);			
 			glUniform1i(textureUniformLocation, 0); //texture = texture 0
 		}
 		GL_CHECK_ERROR;

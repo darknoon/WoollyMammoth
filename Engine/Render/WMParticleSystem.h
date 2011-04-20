@@ -14,8 +14,9 @@
 struct WMParticle;
 
 struct WMParticleVertex;
+@class Texture2D;
 
-@interface WMParticleSystem : WMRenderable {
+@interface WMParticleSystem : WMPatch {
 @public
 	NSUInteger maxParticles;
 	//Evaluates the noise function for every nth particle
@@ -45,6 +46,9 @@ struct WMParticleVertex;
 	
 	//Potentially slower. Try turning off for performance
 	BOOL zSortParticles;
+	
+	WMShader *shader;
+	Texture2D *inputTexture;
 }
 
 @end

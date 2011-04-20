@@ -8,11 +8,9 @@
 
 #import "WMBlurPass.h"
 
-#import "WMAssetManager.h"
 #import "WMEngine.h"
 #import "DNEAGLContext.h"
 #import "WMShader.h"
-#import "WMRenderEngine.h"
 
 #import "Vector.h"
 
@@ -63,7 +61,10 @@ typedef struct {
 		NSArray *uniformNames = [NSArray arrayWithObjects:@"texture", @"invStepWidth1", @"invStepWidth2", nil];
 		NSDictionary *dict = [NSDictionary dictionaryWithObject:uniformNames forKey:@"uniformNames"];
 		
-		blurShader = [[WMShader alloc] initWithResourceName:@"WMGaussianBlur" properties:dict assetManager:nil];
+		NSString *blurFrag = [[NSBundle mainBundle] pathForResource:@"WMGaussianBlur" ofType:@"fsh"];
+		NSString *blurVert = [[NSBundle mainBundle] pathForResource:@"WMGaussianBlur" ofType:@"vsh"];
+		
+		blurShader = [[WMShader alloc] initWithVertexShader:blurVert pixelShader:blurFrag uniformNames:[NSArray arrayWithObjects:@"invStepWidth1", @"invStepWidth2", nil]];
 		NSError *err = nil;
 		[blurShader loadWithBundle:[NSBundle mainBundle] error:&err];
 		if (err) {

@@ -6,10 +6,14 @@
 //  Copyright 2010 Darknoon. All rights reserved.
 //
 
+
+//Renders a Model
+
+
 #import <Foundation/Foundation.h>
 
 #import "WMRenderCommon.h"
-#import "WMRenderableDataSource.h"
+#import "WMPatch.h"
 
 #import "Matrix.h"
 
@@ -23,24 +27,19 @@ extern NSString *WMRenderableBlendModeAdd;
 extern NSString *WMRenderableBlendModeNormal;
 
 
-@interface WMRenderable : NSObject {
+@interface WMRenderable : WMPatch {
 	WMShader *shader;
 	//TODO: how should we handle multi-texturing?
 	//Move into shader?
-	WMTextureAsset *texture;
-	NSString *blendMode;
-	BOOL hidden;
-	NSObject<WMRenderableDataSource> *model;
 }
 
 @property (nonatomic, copy) NSString *blendMode;
 
 - (id)initWithEngine:(WMEngine *)inEngine properties:(NSDictionary *)renderableRepresentation;
 
-@property (nonatomic, assign) BOOL hidden;
-@property (nonatomic, retain) WMTextureAsset *texture;
-@property (nonatomic, retain) WMShader *shader;
-@property (nonatomic, retain) NSObject<WMRenderableDataSource> *model;
+@property (nonatomic, assign) NSObject *inputModel;
+@property (nonatomic, assign) WMTextureAsset *inputTexture;
+@property (nonatomic, assign) NSString *inputBlendMode;
 
 //Gets called after every frame. do computation here
 - (void)update;

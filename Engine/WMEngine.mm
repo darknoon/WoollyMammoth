@@ -8,150 +8,248 @@
 
 #import "WMEngine.h"
 
-#import "WMDebugChannel.h"
-#import "WMGameObject.h"
-#import "WMScriptingContext.h"
-#import "WMRenderable.h"
-#import "WMAssetManager.h"
-#import "WMSceneDescription.h"
+#import "Matrix.h"
 
-//For Debug method only
-#import "WMModelPOD.h"
-#import "WMQuad.h"
-#import "WMTextureAsset.h"
+#import "WMPatch.h"
+#import "WMConnection.h"
+#import "WMPort.h"
+
+#import "DNEAGLContext.h"
+#import "DNQCComposition.h"
+
 
 @interface WMEngine ()
-@property (nonatomic, retain, readwrite) WMGameObject *rootObject;
+@property (nonatomic, retain, readwrite) WMPatch *rootObject;
 
 @end
 
 
 @implementation WMEngine
 
-@synthesize assetManager;
-@synthesize renderEngine;
+@synthesize renderContext;
 @synthesize rootObject;
-@synthesize scriptingContext;
-@synthesize debugChannel;
 
 - (id) init {
 	self = [super init];
 	if (self == nil) return self; 
 	
-	objectsById = [[NSMutableDictionary alloc] initWithCapacity:256];
-	
+	patchesByKey = [[NSMutableDictionary alloc] initWithCapacity:256];
+	renderContext = [[DNEAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+
 	return self;
 }
 
 
 - (void)dealloc
 {
-	[assetManager release];
 	[rootObject release];
-	[objectsById release];
-	[scriptingContext release];
-	[debugChannel release];
-	[renderEngine release];
+	[patchesByKey release];
+	[renderContext release];
 
 	[super dealloc];
 }
 
 - (void)debugMakeObjectGraph;
 {
-	WMModelPOD *sphereModel = [assetManager modelWithName:@"GeodesicSphere02"];
-	WMShader *positionShader = [assetManager shaderWithName:@"DebugPositionOnly"];
-
-	MATRIX transform;
-	for (int i=0; i<1; i++) {
-		WMGameObject *child = [self createObject];
-		child.renderable = [[[WMRenderable alloc] init] autorelease];
-		child.renderable.model = sphereModel;
-		child.renderable.shader = positionShader;
-		
-		MatrixTranslation(transform, 0, 10.9 * i, 0);
-		child.transform = transform;
-		
-		[self.rootObject addChild:child];
-	}
-	
-	WMQuad *quadModel = [[[WMQuad alloc] init] autorelease];
-	
-	WMShader *textureShader = [assetManager shaderWithName:@"DebugPositionTexture"];
-	WMTextureAsset *texture = [assetManager textureWithName:@"TestTexture.png"];
-	WMGameObject *debugQuad = [self createObject];
-	debugQuad.renderable = [[[WMRenderable alloc] init] autorelease];
-	debugQuad.renderable.model = quadModel;
-	debugQuad.renderable.shader = textureShader;
-	debugQuad.renderable.texture = texture;
-	
-	const float scaleFactor = 30.0f;
-	MATRIX scale;
-	MatrixScaling(scale, scaleFactor, scaleFactor, scaleFactor);
-	debugQuad.transform = scale;
-
-	[self.rootObject addChild:debugQuad];
 }
 
+- (void)_addPatchesToPatchesByKeyRecursive:(WMPatch *)inPatch;
+{
+	if (inPatch.key)
+		[patchesByKey setObject:inPatch forKey:inPatch.key];
+	for (WMPatch *child in inPatch.children) {
+		[self _addPatchesToPatchesByKeyRecursive:child];
+	}
+}
 
 - (void)start;
 {
-#if DEBUG
-	if (!debugChannel) {
-		debugChannel = [[WMDebugChannel alloc] initWithEngine:self onPort:8080];
-		[debugChannel start];
-	}
-	if (!scriptingContext) {
-		scriptingContext = [[WMScriptingContext alloc] initWithEngine:self];
-	}
-#endif
-	if (!assetManager) {
-		assetManager = [[WMAssetManager alloc] initWithBundlePath:[[NSBundle mainBundle] pathForResource:@"WeatherGlobe" ofType:@"wm"] engine:self];
-	}
-	[assetManager loadAllAssetsSynchronous];
-
-	//Deserialize object graph
-	WMSceneDescription *scene = [assetManager sceneWithName:@"scene"];
+//	NSString *debugFilePath = [[NSBundle mainBundle] pathForResource:@"BasicBillboard" ofType:@"qtz"];
+	NSString *debugFilePath = [[NSBundle mainBundle] pathForResource:@"BasicColor" ofType:@"qtz"];
 	
+	//Deserialize object graph	
 	NSError *sceneReadError = nil;
-	self.rootObject = [scene deserializeObjectGraphWithEngine:self error:&sceneReadError];	
+	DNQCComposition *composition = [[DNQCComposition alloc] initWithContentsOfFile:debugFilePath error:&sceneReadError];
+
+	self.rootObject = composition.rootPatch;	
+	
+	//Setup patches by key
+	[self _addPatchesToPatchesByKeyRecursive:composition.rootPatch];
+	
+	
+	previousAbsoluteTime = CFAbsoluteTimeGetCurrent();
 }
 
-- (void)updateRecursive:(WMGameObject *)inGameObject;
+//TODO: use this method to reduce the number of nodes executed
+- (void)addAllNeedsUpdate:(NSMutableSet *)inNeedsUpdate;
 {
-	[inGameObject update];
-	for (WMGameObject *object in inGameObject.children) {
-		[self updateRecursive:object];
+	//Find everything that changes every frame
+	
+	//Iteratively add all objects connected to the inNeedsUpdate set
+	//Stop when no new objects have been added
+	
+	//TODO: this could be made more efficent I think
+}
+
+//This only supports children of a node NOT sub-children for now!!
+- (NSArray *)executionOrderingOfChildren:(WMPatch *)inPatch;
+{
+	//TODO: reduce complexity of this method
+
+	NSMutableArray *sorted = [NSMutableArray array];
+	NSMutableSet *noIncomingEdgeNodeSet = [NSMutableSet set];
+	for (WMPatch *node in inPatch.children) {
+		BOOL hasIncomingEdges = NO;
+		for (WMConnection *connection in inPatch.connections) {
+			if ([connection.destinationNode isEqualToString:node.key]) {
+				hasIncomingEdges = YES;
+				break;
+			}
+		}
+		if (!hasIncomingEdges) {
+			[noIncomingEdgeNodeSet addObject:node];
+		}
+	}
+	
+	NSMutableSet *hiddenEdges = [NSMutableSet set]; //hidden WMConnecitions
+	
+	while (noIncomingEdgeNodeSet.count > 0) {
+		WMPatch *n = [noIncomingEdgeNodeSet anyObject]; //TODO: require nodes with lower rendering order to be rendered first
+		[noIncomingEdgeNodeSet removeObject:n];
+		[sorted addObject:n];
+		
+		//for each node m with an edge e from n to m do
+		for (WMConnection *e in inPatch.connections) {
+			if (![hiddenEdges containsObject:e]) {
+				
+				//If this is an edge from e to m
+				if ([e.sourceNode isEqualToString:n.key]) {
+					WMPatch *m = [self patchWithKey:e.destinationNode];
+					NSAssert1(m, @"Couldn't find connected node %@", e.destinationNode);
+					[hiddenEdges addObject:e];
+					
+					//if m has no other incoming edges then
+					//TODO: also if m has 
+					BOOL hasIncomingEdges = NO;
+					for (WMConnection *connection in inPatch.connections) {
+						if (![hiddenEdges containsObject:connection]) {
+							if ([connection.destinationNode isEqualToString:n.key]) {
+								hasIncomingEdges = YES;
+								break;
+							}
+						}
+					}
+					// insert m into S
+					[noIncomingEdgeNodeSet addObject:m];
+				}
+			}
+		}
+	}
+	//TODO: assert all connections are hidden (graph has at least one cycle)
+	return sorted;
+}
+
+
+#pragma -
+
+- (MATRIX)cameraMatrixWithRect:(CGRect)inBounds;
+{
+	MATRIX cameraMatrix;
+	//TODO: move this state setting to DNEAGLContext
+	//glCullFace(GL_BACK);
+	
+	MATRIX projectionMatrix;
+	GLfloat viewAngle = 35.f * M_PI / 180.0f;
+	
+	const float near = 0.1;
+	const float far = 1000.0;
+	
+	const float aspectRatio = inBounds.size.width / inBounds.size.height;
+	
+	MatrixPerspectiveFovRH(projectionMatrix, viewAngle, aspectRatio, near, far, NO);
+	
+	//glDepthRangef(near, far);
+	
+	MATRIX viewMatrix;
+	Vec3 cameraPosition(0, 0, 3.0f);
+	Vec3 cameraTarget(0, 0, 0);
+	Vec3 upVec(0, 1, 0);
+	MatrixLookAtRH(viewMatrix, cameraPosition, cameraTarget, upVec);
+	
+	MatrixMultiply(cameraMatrix, viewMatrix, projectionMatrix);
+	
+#if DEBUG_LOG_RENDER_MATRICES
+	
+	NSLog(@"Perspective: ");
+	MatrixPrint(projectionMatrix);
+	
+	NSLog(@"Look At: ");
+	MatrixPrint(viewMatrix);
+	
+	NSLog(@"Final: ");
+	MatrixPrint(cameraMatrix);
+	
+	Vec3 position(0,0,0);
+	MatrixVec3Multiply(position, position, cameraMatrix);
+	NSLog(@"Position of 0,0,0 in screen space: %f %f %f", position.x, position.y, position.z);
+	
+	position = Vec3(1,1,0);
+	MatrixVec3Multiply(position, position, cameraMatrix);
+	NSLog(@"Position of 1,1,0 in screen space: %f %f %f", position.x, position.y, position.z);
+#endif
+	
+	return cameraMatrix;
+}
+
+- (WMConnection *)connectionToInputPort:(WMPort *)inPort ofNode:(WMPatch *)inPatch;
+{
+	for (WMConnection *connection in rootObject.connections) {
+		if ([connection.destinationNode isEqualToString:inPatch.key] && [connection.destinationPort isEqualToString:inPort.name]) {
+			//Find the source node
+			//TODO: optimize the order of this
+			return connection;
+		}
+	}
+	return nil;
+}
+
+- (void)drawFrameInRect:(CGRect)inBounds;
+{
+	//TODO: support pause / resume
+	CFAbsoluteTime currentAbsoluteTime = CFAbsoluteTimeGetCurrent();
+	t += currentAbsoluteTime - previousAbsoluteTime;
+	previousAbsoluteTime = currentAbsoluteTime;
+	//TODO: generalize to take values from the input ports
+	NSArray *ordering = [self executionOrderingOfChildren:self.rootObject];
+	BOOL success = YES;
+	for (WMPatch *patch in ordering) {
+		//Write the values of the input ports from the output ports of the connections
+		for (WMPort *inputPort in [patch ivarInputPorts]) {
+			//TODO: keep a record of what connections are connected to what ports for efficency here
+			//Find a connection to this input port
+			WMConnection *connection = [self connectionToInputPort:inputPort ofNode:patch];
+			if (!connection) continue;
+			WMPatch *sourcePatch = [self patchWithKey:connection.sourceNode];
+			WMPort *sourcePort = [sourcePatch outputPortWithName:connection.sourcePort];
+			[inputPort takeValueFromPort:sourcePort];
+		}
+		success = [patch execute:renderContext time:t arguments:nil];
+		if (!success) {
+			NSLog(@"Error executing patch: %@", patch);
+			break;
+		}
 	}
 }
 
-- (void)update;
-{
-	[self updateRecursive:rootObject];
-}
 
-- (WMGameObject *)createObject;
+- (WMPatch *)patchWithKey:(NSString *)inPatchKey;
 {
-	WMGameObject *object = [[WMGameObject alloc] initWithObjectId:++maxObjectId inEngine:self];
-	[objectsById setObject:object forKey:[NSNumber numberWithUnsignedLongLong:object.objectId]];
-	return [object autorelease];
-}
-
-- (void)deleteObject:(WMGameObject *)inObject;
-{
-	for (WMGameObject *child in inObject.children) {
-		[self deleteObject:child];
-	}
-	[inObject removeFromParent];
-}
-
-- (WMGameObject *)objectWithId:(UInt64)gameObjectId;
-{
-	return [objectsById objectForKey:[NSNumber numberWithUnsignedLongLong:gameObjectId]];
+	return [patchesByKey objectForKey:inPatchKey];
 }
 
 - (NSString *)title;
 {
-	return [assetManager objectForManifestKey:@"title"];
+	return @"TITLE HERE";
 }
 
 @end

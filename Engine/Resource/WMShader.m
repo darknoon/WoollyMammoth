@@ -41,14 +41,30 @@ NSString *const WMShaderAttributeTypeTexCoord1 = @"vec2";
 @synthesize program;
 
 
-- (id)initWithResourceName:(NSString *)inResourceName properties:(NSDictionary *)inProperties assetManager:(WMAssetManager *)inAssetManager;
+- (id)initWithVertexShader:(NSString *)inVertexShader pixelShader:(NSString *)inPixelShader uniformNames:(NSArray *)inUniforms;
 {
-	self = [super initWithResourceName:inResourceName properties:inProperties assetManager:inAssetManager];
+	self = [super init];
 	if (self == nil) return self; 
 	
 	uniformLocations = [[NSMutableDictionary alloc] init];
 
-	self.uniformNames = [inProperties objectForKey:@"uniformNames"];
+	self.uniformNames = inUniforms;
+	
+	if ([EAGLContext currentContext].API == kEAGLRenderingAPIOpenGLES2) {		
+				
+		self.vertexShader = inVertexShader;
+		self.pixelShader = inPixelShader;
+		
+		[self loadShaders];
+		
+		GL_CHECK_ERROR;		
+	} else {
+		//TODO: OpenGL ES 1.0 support?
+		NSLog(@"Can't create a shader in an ES1 context");
+		[self release];
+		return nil;
+	}
+
 	
 	return self;
 }
@@ -95,33 +111,6 @@ NSString *const WMShaderAttributeTypeTexCoord1 = @"vec2";
 	return WMShaderAttributeTypes[shaderAttribute];
 }
 
-
-- (BOOL)loadWithBundle:(NSBundle *)inBundle error:(NSError **)outError;
-{
-	if ([EAGLContext currentContext].API == kEAGLRenderingAPIOpenGLES2) {		
-
-		NSString *vertexShaderPath = [resourceName stringByAppendingPathExtension:@"vsh"];
-		NSString *fragmentShaderPath = [resourceName stringByAppendingPathExtension:@"fsh"];
-		
-		[self requireAssetFileSynchronous:vertexShaderPath];
-		[self requireAssetFileSynchronous:fragmentShaderPath];
-		
-		self.vertexShader = [NSString stringWithContentsOfFile:[[inBundle bundlePath] stringByAppendingPathComponent:vertexShaderPath] encoding:NSUTF8StringEncoding error:outError];
-		if (!vertexShader) return NO;
-		self.pixelShader = [NSString stringWithContentsOfFile:[[inBundle bundlePath] stringByAppendingPathComponent:fragmentShaderPath] encoding:NSUTF8StringEncoding error:outError];
-		if (!pixelShader) return NO;
-		
-		isLoaded = [self loadShaders];
-		
-		GL_CHECK_ERROR;
-
-		return isLoaded;
-	} else {
-		//TODO: OpenGL ES 1.0 support?
-		return YES;
-	}
-
-}
 
 - (void)setVertexShader:(NSString *)inVertexShader;
 {

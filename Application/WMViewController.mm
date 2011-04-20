@@ -13,9 +13,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "WMEngine.h"
-#import "WMRenderEngine.h"
 #import "WMDebugViewController.h"
-#import "WMAssetManager.h"
 
 @interface WMViewController ()
 @end
@@ -35,17 +33,14 @@
 	
 	GL_CHECK_ERROR;
 	engine = [[WMEngine alloc] init];
-	if (inRemoteURL) {
-		engine.assetManager = [[[WMAssetManager alloc] initWithRemoteBundleURL:inRemoteURL engine:engine] autorelease];
-	}
-	
-	engine.renderEngine = [[[WMRenderEngine alloc] initWithEngine:engine] autorelease];
+
 	//TODO: start lazily
 	GL_CHECK_ERROR;
 	[engine start];
 	GL_CHECK_ERROR;
 	
-	[(EAGLView *)self.view setContext:engine.renderEngine.context];
+	[(EAGLView *)self.view setContext:engine.renderContext];
+	//This will create a framebuffer and set it on the context
     [(EAGLView *)self.view setFramebuffer];
 	
 }
@@ -194,7 +189,7 @@
  
 	NSTimeInterval frameStartTime = CFAbsoluteTimeGetCurrent();
 	
-	[engine.renderEngine drawFrameInRect:self.view.bounds];
+	[engine drawFrameInRect:self.view.bounds];
 	
 	NSTimeInterval frameEndTime = CFAbsoluteTimeGetCurrent();
 	
@@ -215,8 +210,6 @@
 	lastFrameEndTime = frameEndTime;
 
     [(EAGLView *)self.view presentFramebuffer];
-
-	[engine update];
 }
 
 #pragma mark -
