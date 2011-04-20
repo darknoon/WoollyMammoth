@@ -64,13 +64,14 @@ typedef struct WMQuadVertex {
 	
 	NSString *fragmentShader = @"\
 	uniform sampler2D texture;\
+	uniform lowp vec4 color;\
 	varying highp vec2 v_textureCoordinate;\
 	void main()\
 	{\
-	gl_FragColor = texture2D(texture, v_textureCoordinate);\
+	gl_FragColor = color * texture2D(texture, v_textureCoordinate);\
 	}";
 	
-	NSArray *uniforms = [NSArray arrayWithObjects:@"texture", @"modelViewProjectionMatrix", nil];
+	NSArray *uniforms = [NSArray arrayWithObjects:@"texture", @"modelViewProjectionMatrix", @"color", nil];
 	
 	shader = [[WMShader alloc] initWithVertexShader:vertexShader pixelShader:fragmentShader uniformNames:uniforms];
 	
@@ -86,7 +87,7 @@ typedef struct WMQuadVertex {
 		return NO;
 	}
 	
-	const float scale = 1;
+	const float scale = 0.5;
 	
 	//Add vertices
 	WMQuadVertex *vertexDataPtr = (WMQuadVertex *)vertexData;
@@ -191,9 +192,35 @@ typedef struct WMQuadVertex {
 		//TODO: support transformation!
 		MATRIX transform;
 		MatrixIdentity(transform);
+		
+		MATRIX inputMatrix;
+		[inContext getModelViewMatrix:inputMatrix.f];
+		
+		MATRIX scale;
+		MatrixScaling(scale, inputScale.value, inputScale.value, 1.0f);
+
+		MATRIX translation;
+		MatrixTranslation(translation, inputX.value, inputY.value, 0.0f);
+
+		//Translate, rotate, and scale
+		MATRIX rotation;
+		MatrixRotationZ(rotation, inputRotation.value * M_PI / 180.f);
+		
+		//Compose matrices
+		MatrixMultiply(transform, transform, scale);
+		MatrixMultiply(transform, transform, rotation);
+		MatrixMultiply(transform, transform, translation);
+		MatrixMultiply(transform, transform, inputMatrix);
+		
 		//TODO: support rotation
 		glUniformMatrix4fv(matrixUniform, 1, NO, transform.f);
 	}
+	
+	int colorUniform = [shader uniformLocationForName:@"color"];
+	if (colorUniform != -1) {
+		glUniform4f(colorUniform, inputColor.red, inputColor.green, inputColor.blue, inputColor.alpha);
+	}
+
 	
 	// Validate program before drawing. This is a good check, but only really necessary in a debug build.
 	// DEBUG macro must be defined in your debug configurations if that's not already the case.

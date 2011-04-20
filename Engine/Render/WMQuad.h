@@ -17,11 +17,12 @@
 @class WMNumberPort;
 @class WMColorPort;
 @interface WMQuad : WMPatch {
-	WMImagePort *inputImage;	// 176 = 0xb0
-	WMNumberPort *inputX;	// 184 = 0xb8
-	WMNumberPort *inputY;	// 188 = 0xbc
-	WMNumberPort *inputRotation;	// 192 = 0xc0
-	WMColorPort *inputColor;	// 196 = 0xc4
+	WMImagePort *inputImage;
+	WMNumberPort *inputX;
+	WMNumberPort *inputY;
+	WMNumberPort *inputScale;
+	WMNumberPort *inputRotation;
+	WMColorPort *inputColor;
 	
 	//TODO: add quad features
 //	QCOpenGLPort_Image *inputMask;	// 180 = 0xb4

@@ -41,6 +41,8 @@ typedef int DNGLStateDepthMask;
 	DNGLStateBlendMask blendState;
 	DNGLStateDepthMask depthState;
 	DNFramebuffer *boundFramebuffer;
+	
+	float modelViewMatrix[16];
 }
 
 - (void)setVertexAttributeEnableState:(int)vertexAttributeEnableState;
@@ -48,5 +50,10 @@ typedef int DNGLStateDepthMask;
 @property (nonatomic) DNGLStateBlendMask blendState;
 @property (nonatomic) DNGLStateDepthMask depthState;
 @property (nonatomic, retain) DNFramebuffer *boundFramebuffer;
+
+//This is not GL state in GLES 2.0
+//Move to another part of the render engine?
+- (void)setModelViewMatrix:(float[16])inModelViewMatrix;
+- (void)getModelViewMatrix:(float[16])outModelViewMatrix;
 
 @end

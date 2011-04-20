@@ -16,13 +16,9 @@ subject to the following restrictions:
 #define VECTOR_H_
 
 #if TARGET_OS_IPHONE
-
 #include <OpenGLES/ES1/gl.h>
-
 #else
-
 #include <OpenGL/gl.h>
-
 #endif
 
 #include <math.h>

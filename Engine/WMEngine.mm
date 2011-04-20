@@ -282,6 +282,10 @@
 	//TODO: abstract this state out
 	glViewport(0, 0, renderContext.boundFramebuffer.framebufferWidth, renderContext.boundFramebuffer.framebufferHeight);
 
+	MATRIX modelViewMatrix = [self cameraMatrixWithRect:inBounds];
+	
+	[renderContext setModelViewMatrix:modelViewMatrix.f];
+	
 	//// Time         ////
 	//TODO: support pause / resume
 	CFAbsoluteTime currentAbsoluteTime = CFAbsoluteTimeGetCurrent();
