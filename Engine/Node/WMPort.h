@@ -21,5 +21,6 @@
 - (BOOL)takeValueFromPort:(WMPort *)inPort;
 
 @property (nonatomic, copy) NSString *name;
+@property (nonatomic, assign) WMPort *originalPort;
 
 @end

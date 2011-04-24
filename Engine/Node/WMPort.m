@@ -11,6 +11,7 @@
 
 @implementation WMPort
 @synthesize name;
+@synthesize originalPort;
 
 - (id)stateValue;
 {
@@ -29,7 +30,8 @@
 
 - (NSString *)description;
 {
-	return [NSString stringWithFormat:@"<%@ : %p>{name: %@, state:%@}", NSStringFromClass([self class]), self, self.name, [self stateValue]];
+	NSString *origStr = originalPort ? [NSString stringWithFormat:@" orig:%@", originalPort.name] : @"";
+	return [NSString stringWithFormat:@"<%@ : %p>{name: %@, state:%@%@}", NSStringFromClass([self class]), self, self.name, [self stateValue], origStr];
 }
 
 @end

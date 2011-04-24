@@ -42,17 +42,12 @@ extern NSString *const WMShaderAttributeNameTexCoord1; // "texCoord1"
 	NSMutableDictionary *uniformLocations;
 }
 
+//TODO: add uniform parsing
 - (id)initWithVertexShader:(NSString *)inVertexShader pixelShader:(NSString *)inPixelShader uniformNames:(NSArray *)inUniforms;
 
 + (NSString *)nameForShaderAttribute:(NSUInteger)shaderAttribute;
 
 @property (nonatomic, assign) unsigned int attributeMask;
-
-/**
- Supported properties:
- uniformNames[]		Array of uniform names
- 
- */
 
 @property (nonatomic, copy, readonly) NSArray *uniformNames;
 @property (nonatomic, copy, readonly) NSString *vertexShader;

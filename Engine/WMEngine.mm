@@ -34,25 +34,27 @@
 	self = [super init];
 	if (self == nil) return self; 
 	
-	patchesByKey = [[NSMutableDictionary alloc] initWithCapacity:256];
 	renderContext = [[WMEAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
 
 	return self;
 }
 
+//TODO: This could be done with an "enumerate children recursive with block"
+- (void)_cleanupRecursive:(WMPatch *)inPatch;
+{
+	[inPatch cleanup:renderContext];
+	for (WMPatch *patch in inPatch.children) {
+		[self _cleanupRecursive:patch];
+	}	
+}
 
 - (void)dealloc
 {
 	//TODO: expose the idea of cleanup outside of -dealloc
 	//Call cleanup on all patches
-	//TODO: support cleanup on sub-nodes
-	for (WMPatch *patch in rootObject.children) {
-		//This could be done with an "enumerate children recursive with block"
-		[patch cleanup:renderContext];
-	}
+	[self _cleanupRecursive:rootObject];
 	
 	[rootObject release];
-	[patchesByKey release];
 	[renderContext release];
 
 	[super dealloc];
@@ -62,35 +64,30 @@
 {
 }
 
-- (void)_addPatchesToPatchesByKeyRecursive:(WMPatch *)inPatch;
+- (void)_setupRecursive:(WMPatch *)inPatch;
 {
-	if (inPatch.key)
-		[patchesByKey setObject:inPatch forKey:inPatch.key];
-	for (WMPatch *child in inPatch.children) {
-		[self _addPatchesToPatchesByKeyRecursive:child];
+	[inPatch setup:renderContext];
+	for (WMPatch *patch in inPatch.children) {
+		//This could be done with an "enumerate children recursive with block"
+		[self _setupRecursive:patch];
 	}
 }
 
 - (void)start;
 {
-	NSString *debugFilePath = [[NSBundle mainBundle] pathForResource:@"BasicCamera" ofType:@"qtz"];
+//	NSString *debugFilePath = [[NSBundle mainBundle] pathForResource:@"BasicCamera" ofType:@"qtz"];
 //	NSString *debugFilePath = [[NSBundle mainBundle] pathForResource:@"BasicColor" ofType:@"qtz"];
+	NSString *debugFilePath = [[NSBundle mainBundle] pathForResource:@"BasicMacro" ofType:@"qtz"];
 	
 	//Deserialize object graph	
 	NSError *sceneReadError = nil;
 	DNQCComposition *composition = [[DNQCComposition alloc] initWithContentsOfFile:debugFilePath error:&sceneReadError];
 
 	self.rootObject = composition.rootPatch;	
-	
-	//Setup patches by key
-	[self _addPatchesToPatchesByKeyRecursive:composition.rootPatch];
-	
+		
 	//Call setup on all patches
 	//TODO: support setup on sub-nodes
-	for (WMPatch *patch in rootObject.children) {
-		//This could be done with an "enumerate children recursive with block"
-		[patch setup:renderContext];
-	}
+	[self _setupRecursive:rootObject];
 	
 	previousAbsoluteTime = CFAbsoluteTimeGetCurrent();
 }
@@ -187,7 +184,7 @@
 				
 				//If this is an edge from e to m
 				if ([e.sourceNode isEqualToString:n.key]) {
-					WMPatch *m = [self patchWithKey:e.destinationNode];
+					WMPatch *m = [inPatch patchWithKey:e.destinationNode];
 					NSAssert1(m, @"Couldn't find connected node %@", e.destinationNode);
 					[hiddenEdges addObject:e];
 					
@@ -265,9 +262,9 @@
 	return cameraMatrix;
 }
 
-- (WMConnection *)connectionToInputPort:(WMPort *)inPort ofNode:(WMPatch *)inPatch;
+- (WMConnection *)connectionToInputPort:(WMPort *)inPort ofNode:(WMPatch *)inPatch inParent:(WMPatch *)inParent;
 {
-	for (WMConnection *connection in rootObject.connections) {
+	for (WMConnection *connection in inParent.connections) {
 		if ([connection.destinationNode isEqualToString:inPatch.key] && [connection.destinationPort isEqualToString:inPort.name]) {
 			//Find the source node
 			//TODO: optimize the order of this
@@ -275,6 +272,54 @@
 		}
 	}
 	return nil;
+}
+
+- (void)drawPatchRecursive:(WMPatch *)inPatch;
+{
+	/// Write values of input ports to inPatch's children ///
+	//TODO: rename ivarInputPorts!
+	for (WMPort *port in [inPatch ivarInputPorts]) {
+		if (port.originalPort) {
+			[port.originalPort takeValueFromPort:port];
+		}
+	}
+	
+	//// Render order ////
+	NSArray *ordering = [self executionOrderingOfChildren:inPatch];
+	
+	//// Render       ////
+	BOOL success = YES;
+	for (WMPatch *patch in ordering) {
+		//Write the values of the input ports from the output ports of the connections
+		for (WMPort *inputPort in [patch ivarInputPorts]) {
+			//TODO: keep a record of what connections are connected to what ports for efficency here
+			//Find a connection to this input port
+			WMConnection *connection = [self connectionToInputPort:inputPort ofNode:patch inParent:inPatch];
+			if (!connection) continue;
+			WMPatch *sourcePatch = [inPatch patchWithKey:connection.sourceNode];
+			WMPort *sourcePort = [sourcePatch outputPortWithName:connection.sourcePort];
+			[inputPort takeValueFromPort:sourcePort];
+		}
+		success = [patch execute:renderContext time:t arguments:nil];
+
+		//Now execute any children
+		if ([patch children].count > 0) {
+			[self drawPatchRecursive:patch];
+		}
+		
+		if (!success) {
+			NSLog(@"Error executing patch: %@", patch);
+			break;
+		}
+	}
+	
+	/// Write values of output ports from inPatch's children ///
+	for (WMPort *port in [inPatch ivarOutputPorts]) {
+		if (port.originalPort) {
+			[port takeValueFromPort:port.originalPort];
+		}
+	}
+
 }
 
 - (void)drawFrameInRect:(CGRect)inBounds;
@@ -292,36 +337,9 @@
 	t += currentAbsoluteTime - previousAbsoluteTime;
 	previousAbsoluteTime = currentAbsoluteTime;
 	
-	//// Render order ////
-	//TODO: generalize to take values from the input ports
-	NSArray *ordering = [self executionOrderingOfChildren:self.rootObject];
-		
-	//// Render       ////
-	BOOL success = YES;
-	for (WMPatch *patch in ordering) {
-		//Write the values of the input ports from the output ports of the connections
-		for (WMPort *inputPort in [patch ivarInputPorts]) {
-			//TODO: keep a record of what connections are connected to what ports for efficency here
-			//Find a connection to this input port
-			WMConnection *connection = [self connectionToInputPort:inputPort ofNode:patch];
-			if (!connection) continue;
-			WMPatch *sourcePatch = [self patchWithKey:connection.sourceNode];
-			WMPort *sourcePort = [sourcePatch outputPortWithName:connection.sourcePort];
-			[inputPort takeValueFromPort:sourcePort];
-		}
-		success = [patch execute:renderContext time:t arguments:nil];
-		if (!success) {
-			NSLog(@"Error executing patch: %@", patch);
-			break;
-		}
-	}
+	[self drawPatchRecursive:self.rootObject];
 }
 
-
-- (WMPatch *)patchWithKey:(NSString *)inPatchKey;
-{
-	return [patchesByKey objectForKey:inPatchKey];
-}
 
 - (NSString *)title;
 {

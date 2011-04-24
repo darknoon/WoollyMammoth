@@ -16,6 +16,10 @@
 enum {
 	WMLFOTypeSin = 0,
 	WMLFOTypeCos,
+	WMLFOTypeTriangle,
+	WMLFOTypeSquare,
+	WMLFOTypeSawtoothUp,
+	WMLFOTypeSawtoothDown,
 	WMLFOTypeUndefined,
 };
 typedef NSUInteger WMLFOType;

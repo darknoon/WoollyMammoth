@@ -127,7 +127,7 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 			if (inputPort) {
 				object_setIvar(self, ivars[i], inputPort);
 				[inputPort retain];
-				[inputPorts addObject:inputPort];
+				[self addInputPort:inputPort];
 			}
 
 		} else if (([ivarName hasPrefix:@"output"] || [ivarName hasPrefix:@"_output"]) && ![ivarName isEqualToString:@"outputPorts"]) {
@@ -140,7 +140,7 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 			if (outputPort) {
 				object_setIvar(self, ivars[i], outputPort);
 				[outputPort retain];
-				[outputPorts addObject:outputPort];
+				[self addOutputPort:outputPort];
 			}
 
 		}
@@ -149,24 +149,25 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 
 }
 
-- (id)initWithPlistRepresentation:(id)inPlist;
+- (void)createChildrenWithState:(NSDictionary *)state;
 {
-	self = [super init];
-	if (!self) return nil;
+	NSArray *plistChildren = [state objectForKey:WMPatchChildrenPlistName];
+	NSMutableArray *mutableChildren = [NSMutableArray array];
+	NSMutableDictionary *mutableChildrenByKey = [NSMutableDictionary dictionary];
+	for (NSDictionary *childDictionary in plistChildren) {
+		WMPatch *child = [WMPatch patchWithPlistRepresentation:childDictionary];
+		if (child) {
+			[mutableChildren addObject:child];
+			[mutableChildrenByKey setObject:child forKey:child.key];
+		}
+	}
 	
-	
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		
-	self.key = [inPlist objectForKey:WMPatchKeyPlistName];
-	
-	outputPorts = [[NSMutableArray alloc] init];
-	inputPorts = [[NSMutableArray alloc] init];
-	
-	[self createIvarPorts];
-	
-	NSDictionary *state = [inPlist objectForKey:WMPatchStatePlistName];
-	[self setPlistState:state];
-	
+	children = [mutableChildren copy];
+	childrenByKey = [mutableChildrenByKey copy];
+}
+
+- (void)createConnectionsWithState:(NSDictionary *)state;
+{
 	NSDictionary *plistConnections = [state objectForKey:WMPatchConnectionsPlistName];
 	NSMutableArray *connectionsMutable = [NSMutableArray array];
 	for (NSString *connectionName in plistConnections) {
@@ -181,18 +182,84 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 		[connection release];
 	}
 	connections = [connectionsMutable copy];
-	
-	NSArray *plistChildren = [state objectForKey:WMPatchChildrenPlistName];
-	NSMutableArray *mutableChildren = [NSMutableArray array];
-	for (NSDictionary *childDictionary in plistChildren) {
-		WMPatch *child = [WMPatch patchWithPlistRepresentation:childDictionary];
-		if (child) {
-			[mutableChildren addObject:child];
+}
+
+
+- (void)createPublishedInputPortsWithState:(NSDictionary *)state;
+{
+	NSArray *ports = [state objectForKey:@"publishedInputPorts"];
+	for (NSDictionary *portDefinition in ports) {
+		NSString *portKey = [portDefinition objectForKey:@"key"];
+		WMPatch *child = [self patchWithKey:[portDefinition objectForKey:@"node"]];
+		//Find the port on the child and use the same port class
+		
+		WMPort *childPort = [child inputPortWithName:[portDefinition objectForKey:@"port"]];
+		if (childPort) {
+			Class portClass = [childPort class];
+			WMPort *port = [[[portClass alloc] init] autorelease];
+			port.name = portKey;
+			port.originalPort = childPort;
+			[self addInputPort:port];
+			[port setStateValue:[[portDefinition objectForKey:@"state"] objectForKey:@"value"]];
 		}
+		
+	}
+}
+
+- (void)createPublishedOutputPortsWithState:(NSDictionary *)state;
+{
+	NSArray *ports = [state objectForKey:@"publishedOutputPorts"];
+	for (NSDictionary *portDefinition in ports) {
+		NSString *portKey = [portDefinition objectForKey:@"key"];
+		WMPatch *child = [self patchWithKey:[portDefinition objectForKey:@"node"]];
+		//Find the port on the child and use the same port class
+		
+		WMPort *childPort = [child outputPortWithName:[portDefinition objectForKey:@"port"]];
+		if (childPort) {
+			Class portClass = [childPort class];
+			WMPort *port = [[portClass alloc] init];
+			port.name = portKey;
+			port.originalPort = childPort;
+			[self addOutputPort:port];
+			[port setStateValue:[[portDefinition objectForKey:@"state"] objectForKey:@"value"]];
+		}
+		
 	}
 	
-	children = [mutableChildren copy];
+}
+
+
+- (id)initWithPlistRepresentation:(id)inPlist;
+{
+	self = [super init];
+	if (!self) return nil;
 	
+	
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+		
+	self.key = [inPlist objectForKey:WMPatchKeyPlistName];
+	
+	outputPorts = [[NSMutableArray alloc] init];
+	inputPorts = [[NSMutableArray alloc] init];
+	
+	//Create ivar ports for this 
+	[self createIvarPorts];
+	
+	NSDictionary *state = [inPlist objectForKey:WMPatchStatePlistName];
+		
+	//Set state of ivar ports
+	[self setPlistState:state];
+	
+	//Create children
+	[self createChildrenWithState:state];
+			
+	//Create connections among children
+	[self createConnectionsWithState:state];
+	
+	//Create published input and output ports (use the type of child's port to make our port type)
+	[self createPublishedInputPortsWithState:state];
+	[self createPublishedOutputPortsWithState:state];
+		
 	[pool drain];
 	
 	return self;
@@ -201,6 +268,7 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 - (void)dealloc {
 	[userInfo release];
     [children release];
+	[childrenByKey release];
 	[connections release];
     [super dealloc];
 }
@@ -229,6 +297,16 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 	return nil;
 }
 
+- (void)addInputPort:(WMPort *)inPort;
+{
+	[inputPorts addObject:inPort];
+}
+
+- (void)addOutputPort:(WMPort *)inPort;
+{
+	[outputPorts addObject:inPort];	
+}
+
 - (NSArray *)ivarInputPorts;
 {
 	return [[inputPorts retain] autorelease];
@@ -251,12 +329,7 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 
 - (WMPatch *)patchWithKey:(NSString *)inKey;
 {
-	for (WMPatch *patch in children) {
-		if ([patch.key isEqualToString:inKey]) {
-			return patch;
-		}
-	}
-	return nil;
+	return [childrenByKey objectForKey:inKey];
 }
 
 - (WMPort *)inputPortWithName:(NSString *)inName;
@@ -316,7 +389,7 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 
 - (NSString *)description;
 {
-	return [NSString stringWithFormat:@"<%@ : %p>{connections: %u, childen: %u>}", NSStringFromClass([self class]), self, connections.count, children.count];
+	return [NSString stringWithFormat:@"<%@ : %p>{key: %@, connections: %u, childen: %u>}", NSStringFromClass([self class]), self, key, connections.count, children.count];
 }
 
 - (NSString *)descriptionRecursive;
@@ -346,7 +419,7 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 
 - (NSString *)description;
 {
-	return [NSString stringWithFormat:@"<%@ (was %@) : %p>{connections: %u, childen: %u>}", NSStringFromClass([self class]), originalClassName, self, connections.count, children.count];
+	return [NSString stringWithFormat:@"<%@ (was %@) : %p>{key: %@, connections: %u, childen: %u>}", NSStringFromClass([self class]), originalClassName, self, key, connections.count, children.count];
 }
 
 @end

@@ -19,6 +19,7 @@
 	NSString *key;
     NSArray *connections;
 	NSArray *children;
+	NSDictionary *childrenByKey;
 	id userInfo;
 
 	WMPort *_enableInput;
@@ -48,6 +49,9 @@
 - (NSArray *)ivarOutputPorts;
 - (NSArray *)systemInputPorts;
 - (NSArray *)systemOutputPorts;
+
+- (void)addInputPort:(WMPort *)inPort;
+- (void)addOutputPort:(WMPort *)inPort;
 
 @property (nonatomic, copy) NSString *key;
 @property (nonatomic, readonly) NSArray *children;

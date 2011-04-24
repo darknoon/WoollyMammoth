@@ -18,7 +18,6 @@
 	CFAbsoluteTime t;
 	
 	UInt64 maxObjectId;
-	NSMutableDictionary *patchesByKey;
 	WMPatch *rootObject;
 }
 
@@ -26,8 +25,6 @@
 @property (nonatomic, retain, readonly) WMPatch *rootObject;
 
 - (NSString *)title;
-
-- (WMPatch *)patchWithKey:(NSString *)inPatchKey;
 
 - (void)start;
 
