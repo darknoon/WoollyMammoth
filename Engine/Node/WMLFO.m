@@ -27,7 +27,7 @@
 	float p = inputPeriod.value;
 	float o = inputPhase.value;
 	float c = inputOffset.value;
-	
+		
 	float temp;
 	switch (inputType.index) {
 		case WMLFOTypeSin:

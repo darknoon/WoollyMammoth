@@ -119,7 +119,7 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 	for (int i=0; i<count; i++) {
 		NSString *ivarName = [[[NSString alloc] initWithCString:ivar_getName(ivars[i]) encoding:NSUTF8StringEncoding] autorelease];
 		if (([ivarName hasPrefix:@"input"] || [ivarName hasPrefix:@"_input"]) && ![ivarName isEqualToString:@"inputPorts"]) {
-			NSLog(@"Create ivar input: %@", ivarName);
+//			NSLog(@"Create ivar input: %@", ivarName);
 			
 			if ([ivarName hasPrefix:@"_"])
 				ivarName = [ivarName substringFromIndex:1];
@@ -132,7 +132,7 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 
 		} else if (([ivarName hasPrefix:@"output"] || [ivarName hasPrefix:@"_output"]) && ![ivarName isEqualToString:@"outputPorts"]) {
 
-			NSLog(@"Create ivar output: %@", ivarName);
+//			NSLog(@"Create ivar output: %@", ivarName);
 			
 			if ([ivarName hasPrefix:@"_"])
 				ivarName = [ivarName substringFromIndex:1];
@@ -146,11 +146,16 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 		}
 	}
 	free(ivars);
+}
 
+- (WMPatchExecutionMode)executionMode;
+{
+	return kWMPatchExecutionModeProcessor;
 }
 
 - (void)createChildrenWithState:(NSDictionary *)state;
 {
+	
 	NSArray *plistChildren = [state objectForKey:WMPatchChildrenPlistName];
 	NSMutableArray *mutableChildren = [NSMutableArray array];
 	NSMutableDictionary *mutableChildrenByKey = [NSMutableDictionary dictionary];
@@ -163,7 +168,7 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 	}
 	
 	children = [mutableChildren copy];
-	childrenByKey = [mutableChildrenByKey copy];
+	childrenByKey = [mutableChildrenByKey copy];	
 }
 
 - (void)createConnectionsWithState:(NSDictionary *)state;

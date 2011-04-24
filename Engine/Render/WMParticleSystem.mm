@@ -244,6 +244,11 @@ int particleZCompare(const void *a, const void *b) {
 }
 
 
+- (WMPatchExecutionMode)executionMode;
+{
+	return kWMPatchExecutionModeConsumer;
+}
+
 - (void)update;
 {
 #if PARTICLES_USE_REAL_GRAVITY

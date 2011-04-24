@@ -8,10 +8,20 @@
 
 #import <Foundation/Foundation.h>
 
+#import "WMPorts.h"
+
+typedef enum {
+	kWMPatchExecutionModeProcessor = 0, // 0 (e.g., "Math", "Image With String")
+	kWMPatchExecutionModeConsumer,      // 1 (e.g., "Clear", "Billboard", "Lighting")
+	kWMPatchExecutionModeProvider,	    // 2 (e.g., "Mouse", "Interaction", "XML", "Directory Scanner", "Host Info")
+	kWMPatchExecutionModeRII,	        // 3 RII
+} WMPatchExecutionMode;
+
 @class WMEAGLContext;
 @class WMPort;
 @class WMNumberPort;
 @interface WMPatch : NSObject {
+@protected;
 	//These don't have input at the beginning
 	WMNumberPort *system_inputTime;
 	//TODO: QCBooleanPort system_inputEnable;
@@ -21,7 +31,7 @@
 	NSArray *children;
 	NSDictionary *childrenByKey;
 	id userInfo;
-
+	
 	WMPort *_enableInput;
 	
 	//These are set from the ivars
@@ -56,6 +66,8 @@
 @property (nonatomic, copy) NSString *key;
 @property (nonatomic, readonly) NSArray *children;
 @property (nonatomic, readonly) NSArray *connections;
+
+@property (nonatomic, readonly) WMPatchExecutionMode executionMode;
 
 //For now just find in children (not sub-children)
 - (WMPatch *)patchWithKey:(NSString *)inKey;

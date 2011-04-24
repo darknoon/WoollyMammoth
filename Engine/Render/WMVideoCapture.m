@@ -35,6 +35,10 @@
 	return self;
 }
 
+- (WMPatchExecutionMode)executionMode;
+{
+	return kWMPatchExecutionModeProvider;
+}
 
 - (void)dealloc
 {

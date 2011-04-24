@@ -28,6 +28,7 @@
 	glGenFramebuffers(1, &framebufferObject);
 	context.boundFramebuffer = self;
 
+	textureName = inTexture.name;
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, inTexture.name, 0);
 	
 	framebufferWidth = inTexture.pixelsWide;
@@ -40,7 +41,6 @@
 		glRenderbufferStorageOES(GL_RENDERBUFFER_OES, inDepthBufferDepth, framebufferWidth, framebufferHeight); 
 		//Attach depth buffer
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
-
 	}
 	
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
@@ -91,6 +91,28 @@
 	return self;
 }
 
+- (void)deleteFramebuffer;
+{
+	if (framebufferObject)
+	{
+		glDeleteFramebuffers(1, &framebufferObject);
+		framebufferObject = 0;
+	}
+	
+	if (colorRenderbuffer)
+	{
+		glDeleteRenderbuffers(1, &colorRenderbuffer);
+		colorRenderbuffer = 0;
+	}
+	
+	if (depthRenderbuffer) {
+		glDeleteRenderbuffers(1, &depthRenderbuffer);
+		depthRenderbuffer = 0;
+	}
+	GL_CHECK_ERROR;
+	
+}
+
 - (void)dealloc;
 {
 	[self deleteFramebuffer];
@@ -128,31 +150,9 @@
 	return depthRenderbuffer != 0;
 }
 
-- (void)deleteFramebuffer;
-{
-	if (framebufferObject)
-	{
-		glDeleteFramebuffers(1, &framebufferObject);
-		framebufferObject = 0;
-	}
-	
-	if (colorRenderbuffer)
-	{
-		glDeleteRenderbuffers(1, &colorRenderbuffer);
-		colorRenderbuffer = 0;
-	}
-	
-	if (depthRenderbuffer) {
-		glDeleteRenderbuffers(1, &depthRenderbuffer);
-		depthRenderbuffer = 0;
-	}
-	GL_CHECK_ERROR;
-
-}
-
 - (NSString *)description;
 {
-	return [NSString stringWithFormat:@"<%@ : %p>{fbo: %u, color:%u depth:%u size:{%d, %d}}", NSStringFromClass([self class]), self, framebufferObject, colorRenderbuffer, depthRenderbuffer, framebufferWidth, framebufferHeight];
+	return [NSString stringWithFormat:@"<%@ : %p>{fbo: %u, color:%u depth:%u texture:%d size:{%d, %d}}", NSStringFromClass([self class]), self, framebufferObject, colorRenderbuffer, depthRenderbuffer,  textureName, framebufferWidth, framebufferHeight];
 }
 
 @end

@@ -47,6 +47,12 @@ typedef struct WMQuadVertex {
 	[super dealloc];
 }
 
+- (WMPatchExecutionMode)executionMode;
+{
+	return kWMPatchExecutionModeConsumer;
+}
+
+
 - (BOOL)setup:(WMEAGLContext *)context;
 {
 	//TODO: figure out a good way to generate these programatically with #ifdefs in an omni-shader

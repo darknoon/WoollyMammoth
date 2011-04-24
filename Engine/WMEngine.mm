@@ -77,7 +77,8 @@
 {
 //	NSString *debugFilePath = [[NSBundle mainBundle] pathForResource:@"BasicCamera" ofType:@"qtz"];
 //	NSString *debugFilePath = [[NSBundle mainBundle] pathForResource:@"BasicColor" ofType:@"qtz"];
-	NSString *debugFilePath = [[NSBundle mainBundle] pathForResource:@"BasicMacro" ofType:@"qtz"];
+//	NSString *debugFilePath = [[NSBundle mainBundle] pathForResource:@"BasicMacro" ofType:@"qtz"];
+	NSString *debugFilePath = [[NSBundle mainBundle] pathForResource:@"BasicRII" ofType:@"qtz"];
 	
 	//Deserialize object graph	
 	NSError *sceneReadError = nil;
@@ -300,18 +301,40 @@
 			WMPort *sourcePort = [sourcePatch outputPortWithName:connection.sourcePort];
 			[inputPort takeValueFromPort:sourcePort];
 		}
+
+		
+		DNFramebuffer *framebufferBefore;
+		MATRIX cameraMatrixBefore;
+		if (patch.executionMode == kWMPatchExecutionModeRII) {
+			framebufferBefore = [renderContext.boundFramebuffer retain];
+			[renderContext getModelViewMatrix:cameraMatrixBefore.f];
+		}	
+
+//		NSLog(@"executing patch: %@", patch.key);
 		success = [patch execute:renderContext time:t arguments:nil];
+		if (!success) {
+			NSLog(@"Error executing patch: %@", patch);
+			break;
+		}
 
 		//Now execute any children
 		if ([patch children].count > 0) {
 			[self drawPatchRecursive:patch];
 		}
 		
-		if (!success) {
-			NSLog(@"Error executing patch: %@", patch);
-			break;
-		}
+		if (patch.executionMode == kWMPatchExecutionModeRII) {
+			//Restore framebuffer
+			renderContext.boundFramebuffer = framebufferBefore;
+			[framebufferBefore release];
+			
+			//Restore viewport
+			glViewport(0, 0, renderContext.boundFramebuffer.framebufferWidth, renderContext.boundFramebuffer.framebufferHeight);
+			//Restore camera matrix
+			[renderContext setModelViewMatrix:cameraMatrixBefore.f];
+		}			
 	}
+	
+
 	
 	/// Write values of output ports from inPatch's children ///
 	for (WMPort *port in [inPatch ivarOutputPorts]) {

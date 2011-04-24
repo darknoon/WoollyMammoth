@@ -18,6 +18,8 @@
 	GLint framebufferWidth;
     GLint framebufferHeight;
 	
+	GLuint textureName;
+	
 	GLuint colorRenderbuffer;
 	GLuint depthRenderbuffer;
 	GLuint framebufferObject;

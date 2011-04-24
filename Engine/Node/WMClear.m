@@ -10,6 +10,7 @@
 
 #import "WMColorPort.h"
 #import "WMEAGLContext.h"
+#import "DNFramebuffer.h"
 
 @implementation WMClear
 
@@ -31,8 +32,11 @@
 - (BOOL)execute:(WMEAGLContext *)inContext time:(CFTimeInterval)time arguments:(NSDictionary *)args;
 {
 	glClearColor(inputColor.red, inputColor.green, inputColor.blue, inputColor.alpha);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
+	if (inContext.boundFramebuffer.hasDepthbuffer) {
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	} else {
+		glClear(GL_COLOR_BUFFER_BIT);
+	}
 	return YES;
 }
 
