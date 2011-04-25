@@ -32,25 +32,37 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
     return [CAEAGLLayer class];
 }
 
+- (void)sharedInit;
+{
+	CAEAGLLayer *eaglLayer = (CAEAGLLayer *)self.layer;
+	
+	//Support Retina display
+	if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+		eaglLayer.contentsScale = [UIScreen mainScreen].scale;
+	}
+	eaglLayer.opaque = TRUE;
+	eaglLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
+									[NSNumber numberWithBool:FALSE], kEAGLDrawablePropertyRetainedBacking,
+									kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat,
+									nil];
+}
+
 //The EAGL view is stored in the nib file. When it's unarchived it's sent -initWithCoder:.
 - (id)initWithCoder:(NSCoder*)coder
 {
     self = [super initWithCoder:coder];
-	if (self)
-    {
-        CAEAGLLayer *eaglLayer = (CAEAGLLayer *)self.layer;
 
-		//Support Retina display
-        if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
-			eaglLayer.contentsScale = [UIScreen mainScreen].scale;
-		}
-        eaglLayer.opaque = TRUE;
-        eaglLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        [NSNumber numberWithBool:FALSE], kEAGLDrawablePropertyRetainedBacking,
-                                        kEAGLColorFormatRGB565, kEAGLDrawablePropertyColorFormat,
-                                        nil];
-    }
-    
+    [self sharedInit];
+	
+    return self;
+}
+
+- (id)initWithFrame:(CGRect)inFrame {
+    self = [super initWithFrame:inFrame];
+	if (!self) return nil;
+	
+	[self sharedInit];
+	
     return self;
 }
 

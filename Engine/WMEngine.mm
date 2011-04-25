@@ -30,12 +30,15 @@
 @synthesize renderContext;
 @synthesize rootObject;
 
-- (id) init {
+- (id)initWithComposition:(DNQCComposition *)inComposition;
+{
 	self = [super init];
 	if (self == nil) return self; 
 	
 	renderContext = [[WMEAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-
+	self.rootObject = inComposition.rootPatch;
+	compositionUserData = [inComposition.userDictionary retain];
+	
 	return self;
 }
 
@@ -56,12 +59,9 @@
 	
 	[rootObject release];
 	[renderContext release];
+	[compositionUserData release];
 
 	[super dealloc];
-}
-
-- (void)debugMakeObjectGraph;
-{
 }
 
 - (void)_setupRecursive:(WMPatch *)inPatch;
@@ -75,17 +75,6 @@
 
 - (void)start;
 {
-//	NSString *debugFilePath = [[NSBundle mainBundle] pathForResource:@"BasicCamera" ofType:@"qtz"];
-//	NSString *debugFilePath = [[NSBundle mainBundle] pathForResource:@"BasicColor" ofType:@"qtz"];
-//	NSString *debugFilePath = [[NSBundle mainBundle] pathForResource:@"BasicMacro" ofType:@"qtz"];
-	NSString *debugFilePath = [[NSBundle mainBundle] pathForResource:@"BasicRII" ofType:@"qtz"];
-	
-	//Deserialize object graph	
-	NSError *sceneReadError = nil;
-	DNQCComposition *composition = [[DNQCComposition alloc] initWithContentsOfFile:debugFilePath error:&sceneReadError];
-
-	self.rootObject = composition.rootPatch;	
-		
 	//Call setup on all patches
 	//TODO: support setup on sub-nodes
 	[self _setupRecursive:rootObject];
@@ -311,7 +300,7 @@
 		}	
 
 //		NSLog(@"executing patch: %@", patch.key);
-		success = [patch execute:renderContext time:t arguments:nil];
+		success = [patch execute:renderContext time:t arguments:compositionUserData];
 		if (!success) {
 			NSLog(@"Error executing patch: %@", patch);
 			break;

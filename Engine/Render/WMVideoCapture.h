@@ -39,6 +39,8 @@
 	NSUInteger currentTexture; //This is the texture that was just written into
 	BOOL textureWasRead;
 	
+	BOOL useFrontCamera;
+	
 	WMBooleanPort *inputCapture;
 	
 	WMImagePort *outputImage;

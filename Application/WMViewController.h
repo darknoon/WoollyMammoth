@@ -50,7 +50,6 @@
 
 - (IBAction)showDebug:(id)sender;
 
-- (void)reloadGame;
 - (void)reloadGameFromURL:(NSURL *)inRemoteURL;
 
 - (void)startAnimation;

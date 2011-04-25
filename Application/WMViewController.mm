@@ -15,6 +15,8 @@
 #import "WMEngine.h"
 #import "WMDebugViewController.h"
 
+#import "DNQCComposition.h"
+
 @interface WMViewController ()
 @end
 
@@ -30,9 +32,13 @@
 		[engine release];
 		engine = nil;
 	}
+		
+	NSString *filePath = [inRemoteURL path];
+	NSError *error = nil;
+	DNQCComposition *composition = [[DNQCComposition alloc] initWithContentsOfFile:filePath  error:&error];
 	
 	GL_CHECK_ERROR;
-	engine = [[WMEngine alloc] init];
+	engine = [[WMEngine alloc] initWithComposition:composition];
 
 	//TODO: start lazily
 	GL_CHECK_ERROR;
@@ -45,13 +51,7 @@
 	
 }
 
-- (void)reloadGame;
-{
-	[self reloadGameFromURL:nil];
-}
-
-
-- (void)awakeFromNib
+- (void)sharedInit;
 {
     animationFrameInterval = 1;
     
@@ -61,13 +61,25 @@
     NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
     if ([currSysVer compare:reqSysVer options:NSNumericSearch] != NSOrderedAscending)
         displayLinkSupported = TRUE;
-
+	
 	// TODO: grr, Xcode bug won't let this compile. WTF??
 	// UISwipeGestureRecognizer *recog = [[UISwipeGestureRecognizer alloc] init];
 	// recog.target = self;
 	// recog.selector = @selector(debugSwipeAction:);
 	// recog.direction = (UISwipeGestureRecognizerDirection) (UISwipeGestureRecognizerDirectionUp | UISwipeGestureRecognizerDirectionDown);
 	// [self.view addGestureRecognizer:recog];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
+}
+
+
+- (void)loadView;
+{
+	CGRect defaultFrame = [[UIScreen mainScreen] applicationFrame];
+	EAGLView *view = [[[EAGLView alloc] initWithFrame:defaultFrame] autorelease];
+	self.view = view;
 }
 
 - (void)viewDidLoad;
@@ -82,7 +94,9 @@
 	fpsLabel.alpha = 0.8f;
 	fpsLabel.text = @"";
 	[self.view addSubview:fpsLabel];
-				
+	
+	UITapGestureRecognizer *tapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleNavigationBar)] autorelease];
+	[self.view addGestureRecognizer:tapRecognizer];
 }
 
 - (void)dealloc
@@ -95,6 +109,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [self startAnimation];
+	
+	//Disable screen dim / turn off because we don't use touch input
+	[[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     
     [super viewWillAppear:animated];
 }
@@ -103,6 +120,8 @@
 {
     [self stopAnimation];
     
+	[[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+	
     [super viewWillDisappear:animated];
 }
 
@@ -223,6 +242,10 @@
 #pragma mark -
 #pragma mark Actions
 
+- (void)toggleNavigationBar;
+{
+	[self.navigationController setNavigationBarHidden:!self.navigationController.navigationBarHidden animated:NO];
+}
 
 - (IBAction)showDebug:(id)sender;
 {
@@ -239,5 +262,24 @@
     
     // Release any cached data, images, etc. that aren't in use.
 }
+
+#pragma mark -
+#pragma mark Notifications
+
+- (void)applicationWillResignActive:(UIApplication *)application
+{
+    [self stopAnimation];
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    [self startAnimation];
+}
+
+- (void)applicationWillTerminate:(UIApplication *)application
+{
+    [self stopAnimation];
+}
+
 
 @end

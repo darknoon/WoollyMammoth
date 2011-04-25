@@ -135,9 +135,10 @@
 	
 	//Look for back camera
 	for (AVCaptureDevice *device in devices) {
-		if (device.position == AVCaptureDevicePositionBack) {
-			DLog(@"Picked device: %@", device);
+		if (device.position == (useFrontCamera ? AVCaptureDevicePositionFront : AVCaptureDevicePositionBack)) {
+			DLog(@"Video capture from device: %@", device);
 			cameraDevice = [device retain];
+			break;
 		}
 	}
 	
@@ -160,7 +161,7 @@
 	[dataOutput setVideoSettings:videoSettings];	
 	[dataOutput setAlwaysDiscardsLateVideoFrames:YES];
 	//1.0 / 60.0 seconds
-	[dataOutput setMinFrameDuration:CMTimeMake(1, 30)];
+	[dataOutput setMinFrameDuration:CMTimeMake(1, 60)];
 
 	[dataOutput setSampleBufferDelegate:self queue:dispatch_get_main_queue()];
 	
@@ -296,6 +297,8 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
+	useFrontCamera = [[args objectForKey:@"com.darknoon.WMVideoCapture.useFront"] boolValue];
+	
 	if (!capturing && inputCapture.value) {
 		[self startCapture];
 	}

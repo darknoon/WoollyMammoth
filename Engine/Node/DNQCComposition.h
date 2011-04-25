@@ -18,7 +18,8 @@ extern NSString *DNQCCompositionErrorDomain;
 
 @interface DNQCComposition : NSObject {
     NSDictionary *plistDictionary;
-	WMPatch *rootPatch;
+	NSDictionary *userDictionary;
+	WMPatch *rootPatch; 
 }
 
 - (id)initWithContentsOfFile:(NSString *)inFile error:(NSError **)outError;
@@ -26,5 +27,6 @@ extern NSString *DNQCCompositionErrorDomain;
 @property (nonatomic, readonly) NSString *frameworkVersion;
 
 @property (nonatomic, readonly) WMPatch *rootPatch;
+@property (nonatomic, readonly) NSDictionary *userDictionary;
 
 @end

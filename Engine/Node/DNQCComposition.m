@@ -19,6 +19,7 @@ NSString *DNQCCompositionPlistKeyRootPatch = @"rootPatch";
 @end
 
 @implementation DNQCComposition
+@synthesize userDictionary;
 
 - (id)initWithContentsOfFile:(NSString *)inFile error:(NSError **)outError;
 {
@@ -33,8 +34,6 @@ NSString *DNQCCompositionPlistKeyRootPatch = @"rootPatch";
 		return nil;
 	}
 	
-	
-	
 	return self;
 }
 
@@ -46,12 +45,31 @@ NSString *DNQCCompositionPlistKeyRootPatch = @"rootPatch";
 - (WMPatch *)rootPatch;
 {
 	if (!rootPatch) {
+		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSDictionary *graphRep = [plistDictionary objectForKey:@"rootPatch"];
 		if (graphRep) {
 			rootPatch = [[WMPatch patchWithPlistRepresentation:graphRep] retain];
 		}
+		[pool drain];
 	}
 	return rootPatch;
+}
+
+//None of these will be added to the userDictionary
+- (NSSet *)qcKeys;
+{
+	return [NSSet setWithObjects:@"rootPatch", @"virtualPatches",@"frameworkVersion",@"portAttributes", nil];
+}
+
+- (NSDictionary *)userDictionary;
+{
+	if (!userDictionary) {
+		NSMutableDictionary *userDictionaryMutable = [[NSMutableDictionary alloc] initWithDictionary:plistDictionary];
+		[userDictionaryMutable removeObjectsForKeys:[[self qcKeys] allObjects]];
+		userDictionary = [userDictionaryMutable copy];
+		[userDictionaryMutable release];
+	}
+	return userDictionary;
 }
 
 - (NSString *)frameworkVersion;

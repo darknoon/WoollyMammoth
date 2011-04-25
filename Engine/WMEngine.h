@@ -10,16 +10,19 @@
 
 @class WMPatch;
 @class WMEAGLContext;
+@class DNQCComposition;
 
 @interface WMEngine : NSObject {
 	WMEAGLContext *renderContext;
 	
 	CFAbsoluteTime previousAbsoluteTime;
 	CFAbsoluteTime t;
-	
-	UInt64 maxObjectId;
+		
 	WMPatch *rootObject;
+	NSDictionary *compositionUserData;
 }
+
+- (id)initWithComposition:(DNQCComposition *)inComposition;
 
 @property (nonatomic, retain, readonly) WMEAGLContext *renderContext;
 @property (nonatomic, retain, readonly) WMPatch *rootObject;
