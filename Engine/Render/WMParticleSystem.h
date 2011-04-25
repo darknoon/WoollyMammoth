@@ -8,13 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
-#import "WMRenderable.h"
 #import "Random.h"
+#import "WMPatch.h"
+
+#import "WMRenderCommon.h"
+#import "Vector.h"
 
 struct WMParticle;
 
 struct WMParticleVertex;
+
 @class Texture2D;
+@class WMShader;
 
 @interface WMParticleSystem : WMPatch {
 @public
