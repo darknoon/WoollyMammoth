@@ -98,6 +98,9 @@ typedef struct
 		float w;	/*!< w coordinate */
 	} VECTOR4;
 
+
+#ifdef __cplusplus
+
 /*!***************************************************************************
 ** Forward Declarations for vector and matrix structs
 ****************************************************************************/
@@ -1026,6 +1029,6 @@ friend Vec4 operator*(const VERTTYPE lhs, const Vec4&  rhs)
 	VERTTYPE *ptr() { return (VERTTYPE*)this; }
 };
 
-
+#endif // __cplusplus
 
 #endif // VECTOR_H_
