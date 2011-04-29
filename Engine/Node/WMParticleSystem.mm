@@ -94,7 +94,7 @@ typedef struct {
 	uniform sampler2D texture;\
 	varying lowp vec4 v_color;\
 	void main() {\
-		gl_FragColor = texture2D(texture, gl_PointCoord) * v_color;\
+		gl_FragColor = texture2D(texture, gl_PointCoord) * v_color * v_color.a;\
 	}";
 	
 	NSArray *uniforms = [NSArray arrayWithObjects:@"texture", @"modelViewProjectionMatrix", nil];
@@ -117,7 +117,7 @@ typedef struct {
 {	
 	
 	const float spawnColor[4] = {inputColor.red, inputColor.green, inputColor.blue, inputColor.alpha};
-	const float spawnSizeRange[2] = {inputMinSize.value, inputMinSize.value};
+	const float spawnSizeRange[2] = {inputMinSize.value, inputMaxSize.value};
 	const float spawnVelocityRangeX[2] = {inputVelocityMinX.value, inputVelocityMaxX.value};
 	const float spawnVelocityRangeY[2] = {inputVelocityMinY.value, inputVelocityMaxY.value};
 	const float spawnVelocityRangeZ[2] = {inputVelocityMinZ.value, inputVelocityMaxZ.value};

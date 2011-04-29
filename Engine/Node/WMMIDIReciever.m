@@ -88,7 +88,7 @@
 	const MIDIPacket *packet = &packetList->packet[0];
 	for (int i=0; i<packetList->numPackets; i++) {
 		NSData *dat = [[NSData alloc] initWithBytes:packet->data length:packet->length];
-		NSLog(@"midi packet: %@", dat);
+//		NSLog(@"midi packet: %@", dat);
 		[dat release];
 		//TODO: put in some real MIDI packet parsing here!
 		for (int byte = 0; byte < packet->length; byte++) {
@@ -99,7 +99,7 @@
 				//Read control number
 				char controlNumber = packet->data[byte++];
 				char value = (int)packet->data[byte++];
-				NSLog(@"midi control change number %d = %d (%f)", (int)controlNumber, (int)value, value / 127.f);
+//				NSLog(@"midi control change number %d = %d (%f)", (int)controlNumber, (int)value, value / 127.f);
 				if (controlNumber < 120) { //Numbers above 120 are reserved
 					dispatch_async(mainQueue, ^{
 						WMNumberPort *outputPort = (WMNumberPort *)[self outputPortWithName:[NSString stringWithFormat:@"controller_%d", controlNumber]];
@@ -107,7 +107,7 @@
 					});
 				}
 			} else {
-				NSLog(@"unknown type %c", msgType);
+//				NSLog(@"unknown type %c", msgType);
 				//TODO: correctly handle other data sizes so we can get control data in the same packet
 				break;
 			}

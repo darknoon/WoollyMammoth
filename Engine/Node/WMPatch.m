@@ -281,10 +281,21 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 - (BOOL)setPlistState:(id)inPlist;
 {
 	//set values of input ports!
-	NSDictionary *ivarPortStates = [inPlist objectForKey:@"ivarInputPortStates"];
-	ZAssert(!ivarPortStates || [ivarPortStates isKindOfClass:[NSDictionary class]], @"ivarInputPortStates must be a dictionary!");
+
+	//Combine "customInputPortStates" and "ivarInputPortStates"
+	NSDictionary *ivarInputPortStates = [inPlist objectForKey:@"ivarInputPortStates"];
+	ZAssert(!ivarInputPortStates || [ivarInputPortStates isKindOfClass:[NSDictionary class]], @"ivarInputPortStates must be a dictionary!");
+	NSDictionary *customInputPortStates = [inPlist objectForKey:@"customInputPortStates"];
+	ZAssert(!customInputPortStates || [customInputPortStates isKindOfClass:[NSDictionary class]], @"customInputPortStates must be a dictionary!");
+	NSMutableDictionary *inputPortStates = [NSMutableDictionary dictionary];
+	if (ivarInputPortStates) {
+		[inputPortStates addEntriesFromDictionary:ivarInputPortStates];
+	}
+	if (customInputPortStates) {
+		[inputPortStates addEntriesFromDictionary:customInputPortStates];
+	}
 	for (WMPort *inputPort in [self ivarInputPorts]) {
-		NSDictionary *state = [ivarPortStates objectForKey:inputPort.name];
+		NSDictionary *state = [inputPortStates objectForKey:inputPort.name];
 		id value = [state objectForKey:@"value"];
 		if (value) {
 			BOOL ok = [inputPort setStateValue:value];

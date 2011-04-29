@@ -80,6 +80,8 @@
 		498FCDFA12AB234C00CF48A3 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 498FCDF912AB234C00CF48A3 /* CoreMotion.framework */; };
 		499836FA13678B6000B61706 /* BasicMIDI.qtz in Resources */ = {isa = PBXBuildFile; fileRef = 499836F913678B6000B61706 /* BasicMIDI.qtz */; };
 		499836FD13678B9600B61706 /* WMMIDIReciever.m in Sources */ = {isa = PBXBuildFile; fileRef = 499836FC13678B9600B61706 /* WMMIDIReciever.m */; };
+		49A39CF7136A5A5A00345EC4 /* WMMathOp.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A39CF6136A5A5A00345EC4 /* WMMathOp.m */; };
+		49A39D00136A6D8900345EC4 /* WMSplitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A39CFF136A6D8700345EC4 /* WMSplitter.m */; };
 		49A63AB51365412700A4F6D1 /* WMCompositionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A63AAF1365412700A4F6D1 /* WMCompositionListViewController.m */; };
 		49A63AB61365412700A4F6D1 /* WoollyMammothAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A63AB11365412700A4F6D1 /* WoollyMammothAppDelegate.m */; };
 		49C26A541366A75100DB4962 /* BasicParticles.qtz in Resources */ = {isa = PBXBuildFile; fileRef = 49C26A531366A75100DB4962 /* BasicParticles.qtz */; };
@@ -232,6 +234,10 @@
 		499836F913678B6000B61706 /* BasicMIDI.qtz */ = {isa = PBXFileReference; explicitFileType = text.plist.xml; path = BasicMIDI.qtz; sourceTree = "<group>"; };
 		499836FB13678B9600B61706 /* WMMIDIReciever.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMMIDIReciever.h; sourceTree = "<group>"; };
 		499836FC13678B9600B61706 /* WMMIDIReciever.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMMIDIReciever.m; sourceTree = "<group>"; };
+		49A39CF5136A5A5A00345EC4 /* WMMathOp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMMathOp.h; sourceTree = "<group>"; };
+		49A39CF6136A5A5A00345EC4 /* WMMathOp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMMathOp.m; sourceTree = "<group>"; };
+		49A39CFE136A6D8500345EC4 /* WMSplitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSplitter.h; sourceTree = "<group>"; };
+		49A39CFF136A6D8700345EC4 /* WMSplitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSplitter.m; sourceTree = "<group>"; };
 		49A63AAE1365412700A4F6D1 /* WMCompositionListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMCompositionListViewController.h; sourceTree = "<group>"; };
 		49A63AAF1365412700A4F6D1 /* WMCompositionListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMCompositionListViewController.m; sourceTree = "<group>"; };
 		49A63AB01365412700A4F6D1 /* WoollyMammothAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WoollyMammothAppDelegate.h; sourceTree = "<group>"; };
@@ -450,6 +456,10 @@
 				49C26A591366A87B00DB4962 /* WMParticleSystem.mm */,
 				499836FB13678B9600B61706 /* WMMIDIReciever.h */,
 				499836FC13678B9600B61706 /* WMMIDIReciever.m */,
+				49A39CF5136A5A5A00345EC4 /* WMMathOp.h */,
+				49A39CF6136A5A5A00345EC4 /* WMMathOp.m */,
+				49A39CFE136A6D8500345EC4 /* WMSplitter.h */,
+				49A39CFF136A6D8700345EC4 /* WMSplitter.m */,
 			);
 			path = Node;
 			sourceTree = "<group>";
@@ -743,6 +753,8 @@
 				4970556313679270000110B7 /* PGMidi.mm in Sources */,
 				4970556413679270000110B7 /* PGMidiAllSources.mm in Sources */,
 				4970556513679270000110B7 /* PGMidiFind.mm in Sources */,
+				49A39CF7136A5A5A00345EC4 /* WMMathOp.m in Sources */,
+				49A39D00136A6D8900345EC4 /* WMSplitter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
