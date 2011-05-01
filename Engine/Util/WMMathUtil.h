@@ -15,7 +15,6 @@ extern "C" {
 		return v+1;
 	};
 	
-#if 1
 	//via http://iquilezles.org/www/articles/sfrand/sfrand.htm
 	static inline float randF(int *inOutSeed) {
 		float res;
@@ -23,7 +22,6 @@ extern "C" {
 		*((unsigned int *) &res) = ( ((unsigned int)inOutSeed[0])>>9 ) | 0x40000000;
 		return res - 3.0f;
 	}
-#endif
 
 	static inline float randFR(int *inOutSeed, float min, float max) {
 		return min + (max - min) * randF(inOutSeed);
