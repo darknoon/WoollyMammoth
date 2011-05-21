@@ -33,14 +33,14 @@ enum {
 };
 typedef int DNGLStateDepthMask;
 
-@class DNFramebuffer;
+@class WMFramebuffer;
 
 @interface WMEAGLContext : EAGLContext {
 	//Uses constants from WMShader.h
 	WMRenderableDataMask vertexAttributeEnableState;
 	DNGLStateBlendMask blendState;
 	DNGLStateDepthMask depthState;
-	DNFramebuffer *boundFramebuffer;
+	WMFramebuffer *boundFramebuffer;
 	
 	float modelViewMatrix[16];
 }
@@ -49,7 +49,7 @@ typedef int DNGLStateDepthMask;
 
 @property (nonatomic) DNGLStateBlendMask blendState;
 @property (nonatomic) DNGLStateDepthMask depthState;
-@property (nonatomic, retain) DNFramebuffer *boundFramebuffer;
+@property (nonatomic, retain) WMFramebuffer *boundFramebuffer;
 
 //This is not GL state in GLES 2.0
 //Move to another part of the render engine?

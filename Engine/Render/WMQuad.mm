@@ -13,16 +13,16 @@
 #import "WMNumberPort.h"
 #import "WMImagePort.h"
 #import "WMColorPort.h"
-#import "Texture2D.h"
-#import "DNFramebuffer.h"
+#import "WMTexture2D.h"
+#import "WMFramebuffer.h"
 
 #import "Matrix.h"
 
-typedef struct WMQuadVertex {
+typedef struct {
 	float v[3];
 	float tc[2];
 	//TODO: Align to even power boundary?
-};
+} WMQuadVertex;
 
 @implementation WMQuad
 
@@ -83,20 +83,11 @@ typedef struct WMQuadVertex {
 	
 	glGenBuffers(1, &vbo);
 	glGenBuffers(1, &ebo);
-	
-	void *vertexData;
-	unsigned short *indexData;
-	
-	vertexData = malloc(sizeof(WMQuadVertex) * 4);
-	if (!vertexData) {
-		DLog(@"malloc error");
-		return NO;
-	}
-	
+
 	const float scale = 0.5;
 	
 	//Add vertices
-	WMQuadVertex *vertexDataPtr = (WMQuadVertex *)vertexData;
+	WMQuadVertex vertexDataPtr[4];
 	for (int y=0, i=0; y<2; y++) {
 		for (int x=0; x<2; x++, i++) {
 			
@@ -109,11 +100,7 @@ typedef struct WMQuadVertex {
 		}
 	}
 	
-	indexData = (unsigned short *)malloc(sizeof(indexData[0]) * 2 * 3); 
-	if (!indexData) {
-		DLog(@"malloc error");
-		return NO;
-	}
+	unsigned short indexData[2 * 3]; 
 	//Add triangles
 	indexData[0] = 0;
 	indexData[1] = 1;
@@ -126,7 +113,7 @@ typedef struct WMQuadVertex {
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	
-	glBufferData(GL_ARRAY_BUFFER, sizeof(WMQuadVertex) * 4, vertexData, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(WMQuadVertex) * 4, vertexDataPtr, GL_STATIC_DRAW);
 	GL_CHECK_ERROR;
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof (unsigned short), indexData, GL_STATIC_DRAW);
 	
@@ -134,11 +121,7 @@ typedef struct WMQuadVertex {
 	
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	
-	
-	if (vertexData) free(vertexData);
-	if (indexData) free(indexData);
-	
+		
 	return YES;
 }
 

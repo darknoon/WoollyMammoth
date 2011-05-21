@@ -10,11 +10,11 @@
 
 #import "WMPort.h"
 
-@class Texture2D;
+@class WMTexture2D;
 
 @interface WMImagePort : WMPort {
     
 }
-@property (nonatomic, retain) Texture2D *image;
+@property (nonatomic, retain) WMTexture2D *image;
 
 @end

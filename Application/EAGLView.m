@@ -10,7 +10,7 @@
 
 #import "EAGLView.h"
 
-#import "DNFramebuffer.h"
+#import "WMFramebuffer.h"
 
 void releaseScreenshotData(void *info, const void *data, size_t size) {
 	free((void *)data);
@@ -110,7 +110,7 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
         [EAGLContext setCurrentContext:context];
         
         if (!framebuffer) {
-			framebuffer = [[DNFramebuffer alloc] initWithLayerRenderbufferStorage:(CAEAGLLayer *)self.layer];
+			framebuffer = [[WMFramebuffer alloc] initWithLayerRenderbufferStorage:(CAEAGLLayer *)self.layer];
 		}
         
 		context.boundFramebuffer = framebuffer;		

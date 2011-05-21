@@ -15,7 +15,7 @@
 #import "WMPort.h"
 
 #import "WMEAGLContext.h"
-#import "DNFramebuffer.h"
+#import "WMFramebuffer.h"
 #import "DNQCComposition.h"
 
 
@@ -292,7 +292,7 @@
 		}
 
 		
-		DNFramebuffer *framebufferBefore;
+		WMFramebuffer *framebufferBefore;
 		MATRIX cameraMatrixBefore;
 		if (patch.executionMode == kWMPatchExecutionModeRII) {
 			framebufferBefore = [renderContext.boundFramebuffer retain];

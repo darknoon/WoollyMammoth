@@ -1,34 +1,35 @@
 //
-//  DNFramebuffer.m
+//  WMFramebuffer.m
 //  Particulon
 //
 //  Created by Andrew Pouliot on 4/7/11.
 //  Copyright 2011 Darknoon. All rights reserved.
 //
 
-#import "DNFramebuffer.h"
+#import "WMFramebuffer.h"
 
-#import "Texture2D.h"
+#import "WMTexture2D.h"
 #import "WMEAGLContext.h"
 
-@implementation DNFramebuffer
+@implementation WMFramebuffer
 @synthesize framebufferWidth;
 @synthesize framebufferHeight;
+@synthesize texture;
 
-- (id)initWithTexture:(Texture2D *)inTexture depthBufferDepth:(GLuint)inDepthBufferDepth;
+- (id)initWithTexture:(WMTexture2D *)inTexture depthBufferDepth:(GLuint)inDepthBufferDepth;
 {
 	self = [super init];
 	if (!self) return nil;
 	
 	WMEAGLContext *context = (WMEAGLContext *)[EAGLContext currentContext];
-	ZAssert(context, @"nil current context creating RTT DNFramebuffer");
-	ZAssert([context isKindOfClass:[WMEAGLContext class]], @"Cannot use DNFramebuffer without WMEAGLContext");
+	ZAssert(context, @"nil current context creating RTT WMFramebuffer");
+	ZAssert([context isKindOfClass:[WMEAGLContext class]], @"Cannot use WMFramebuffer without WMEAGLContext");
 	
 	// Create default framebuffer object.
 	glGenFramebuffers(1, &framebufferObject);
 	context.boundFramebuffer = self;
 
-	textureName = inTexture.name;
+	texture = [inTexture retain];
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, inTexture.name, 0);
 	
 	framebufferWidth = inTexture.pixelsWide;
@@ -116,6 +117,7 @@
 - (void)dealloc;
 {
 	[self deleteFramebuffer];
+	[texture release];
 	[super dealloc];
 }
 
@@ -152,7 +154,7 @@
 
 - (NSString *)description;
 {
-	return [NSString stringWithFormat:@"<%@ : %p>{fbo: %u, color:%u depth:%u texture:%d size:{%d, %d}}", NSStringFromClass([self class]), self, framebufferObject, colorRenderbuffer, depthRenderbuffer,  textureName, framebufferWidth, framebufferHeight];
+	return [NSString stringWithFormat:@"<%@ : %p>{fbo: %u, color:%u depth:%u texture:%@ size:{%d, %d}}", NSStringFromClass([self class]), self, framebufferObject, colorRenderbuffer, depthRenderbuffer,  texture, framebufferWidth, framebufferHeight];
 }
 
 @end

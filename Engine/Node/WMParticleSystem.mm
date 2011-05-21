@@ -13,7 +13,7 @@
 #import "Vector.h"
 
 #import "WMMathUtil.h"
-#import "Texture2D.h"
+#import "WMTexture2D.h"
 
 const unsigned int WMParticleSystemMaxParticles = 4096;
 

@@ -17,7 +17,7 @@
 
 #import "WMEAGLContext.h"
 
-@class DNFramebuffer;
+@class WMFramebuffer;
 
 // This class wraps the CAEAGLLayer from CoreAnimation into a convenient UIView subclass.
 // The view content is basically an EAGL surface you render your OpenGL scene into.
@@ -27,7 +27,7 @@
 @private
     WMEAGLContext *context;
     
-	DNFramebuffer *framebuffer;
+	WMFramebuffer *framebuffer;
 	
     // The pixel dimensions of the CAEAGLLayer.
 }

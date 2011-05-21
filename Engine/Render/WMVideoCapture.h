@@ -24,7 +24,7 @@
 
 @class WMImagePort;
 @class WMBooleanPort;
-@class Texture2D;
+@class WMTexture2D;
 
 @interface WMVideoCapture : WMPatch
 #if TARGET_OS_EMBEDDED
@@ -33,7 +33,7 @@
 {
 	BOOL capturing;
 	
-	Texture2D *textures[VideoCapture_NumTextures];
+	WMTexture2D *textures[VideoCapture_NumTextures];
 		
 	//Swap between textures to reduce locking issues
 	NSUInteger currentTexture; //This is the texture that was just written into

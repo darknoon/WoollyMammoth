@@ -8,7 +8,7 @@
 
 #import "WMEAGLContext.h"
 #import "WMShader.h"
-#import "DNFramebuffer.h"
+#import "WMFramebuffer.h"
 
 @implementation WMEAGLContext
 @synthesize blendState;
@@ -133,7 +133,7 @@
 	return [[super description] stringByAppendingFormat:@"{\n%@\n}", stateDesc];
 }
 
-- (void)setBoundFramebuffer:(DNFramebuffer *)inFramebuffer;
+- (void)setBoundFramebuffer:(WMFramebuffer *)inFramebuffer;
 {
 	if (boundFramebuffer != inFramebuffer) {
 		[boundFramebuffer release];

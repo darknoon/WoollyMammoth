@@ -10,7 +10,7 @@
 
 #import "WMColorPort.h"
 #import "WMEAGLContext.h"
-#import "DNFramebuffer.h"
+#import "WMFramebuffer.h"
 
 @implementation WMClear
 

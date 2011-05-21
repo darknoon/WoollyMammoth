@@ -13,7 +13,7 @@
 #import "WMShader.h"
 #import "WMAccelerometer.h"
 #import "WMEngine.h"
-#import "Texture2D.h"
+#import "WMTexture2D.h"
 
 #import "WMEAGLContext.h"
 

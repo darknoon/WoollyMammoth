@@ -1,6 +1,6 @@
 /*
 
-File: Texture2D.m
+File: WMTexture2D.m
 Abstract: Creates OpenGL 2D textures from images or text.
 
 Version: 1.7
@@ -51,10 +51,10 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #import <OpenGL/glext.h>
 #endif
 
-#import "Texture2D.h"
+#import "WMTexture2D.h"
 
-@interface Texture2D ()
-- (void)setData:(const void*)data pixelFormat:(Texture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
+@interface WMTexture2D ()
+- (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
 @end
 
 //CONSTANTS:
@@ -63,11 +63,11 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 //CLASS IMPLEMENTATIONS:
 
-@implementation Texture2D
+@implementation WMTexture2D
 
 @synthesize contentSize=_size, pixelFormat=_format, pixelsWide=_width, pixelsHigh=_height, name=_name, maxS=_maxS, maxT=_maxT;
 
-- (id) initWithData:(const void*)data pixelFormat:(Texture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size
+- (id) initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size
 {
 	if((self = [super init])) {
 		glGenTextures(1, &_name);
@@ -79,17 +79,21 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 	return self;
 }
 
-- (void)setData:(const void*)data pixelFormat:(Texture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
+- (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
 {
+	glBindTexture(GL_TEXTURE_2D, _name);
 	switch(pixelFormat) {
 			
-		case kTexture2DPixelFormat_RGBA8888:
+		case kWMTexture2DPixelFormat_RGBA8888:
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 			break;
-		case kTexture2DPixelFormat_RGB565:
+		case kWMTexture2DPixelFormat_BGRA8888:
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, data);
+			break;
+		case kWMTexture2DPixelFormat_RGB565:
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, data);
 			break;
-		case kTexture2DPixelFormat_A8:
+		case kWMTexture2DPixelFormat_A8:
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, width, height, 0, GL_ALPHA, GL_UNSIGNED_BYTE, data);
 			break;
 		default:
@@ -126,7 +130,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 @end
 
-@implementation Texture2D (File)
+@implementation WMTexture2D (File)
 
 - (id)initWithContentsOfFile:(NSString *)inFilePath;
 {
@@ -147,7 +151,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #if TARGET_OS_IPHONE
 
 
-@implementation Texture2D (Image)
+@implementation WMTexture2D (Image)
 
 - (id) initWithImage:(UIImage *)uiImage
 {
@@ -162,7 +166,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 	CGImageAlphaInfo		info;
 	CGAffineTransform		transform;
 	CGSize					imageSize;
-	Texture2DPixelFormat    pixelFormat;
+	WMTexture2DPixelFormat    pixelFormat;
 	CGImageRef				image;
 	UIImageOrientation		orientation;
 	BOOL					sizeToFit = NO;
@@ -182,11 +186,11 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 	hasAlpha = ((info == kCGImageAlphaPremultipliedLast) || (info == kCGImageAlphaPremultipliedFirst) || (info == kCGImageAlphaLast) || (info == kCGImageAlphaFirst) ? YES : NO);
 	if(CGImageGetColorSpace(image)) {
 		if(hasAlpha)
-			pixelFormat = kTexture2DPixelFormat_RGBA8888;
+			pixelFormat = kWMTexture2DPixelFormat_RGBA8888;
 		else
-			pixelFormat = kTexture2DPixelFormat_RGB565;
+			pixelFormat = kWMTexture2DPixelFormat_RGB565;
 	} else  //NOTE: No colorspace means a mask image
-		pixelFormat = kTexture2DPixelFormat_A8;
+		pixelFormat = kWMTexture2DPixelFormat_A8;
 	
 	
 	imageSize = CGSizeMake(CGImageGetWidth(image), CGImageGetHeight(image));
@@ -216,20 +220,20 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 	}
 	
 	switch(pixelFormat) {		
-		case kTexture2DPixelFormat_RGBA8888:
+		case kWMTexture2DPixelFormat_RGBA8888:
 			colorSpace = CGColorSpaceCreateDeviceRGB();
 			data = malloc(height * width * 4);
 			context = CGBitmapContextCreate(data, width, height, 8, 4 * width, colorSpace, kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big);
 			CGColorSpaceRelease(colorSpace);
 			break;
-		case kTexture2DPixelFormat_RGB565:
+		case kWMTexture2DPixelFormat_RGB565:
 			colorSpace = CGColorSpaceCreateDeviceRGB();
 			data = malloc(height * width * 4);
 			context = CGBitmapContextCreate(data, width, height, 8, 4 * width, colorSpace, kCGImageAlphaNoneSkipLast | kCGBitmapByteOrder32Big);
 			CGColorSpaceRelease(colorSpace);
 			break;
 			
-		case kTexture2DPixelFormat_A8:
+		case kWMTexture2DPixelFormat_A8:
 			data = malloc(height * width);
 			context = CGBitmapContextCreate(data, width, height, 8, width, NULL, kCGImageAlphaOnly);
 			break;				
@@ -245,7 +249,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 		CGContextConcatCTM(context, transform);
 	CGContextDrawImage(context, CGRectMake(0, 0, CGImageGetWidth(image), CGImageGetHeight(image)), image);
 
-	if(pixelFormat == kTexture2DPixelFormat_RGB565) {
+	if(pixelFormat == kWMTexture2DPixelFormat_RGB565) {
 		//Convert "RRRRRRRRRGGGGGGGGBBBBBBBBAAAAAAAA" to "RRRRRGGGGGGBBBBB"
 		unsigned int*			inPixel32;
 		unsigned short*			outPixel16;
@@ -270,7 +274,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 @end
 
 
-@implementation Texture2D (Text)
+@implementation WMTexture2D (Text)
 
 - (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions alignment:(UITextAlignment)alignment fontName:(NSString*)name fontSize:(CGFloat)size
 {
@@ -312,7 +316,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 		[string drawInRect:CGRectMake(0, 0, dimensions.width, dimensions.height) withFont:font lineBreakMode:UILineBreakModeWordWrap alignment:alignment];
 	UIGraphicsPopContext();
 	
-	self = [self initWithData:data pixelFormat:kTexture2DPixelFormat_A8 pixelsWide:width pixelsHigh:height contentSize:dimensions];
+	self = [self initWithData:data pixelFormat:kWMTexture2DPixelFormat_A8 pixelsWide:width pixelsHigh:height contentSize:dimensions];
 	
 	CGContextRelease(context);
 	free(data);

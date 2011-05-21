@@ -1,6 +1,6 @@
 /*
 
-File: Texture2D.h
+File: WMTexture2D.h
 Abstract: Creates OpenGL 2D textures from images or text.
 
 Version: 1.7
@@ -51,32 +51,35 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 //CONSTANTS:
 
 typedef enum {
-	kTexture2DPixelFormat_Automatic = 0,
-	kTexture2DPixelFormat_RGBA8888,
-	kTexture2DPixelFormat_RGB565,
-	kTexture2DPixelFormat_A8,
-} Texture2DPixelFormat;
+	kWMTexture2DPixelFormat_Automatic = 0,
+	kWMTexture2DPixelFormat_RGBA8888,
+	kWMTexture2DPixelFormat_BGRA8888,
+	kWMTexture2DPixelFormat_RGB565,
+	kWMTexture2DPixelFormat_A8,
+} WMTexture2DPixelFormat;
 
 //CLASS INTERFACES:
 
 /*
 This class allows to easily create OpenGL 2D textures from images, text or raw data.
-The created Texture2D object will always have power-of-two dimensions.
-Depending on how you create the Texture2D object, the actual image area of the texture might be smaller than the texture dimensions i.e. "contentSize" != (pixelsWide, pixelsHigh) and (maxS, maxT) != (1.0, 1.0).
+The created WMTexture2D object will always have power-of-two dimensions.
+Depending on how you create the WMTexture2D object, the actual image area of the texture might be smaller than the texture dimensions i.e. "contentSize" != (pixelsWide, pixelsHigh) and (maxS, maxT) != (1.0, 1.0).
 Be aware that the content of the generated textures will be upside-down!
 */
-@interface Texture2D : NSObject
+@interface WMTexture2D : NSObject
 {
 @protected
 	GLuint						_name;
 	CGSize						_size;
 	NSUInteger					_width,
 								_height;
-	Texture2DPixelFormat		_format;
+	WMTexture2DPixelFormat		_format;
 	GLfloat						_maxS,
 								_maxT;
 }
-- (id) initWithData:(const void*)data pixelFormat:(Texture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
+- (id) initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
+
+- (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
 
 //TODO: does not fill in maxS, maxT, pixelsWide, pixelsHigh!
 //You MUST take care not to call glDeleteTextures outside of this texture's dealloc method when using this initializer
@@ -85,7 +88,7 @@ Be aware that the content of the generated textures will be upside-down!
 
 - (void)discardData;
 
-@property(readonly) Texture2DPixelFormat pixelFormat;
+@property(readonly) WMTexture2DPixelFormat pixelFormat;
 @property(readonly) NSUInteger pixelsWide;
 @property(readonly) NSUInteger pixelsHigh;
 
@@ -96,25 +99,25 @@ Be aware that the content of the generated textures will be upside-down!
 @property(readonly) GLfloat maxT;
 @end
 
-@interface Texture2D (File)
+@interface WMTexture2D (File)
 - (id)initWithContentsOfFile:(NSString *)inFilePath;
 @end
 
 
 #if TARGET_OS_IPHONE
 /*
-Extensions to make it easy to create a Texture2D object from an image file.
+Extensions to make it easy to create a WMTexture2D object from an image file.
 Note that RGBA type textures will have their alpha premultiplied - use the blending mode (GL_ONE, GL_ONE_MINUS_SRC_ALPHA).
 */
-@interface Texture2D (Image)
+@interface WMTexture2D (Image)
 - (id) initWithImage:(UIImage *)uiImage;
 @end
 
 /*
-Extensions to make it easy to create a Texture2D object from a string of text.
+Extensions to make it easy to create a WMTexture2D object from a string of text.
 Note that the generated textures are of type A8 - use the blending mode (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA).
 */
-@interface Texture2D (Text)
+@interface WMTexture2D (Text)
 - (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions alignment:(UITextAlignment)alignment fontName:(NSString*)name fontSize:(CGFloat)size;
 @end
 

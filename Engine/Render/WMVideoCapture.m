@@ -11,7 +11,7 @@
 #import <CoreVideo/CoreVideo.h>
 
 #import "WMEAGLContext.h"
-#import "Texture2D.h"
+#import "WMTexture2D.h"
 
 #import "WMBooleanPort.h"
 #import "WMImagePort.h"
@@ -82,7 +82,7 @@
 	//glTexParameterf(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_FALSE);
 
 	for (int i=0; i<VideoCapture_NumTextures; i++) {
-		textures[i] = [[Texture2D alloc] initWithData:buffer pixelFormat:kTexture2DPixelFormat_A8 pixelsWide:0 pixelsHigh:0 contentSize:CGSizeZero];
+		textures[i] = [[WMTexture2D alloc] initWithData:buffer pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:0 pixelsHigh:0 contentSize:CGSizeZero];
 		glBindTexture(GL_TEXTURE_2D, [textures[i] name]);
 		
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -91,9 +91,11 @@
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 #if USE_BGRA
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, buffer);
+		[textures[i] setData:buffer pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height}];
+//		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, buffer);
 #else
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA8_OES, GL_UNSIGNED_BYTE, buffer);
+		[textures[i] setData:buffer pixelFormat:kWMTexture2DPixelFormat_RGBA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height}];
+//		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA8_OES, GL_UNSIGNED_BYTE, buffer);
 #endif
 		GL_CHECK_ERROR;
 	}
@@ -204,7 +206,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 	textureWasRead = NO;
 
 //Get the texture ready
-	glBindTexture(GL_TEXTURE_2D, [textures[currentTexture] name]);
 
 	//Get buffer info
 	CVPixelBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
@@ -219,7 +220,8 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 	//Copy buffer contents into vram
 	GL_CHECK_ERROR;
 	//glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, baseAddress);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, baseAddress);
+	[textures[currentTexture] setData:baseAddress pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height}];
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, baseAddress);
 	GL_CHECK_ERROR;
 	
 	//Now release the lock
@@ -281,7 +283,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 
 
-- (Texture2D *)getVideoTexture;
+- (WMTexture2D *)getVideoTexture;
 {
 	int textureToRead = (currentTexture - 1 + VideoCapture_NumTextures) % VideoCapture_NumTextures;
 	textureWasRead = YES;

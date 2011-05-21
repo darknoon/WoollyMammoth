@@ -8,8 +8,8 @@
 
 #import "WMRenderInImage.h"
 
-#import "DNFramebuffer.h"
-#import "Texture2D.h"
+#import "WMFramebuffer.h"
+#import "WMTexture2D.h"
 #import "WMEAGLContext.h"
 
 #import "Matrix.h"
@@ -104,12 +104,12 @@
 		[texture release];
 		[framebuffer release];
 		
-		texture = [[Texture2D alloc] initWithData:NULL
-									  pixelFormat:kTexture2DPixelFormat_RGBA8888
+		texture = [[WMTexture2D alloc] initWithData:NULL
+									  pixelFormat:kWMTexture2DPixelFormat_RGBA8888
 									   pixelsWide:renderWidth
 									   pixelsHigh:renderHeight
 									  contentSize:(CGSize){renderWidth, renderHeight}];
-		framebuffer = [[DNFramebuffer alloc] initWithTexture:texture depthBufferDepth:useDepthBuffer ? GL_DEPTH_COMPONENT16 : 0];
+		framebuffer = [[WMFramebuffer alloc] initWithTexture:texture depthBufferDepth:useDepthBuffer ? GL_DEPTH_COMPONENT16 : 0];
 		
 		if (!texture || !framebuffer) {
 			return NO;

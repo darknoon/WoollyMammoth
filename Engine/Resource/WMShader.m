@@ -168,11 +168,21 @@ NSString *const WMShaderAttributeTypeTexCoord1 = @"vec2";
 
 - (BOOL)compileShaderSource:(NSString *)inSourceString toShader:(GLuint *)shader type:(GLenum)type;
 {
+	NSMutableString *defsString = [NSMutableString stringWithCapacity:inSourceString.length + 100];
+
+	NSDictionary *defs = [NSDictionary dictionaryWithObjectsAndKeys:
+						  @"1", (type == GL_VERTEX_SHADER) ? @"VERTEX_SHADER" : @"FRAGMENT_SHADER",
+						  @"1", @"TARGET_OS_IPHONE", nil];
+	[defs enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+		[defsString appendFormat:@"#define %@ %@\n", key, obj];
+	}];
+	
+	
     GLint status;
-    const GLchar *source = [inSourceString UTF8String];
-        
+    const GLchar *glstrs[] = {[defsString UTF8String], [inSourceString UTF8String]};
+	
     *shader = glCreateShader(type);
-    glShaderSource(*shader, 1, &source, NULL);
+    glShaderSource(*shader, 2, glstrs, NULL);
     glCompileShader(*shader);
     
 #if defined(DEBUG)

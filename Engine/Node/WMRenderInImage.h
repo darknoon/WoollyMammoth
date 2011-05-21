@@ -10,8 +10,8 @@
 
 #import "WMPatch.h"
 
-@class DNFramebuffer;
-@class Texture2D;
+@class WMFramebuffer;
+@class WMTexture2D;
 
 @interface WMRenderInImage : WMPatch {
 	WMBooleanPort *inputRender;
@@ -22,8 +22,8 @@
 	WMImagePort *outputImage;
 
 	BOOL useDepthBuffer;
-    DNFramebuffer *framebuffer;
-	Texture2D *texture;
+    WMFramebuffer *framebuffer;
+	WMTexture2D *texture;
 }
 
 @end

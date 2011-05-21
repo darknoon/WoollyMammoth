@@ -8,7 +8,7 @@
 
 #import "WMImageLoader.h"
 
-#import "Texture2D.h"
+#import "WMTexture2D.h"
 #import "WMImagePort.h"
 
 @implementation WMImageLoader
@@ -36,7 +36,7 @@
 		if (!uiImage) {
 			NSLog(@"Couldn't load image data!");
 		}
-		outputImage.image = [[Texture2D alloc] initWithImage:uiImage];
+		outputImage.image = [[WMTexture2D alloc] initWithImage:uiImage];
 	}
 	
 	return self;

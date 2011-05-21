@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "Texture2D.h"
+#import "WMTexture2D.h"
 
-@interface WMTextureCubeMap : Texture2D {
+@interface WMTextureCubeMap : WMTexture2D {
 
 }
 

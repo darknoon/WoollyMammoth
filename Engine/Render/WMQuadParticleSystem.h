@@ -18,7 +18,7 @@ struct WMQuadParticle;
 
 struct WMQuadParticleVertex;
 
-@class Texture2D;
+@class WMTexture2D;
 @class WMShader;
 
 @interface WMQuadParticleSystem : WMPatch {
@@ -53,7 +53,7 @@ struct WMQuadParticleVertex;
 	BOOL zSortParticles;
 	
 	WMShader *shader;
-	Texture2D *inputTexture;
+	WMTexture2D *inputTexture;
 }
 
 @end

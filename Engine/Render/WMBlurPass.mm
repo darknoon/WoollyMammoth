@@ -14,8 +14,8 @@
 
 #import "Vector.h"
 
-#import "Texture2D.h"
-#import "DNFramebuffer.h"
+#import "WMTexture2D.h"
+#import "WMFramebuffer.h"
 
 typedef struct {
 	Vec3 p;
@@ -32,8 +32,8 @@ typedef struct {
 
 	const CGSize textureSize = {320, 480};
 	for (int i=0; i<WMBlurPass_NBlurTextures; i++) {
-		blurTextures[i] = [[Texture2D alloc] initWithData:NULL
-											  pixelFormat:kTexture2DPixelFormat_RGBA8888
+		blurTextures[i] = [[WMTexture2D alloc] initWithData:NULL
+											  pixelFormat:kWMTexture2DPixelFormat_RGBA8888
 											   pixelsWide:textureSize.width
 											   pixelsHigh:textureSize.height
 											  contentSize:textureSize];
@@ -41,7 +41,7 @@ typedef struct {
 	
 	outputTexture = blurTextures[1];
 	
-	framebuffer = [[DNFramebuffer alloc] initWithTexture:outputTexture depthBufferDepth:0];
+	framebuffer = [[WMFramebuffer alloc] initWithTexture:outputTexture depthBufferDepth:0];
 	
 
 	return self;
@@ -55,7 +55,7 @@ typedef struct {
 }
 
 
-- (Texture2D *)doBlurPassFromInputTexture:(GLuint)inputTexture textureWidth:(int)inTextureWidth textureHeight:(int)inTextureHeight withGLState:(WMEAGLContext *)inGLState;
+- (WMTexture2D *)doBlurPassFromInputTexture:(GLuint)inputTexture textureWidth:(int)inTextureWidth textureHeight:(int)inTextureHeight withGLState:(WMEAGLContext *)inGLState;
 {
 	if (!blurShader) {
 		NSArray *uniformNames = [NSArray arrayWithObjects:@"texture", @"invStepWidth1", @"invStepWidth2", nil];

@@ -8,7 +8,7 @@
 
 #import "WMImagePort.h"
 
-#import "Texture2D.h"
+#import "WMTexture2D.h"
 
 @implementation WMImagePort
 @synthesize image;
