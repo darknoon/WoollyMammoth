@@ -147,6 +147,16 @@
 	return success;
 }
 
+- (void)setColorAttachmentWithTexture:(WMTexture2D *)inTexture;
+{
+	[texture autorelease];
+	texture = [inTexture retain];
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, inTexture.name, 0);
+	
+	framebufferWidth = inTexture.pixelsWide;
+	framebufferHeight = inTexture.pixelsHigh;
+}
+
 - (BOOL)hasDepthbuffer;
 {
 	return depthRenderbuffer != 0;

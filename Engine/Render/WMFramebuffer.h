@@ -38,6 +38,9 @@
 //When used for display
 - (BOOL)presentRenderbuffer;
 
+//Sets the color attachment mipmap level 0 to be backed by the texture
+- (void)setColorAttachmentWithTexture:(WMTexture2D *)inTexture;
+
 @property (nonatomic, readonly) WMTexture2D *texture;
 
 @property (nonatomic, readonly) GLint framebufferWidth;

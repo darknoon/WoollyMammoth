@@ -11,6 +11,7 @@ attribute vec2 texCoord0;
 #endif
 
 uniform vec2 offset;
+uniform vec2 tcScale;
 
 void main()
 {
@@ -25,9 +26,9 @@ void main()
 
 	// Calculate texture offsets and pass through	
 	
-	vTexCoord0 = texCoord0 - offset;
-	vTexCoord1 = texCoord0;
-	vTexCoord2 = texCoord0 + offset;    
+	vTexCoord0 = (texCoord0 - offset) * tcScale;
+	vTexCoord1 =  texCoord0           * tcScale;
+	vTexCoord2 = (texCoord0 + offset) * tcScale;
 }
 
 #endif

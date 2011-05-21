@@ -30,6 +30,11 @@ typedef struct {
 	[pool drain];
 }
 
+- (BOOL)setPlistState:(id)inPlist;
+{
+	return [super setPlistState:inPlist];
+}
+
 - (void)loadQuadData;
 {	
 	glGenBuffers(1, &vbo);
@@ -85,7 +90,7 @@ typedef struct {
 	
 	shader = [[WMShader alloc] initWithVertexShader:combindedShader
 										pixelShader:combindedShader
-									   uniformNames:[NSArray arrayWithObjects:@"offset", @"sTexture", nil]];
+									   uniformNames:[NSArray arrayWithObjects:@"offset", @"sTexture", @"tcScale", nil]];
 	
 	[self loadQuadData];
 	
@@ -98,16 +103,34 @@ typedef struct {
 	if (ebo) glDeleteBuffers(1, &ebo);
 	[shader release];
 	shader = nil;
-	[framebuffer0 release];
-	framebuffer0 = nil;
-	[framebuffer1 release];
-	framebuffer1 = nil;
+	[fbo release];
+	fbo = nil;
+	[texture0 release];
+	texture0 = nil;
+	[texture1 release];
+	texture1 = nil;
 }
 
-- (void)renderBlurPassFromTexture:(WMTexture2D *)inTexture toFramebuffer:(WMFramebuffer *)outFramebuffer amountX:(float)inAmountX amountY:(float)inAmountY inContext:(WMEAGLContext *)inContext;
+- (void)renderBlurPassFromTexture:(WMTexture2D *)inSourceTexture toTexture:(WMTexture2D *)inDestinationTexture atSize:(CGSize)inSize amountX:(float)inAmountX amountY:(float)inAmountY inContext:(WMEAGLContext *)inContext;
 {
 	//Set dest fbo
-	inContext.boundFramebuffer = outFramebuffer;
+	inContext.boundFramebuffer = fbo;
+	
+	//Resize out output texture to the correct size (power of two, to contain the size)
+	NSUInteger destTextureWidth = nextPowerOf2(inSize.width);
+	NSUInteger destTextureHeight = nextPowerOf2(inSize.height);
+//	if (inDestinationTexture.pixelsWide != destTextureWidth || inDestinationTexture.pixelsHigh != destTextureHeight)
+	[inDestinationTexture setData:NULL pixelFormat:inDestinationTexture.pixelFormat pixelsWide:destTextureWidth pixelsHigh:destTextureHeight contentSize:inSize];
+	
+	//Make sure framebuffer has this texture
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+		NSLog(@"Failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
+	}
+	[fbo setColorAttachmentWithTexture:inDestinationTexture];
+
+	//Render blur quad into dest
+	glViewport(0, 0, inSize.width, inSize.height);
+	
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
@@ -139,12 +162,17 @@ typedef struct {
 	//Set uniform values
 	int offsetUniform = [shader uniformLocationForName:@"offset"];
 	if (offsetUniform != -1) {
-		glUniform2f(offsetUniform, inAmountX, inAmountY);
+		glUniform2f(offsetUniform, inAmountX / inSourceTexture.contentSize.width, inAmountY / inSourceTexture.contentSize.height);
 	}
-		
+
+	int tcScaleUniform = [shader uniformLocationForName:@"tcScale"];
+	if (tcScaleUniform != -1) {
+		glUniform2f(tcScaleUniform, inSourceTexture.maxS, inSourceTexture.maxT);
+	}
+
 	int tex = [shader uniformLocationForName:@"sTexture"];
 	if (tex != -1) {
-		glBindTexture(GL_TEXTURE_2D, inTexture.name);
+		glBindTexture(GL_TEXTURE_2D, inSourceTexture.name);
 		glUniform1i(tex, 0);
 	}
 	
@@ -174,11 +202,8 @@ typedef struct {
 	glDrawElements(GL_TRIANGLES, 2 * 3, GL_UNSIGNED_SHORT, NULL);
 }
 
-- (void)renderBlurFromTexture:(WMTexture2D *)inTexture toFramebuffer:(WMFramebuffer *)outFramebuffer withIntermediateFramebuffer:(WMFramebuffer *)tempFramebuffer inContext:(WMEAGLContext *)inContext;
-{	
-	glViewport(0, 0, outFramebuffer.framebufferWidth, outFramebuffer.framebufferHeight);
-
-	
+- (void)renderBlurFromTexture:(WMTexture2D *)inSourceTexture toTexture:(WMTexture2D *)inDestinationTexture atSize:(CGSize)inOutputSize withIntermediateTexture:(WMTexture2D *)inTempTexture inContext:(WMEAGLContext *)inContext;
+{		
 	//Bind VBO, EBO
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
@@ -190,15 +215,37 @@ typedef struct {
 	//TODO: use correct offsets here
 	//TODO: downscale texture to increase blur effectiveness
 	//TODO: use blur amount in calculation of passes
-	CGSize amt = {1.5f / inTexture.pixelsWide, 1.5f / inTexture.pixelsHigh};
+	CGFloat amt = MIN(inputRadius.value, 5.0f);
 	
+	float amtNorm = amt / 5.0f;
 	//Do 1 pass from the in texture to the temp buffer to the out buffer
-	[self renderBlurPassFromTexture:inTexture               toFramebuffer:tempFramebuffer amountX:0 amountY:amt.height inContext:inContext];
-	[self renderBlurPassFromTexture:tempFramebuffer.texture toFramebuffer:outFramebuffer amountX:amt.width amountY:0.0f inContext:inContext];
-	//Do n passes from the out buffer to the temp buffer to the out buffer again
-	for (int i=0; i<10; i++) {
-		[self renderBlurPassFromTexture:outFramebuffer.texture  toFramebuffer:tempFramebuffer amountX:0.0f amountY:amt.height inContext:inContext];
-		[self renderBlurPassFromTexture:tempFramebuffer.texture toFramebuffer:outFramebuffer amountX:amt.width amountY:0.0f inContext:inContext];
+	
+	const float NONE = 0.0f;
+	
+	if (amt > 0.1f) {
+		
+		const float scales[] = {0.2f, 0.3f, 0.5f, 0.8f};
+		const float amts[]   = {1.0f, 1.5f, 1.5f, 2.0f};
+		
+		//Pass 0...3
+		for (int i=0; i<4; i++) {
+			WMTexture2D *src = i==0 ? inSourceTexture : inDestinationTexture;
+			WMTexture2D *dst = inDestinationTexture;
+			WMTexture2D *tmp = inTempTexture;
+			
+			float scale = MIN(scales[i] / amtNorm, 1.0f);
+			CGSize size = {floorf(scale * inSourceTexture.contentSize.width), floorf(scale * inSourceTexture.contentSize.height)};
+			[self renderBlurPassFromTexture:src toTexture:tmp atSize:size amountX:amts[i] * amt amountY:NONE          inContext:inContext];
+			[self renderBlurPassFromTexture:tmp toTexture:dst atSize:size amountX:NONE          amountY:amts[i] * amt inContext:inContext];
+		}
+		//Pass 4 => Write to output	
+		[self renderBlurPassFromTexture:inDestinationTexture toTexture:inTempTexture atSize:inOutputSize amountX:1.0f * amt amountY:NONE inContext:inContext];
+		[self renderBlurPassFromTexture:inTempTexture toTexture:inDestinationTexture atSize:inOutputSize amountX:NONE amountY:1.0f * amt inContext:inContext];
+		
+	} else {
+		//Amount too small, do 1 pass
+		[self renderBlurPassFromTexture:inSourceTexture toTexture:inTempTexture        atSize:inOutputSize amountX:1.0f * amt amountY:NONE inContext:inContext];
+		[self renderBlurPassFromTexture:inTempTexture   toTexture:inDestinationTexture atSize:inOutputSize amountX:NONE amountY:1.0f * amt inContext:inContext];
 	}
 	
 	GL_CHECK_ERROR;
@@ -245,8 +292,16 @@ typedef struct {
 		return YES;
 	}
 	
-	[self assureFramebuffer:&framebuffer0 isOfWidth:renderWidth height:renderHeight];
-	[self assureFramebuffer:&framebuffer1 isOfWidth:renderWidth height:renderHeight];
+	//These will have their storage resized...
+	if (!texture0) {
+		texture0 = [[WMTexture2D alloc] initWithData:NULL pixelFormat:kWMTexture2DPixelFormat_RGBA8888 pixelsWide:64 pixelsHigh:64 contentSize:CGSizeZero];
+	}
+	if (!texture1) {
+		texture1 = [[WMTexture2D alloc] initWithData:NULL pixelFormat:kWMTexture2DPixelFormat_RGBA8888 pixelsWide:64 pixelsHigh:64 contentSize:CGSizeZero];
+	}
+	if (!fbo) {
+		fbo = [[WMFramebuffer alloc] initWithTexture:texture0 depthBufferDepth:0];
+	}
 	
 	//Bind this fbo for rendering
 	WMFramebuffer *prevFramebuffer = context.boundFramebuffer;
@@ -254,13 +309,16 @@ typedef struct {
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 //	NSLog(@"Render blur %@ => %@", inputImage, texture);
-	[self renderBlurFromTexture:inputImage.image toFramebuffer:framebuffer1 withIntermediateFramebuffer:framebuffer0 inContext:context];
+	[self renderBlurFromTexture:inputImage.image toTexture:texture1 atSize:inputImage.image.contentSize withIntermediateTexture:texture0 inContext:context];
 	
 	//Restore previous settings
 	context.boundFramebuffer = prevFramebuffer;
 	glViewport(0, 0, context.boundFramebuffer.framebufferWidth, context.boundFramebuffer.framebufferHeight);
 
-	outputImage.image = framebuffer1.texture;
+	outputImage.image = texture1;
+	
+	//Discard temp texture content
+	[texture0 discardData];
 
 	return YES;
 	

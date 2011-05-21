@@ -16,17 +16,20 @@
 
 @class WMShader;
 @class WMFramebuffer;
+@class WMTexture2D;
 
 @interface WMImageFilter : WMPatch {
     WMShader *shader;
 	
-	WMFramebuffer *framebuffer0;
-	WMFramebuffer *framebuffer1;
+	WMFramebuffer *fbo;
+	WMTexture2D *texture0;
+	WMTexture2D *texture1;
 	
 	//For quad
 	GLuint vbo;
 	GLuint ebo;
 	
+	WMNumberPort *inputRadius;
 	WMImagePort *inputImage;
 	WMImagePort *outputImage;
 }
