@@ -20,11 +20,6 @@
 		4917E4D613653F7100AA4D55 /* WMDebugViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917E35013653F7100AA4D55 /* WMDebugViewController.m */; };
 		4917E4D713653F7100AA4D55 /* WMDebugViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4917E35113653F7100AA4D55 /* WMDebugViewController.xib */; };
 		4917E4D813653F7100AA4D55 /* WMViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4917E35313653F7100AA4D55 /* WMViewController.mm */; };
-		4917E4DD13653F7100AA4D55 /* DebugRotate.lua in Resources */ = {isa = PBXBuildFile; fileRef = 4917E35A13653F7100AA4D55 /* DebugRotate.lua */; };
-		4917E4DE13653F7100AA4D55 /* GeodesicSphere02.pod in Resources */ = {isa = PBXBuildFile; fileRef = 4917E35B13653F7100AA4D55 /* GeodesicSphere02.pod */; };
-		4917E4DF13653F7100AA4D55 /* manifest.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4917E35C13653F7100AA4D55 /* manifest.plist */; };
-		4917E4E013653F7100AA4D55 /* scene.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4917E35D13653F7100AA4D55 /* scene.plist */; };
-		4917E4E113653F7100AA4D55 /* TestTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 4917E35E13653F7100AA4D55 /* TestTexture.png */; };
 		4917E4E213653F7100AA4D55 /* Asset Pipeline.graffle in Resources */ = {isa = PBXBuildFile; fileRef = 4917E36013653F7100AA4D55 /* Asset Pipeline.graffle */; };
 		4917E4E313653F7100AA4D55 /* GL State Management.graffle in Resources */ = {isa = PBXBuildFile; fileRef = 4917E36113653F7100AA4D55 /* GL State Management.graffle */; };
 		4917E4E413653F7100AA4D55 /* Render Architecture.graffle in Resources */ = {isa = PBXBuildFile; fileRef = 4917E36213653F7100AA4D55 /* Render Architecture.graffle */; };
@@ -122,15 +117,6 @@
 		4917E35113653F7100AA4D55 /* WMDebugViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMDebugViewController.xib; sourceTree = "<group>"; };
 		4917E35213653F7100AA4D55 /* WMViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMViewController.h; sourceTree = "<group>"; };
 		4917E35313653F7100AA4D55 /* WMViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WMViewController.mm; sourceTree = "<group>"; };
-		4917E35613653F7100AA4D55 /* DebugPositionOnly.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DebugPositionOnly.fsh; sourceTree = "<group>"; };
-		4917E35713653F7100AA4D55 /* DebugPositionOnly.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DebugPositionOnly.vsh; sourceTree = "<group>"; };
-		4917E35813653F7100AA4D55 /* DebugPositionTexture.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DebugPositionTexture.fsh; sourceTree = "<group>"; };
-		4917E35913653F7100AA4D55 /* DebugPositionTexture.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DebugPositionTexture.vsh; sourceTree = "<group>"; };
-		4917E35A13653F7100AA4D55 /* DebugRotate.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DebugRotate.lua; sourceTree = "<group>"; };
-		4917E35B13653F7100AA4D55 /* GeodesicSphere02.pod */ = {isa = PBXFileReference; lastKnownFileType = file; path = GeodesicSphere02.pod; sourceTree = "<group>"; };
-		4917E35C13653F7100AA4D55 /* manifest.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = manifest.plist; sourceTree = "<group>"; };
-		4917E35D13653F7100AA4D55 /* scene.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = scene.plist; sourceTree = "<group>"; };
-		4917E35E13653F7100AA4D55 /* TestTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TestTexture.png; sourceTree = "<group>"; };
 		4917E36013653F7100AA4D55 /* Asset Pipeline.graffle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Asset Pipeline.graffle"; sourceTree = "<group>"; };
 		4917E36113653F7100AA4D55 /* GL State Management.graffle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "GL State Management.graffle"; sourceTree = "<group>"; };
 		4917E36213653F7100AA4D55 /* Render Architecture.graffle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Render Architecture.graffle"; sourceTree = "<group>"; };
@@ -371,26 +357,9 @@
 		4917E35413653F7100AA4D55 /* Bundles */ = {
 			isa = PBXGroup;
 			children = (
-				4917E35513653F7100AA4D55 /* Test.wm */,
 			);
 			name = Bundles;
 			path = ../Bundles;
-			sourceTree = "<group>";
-		};
-		4917E35513653F7100AA4D55 /* Test.wm */ = {
-			isa = PBXGroup;
-			children = (
-				4917E35613653F7100AA4D55 /* DebugPositionOnly.fsh */,
-				4917E35713653F7100AA4D55 /* DebugPositionOnly.vsh */,
-				4917E35813653F7100AA4D55 /* DebugPositionTexture.fsh */,
-				4917E35913653F7100AA4D55 /* DebugPositionTexture.vsh */,
-				4917E35A13653F7100AA4D55 /* DebugRotate.lua */,
-				4917E35B13653F7100AA4D55 /* GeodesicSphere02.pod */,
-				4917E35C13653F7100AA4D55 /* manifest.plist */,
-				4917E35D13653F7100AA4D55 /* scene.plist */,
-				4917E35E13653F7100AA4D55 /* TestTexture.png */,
-			);
-			path = Test.wm;
 			sourceTree = "<group>";
 		};
 		4917E35F13653F7100AA4D55 /* Documentation */ = {
@@ -696,11 +665,6 @@
 				49C95B2013650E2E009D5E42 /* FrontCamera.qtz in Resources */,
 				49C2CA4E13653575008C1B74 /* AdvancedBlurShader.qtz in Resources */,
 				4917E4D713653F7100AA4D55 /* WMDebugViewController.xib in Resources */,
-				4917E4DD13653F7100AA4D55 /* DebugRotate.lua in Resources */,
-				4917E4DE13653F7100AA4D55 /* GeodesicSphere02.pod in Resources */,
-				4917E4DF13653F7100AA4D55 /* manifest.plist in Resources */,
-				4917E4E013653F7100AA4D55 /* scene.plist in Resources */,
-				4917E4E113653F7100AA4D55 /* TestTexture.png in Resources */,
 				4917E4E213653F7100AA4D55 /* Asset Pipeline.graffle in Resources */,
 				4917E4E313653F7100AA4D55 /* GL State Management.graffle in Resources */,
 				4917E4E413653F7100AA4D55 /* Render Architecture.graffle in Resources */,
