@@ -19,7 +19,8 @@ extern NSString *DNQCCompositionErrorDomain;
 @interface DNQCComposition : NSObject {
     NSDictionary *plistDictionary;
 	NSDictionary *userDictionary;
-	WMPatch *rootPatch; 
+	NSString *compositionBasePath;
+	WMPatch *rootPatch;
 }
 
 - (id)initWithContentsOfFile:(NSString *)inFile error:(NSError **)outError;

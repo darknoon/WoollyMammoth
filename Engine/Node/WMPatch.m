@@ -16,6 +16,8 @@
 #import <objc/objc.h>
 #import <objc/runtime.h>
 
+NSString *WMCompositionPathKey = @"WMCompositionPathKey";
+
 NSString *WMPatchClassPlistName = @"class";
 NSString *WMPatchKeyPlistName = @"key";
 NSString *WMPatchStatePlistName = @"state";

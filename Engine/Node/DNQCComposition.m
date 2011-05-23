@@ -33,6 +33,7 @@ NSString *DNQCCompositionPlistKeyRootPatch = @"rootPatch";
 		[self release];
 		return nil;
 	}
+	compositionBasePath = [[inFile stringByDeletingLastPathComponent] retain];
 	
 	return self;
 }
@@ -66,6 +67,7 @@ NSString *DNQCCompositionPlistKeyRootPatch = @"rootPatch";
 	if (!userDictionary) {
 		NSMutableDictionary *userDictionaryMutable = [[NSMutableDictionary alloc] initWithDictionary:plistDictionary];
 		[userDictionaryMutable removeObjectsForKeys:[[self qcKeys] allObjects]];
+		[userDictionaryMutable setObject:compositionBasePath forKey:WMCompositionPathKey];
 		userDictionary = [userDictionaryMutable copy];
 		[userDictionaryMutable release];
 	}
