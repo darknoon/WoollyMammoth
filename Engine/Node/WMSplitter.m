@@ -42,8 +42,7 @@
 		outputPort = [[[WMColorPort alloc] init] autorelease];
 	} else {
 		NSLog(@"Attempt to create unsupported splitter of type: %@", portClassName);
-		[self release];
-		return nil;
+		return NO;
 	}
 	inputPort.name = @"input";
 	outputPort.name = @"output";
