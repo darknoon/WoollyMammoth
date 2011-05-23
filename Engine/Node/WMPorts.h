@@ -12,3 +12,4 @@
 #import "WMColorPort.h"
 #import "WMImagePort.h"
 #import "WMBooleanPort.h"
+#import "WMStringPort.h"
