@@ -26,20 +26,57 @@
 @synthesize animating;
 @synthesize debugViewController;
 
+- (void)sharedInit;
+{
+    animationFrameInterval = 1;
+    
+	//TODO: WM requires > 3.1, so remove the display link conditional code
+	
+    // Use of CADisplayLink requires iOS version 3.1 or greater.
+	// The NSTimer object is used as fallback when it isn't available.
+    NSString *reqSysVer = @"3.1";
+    NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
+    if ([currSysVer compare:reqSysVer options:NSNumericSearch] != NSOrderedAscending)
+        displayLinkSupported = TRUE;
+		
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
+}
+
+- (id)initWithCoder:(NSCoder *)coder {
+    self = [super initWithCoder:coder];
+	if (!self) return nil;
+	
+	[self sharedInit];
+	
+    return self;
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil;
+{
+	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+	if (!self) return nil;
+	
+	//[self sharedInit];
+	
+	return self;
+}
+
 - (void)reloadGameFromURL:(NSURL *)inRemoteURL;
 {
 	if (engine) {
 		[engine release];
 		engine = nil;
 	}
-		
+	
 	NSString *filePath = [inRemoteURL path];
 	NSError *error = nil;
 	DNQCComposition *composition = [[DNQCComposition alloc] initWithContentsOfFile:filePath  error:&error];
 	
 	GL_CHECK_ERROR;
 	engine = [[WMEngine alloc] initWithComposition:composition];
-
+	
 	//TODO: start lazily
 	GL_CHECK_ERROR;
 	[engine start];
@@ -50,30 +87,6 @@
     [(EAGLView *)self.view setFramebuffer];
 	
 }
-
-- (void)sharedInit;
-{
-    animationFrameInterval = 1;
-    
-    // Use of CADisplayLink requires iOS version 3.1 or greater.
-	// The NSTimer object is used as fallback when it isn't available.
-    NSString *reqSysVer = @"3.1";
-    NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
-    if ([currSysVer compare:reqSysVer options:NSNumericSearch] != NSOrderedAscending)
-        displayLinkSupported = TRUE;
-	
-	// TODO: grr, Xcode bug won't let this compile. WTF??
-	// UISwipeGestureRecognizer *recog = [[UISwipeGestureRecognizer alloc] init];
-	// recog.target = self;
-	// recog.selector = @selector(debugSwipeAction:);
-	// recog.direction = (UISwipeGestureRecognizerDirection) (UISwipeGestureRecognizerDirectionUp | UISwipeGestureRecognizerDirectionDown);
-	// [self.view addGestureRecognizer:recog];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
-}
-
 
 - (void)loadView;
 {

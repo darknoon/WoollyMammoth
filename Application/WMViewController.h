@@ -55,4 +55,7 @@
 - (void)startAnimation;
 - (void)stopAnimation;
 
+//For subclassers, do not call directly (the display link or timer will handle this)
+- (void)drawFrame;
+
 @end
