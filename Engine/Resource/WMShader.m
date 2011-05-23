@@ -324,8 +324,8 @@ NSString *const WMShaderAttributeTypeTexCoord1 = @"vec2";
 	for (NSString *uniformName in uniformNames) {
 		int uniformLocation = glGetUniformLocation(program, [uniformName UTF8String]);
 		[uniformLocations setObject:[NSNumber numberWithInt:uniformLocation] forKey:uniformName];
-	}	
-		
+	}
+	
 	// Release vertex and fragment shaders.
 	if (vertShader)
 		glDeleteShader(vertShader);

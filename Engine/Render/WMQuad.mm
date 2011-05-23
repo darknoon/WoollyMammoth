@@ -131,11 +131,6 @@ typedef struct {
 	if (ebo) glDeleteBuffers(1, &ebo);
 }
 
-- (unsigned int)dataMask;
-{
-	return WMRenderableDataAvailablePosition | WMRenderableDataAvailableTexCoord0 | WMRenderableDataAvailableIndexBuffer;
-}
-
 - (BOOL)execute:(WMEAGLContext *)inContext time:(CFTimeInterval)time arguments:(NSDictionary *)args;
 {
 	unsigned int attributeMask = WMRenderableDataAvailablePosition | WMRenderableDataAvailableTexCoord0 | WMRenderableDataAvailableIndexBuffer;
@@ -171,7 +166,7 @@ typedef struct {
 	}
 	
 	int textureUniformLocation = [shader uniformLocationForName:@"texture"];
-	if (textureUniformLocation) {
+	if (textureUniformLocation != -1) {
 		if (inputImage.image) {
 			glBindTexture(GL_TEXTURE_2D, [inputImage.image name]);
 		} else {
