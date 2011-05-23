@@ -1,0 +1,3 @@
+[submodule "Externals/midimonitor"]
+	path = Externals/midimonitor
+	url = git://gitorious.org/midimonitor/midimonitor.git
