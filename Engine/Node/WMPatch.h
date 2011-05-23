@@ -53,6 +53,7 @@ typedef enum {
 
 //Call +registerToRepresentClassNames: in your subclass's +load if you want to be the decoder for a given class name
 + (void)registerToRepresentClassNames:(NSSet *)inClassNames;
++ (void)registerToRepresentPluginClassNames:(NSSet *)inClassNames;
 
 - (BOOL)setPlistState:(id)inPlist;
 - (id)plistState;
