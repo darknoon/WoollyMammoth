@@ -77,9 +77,7 @@ typedef struct {
 	gl_FragColor = color * texture2D(texture, v_textureCoordinate);\
 	}";
 	
-	NSArray *uniforms = [NSArray arrayWithObjects:@"texture", @"modelViewProjectionMatrix", @"color", nil];
-	
-	shader = [[WMShader alloc] initWithVertexShader:vertexShader pixelShader:fragmentShader uniformNames:uniforms];
+	shader = [[WMShader alloc] initWithVertexShader:vertexShader pixelShader:fragmentShader];
 	
 	glGenBuffers(1, &vbo);
 	glGenBuffers(1, &ebo);

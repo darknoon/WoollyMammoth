@@ -43,7 +43,7 @@ extern NSString *const WMShaderAttributeNameTexCoord1; // "texCoord1"
 }
 
 //TODO: add uniform parsing
-- (id)initWithVertexShader:(NSString *)inVertexShader pixelShader:(NSString *)inPixelShader uniformNames:(NSArray *)inUniforms;
+- (id)initWithVertexShader:(NSString *)inVertexShader pixelShader:(NSString *)inPixelShader;
 
 + (NSString *)nameForShaderAttribute:(NSUInteger)shaderAttribute;
 

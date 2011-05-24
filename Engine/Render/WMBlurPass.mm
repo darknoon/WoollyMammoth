@@ -64,12 +64,7 @@ typedef struct {
 		NSString *blurFrag = [[NSBundle mainBundle] pathForResource:@"WMGaussianBlur" ofType:@"fsh"];
 		NSString *blurVert = [[NSBundle mainBundle] pathForResource:@"WMGaussianBlur" ofType:@"vsh"];
 		
-		blurShader = [[WMShader alloc] initWithVertexShader:blurVert pixelShader:blurFrag uniformNames:[NSArray arrayWithObjects:@"invStepWidth1", @"invStepWidth2", nil]];
-		NSError *err = nil;
-		[blurShader loadWithBundle:[NSBundle mainBundle] error:&err];
-		if (err) {
-			NSLog(@"load blur shader error: %@", err);
-		}
+		blurShader = [[WMShader alloc] initWithVertexShader:blurVert pixelShader:blurFrag];
 	}
 			
 	[inGLState setBlendState:0];
