@@ -75,6 +75,7 @@
 		4970556413679270000110B7 /* PGMidiAllSources.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4970556013679270000110B7 /* PGMidiAllSources.mm */; };
 		4970556513679270000110B7 /* PGMidiFind.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4970556213679270000110B7 /* PGMidiFind.mm */; };
 		4970556713679310000110B7 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4970556613679310000110B7 /* CoreMIDI.framework */; };
+		497362E3138B8BC800D00FBF /* WMStringPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 497362E2138B8BC800D00FBF /* WMStringPort.m */; };
 		498F3015135E0AC70092308D /* BasicBillboard.qtz in Resources */ = {isa = PBXBuildFile; fileRef = 498F3014135E0AC70092308D /* BasicBillboard.qtz */; };
 		498FCDFA12AB234C00CF48A3 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 498FCDF912AB234C00CF48A3 /* CoreMotion.framework */; };
 		499836FA13678B6000B61706 /* BasicMIDI.qtz in Resources */ = {isa = PBXBuildFile; fileRef = 499836F913678B6000B61706 /* BasicMIDI.qtz */; };
@@ -224,6 +225,8 @@
 		4970556113679270000110B7 /* PGMidiFind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGMidiFind.h; sourceTree = "<group>"; };
 		4970556213679270000110B7 /* PGMidiFind.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PGMidiFind.mm; sourceTree = "<group>"; };
 		4970556613679310000110B7 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
+		497362E1138B8BC800D00FBF /* WMStringPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMStringPort.h; sourceTree = "<group>"; };
+		497362E2138B8BC800D00FBF /* WMStringPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMStringPort.m; sourceTree = "<group>"; };
 		498F3014135E0AC70092308D /* BasicBillboard.qtz */ = {isa = PBXFileReference; explicitFileType = text.plist.info; path = BasicBillboard.qtz; sourceTree = "<group>"; };
 		498FCDF912AB234C00CF48A3 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		499836F913678B6000B61706 /* BasicMIDI.qtz */ = {isa = PBXFileReference; explicitFileType = text.plist.xml; path = BasicMIDI.qtz; sourceTree = "<group>"; };
@@ -441,6 +444,8 @@
 				4928DA7313864967004A5F55 /* WMImageFilter.h */,
 				4928DA7413864967004A5F55 /* WMImageFilter.m */,
 				4928DA7813864BA6004A5F55 /* WMGaussianBlur.glsl */,
+				497362E1138B8BC800D00FBF /* WMStringPort.h */,
+				497362E2138B8BC800D00FBF /* WMStringPort.m */,
 			);
 			path = Node;
 			sourceTree = "<group>";
@@ -737,6 +742,7 @@
 				49A39CF7136A5A5A00345EC4 /* WMMathOp.m in Sources */,
 				49A39D00136A6D8900345EC4 /* WMSplitter.m in Sources */,
 				4928DA7513864967004A5F55 /* WMImageFilter.m in Sources */,
+				497362E3138B8BC800D00FBF /* WMStringPort.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
