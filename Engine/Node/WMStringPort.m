@@ -39,7 +39,7 @@
 - (NSString *)description;
 {
 	NSString *origStr = self.originalPort ? [NSString stringWithFormat:@" orig:%@", self.originalPort.name] : @"";
-	return [NSString stringWithFormat:@"<%@ : %p>{name: %@, state:%@%@}", NSStringFromClass([self class]), self, self.name, [self stateValue], origStr];
+	return [NSString stringWithFormat:@"<%@ : %p>{key: %@, state:%@%@}", NSStringFromClass([self class]), self, self.key, [self stateValue], origStr];
 }
 
 @end

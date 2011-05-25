@@ -255,7 +255,7 @@
 - (WMConnection *)connectionToInputPort:(WMPort *)inPort ofNode:(WMPatch *)inPatch inParent:(WMPatch *)inParent;
 {
 	for (WMConnection *connection in inParent.connections) {
-		if ([connection.destinationNode isEqualToString:inPatch.key] && [connection.destinationPort isEqualToString:inPort.name]) {
+		if ([connection.destinationNode isEqualToString:inPatch.key] && [connection.destinationPort isEqualToString:inPort.key]) {
 			//Find the source node
 			//TODO: optimize the order of this
 			return connection;
@@ -287,7 +287,7 @@
 			WMConnection *connection = [self connectionToInputPort:inputPort ofNode:patch inParent:inPatch];
 			if (!connection) continue;
 			WMPatch *sourcePatch = [inPatch patchWithKey:connection.sourceNode];
-			WMPort *sourcePort = [sourcePatch outputPortWithName:connection.sourcePort];
+			WMPort *sourcePort = [sourcePatch outputPortWithKey:connection.sourcePort];
 			[inputPort takeValueFromPort:sourcePort];
 		}
 

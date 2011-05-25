@@ -24,7 +24,7 @@
 	int numberOfOperations = [[inPlist objectForKey:@"numberOfOperations"] intValue];
 	for (int i=0; i<numberOfOperations; i++) {
 		WMNumberPort *operandPort = [[[WMNumberPort alloc] init] autorelease];
-		operandPort.name = [NSString stringWithFormat:@"operand_%d", i + 1];
+		operandPort.key = [NSString stringWithFormat:@"operand_%d", i + 1];
 		[self addInputPort:operandPort];
 	}
 	
@@ -46,7 +46,7 @@
 
 - (WMNumberPort *)operandPortAtIndex:(int)i;
 {
-	return (WMNumberPort *)[self inputPortWithName:[NSString stringWithFormat:@"operand_%d", i + 1]];
+	return (WMNumberPort *)[self inputPortWithKey:[NSString stringWithFormat:@"operand_%d", i + 1]];
 }
 
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;

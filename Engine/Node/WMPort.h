@@ -20,6 +20,7 @@
 //I'm not sure yet why that's necessary, so I'm omitting passing values and dealing with ports directly instead of values
 - (BOOL)takeValueFromPort:(WMPort *)inPort;
 
+@property (nonatomic, copy) NSString *key;
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, assign) WMPort *originalPort;
 

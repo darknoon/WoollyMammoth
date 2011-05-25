@@ -115,7 +115,7 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 	return [[patchClass alloc] initWithPlistRepresentation:inPlist];
 }
 
-- (WMPort *)portForIvar:(Ivar)inIvar named:(NSString *)inName;
+- (WMPort *)portForIvar:(Ivar)inIvar key:(NSString *)inKey;
 {
 	const char* type = ivar_getTypeEncoding(inIvar);
 	const int len = strlen(type);
@@ -143,7 +143,7 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 	[className release];
 	
 	WMPort *port = [[[portClass alloc] init] autorelease];
-	port.name = inName;
+	port.key = inKey;
 	
 	return port;
 }
@@ -159,7 +159,7 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 			
 			if ([ivarName hasPrefix:@"_"])
 				ivarName = [ivarName substringFromIndex:1];
-			WMPort *inputPort = [self portForIvar:ivars[i] named:ivarName];
+			WMPort *inputPort = [self portForIvar:ivars[i] key:ivarName];
 			if (inputPort) {
 				object_setIvar(self, ivars[i], inputPort);
 				[inputPort retain];
@@ -172,7 +172,7 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 			
 			if ([ivarName hasPrefix:@"_"])
 				ivarName = [ivarName substringFromIndex:1];
-			WMPort *outputPort = [self portForIvar:ivars[i] named:ivarName];
+			WMPort *outputPort = [self portForIvar:ivars[i] key:ivarName];
 			if (outputPort) {
 				object_setIvar(self, ivars[i], outputPort);
 				[outputPort retain];
@@ -234,11 +234,11 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 		WMPatch *child = [self patchWithKey:[portDefinition objectForKey:@"node"]];
 		//Find the port on the child and use the same port class
 		
-		WMPort *childPort = [child inputPortWithName:[portDefinition objectForKey:@"port"]];
+		WMPort *childPort = [child inputPortWithKey:[portDefinition objectForKey:@"port"]];
 		if (childPort) {
 			Class portClass = [childPort class];
 			WMPort *port = [[[portClass alloc] init] autorelease];
-			port.name = portKey;
+			port.key = portKey;
 			port.originalPort = childPort;
 			[self addInputPort:port];
 			[port setStateValue:[[portDefinition objectForKey:@"state"] objectForKey:@"value"]];
@@ -255,11 +255,11 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 		WMPatch *child = [self patchWithKey:[portDefinition objectForKey:@"node"]];
 		//Find the port on the child and use the same port class
 		
-		WMPort *childPort = [child outputPortWithName:[portDefinition objectForKey:@"port"]];
+		WMPort *childPort = [child outputPortWithKey:[portDefinition objectForKey:@"port"]];
 		if (childPort) {
 			Class portClass = [childPort class];
 			WMPort *port = [[portClass alloc] init];
-			port.name = portKey;
+			port.key = portKey;
 			port.originalPort = childPort;
 			[self addOutputPort:port];
 			[port setStateValue:[[portDefinition objectForKey:@"state"] objectForKey:@"value"]];
@@ -331,7 +331,7 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 		[inputPortStates addEntriesFromDictionary:customInputPortStates];
 	}
 	for (WMPort *inputPort in [self ivarInputPorts]) {
-		NSDictionary *state = [inputPortStates objectForKey:inputPort.name];
+		NSDictionary *state = [inputPortStates objectForKey:inputPort.key];
 		id value = [state objectForKey:@"value"];
 		if (value) {
 			BOOL ok = [inputPort setStateValue:value];
@@ -384,20 +384,20 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 	return [childrenByKey objectForKey:inKey];
 }
 
-- (WMPort *)inputPortWithName:(NSString *)inName;
+- (WMPort *)inputPortWithKey:(NSString *)inName;
 {
 	for (WMPort *port in [self ivarInputPorts]) {
-		if ([port.name isEqualToString:inName]) {
+		if ([port.key isEqualToString:inName]) {
 			return port;
 		}
 	}
 	return nil;
 }
 
-- (WMPort *)outputPortWithName:(NSString *)inName;
+- (WMPort *)outputPortWithKey:(NSString *)inName;
 {
 	for (WMPort *port in [self ivarOutputPorts]) {
-		if ([port.name isEqualToString:inName]) {
+		if ([port.key isEqualToString:inName]) {
 			return port;
 		}
 	}

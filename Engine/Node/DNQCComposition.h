@@ -27,6 +27,7 @@ extern NSString *DNQCCompositionErrorDomain;
 
 @property (nonatomic, readonly) NSString *frameworkVersion;
 
+//Read out these
 @property (nonatomic, readonly) WMPatch *rootPatch;
 @property (nonatomic, readonly) NSDictionary *userDictionary;
 

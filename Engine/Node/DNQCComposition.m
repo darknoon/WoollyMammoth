@@ -50,6 +50,16 @@ NSString *DNQCCompositionPlistKeyRootPatch = @"rootPatch";
 		NSDictionary *graphRep = [plistDictionary objectForKey:@"rootPatch"];
 		if (graphRep) {
 			rootPatch = [[WMPatch patchWithPlistRepresentation:graphRep] retain];
+			//Set input params
+			NSDictionary *inputParameters = [plistDictionary objectForKey:@"inputParameters"];
+			[inputParameters enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL *stop) {
+				WMPort *inputPort = [rootPatch inputPortWithKey:key];
+				BOOL success = [inputPort setStateValue:value];
+				if (!inputPort || !success) {
+					NSLog(@"Couldn't set value of input port %@", key);
+				}
+			}];
+
 		}
 		[pool drain];
 	}

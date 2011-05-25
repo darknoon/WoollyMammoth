@@ -54,8 +54,8 @@
 
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
-	WMPort *input = [self inputPortWithName:@"input"];
-	WMPort *output = [self outputPortWithName:@"output"];
+	WMPort *input = [self inputPortWithKey:@"input"];
+	WMPort *output = [self outputPortWithKey:@"output"];
 	return [output takeValueFromPort:input];
 }
 

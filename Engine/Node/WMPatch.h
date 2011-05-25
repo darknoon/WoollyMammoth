@@ -75,8 +75,8 @@ typedef enum {
 //For now just find in children (not sub-children)
 - (WMPatch *)patchWithKey:(NSString *)inKey;
 
-- (WMPort *)inputPortWithName:(NSString *)inName;
-- (WMPort *)outputPortWithName:(NSString *)inName;
+- (WMPort *)inputPortWithKey:(NSString *)inKey;
+- (WMPort *)outputPortWithKey:(NSString *)inKey;
 
 //Render
 - (BOOL)setup:(WMEAGLContext *)context;
