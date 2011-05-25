@@ -89,8 +89,7 @@ typedef struct {
 	}
 	
 	shader = [[WMShader alloc] initWithVertexShader:combindedShader
-										pixelShader:combindedShader
-									   uniformNames:[NSArray arrayWithObjects:@"offset", @"sTexture", @"tcScale", nil]];
+										pixelShader:combindedShader];
 	
 	[self loadQuadData];
 	

@@ -41,14 +41,12 @@ NSString *const WMShaderAttributeTypeTexCoord1 = @"vec2";
 @synthesize program;
 
 
-- (id)initWithVertexShader:(NSString *)inVertexShader pixelShader:(NSString *)inPixelShader uniformNames:(NSArray *)inUniforms;
+- (id)initWithVertexShader:(NSString *)inVertexShader pixelShader:(NSString *)inPixelShader;
 {
 	self = [super init];
 	if (self == nil) return self; 
 	
 	uniformLocations = [[NSMutableDictionary alloc] init];
-
-	self.uniformNames = inUniforms;
 	
 	if ([EAGLContext currentContext].API == kEAGLRenderingAPIOpenGLES2) {		
 				
@@ -207,6 +205,28 @@ NSString *const WMShaderAttributeTypeTexCoord1 = @"vec2";
     return TRUE;
 }
 
+- (NSString *)nameOfShaderType:(GLenum)inType;
+{
+	switch (inType) {
+		case GL_FLOAT:
+			return @"float";
+		case GL_FLOAT_VEC2:
+			return @"vec2";
+		case GL_FLOAT_VEC3:
+			return @"vec3";
+		case GL_FLOAT_VEC4:
+			return @"vec4";
+		case GL_FLOAT_MAT2:
+			return @"mat2";
+		case GL_FLOAT_MAT3:
+			return @"mat3";
+		case GL_FLOAT_MAT4:
+			return @"mat4";
+		default:
+			return @"<??>";
+	}
+}
+
 - (BOOL)linkProgram:(GLuint)prog
 {
     GLint status;
@@ -321,10 +341,22 @@ NSString *const WMShaderAttributeTypeTexCoord1 = @"vec2";
 	
 	//Get uniform locations
 	//TODO: switch to glGetActiveUniform to simplify manifest.plist
-	for (NSString *uniformName in uniformNames) {
-		int uniformLocation = glGetUniformLocation(program, [uniformName UTF8String]);
+	GLint uniformCount = 0;
+	glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &uniformCount);
+	NSMutableArray *uniformNamesMutable = [NSMutableArray arrayWithCapacity:uniformCount];
+	for (int i=0; i<uniformCount; i++) {
+		char nameBuf[1024];
+		GLsizei length = 0;
+		GLint uniformSize = 0;
+		GLenum uniformType = 0;
+		glGetActiveUniform(program, i, sizeof(nameBuf), &length, &uniformSize, &uniformType, nameBuf);
+		NSString *uniformName = [NSString stringWithCString:nameBuf encoding:NSASCIIStringEncoding];
+		[uniformNamesMutable addObject:uniformName];
+		
+		int uniformLocation = glGetUniformLocation(program, nameBuf);
 		[uniformLocations setObject:[NSNumber numberWithInt:uniformLocation] forKey:uniformName];
 	}
+	self.uniformNames = uniformNamesMutable;
 	
 	// Release vertex and fragment shaders.
 	if (vertShader)
