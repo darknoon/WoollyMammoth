@@ -151,37 +151,44 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 - (void)createIvarPorts;
 {
 	unsigned int count = 0;
-	Ivar *ivars = class_copyIvarList([self class], &count);
-	for (int i=0; i<count; i++) {
-		NSString *ivarName = [[[NSString alloc] initWithCString:ivar_getName(ivars[i]) encoding:NSUTF8StringEncoding] autorelease];
-		if (([ivarName hasPrefix:@"input"] || [ivarName hasPrefix:@"_input"]) && ![ivarName isEqualToString:@"inputPorts"]) {
-//			NSLog(@"Create ivar input: %@", ivarName);
-			
-			if ([ivarName hasPrefix:@"_"])
-				ivarName = [ivarName substringFromIndex:1];
-			WMPort *inputPort = [self portForIvar:ivars[i] key:ivarName];
-			if (inputPort) {
-				object_setIvar(self, ivars[i], inputPort);
-				[inputPort retain];
-				[self addInputPort:inputPort];
+
+	for (Class class = [self class]; class; class = [class superclass]) {
+		Ivar *ivars = class_copyIvarList(class, &count);
+		for (int i=0; i<count; i++) {
+			NSString *ivarName = [[[NSString alloc] initWithCString:ivar_getName(ivars[i]) encoding:NSUTF8StringEncoding] autorelease];
+			if (([ivarName hasPrefix:@"input"] || [ivarName hasPrefix:@"_input"]) && ![ivarName isEqualToString:@"inputPorts"]) {
+				
+				if ([ivarName isEqualToString:@"_inputEnable"]) {
+					ivarName = @"_enable";
+				} else if ([ivarName hasPrefix:@"_"]) {
+					ivarName = [ivarName substringFromIndex:1];
+				}
+				NSLog(@"Create ivar input: %@", ivarName);
+				WMPort *inputPort = [self portForIvar:ivars[i] key:ivarName];
+				if (inputPort) {
+					object_setIvar(self, ivars[i], inputPort);
+					[inputPort retain];
+					[self addInputPort:inputPort];
+				}
+				
+			} else if (([ivarName hasPrefix:@"output"] || [ivarName hasPrefix:@"_output"]) && ![ivarName isEqualToString:@"outputPorts"]) {
+				
+				if ([ivarName hasPrefix:@"_"]) {
+					ivarName = [ivarName substringFromIndex:1];
+				}
+				//			NSLog(@"Create ivar output: %@", ivarName);
+				WMPort *outputPort = [self portForIvar:ivars[i] key:ivarName];
+				if (outputPort) {
+					object_setIvar(self, ivars[i], outputPort);
+					[outputPort retain];
+					[self addOutputPort:outputPort];
+				}
+				
 			}
-
-		} else if (([ivarName hasPrefix:@"output"] || [ivarName hasPrefix:@"_output"]) && ![ivarName isEqualToString:@"outputPorts"]) {
-
-//			NSLog(@"Create ivar output: %@", ivarName);
-			
-			if ([ivarName hasPrefix:@"_"])
-				ivarName = [ivarName substringFromIndex:1];
-			WMPort *outputPort = [self portForIvar:ivars[i] key:ivarName];
-			if (outputPort) {
-				object_setIvar(self, ivars[i], outputPort);
-				[outputPort retain];
-				[self addOutputPort:outputPort];
-			}
-
 		}
+		free(ivars);
 	}
-	free(ivars);
+	
 }
 
 - (WMPatchExecutionMode)executionMode;
