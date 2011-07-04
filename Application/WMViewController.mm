@@ -58,7 +58,7 @@
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (!self) return nil;
 	
-	//[self sharedInit];
+	[self sharedInit];
 	
 	return self;
 }
@@ -92,6 +92,7 @@
 {
 	CGRect defaultFrame = [[UIScreen mainScreen] applicationFrame];
 	EAGLView *view = [[[EAGLView alloc] initWithFrame:defaultFrame] autorelease];
+	view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	self.view = view;
 }
 
@@ -147,7 +148,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation; // Override to allow rotation. Default returns YES only for UIDeviceOrientationPortrait
 {
-	return toInterfaceOrientation == UIInterfaceOrientationPortrait;
+	return YES;
 }
 
 - (NSInteger)animationFrameInterval
