@@ -42,7 +42,6 @@ extern NSString *const WMShaderAttributeNameTexCoord1; // "texCoord1"
 	NSMutableDictionary *uniformLocations;
 }
 
-//TODO: add uniform parsing
 - (id)initWithVertexShader:(NSString *)inVertexShader pixelShader:(NSString *)inPixelShader;
 
 + (NSString *)nameForShaderAttribute:(NSUInteger)shaderAttribute;
@@ -59,5 +58,7 @@ extern NSString *const WMShaderAttributeNameTexCoord1; // "texCoord1"
 //Use this to draw
 @property (nonatomic, readonly) GLuint program;
 - (int)uniformLocationForName:(NSString *)inName;
+
+- (int)attributeLocationForName:(NSString *)inName;
 
 @end

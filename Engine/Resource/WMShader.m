@@ -24,12 +24,12 @@ NSString *const WMShaderAttributeNameNormal = @"normal";
 NSString *const WMShaderAttributeNameTexCoord0 = @"texCoord0";
 NSString *const WMShaderAttributeNameTexCoord1 = @"texCoord1";
 
-NSString *const WMShaderAttributeTypePosition = @"vec4";
-NSString *const WMShaderAttributeTypePosition2d = @"vec2";
-NSString *const WMShaderAttributeTypeColor = @"vec4";
-NSString *const WMShaderAttributeTypeNormal = @"vec3";
-NSString *const WMShaderAttributeTypeTexCoord0 = @"vec2";
-NSString *const WMShaderAttributeTypeTexCoord1 = @"vec2";
+static GLenum const WMShaderAttributeTypePosition = GL_FLOAT_VEC4;
+static GLenum const WMShaderAttributeTypePosition2d = GL_FLOAT_VEC2;
+static GLenum const WMShaderAttributeTypeColor = GL_FLOAT_VEC4;
+static GLenum const WMShaderAttributeTypeNormal = GL_FLOAT_VEC3;
+static GLenum const WMShaderAttributeTypeTexCoord0 = GL_FLOAT_VEC2;
+static GLenum const WMShaderAttributeTypeTexCoord1 = GL_FLOAT_VEC2;
 
 
 @implementation WMShader
@@ -100,9 +100,9 @@ NSString *const WMShaderAttributeTypeTexCoord1 = @"vec2";
 	return WMShaderAttributeNames[shaderAttribute];
 }
 
-+ (NSString *)typeForShaderAttribute:(NSUInteger)shaderAttribute;
++ (GLenum)typeForShaderAttribute:(NSUInteger)shaderAttribute;
 {
-	NSString *const WMShaderAttributeTypes[] = {
+	GLenum const WMShaderAttributeTypes[] = {
 		WMShaderAttributeTypePosition, 
 		WMShaderAttributeTypePosition2d, 
 		WMShaderAttributeTypeNormal, 
@@ -112,6 +112,27 @@ NSString *const WMShaderAttributeTypeTexCoord1 = @"vec2";
 	return WMShaderAttributeTypes[shaderAttribute];
 }
 
++ (NSString *)nameOfShaderType:(GLenum)inType;
+{
+	switch (inType) {
+		case GL_FLOAT:
+			return @"float";
+		case GL_FLOAT_VEC2:
+			return @"vec2";
+		case GL_FLOAT_VEC3:
+			return @"vec3";
+		case GL_FLOAT_VEC4:
+			return @"vec4";
+		case GL_FLOAT_MAT2:
+			return @"mat2";
+		case GL_FLOAT_MAT3:
+			return @"mat3";
+		case GL_FLOAT_MAT4:
+			return @"mat4";
+		default:
+			return @"<??>";
+	}
+}
 
 - (void)setVertexShader:(NSString *)inVertexShader;
 {
@@ -133,7 +154,7 @@ NSString *const WMShaderAttributeTypeTexCoord1 = @"vec2";
 - (BOOL)shaderText:(NSString *)inShaderText hasAttribute:(WMShaderAttribute)attribute;
 {
 	NSString *attributeName = [WMShader nameForShaderAttribute:attribute];
-	NSString *type = [WMShader typeForShaderAttribute:attribute];
+	NSString *type = [WMShader nameOfShaderType:[WMShader typeForShaderAttribute:attribute]];
 	ZAssert(attributeName, @"Could not find name for attribute!");
 	ZAssert(type, @"Could not find type for attribute!");
 	//attribute vec4 position;
@@ -205,27 +226,6 @@ NSString *const WMShaderAttributeTypeTexCoord1 = @"vec2";
     return TRUE;
 }
 
-- (NSString *)nameOfShaderType:(GLenum)inType;
-{
-	switch (inType) {
-		case GL_FLOAT:
-			return @"float";
-		case GL_FLOAT_VEC2:
-			return @"vec2";
-		case GL_FLOAT_VEC3:
-			return @"vec3";
-		case GL_FLOAT_VEC4:
-			return @"vec4";
-		case GL_FLOAT_MAT2:
-			return @"mat2";
-		case GL_FLOAT_MAT3:
-			return @"mat3";
-		case GL_FLOAT_MAT4:
-			return @"mat4";
-		default:
-			return @"<??>";
-	}
-}
 
 - (BOOL)linkProgram:(GLuint)prog
 {
@@ -339,6 +339,26 @@ NSString *const WMShaderAttributeTypeTexCoord1 = @"vec2";
 		return NO;
 	}
 	
+	//Get attributes
+	GLint activeAttributes = 0;
+	glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &activeAttributes);
+	for (int i=0; i<activeAttributes; i++) {
+		char nameBuf[1024];
+		GLsizei length = 0;
+		GLint attributeSize = 0;
+		GLenum attributeType = 0;
+		glGetActiveAttrib(program, i, sizeof(nameBuf), &length, &attributeSize, &attributeType, nameBuf);
+		NSLog(@"gl attribute: %s type(%@) size:%d", nameBuf, [WMShader nameOfShaderType:attributeType], attributeSize);
+		
+		NSString *attributeName = [NSString stringWithCString:nameBuf encoding:NSASCIIStringEncoding];
+		NSUInteger wmAttributeIndex = [self attribIndexForName: attributeName];
+		if (wmAttributeIndex != NSNotFound) {
+			attributeMask |= 1 << wmAttributeIndex;
+		} else {
+			NSLog(@"Attempt to use unsupported attribute: %@", attributeName);
+		}
+	}
+	
 	//Get uniform locations
 	//TODO: switch to glGetActiveUniform to simplify manifest.plist
 	GLint uniformCount = 0;
@@ -367,5 +387,9 @@ NSString *const WMShaderAttributeTypeTexCoord1 = @"vec2";
 	return YES;
 }
 
+- (int)attributeLocationForName:(NSString *)inName;
+{
+	return [self attribIndexForName:inName];
+}
 
 @end
