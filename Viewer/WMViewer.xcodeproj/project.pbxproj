@@ -41,7 +41,6 @@
 		4917E4F413653F7100AA4D55 /* WMRenderInImage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4917E38513653F7100AA4D55 /* WMRenderInImage.mm */; };
 		4917E4F713653F7100AA4D55 /* WMFramebuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917E38D13653F7100AA4D55 /* WMFramebuffer.m */; };
 		4917E4F913653F7100AA4D55 /* GLDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917E39113653F7100AA4D55 /* GLDefines.m */; };
-		4917E4FC13653F7100AA4D55 /* WMBlurPass.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4917E39613653F7100AA4D55 /* WMBlurPass.mm */; };
 		4917E4FD13653F7100AA4D55 /* WMEAGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917E39813653F7100AA4D55 /* WMEAGLContext.m */; };
 		4917E4FE13653F7100AA4D55 /* WMQuadParticleSystem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4917E39A13653F7100AA4D55 /* WMQuadParticleSystem.mm */; };
 		4917E4FF13653F7100AA4D55 /* WMQuad.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4917E39C13653F7100AA4D55 /* WMQuad.mm */; };
@@ -157,8 +156,6 @@
 		4917E38D13653F7100AA4D55 /* WMFramebuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMFramebuffer.m; sourceTree = "<group>"; };
 		4917E39013653F7100AA4D55 /* GLDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDefines.h; sourceTree = "<group>"; };
 		4917E39113653F7100AA4D55 /* GLDefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLDefines.m; sourceTree = "<group>"; };
-		4917E39513653F7100AA4D55 /* WMBlurPass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMBlurPass.h; sourceTree = "<group>"; };
-		4917E39613653F7100AA4D55 /* WMBlurPass.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WMBlurPass.mm; sourceTree = "<group>"; };
 		4917E39713653F7100AA4D55 /* WMEAGLContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMEAGLContext.h; sourceTree = "<group>"; };
 		4917E39813653F7100AA4D55 /* WMEAGLContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMEAGLContext.m; sourceTree = "<group>"; };
 		4917E39913653F7100AA4D55 /* WMQuadParticleSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMQuadParticleSystem.h; sourceTree = "<group>"; };
@@ -457,8 +454,6 @@
 				4917E38D13653F7100AA4D55 /* WMFramebuffer.m */,
 				4917E39013653F7100AA4D55 /* GLDefines.h */,
 				4917E39113653F7100AA4D55 /* GLDefines.m */,
-				4917E39513653F7100AA4D55 /* WMBlurPass.h */,
-				4917E39613653F7100AA4D55 /* WMBlurPass.mm */,
 				4917E39713653F7100AA4D55 /* WMEAGLContext.h */,
 				4917E39813653F7100AA4D55 /* WMEAGLContext.m */,
 				4917E39913653F7100AA4D55 /* WMQuadParticleSystem.h */,
@@ -711,7 +706,6 @@
 				4917E4F413653F7100AA4D55 /* WMRenderInImage.mm in Sources */,
 				4917E4F713653F7100AA4D55 /* WMFramebuffer.m in Sources */,
 				4917E4F913653F7100AA4D55 /* GLDefines.m in Sources */,
-				4917E4FC13653F7100AA4D55 /* WMBlurPass.mm in Sources */,
 				4917E4FD13653F7100AA4D55 /* WMEAGLContext.m in Sources */,
 				4917E4FE13653F7100AA4D55 /* WMQuadParticleSystem.mm in Sources */,
 				4917E4FF13653F7100AA4D55 /* WMQuad.mm in Sources */,
