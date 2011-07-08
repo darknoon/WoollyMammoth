@@ -102,7 +102,7 @@
 //				NSLog(@"midi control change number %d = %d (%f)", (int)controlNumber, (int)value, value / 127.f);
 				if (controlNumber < 120) { //Numbers above 120 are reserved
 					dispatch_async(mainQueue, ^{
-						WMNumberPort *outputPort = (WMNumberPort *)[self outputPortWithName:[NSString stringWithFormat:@"controller_%d", controlNumber]];
+						WMNumberPort *outputPort = (WMNumberPort *)[self outputPortWithKey:[NSString stringWithFormat:@"controller_%d", controlNumber]];
 						outputPort.value = value / 127.f;
 					});
 				}
