@@ -30,7 +30,11 @@
 	WMFramebuffer *framebuffer;
 	
     // The pixel dimensions of the CAEAGLLayer.
+	
+	dispatch_queue_t gl_queue;
 }
+
+@property (nonatomic) dispatch_queue_t gl_queue;
 
 @property (nonatomic, retain) WMEAGLContext *context;
 

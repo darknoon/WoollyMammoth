@@ -28,10 +28,14 @@
 	
 	UILabel *fpsLabel;
 	
+	BOOL readyToDraw;
+	
 	//Used to calculate actual FPS
 	NSTimeInterval lastFrameEndTime;
 	double lastFPSUpdate;
 	NSUInteger framesSinceLastFPSUpdate;
+	
+	dispatch_queue_t gl_queue;
 }
 
 
@@ -48,6 +52,8 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
+	
+	gl_queue = dispatch_queue_create("WMViewController render queue", 0);
 }
 
 - (id)initWithCoder:(NSCoder *)coder {
@@ -69,6 +75,13 @@
 	return self;
 }
 
+- (void)dealloc
+{    
+	dispatch_release(gl_queue);
+    [engine release];
+	[debugViewController release];
+    [super dealloc];
+}
 
 - (void)reloadEngine;
 {
@@ -81,24 +94,31 @@
 		[engine release];
 		engine = nil;
 	}
-	
+
 	self.compositionURL = inURL;
+	
 	
 	NSString *filePath = [inURL path];
 	NSError *error = nil;
 	DNQCComposition *composition = [[DNQCComposition alloc] initWithContentsOfFile:filePath  error:&error];
 	
-	GL_CHECK_ERROR;
-	engine = [[WMEngine alloc] initWithComposition:composition];
-	
-	//TODO: start lazily
-	GL_CHECK_ERROR;
-	[engine start];
-	GL_CHECK_ERROR;
-	
-	[(EAGLView *)self.view setContext:engine.renderContext];
-	//This will create a framebuffer and set it on the context
-    [(EAGLView *)self.view setFramebuffer];
+	dispatch_async(gl_queue, ^(void) {
+		GL_CHECK_ERROR;
+		engine = [[WMEngine alloc] initWithComposition:composition];
+		
+		//TODO: start lazily
+		GL_CHECK_ERROR;
+		[engine start];
+		GL_CHECK_ERROR;
+
+		[(EAGLView *)self.view setContext:engine.renderContext];
+		//This will create a framebuffer and set it on the context
+		[(EAGLView *)self.view setFramebuffer];
+		
+		dispatch_async(dispatch_get_main_queue(), ^(void) {
+			readyToDraw = YES;
+		});
+	});
 	
 }
 
@@ -107,6 +127,8 @@
 	CGRect defaultFrame = [[UIScreen mainScreen] applicationFrame];
 	EAGLView *view = [[[EAGLView alloc] initWithFrame:defaultFrame] autorelease];
 	view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	
+	view.gl_queue = gl_queue;
 	self.view = view;
 }
 
@@ -125,13 +147,6 @@
 	
 	UITapGestureRecognizer *tapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleNavigationBar)] autorelease];
 	[self.view addGestureRecognizer:tapRecognizer];
-}
-
-- (void)dealloc
-{    
-    [engine release];
-	[debugViewController release];
-    [super dealloc];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -216,31 +231,45 @@
 
 - (void)drawFrame
 {
-    [(EAGLView *)self.view setFramebuffer];
- 
-	NSTimeInterval frameStartTime = CFAbsoluteTimeGetCurrent();
-	
-	[engine drawFrameInRect:self.view.bounds];
-	
-	NSTimeInterval frameEndTime = CFAbsoluteTimeGetCurrent();
-	
-	NSTimeInterval timeToDrawFrame = frameEndTime - frameStartTime;
-	
-	framesSinceLastFPSUpdate++;
-	if (frameEndTime - lastFPSUpdate > 1.0) {
-		float fps = framesSinceLastFPSUpdate;
-		framesSinceLastFPSUpdate = 0;
+	if (!readyToDraw) return;
+	__block WMViewController *blockSelf = self;
+	dispatch_async(gl_queue, ^(void) {
+		[(EAGLView *)self.view setFramebuffer];
 		
-//TODO: if not release...
-		fpsLabel.text = [NSString stringWithFormat:@"%.0lf fps (%.0lf ms)", fps, timeToDrawFrame * 1000.0];		
+		NSTimeInterval frameStartTime = CFAbsoluteTimeGetCurrent();
+		
+		[engine drawFrameInRect:self.view.bounds];
 
-		lastFPSUpdate = frameEndTime;
-	}
-	
-	
-	lastFrameEndTime = frameEndTime;
+		NSTimeInterval frameEndTime = CFAbsoluteTimeGetCurrent();
+		
+		NSTimeInterval timeToDrawFrame = frameEndTime - frameStartTime;
+		
+		framesSinceLastFPSUpdate++;
+		if (frameEndTime - lastFPSUpdate > 1.0) {
+			float fps = framesSinceLastFPSUpdate;
+			framesSinceLastFPSUpdate = 0;
+			
+			
+			lastFPSUpdate = frameEndTime;
+			
+			dispatch_async(dispatch_get_main_queue(), ^(void) {
+				//TODO: if not release...
+				fpsLabel.text = [NSString stringWithFormat:@"%.0lf fps (%.0lf ms)", fps, timeToDrawFrame * 1000.0];		
+			});
+		}
+		
+		
+		lastFrameEndTime = frameEndTime;
+		
+		[(EAGLView *)self.view presentFramebuffer];
+		glFinish();
+		
+		dispatch_async(dispatch_get_main_queue(), ^(void) {
+			blockSelf->readyToDraw = YES;
+		});
+	});
+	readyToDraw = NO;
 
-    [(EAGLView *)self.view presentFramebuffer];
 }
 
 #pragma mark -

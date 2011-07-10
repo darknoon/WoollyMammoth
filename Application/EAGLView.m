@@ -74,6 +74,15 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
     [super dealloc];
 }
 
+- (void)setGl_queue:(dispatch_queue_t)inGl_queue;
+{
+	NSAssert(!gl_queue, @"Cannot change gl queue");
+	NSAssert(inGl_queue, @"Cannot set gl queue to nil");
+	dispatch_retain(inGl_queue);
+	gl_queue = inGl_queue;
+}
+
+
 - (WMEAGLContext *)context
 {
     return context;
@@ -96,8 +105,8 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
 {
     if (context)
     {
-        [EAGLContext setCurrentContext:context];
-        
+		[EAGLContext setCurrentContext:context];			
+		
 		[framebuffer release];
 		framebuffer = nil;		
     }
@@ -107,26 +116,33 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
 {
     if (context)
     {
-        [EAGLContext setCurrentContext:context];
-        
-        if (!framebuffer) {
-			framebuffer = [[WMFramebuffer alloc] initWithLayerRenderbufferStorage:(CAEAGLLayer *)self.layer];
+		__block CAEAGLLayer *l = nil;
+		dispatch_sync(dispatch_get_main_queue(), ^(void) {
+			l = (CAEAGLLayer *)self.layer;
+		});
+		
+		[EAGLContext setCurrentContext:context];
+		
+		if (!framebuffer) {
+			framebuffer = [[WMFramebuffer alloc] initWithLayerRenderbufferStorage:l];
 		}
-        
+		
 		context.boundFramebuffer = framebuffer;		
     }
 }
 
 - (BOOL)presentFramebuffer
 {
-    BOOL success = FALSE;
+    __block BOOL success = FALSE;
     
-    if (context && framebuffer)
-    {
-        [EAGLContext setCurrentContext:context];
-        
-		[framebuffer presentRenderbuffer];
-    }
+	dispatch_async(gl_queue, ^(void) {
+		if (context && framebuffer)
+		{
+			[EAGLContext setCurrentContext:context];
+			
+			success = [framebuffer presentRenderbuffer];
+		}		
+	});
     
     return success;
 }
@@ -191,8 +207,10 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
 
 - (void)layoutSubviews
 {
-    // The framebuffer will be re-created at the beginning of the next setFramebuffer method call.
-    [self deleteFramebuffer];
+	dispatch_async(gl_queue, ^(void) {
+		// The framebuffer will be re-created at the beginning of the next setFramebuffer method call.
+		[self deleteFramebuffer];
+	});
 }
 
 @end
