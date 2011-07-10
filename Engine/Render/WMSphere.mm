@@ -116,11 +116,6 @@ struct WMSphereVertex {
 	[super dealloc];
 }
 
-- (unsigned int)dataMask;
-{
-	return WMRenderableDataAvailablePosition | WMRenderableDataAvailableNormal | WMRenderableDataAvailableTexCoord0 | WMRenderableDataAvailableIndexBuffer;
-}
-
 - (GLuint)vbo;
 {
 	return vbo;

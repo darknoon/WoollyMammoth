@@ -131,9 +131,13 @@ typedef struct {
 
 - (BOOL)execute:(WMEAGLContext *)inContext time:(CFTimeInterval)time arguments:(NSDictionary *)args;
 {
-	unsigned int attributeMask = WMRenderableDataAvailablePosition | WMRenderableDataAvailableTexCoord0 | WMRenderableDataAvailableIndexBuffer;
-	unsigned int shaderMask = [shader attributeMask];
-	unsigned int enableMask = attributeMask & shaderMask;
+	int positionLocation = [shader attributeLocationForName:@"position"];
+	int texCoordLocation = [shader attributeLocationForName:@"texCoord0"];
+	
+	ZAssert(positionLocation != -1, @"Couldn't find position in shader!");
+	ZAssert(texCoordLocation != -1, @"Couldn't find texCoord0 in shader!");
+	
+	unsigned int enableMask = 1<<positionLocation | 1 << texCoordLocation;
 	[inContext setVertexAttributeEnableState:enableMask];
 	
 	[inContext setDepthState:0];
@@ -154,14 +158,11 @@ typedef struct {
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
-	//Position
-	glVertexAttribPointer(WMShaderAttributePosition, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMQuadVertex, v));
-	ZAssert(enableMask & WMRenderableDataAvailablePosition, @"Position issue");
+	//upload GL_FLOAT[3] => Position vec4
+	glVertexAttribPointer(positionLocation, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMQuadVertex, v));
 	
-	//TexCoord0
-	if (enableMask & WMRenderableDataAvailableTexCoord0) {
-		glVertexAttribPointer(WMShaderAttributeTexCoord0, 2, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMQuadVertex, tc));
-	}
+	//upload GL_FLOAT[2] => TexCoord0 vec2
+	glVertexAttribPointer(texCoordLocation, 2, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMQuadVertex, tc));
 	
 	int textureUniformLocation = [shader uniformLocationForName:@"texture"];
 	if (textureUniformLocation != -1) {
@@ -207,10 +208,8 @@ typedef struct {
 		glUniform4f(colorUniform, inputColor.red, inputColor.green, inputColor.blue, inputColor.alpha);
 	}
 
-	
 	// Validate program before drawing. This is a good check, but only really necessary in a debug build.
-	// DEBUG macro must be defined in your debug configurations if that's not already the case.
-#if defined(DEBUG)
+#if DEBUG
 	if (![shader validateProgram])
 	{
 		NSLog(@"Failed to validate program in shader: %@", shader);

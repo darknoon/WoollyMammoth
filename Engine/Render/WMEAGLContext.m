@@ -41,6 +41,8 @@
 		modelViewMatrix[10] = 1;
 		modelViewMatrix[15] = 1;
 		
+		glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &maxVertexAttributes);
+		
 	} else {
 		NSLog(@"Couldn't set current EAGLContext to self in WMEAGLContext initWithAPI:sharegroup:");
 		[self release];
@@ -61,9 +63,11 @@
 {
 	if (vertexAttributeEnableState == inVertexAttributeEnableState) return;
 	
-	for (int attribute=WMShaderAttributePosition; attribute<WMShaderAttributeCount; attribute++) {
-		BOOL shouldBeEnabled = inVertexAttributeEnableState & (WMRenderableDataAvailablePosition << attribute);
-		BOOL isEnabled = vertexAttributeEnableState & (WMRenderableDataAvailablePosition << attribute);
+	ZAssert(maxVertexAttributes < 32, @"We kind of assume that there are fewer than 32 possible attributes");
+
+	for (int attribute=0; attribute<maxVertexAttributes; attribute++) {
+		BOOL shouldBeEnabled = inVertexAttributeEnableState & (1 << attribute);
+		BOOL isEnabled = vertexAttributeEnableState & (1 << attribute);
 		if (shouldBeEnabled && !isEnabled) {
 			glEnableVertexAttribArray(attribute);
 		} else if (!shouldBeEnabled && isEnabled) {
@@ -120,10 +124,9 @@
 - (NSString *)description;
 {
 	NSMutableString *stateDesc = [NSMutableString string];
-	for (int attribute=WMShaderAttributePosition; attribute<WMShaderAttributeCount; attribute++) {
-		BOOL isEnabled = vertexAttributeEnableState & (WMRenderableDataAvailablePosition << attribute);
-		NSString *attributeName = [WMShader nameForShaderAttribute:attribute];
-		[stateDesc appendFormat:@"\t%@ %@\n", attributeName, isEnabled ? @"enabled" : @"disabled"];
+	for (int attribute=0; attribute<maxVertexAttributes; attribute++) {
+		BOOL isEnabled = vertexAttributeEnableState & (1 << attribute);
+		[stateDesc appendFormat:@"\t%d %@\n", attribute, isEnabled ? @"on" : @"off"];
 	}
 	
 	[stateDesc appendFormat:@"\tblending %@\n", blendState & DNGLStateBlendEnabled ?  @"enabled" : @"disabled"];

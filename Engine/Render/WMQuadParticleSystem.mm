@@ -186,23 +186,30 @@ int particleZCompare(const void *a, const void *b) {
 
 @implementation WMQuadParticleSystem
 
-- (id)initWithEngine:(WMEngine *)inEngine properties:(NSDictionary *)renderableRepresentation;
+- (id)initWithPlistRepresentation:(id)inPlist;
 {
-	[super initWithEngine:inEngine properties:renderableRepresentation];
+	[super initWithPlistRepresentation:inPlist];
 	if (self == nil) return self; 
 	
 	maxParticles = 2000;
+	
+	particleUpdateSkip = 12;
+	particleUpdateIndex = 0;
+	
+	zSortParticles = NO;
+	
+	return self;
+}
+
+- (BOOL)setup:(WMEAGLContext *)context;
+{
+	//TODO: error handling
 	particles = new WMQuadParticle[maxParticles];
 
 	particleVertices = new WMQuadParticleVertex[maxParticles * 4];
 	for (int i=0; i<maxParticles; i++) {
 		particles[i].init();
 	}
-	
-	particleUpdateSkip = 12;
-	particleUpdateIndex = 0;
-	
-	zSortParticles = NO;
 	
 	glGenBuffers(2, particleVBOs);
 	glGenBuffers(1, &particleEBO);
@@ -228,10 +235,10 @@ int particleZCompare(const void *a, const void *b) {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexBufferLength * sizeof(unsigned short), indexBuffer, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	GL_CHECK_ERROR;
-
-	delete indexBuffer;
 	
-	return self;
+	delete indexBuffer;
+
+	return YES;
 }
 
 - (void) dealloc
@@ -373,72 +380,66 @@ int particleZCompare(const void *a, const void *b) {
 - (void)drawWithTransform:(MATRIX)transform API:(EAGLRenderingAPI)API glState:(WMEAGLContext *)inGLState;
 {	
 	if (particleDataAvailable < 2) return;
-
+	
 	GL_CHECK_ERROR;
-	if (API == kEAGLRenderingAPIOpenGLES2)
-    {
- 		unsigned int attributeMask = WMRenderableDataAvailablePosition | WMRenderableDataAvailableColor | WMRenderableDataAvailableTexCoord0;
-		unsigned int enableMask = attributeMask & [shader attributeMask];
-		[inGLState setVertexAttributeEnableState:enableMask];
-		
-		[inGLState setDepthState:0];
-		[inGLState setBlendState:DNGLStateBlendEnabled];
+	int positionLocation = [shader attributeLocationForName:@"position"];
+	int texCoordLocation = [shader attributeLocationForName:@"texCoord0"];
+	int colorLocation = [shader attributeLocationForName:@"color"];
 
-		// Use shader program.
-        glUseProgram(shader.program);
-		
-		NSUInteger stride = sizeof(WMQuadParticleVertex);
-		
-		glBindBuffer(GL_ARRAY_BUFFER, particleVBOs[currentParticleVBOIndex]);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, particleEBO);
-		GL_CHECK_ERROR;
+	ZAssert(positionLocation != -1, @"Couldn't find position in shader!");
+	ZAssert(texCoordLocation != -1, @"Couldn't find texCoord0 in shader!");
+	ZAssert(colorLocation != -1, @"Couldn't find color in shader!");
+	
+	unsigned int enableMask = 1<<positionLocation | 1 << texCoordLocation | 1 << colorLocation;
+	[inGLState setVertexAttributeEnableState:enableMask];
+	
+	[inGLState setDepthState:0];
 
-        // Update attribute values.
-        glVertexAttribPointer(WMShaderAttributePosition, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMQuadParticleVertex, position));
+	[inGLState setBlendState:DNGLStateBlendEnabled];
+	
+	// Use shader program.
+	glUseProgram(shader.program);
+	
+	NSUInteger stride = sizeof(WMQuadParticleVertex);
+	
+	glBindBuffer(GL_ARRAY_BUFFER, particleVBOs[currentParticleVBOIndex]);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, particleEBO);
+	GL_CHECK_ERROR;
+	
+	// Update attribute values.
+	glVertexAttribPointer(positionLocation, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMQuadParticleVertex, position));
+	glVertexAttribPointer(colorLocation, 4, GL_UNSIGNED_BYTE, GL_TRUE, stride, (GLvoid *)offsetof(WMQuadParticleVertex, color[0]));	
+	glVertexAttribPointer(texCoordLocation, 2, GL_UNSIGNED_BYTE, GL_TRUE, stride, (GLvoid *)offsetof(WMQuadParticleVertex, texCoord0[0]) );
+	
+	int textureUniformLocation = [shader uniformLocationForName:@"texture"];
+	if (inputTexture && textureUniformLocation != -1) {
+		glBindTexture(GL_TEXTURE_2D, [inputTexture name]);			
+		glUniform1i(textureUniformLocation, 0); //texture = texture 0
+	}
+	GL_CHECK_ERROR;
 		
-		int textureUniformLocation = [shader uniformLocationForName:@"texture"];
-		if (inputTexture && textureUniformLocation != -1) {
-			glBindTexture(GL_TEXTURE_2D, [inputTexture name]);			
-			glUniform1i(textureUniformLocation, 0); //texture = texture 0
-		}
-		GL_CHECK_ERROR;
-
-		if (enableMask & WMRenderableDataAvailableColor) {
-			glVertexAttribPointer(WMShaderAttributeColor, 4, GL_UNSIGNED_BYTE, GL_TRUE, stride, (GLvoid *)offsetof(WMQuadParticleVertex, color[0]));
-		}
-		GL_CHECK_ERROR;
-		
-		if (enableMask & WMRenderableDataAvailableTexCoord0) {
-			glVertexAttribPointer(WMShaderAttributeTexCoord0, 2, GL_UNSIGNED_BYTE, GL_TRUE, stride, (GLvoid *)offsetof(WMQuadParticleVertex, texCoord0[0]) );
-		}
-		GL_CHECK_ERROR;
-		
-		int matrixUniform = [shader uniformLocationForName:@"modelViewProjectionMatrix"];
-		if (matrixUniform != -1) {
-			glUniformMatrix4fv(matrixUniform, 1, NO, transform.f);
-		}
-		GL_CHECK_ERROR;
-        
-        // Validate program before drawing. This is a good check, but only really necessary in a debug build.
-        // DEBUG macro must be defined in your debug configurations if that's not already the case.
-#if defined(DEBUG)
-        if (![shader validateProgram])
-        {
-            NSLog(@"Failed to validate program in shader: %@", shader);
-            return;
-        }
-		
+	int matrixUniform = [shader uniformLocationForName:@"modelViewProjectionMatrix"];
+	if (matrixUniform != -1) {
+		glUniformMatrix4fv(matrixUniform, 1, NO, transform.f);
+	}
+	GL_CHECK_ERROR;
+	
+#if DEBUG
+	if (![shader validateProgram])
+	{
+		NSLog(@"Failed to validate program in shader: %@", shader);
+		return;
+	}
+	
 #endif
-		//glDrawArrays(GL_POINTS, 0, maxParticles);
-		GL_CHECK_ERROR;
-		glDrawElements(GL_TRIANGLES, maxParticles * 6, GL_UNSIGNED_SHORT, 0); //use element array buffer ebo
-		GL_CHECK_ERROR;
-		
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	} else {        
-		//TODO: es1 support
-	}	
+	
+	//glDrawArrays(GL_POINTS, 0, maxParticles);
+	GL_CHECK_ERROR;
+	glDrawElements(GL_TRIANGLES, maxParticles * 6, GL_UNSIGNED_SHORT, 0); //use element array buffer ebo
+	GL_CHECK_ERROR;
+	
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 @end

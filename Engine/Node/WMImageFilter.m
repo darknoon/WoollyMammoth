@@ -133,9 +133,13 @@ typedef struct {
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	unsigned int attributeMask = WMRenderableDataAvailablePosition | WMRenderableDataAvailableTexCoord0 | WMRenderableDataAvailableIndexBuffer;
-	unsigned int shaderMask = [shader attributeMask];
-	unsigned int enableMask = attributeMask & shaderMask;
+	int positionLocation = [shader attributeLocationForName:@"position"];
+	int texCoordLocation = [shader attributeLocationForName:@"texCoord0"];
+	
+	ZAssert(positionLocation != -1, @"Couldn't find position in shader!");
+	ZAssert(texCoordLocation != -1, @"Couldn't find texCoord0 in shader!");
+	
+	unsigned int enableMask = 1 << positionLocation | 1 << texCoordLocation;
 	[inContext setVertexAttributeEnableState:enableMask];
 	
 	[inContext setDepthState:0];
@@ -151,12 +155,10 @@ typedef struct {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	
 	//Position
-	ZAssert(enableMask & WMRenderableDataAvailablePosition, @"Position issue");
-	glVertexAttribPointer(WMShaderAttributePosition, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMQuadVertex, v));
+	glVertexAttribPointer(positionLocation, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMQuadVertex, v));
 	
 	//TexCoord0
-	ZAssert(enableMask & WMRenderableDataAvailableTexCoord0, @"tex coord 0 issue");
-	glVertexAttribPointer(WMShaderAttributeTexCoord0, 2, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMQuadVertex, tc));
+	glVertexAttribPointer(texCoordLocation, 2, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMQuadVertex, tc));
 	
 	//Set uniform values
 	int offsetUniform = [shader uniformLocationForName:@"offset"];
@@ -176,25 +178,12 @@ typedef struct {
 	}
 	
 	GL_CHECK_ERROR;
-
-	//Position
-	glVertexAttribPointer(WMShaderAttributePosition, 4, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMQuadVertex, v));
-	ZAssert(enableMask & WMRenderableDataAvailablePosition, @"Position issue");
 	
-	//TexCoord0
-	if (enableMask & WMRenderableDataAvailableTexCoord0) {
-		glVertexAttribPointer(WMShaderAttributeTexCoord0, 2, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMQuadVertex, tc));
-	}
-
-	GL_CHECK_ERROR;
-	
-	// Validate program before drawing. This is a good check, but only really necessary in a debug build.
-	// DEBUG macro must be defined in your debug configurations if that's not already the case.
-#if defined(DEBUG)
+#if DEBUG
 	if (![shader validateProgram])
 	{
 		NSLog(@"Failed to validate program in shader: %@", shader);
-		return NO;
+		return /*NO*/;
 	}
 #endif
 

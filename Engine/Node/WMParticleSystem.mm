@@ -170,8 +170,14 @@ typedef struct {
 
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {	
-	unsigned int attributeMask = WMRenderableDataAvailablePosition | WMRenderableDataAvailableColor;
-	unsigned int enableMask = attributeMask & [shader attributeMask];
+	GL_CHECK_ERROR;
+	int positionLocation = [shader attributeLocationForName:@"position"];
+	int colorLocation = [shader attributeLocationForName:@"color"];
+	
+	ZAssert(positionLocation != -1, @"Couldn't find position in shader!");
+	ZAssert(colorLocation != -1, @"Couldn't find color in shader!");
+	
+	unsigned int enableMask = 1<<positionLocation | 1 << colorLocation;
 	[context setVertexAttributeEnableState:enableMask];
 	
 	[context setDepthState:0];
@@ -203,9 +209,9 @@ typedef struct {
 	//Draw with gpu
 	size_t stride = sizeof(WMParticle);
 	//4 = grab position and size
-	glVertexAttribPointer(WMShaderAttributePosition, 4, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMParticle, p));
+	glVertexAttribPointer(positionLocation, 4, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMParticle, p));
 	GL_CHECK_ERROR;
-	glVertexAttribPointer(WMShaderAttributeColor, 4, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMParticle, c));
+	glVertexAttribPointer(colorLocation, 4, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMParticle, c));
 	GL_CHECK_ERROR;
 
 	int matrixUniform = [shader uniformLocationForName:@"modelViewProjectionMatrix"];

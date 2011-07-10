@@ -11,17 +11,6 @@
 #import "WMShader.h"
 
 enum {
-	WMRenderableDataAvailablePosition    = 1 << WMShaderAttributePosition,
-	WMRenderableDataAvailablePosition2d  = 1 << WMShaderAttributePosition2d,
-	WMRenderableDataAvailableNormal      = 1 << WMShaderAttributeNormal,
-	WMRenderableDataAvailableColor       = 1 << WMShaderAttributeColor,
-	WMRenderableDataAvailableTexCoord0   = 1 << WMShaderAttributeTexCoord0,
-	WMRenderableDataAvailableTexCoord1   = 1 << WMShaderAttributeTexCoord1,
-	WMRenderableDataAvailableIndexBuffer = 1 << (WMShaderAttributeCount + 0),
-};
-typedef int WMRenderableDataMask;
-
-enum {
 	DNGLStateBlendEnabled = 1 << 0,
 	DNGLStateBlendModeAdd = 1 << 1, //otherwise blend is source-over
 } ;
@@ -37,10 +26,12 @@ typedef int DNGLStateDepthMask;
 
 @interface WMEAGLContext : EAGLContext {
 	//Uses constants from WMShader.h
-	WMRenderableDataMask vertexAttributeEnableState;
+	int vertexAttributeEnableState;
 	DNGLStateBlendMask blendState;
 	DNGLStateDepthMask depthState;
 	WMFramebuffer *boundFramebuffer;
+	
+	int maxVertexAttributes;
 	
 	float modelViewMatrix[16];
 }

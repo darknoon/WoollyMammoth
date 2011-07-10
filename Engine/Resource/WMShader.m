@@ -11,31 +11,20 @@
 @interface WMShader()
 //Then load the shaders, compile and link into a program in the current context
 - (BOOL)loadShaders;
+
 @property (nonatomic, copy) NSArray *uniformNames;
+@property (nonatomic, copy) NSArray *vertexAttributeNames;
+
 @property (nonatomic, copy) NSString *vertexShader;
 @property (nonatomic, copy) NSString *pixelShader;
 
 @end
 
-NSString *const WMShaderAttributeNamePosition = @"position";
-NSString *const WMShaderAttributeNamePosition2d = @"position2d";
-NSString *const WMShaderAttributeNameColor = @"color";
-NSString *const WMShaderAttributeNameNormal = @"normal";
-NSString *const WMShaderAttributeNameTexCoord0 = @"texCoord0";
-NSString *const WMShaderAttributeNameTexCoord1 = @"texCoord1";
-
-static GLenum const WMShaderAttributeTypePosition = GL_FLOAT_VEC4;
-static GLenum const WMShaderAttributeTypePosition2d = GL_FLOAT_VEC2;
-static GLenum const WMShaderAttributeTypeColor = GL_FLOAT_VEC4;
-static GLenum const WMShaderAttributeTypeNormal = GL_FLOAT_VEC3;
-static GLenum const WMShaderAttributeTypeTexCoord0 = GL_FLOAT_VEC2;
-static GLenum const WMShaderAttributeTypeTexCoord1 = GL_FLOAT_VEC2;
-
-
 @implementation WMShader
 
-@synthesize attributeMask;
 @synthesize uniformNames;
+@synthesize vertexAttributeNames;
+
 @synthesize vertexShader;
 @synthesize pixelShader;
 @synthesize program;
@@ -88,30 +77,6 @@ static GLenum const WMShaderAttributeTypeTexCoord1 = GL_FLOAT_VEC2;
 	[super dealloc];
 }
 
-+ (NSString *)nameForShaderAttribute:(NSUInteger)shaderAttribute;
-{
-	NSString *const WMShaderAttributeNames[] = {
-		WMShaderAttributeNamePosition, 
-		WMShaderAttributeNamePosition2d, 
-		WMShaderAttributeNameNormal, 
-		WMShaderAttributeNameColor, 
-		WMShaderAttributeNameTexCoord0,
-		WMShaderAttributeNameTexCoord1};
-	return WMShaderAttributeNames[shaderAttribute];
-}
-
-+ (GLenum)typeForShaderAttribute:(NSUInteger)shaderAttribute;
-{
-	GLenum const WMShaderAttributeTypes[] = {
-		WMShaderAttributeTypePosition, 
-		WMShaderAttributeTypePosition2d, 
-		WMShaderAttributeTypeNormal, 
-		WMShaderAttributeTypeColor, 
-		WMShaderAttributeTypeTexCoord0,
-		WMShaderAttributeTypeTexCoord1};
-	return WMShaderAttributeTypes[shaderAttribute];
-}
-
 + (NSString *)nameOfShaderType:(GLenum)inType;
 {
 	switch (inType) {
@@ -134,35 +99,6 @@ static GLenum const WMShaderAttributeTypeTexCoord1 = GL_FLOAT_VEC2;
 	}
 }
 
-- (void)setVertexShader:(NSString *)inVertexShader;
-{
-	if (vertexShader == inVertexShader) return;
-	[vertexShader release];
-	
-	vertexShader = [inVertexShader copy];
-}
-
-
-- (void)setPixelShader:(NSString *)inPixelShader;
-{
-	if (pixelShader == inPixelShader) return;
-	[pixelShader release];
-	
-	pixelShader = [inPixelShader copy];
-}
-
-- (BOOL)shaderText:(NSString *)inShaderText hasAttribute:(WMShaderAttribute)attribute;
-{
-	NSString *attributeName = [WMShader nameForShaderAttribute:attribute];
-	NSString *type = [WMShader nameOfShaderType:[WMShader typeForShaderAttribute:attribute]];
-	ZAssert(attributeName, @"Could not find name for attribute!");
-	ZAssert(type, @"Could not find type for attribute!");
-	//attribute vec4 position;
-	NSString *searchText = [NSString stringWithFormat:@"attribute %@ %@;", type, attributeName];
-	return [inShaderText rangeOfString:searchText].location != NSNotFound;
-}
-
-
 - (int)uniformLocationForName:(NSString *)inName;
 {
 	NSNumber *unifiormLocationValue = [uniformLocations objectForKey:inName];
@@ -175,14 +111,14 @@ static GLenum const WMShaderAttributeTypeTexCoord1 = GL_FLOAT_VEC2;
 }
 
 
-- (GLuint)attribIndexForName:(NSString *)inName;
+- (int)attributeLocationForName:(NSString *)inName;
 {
-	NSArray *attribArray = [NSArray arrayWithObjects:WMShaderAttributeNamePosition, WMShaderAttributeNamePosition2d, WMShaderAttributeNameColor, WMShaderAttributeNameNormal, WMShaderAttributeNameTexCoord0, WMShaderAttributeNameTexCoord1, nil];
-	NSUInteger idx = [attribArray indexOfObject:inName];
-	if (idx == NSNotFound) {
-		NSLog(@"Illegal attribute name: %@", inName);
+	NSUInteger i = [vertexAttributeNames indexOfObject:inName];
+	if (i == NSNotFound) {
+		return -1;
+	} else {
+		return (int)i;
 	}
-	return idx;
 }
 
 - (BOOL)compileShaderSource:(NSString *)inSourceString toShader:(GLuint *)shader type:(GLenum)type;
@@ -303,21 +239,6 @@ static GLenum const WMShaderAttributeTypeTexCoord1 = GL_FLOAT_VEC2;
 	// Attach fragment shader to program.
 	glAttachShader(program, fragShader);
 	
-	// Bind attribute locations.
-	// This needs to be done prior to linking.
-	attributeMask = 0;
-	for (GLuint attribIndex = 0; attribIndex < WMShaderAttributeCount; attribIndex++) {
-		if ([self shaderText:vertexShader hasAttribute:attribIndex]) {
-			//TODO: SECURITY: is utf-8 valid in GL attrib names
-			
-			//Bind name to number in OGL
-			glBindAttribLocation(program, attribIndex, [[WMShader nameForShaderAttribute:attribIndex] UTF8String]);
-
-			//set it in the mask
-			attributeMask |= (1 << attribIndex);
-		}
-	}
-	
 	// Link program.
 	if (![self linkProgram:program])
 	{
@@ -342,6 +263,7 @@ static GLenum const WMShaderAttributeTypeTexCoord1 = GL_FLOAT_VEC2;
 	//Get attributes
 	GLint activeAttributes = 0;
 	glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &activeAttributes);
+	NSMutableArray *attributeNamesMutable = [NSMutableArray arrayWithCapacity:activeAttributes];
 	for (int i=0; i<activeAttributes; i++) {
 		char nameBuf[1024];
 		GLsizei length = 0;
@@ -351,13 +273,9 @@ static GLenum const WMShaderAttributeTypeTexCoord1 = GL_FLOAT_VEC2;
 		NSLog(@"gl attribute: %s type(%@) size:%d", nameBuf, [WMShader nameOfShaderType:attributeType], attributeSize);
 		
 		NSString *attributeName = [NSString stringWithCString:nameBuf encoding:NSASCIIStringEncoding];
-		NSUInteger wmAttributeIndex = [self attribIndexForName: attributeName];
-		if (wmAttributeIndex != NSNotFound) {
-			attributeMask |= 1 << wmAttributeIndex;
-		} else {
-			NSLog(@"Attempt to use unsupported attribute: %@", attributeName);
-		}
+		[attributeNamesMutable addObject:attributeName];
 	}
+	self.vertexAttributeNames = attributeNamesMutable;
 	
 	//Get uniform locations
 	//TODO: switch to glGetActiveUniform to simplify manifest.plist
@@ -385,11 +303,6 @@ static GLenum const WMShaderAttributeTypeTexCoord1 = GL_FLOAT_VEC2;
 		glDeleteShader(fragShader);
 	
 	return YES;
-}
-
-- (int)attributeLocationForName:(NSString *)inName;
-{
-	return [self attribIndexForName:inName];
 }
 
 @end
