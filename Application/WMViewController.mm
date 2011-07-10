@@ -18,27 +18,33 @@
 #import "DNQCComposition.h"
 
 @interface WMViewController ()
+
+@property (nonatomic, copy) NSURL *compositionURL;
+
 @end
 
-@implementation WMViewController
+@implementation WMViewController {
+    CADisplayLink *displayLink;
+	
+	UILabel *fpsLabel;
+	
+	//Used to calculate actual FPS
+	NSTimeInterval lastFrameEndTime;
+	double lastFPSUpdate;
+	NSUInteger framesSinceLastFPSUpdate;
+}
+
 
 @synthesize engine;
 @synthesize animating;
 @synthesize debugViewController;
+@synthesize animationFrameInterval;
+@synthesize compositionURL;
 
 - (void)sharedInit;
 {
     animationFrameInterval = 1;
-    
-	//TODO: WM requires > 3.1, so remove the display link conditional code
 	
-    // Use of CADisplayLink requires iOS version 3.1 or greater.
-	// The NSTimer object is used as fallback when it isn't available.
-    NSString *reqSysVer = @"3.1";
-    NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
-    if ([currSysVer compare:reqSysVer options:NSNumericSearch] != NSOrderedAscending)
-        displayLinkSupported = TRUE;
-		
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
@@ -63,14 +69,22 @@
 	return self;
 }
 
-- (void)reloadGameFromURL:(NSURL *)inRemoteURL;
+
+- (void)reloadEngine;
+{
+	[self reloadEngineFromURL:self.compositionURL];
+}
+
+- (void)reloadEngineFromURL:(NSURL *)inURL;
 {
 	if (engine) {
 		[engine release];
 		engine = nil;
 	}
 	
-	NSString *filePath = [inRemoteURL path];
+	self.compositionURL = inURL;
+	
+	NSString *filePath = [inURL path];
 	NSError *error = nil;
 	DNQCComposition *composition = [[DNQCComposition alloc] initWithContentsOfFile:filePath  error:&error];
 	
@@ -178,20 +192,12 @@
 {
     if (!animating)
     {
-        if (displayLinkSupported)
-        {
-            /*
-			 CADisplayLink is API new in iOS 3.1. Compiling against earlier versions will result in a warning, but can be dismissed if the system version runtime check for CADisplayLink exists in -awakeFromNib. The runtime check ensures this code will not be called in system versions earlier than 3.1.
-            */
-            displayLink = [NSClassFromString(@"CADisplayLink") displayLinkWithTarget:self selector:@selector(drawFrame)];
-            [displayLink setFrameInterval:animationFrameInterval];
-            
-            // The run loop will retain the display link on add.
-            [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-        }
-        else
-            animationTimer = [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)((1.0 / 60.0) * animationFrameInterval) target:self selector:@selector(drawFrame) userInfo:nil repeats:TRUE];
-        
+		displayLink = [NSClassFromString(@"CADisplayLink") displayLinkWithTarget:self selector:@selector(drawFrame)];
+		[displayLink setFrameInterval:animationFrameInterval];
+		
+		// The run loop will retain the display link on add.
+		[displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+
         animating = TRUE;
 		lastFrameEndTime = CFAbsoluteTimeGetCurrent();
     }
@@ -201,16 +207,8 @@
 {
     if (animating)
     {
-        if (displayLinkSupported)
-        {
-            [displayLink invalidate];
-            displayLink = nil;
-        }
-        else
-        {
-            [animationTimer invalidate];
-            animationTimer = nil;
-        }
+		[displayLink invalidate];
+		displayLink = nil;
         
         animating = FALSE;
     }

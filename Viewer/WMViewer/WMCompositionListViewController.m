@@ -128,7 +128,7 @@
 	NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
 	NSURL *url = [NSURL fileURLWithPath:[resourcePath stringByAppendingPathComponent:composition] isDirectory:YES];
 	
-	[viewController reloadGameFromURL:url];
+	[viewController reloadEngineFromURL:url];
 	
 	[self.navigationController pushViewController:viewController animated:YES];
 }

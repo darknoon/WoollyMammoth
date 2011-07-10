@@ -18,28 +18,6 @@
 @class WMDebugViewController;
 
 @interface WMViewController : UIViewController <UIActionSheetDelegate>
-{
-	WMEngine *engine;
-	    
-    BOOL animating;
-    BOOL displayLinkSupported;
-    NSInteger animationFrameInterval;
-    /*
-	 Use of the CADisplayLink class is the preferred method for controlling your animation timing.
-	 CADisplayLink will link to the main display and fire every vsync when added to a given run-loop.
-	 The NSTimer object is used only as fallback when running on a pre-3.1 device where CADisplayLink isn't available.
-	 */
-    id displayLink;
-    NSTimer *animationTimer;
-	
-	UILabel *fpsLabel;
-	IBOutlet WMDebugViewController *debugViewController;
-		
-	//Used to calculate actual FPS
-	NSTimeInterval lastFrameEndTime;
-	double lastFPSUpdate;
-	NSUInteger framesSinceLastFPSUpdate;
-}
 
 @property (readonly, retain) WMEngine *engine;
 @property (readonly, nonatomic, getter=isAnimating) BOOL animating;
@@ -50,7 +28,8 @@
 
 - (IBAction)showDebug:(id)sender;
 
-- (void)reloadGameFromURL:(NSURL *)inRemoteURL;
+- (void)reloadEngine;
+- (void)reloadEngineFromURL:(NSURL *)inURL;
 
 - (void)startAnimation;
 - (void)stopAnimation;

@@ -13,7 +13,7 @@
 @class WMViewController;
 
 @interface WMDebugViewController : UIViewController <BrowserViewControllerDelegate> {
-	WMViewController *parent;
+	WMViewController *parent;	
 }
 
 @property (nonatomic, assign) IBOutlet WMViewController *parent;
