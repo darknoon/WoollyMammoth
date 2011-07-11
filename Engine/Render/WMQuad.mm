@@ -16,15 +16,19 @@
 #import "WMTexture2D.h"
 #import "WMFramebuffer.h"
 
+#import "WMStructuredBuffer.h"
+
 #import "Matrix.h"
 
-typedef struct {
-	float v[3];
-	float tc[2];
-	//TODO: Align to even power boundary?
-} WMQuadVertex;
+WMStructureField WMQuadVertex_fields[] = {
+	{.name = "position",  .type = WMStructureTypeFloat, .count = 3, .normalized = NO},
+	{.name = "texCoord0", .type = WMStructureTypeUnsignedByte,  .count = 2, .normalized = YES},
+};
 
-@implementation WMQuad
+
+@implementation WMQuad {
+	WMStructureDefinition *quadDef;
+}
 
 + (void)load;
 {
@@ -38,7 +42,7 @@ typedef struct {
 {
 	self = [super initWithPlistRepresentation:inPlist];
 	if (!self) return nil;
-		
+	
 	return self;
 }
 
@@ -55,7 +59,7 @@ typedef struct {
 
 - (BOOL)setup:(WMEAGLContext *)context;
 {
-	//TODO: figure out a good way to generate these programatically with #ifdefs in an omni-shader
+	//TODO: replace this with a user-specifiable shader
 	
 	NSString *vertexShader = @"\
 	attribute vec4 position;\
@@ -77,49 +81,62 @@ typedef struct {
 	gl_FragColor = color * texture2D(texture, v_textureCoordinate);\
 	}";
 	
+	
+	
 	shader = [[WMShader alloc] initWithVertexShader:vertexShader pixelShader:fragmentShader];
 	
-	glGenBuffers(1, &vbo);
-	glGenBuffers(1, &ebo);
+	
 
 	const float scale = 0.5;
 	
+	quadDef = [[WMStructureDefinition alloc] initWithFields:WMQuadVertex_fields count:sizeof(WMQuadVertex_fields) / sizeof(WMStructureField)];
+	WMStructuredBuffer *vertexData = [[[WMStructuredBuffer alloc] initWithDefinition:quadDef] autorelease];
+	
+	struct WMVertex_v3f_tc2f {
+		float p[3];
+		char tc[2];
+	};
+
 	//Add vertices
-	WMQuadVertex vertexDataPtr[4];
 	for (int y=0, i=0; y<2; y++) {
 		for (int x=0; x<2; x++, i++) {
-			
-			vertexDataPtr[i].v[0] = ((float)x - 0.5f) * 2.0f * scale;
-			vertexDataPtr[i].v[1] = ((float)y - 0.5f) * 2.0f * scale;
-			vertexDataPtr[i].v[2] = 0.0f;
-			
-			vertexDataPtr[i].tc[0] = (float)x;
-			vertexDataPtr[i].tc[1] = (float)y;
+
+			const struct WMVertex_v3f_tc2f v = {
+				.p = {((float)x - 0.5f) * 2.0f * scale, ((float)y - 0.5f) * 2.0f * scale, 0.0f},
+				.tc = {(char)x * 255, (char)y * 255}
+			};
+			//Append to vertex buffer
+			[vertexData appendData:&v withStructure:quadDef count:1];
 		}
 	}
 	
-	unsigned short indexData[2 * 3]; 
-	//Add triangles
-	indexData[0] = 0;
-	indexData[1] = 1;
-	indexData[2] = 2;
-	
-	indexData[3] = 1;
-	indexData[4] = 2;
-	indexData[5] = 3;
-	
+	//Upload to vbo
+	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	
-	glBufferData(GL_ARRAY_BUFFER, sizeof(WMQuadVertex) * 4, vertexDataPtr, GL_STATIC_DRAW);
-	GL_CHECK_ERROR;
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof (unsigned short), indexData, GL_STATIC_DRAW);
-	
+
+	ZAssert(vertexData.dataPointer, @"Unable to get data pointer");
+	glBufferData(GL_ARRAY_BUFFER, vertexData.dataSize, vertexData.dataPointer, GL_STATIC_DRAW);
 	GL_CHECK_ERROR;
 	
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	//Create index data
+	WMStructureDefinition *indexDef  = [[[WMStructureDefinition alloc] initWithAnonymousFieldOfType:WMStructureTypeUnsignedShort] autorelease];
+	WMStructuredBuffer *indexBuffer = [[[WMStructuredBuffer alloc] initWithDefinition:indexDef] autorelease];
+	[indexBuffer appendData:(unsigned short[]){0,1,2, 1,2,3} withStructure:indexDef count:6];
+	
+	NSLog(@"vb: %@", vertexData);
+	NSLog(@"ndixe: %@", indexBuffer);
+
+	//Upload to ebo
+	glGenBuffers(1, &ebo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexBuffer.dataSize, indexBuffer.dataPointer, GL_STATIC_DRAW);
+	GL_CHECK_ERROR;
+	
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-		
+	
 	return YES;
 }
 
@@ -127,18 +144,26 @@ typedef struct {
 {
 	if (vbo) glDeleteBuffers(1, &vbo);
 	if (ebo) glDeleteBuffers(1, &ebo);
+	vbo = ebo = 0;
 }
 
 - (BOOL)execute:(WMEAGLContext *)inContext time:(CFTimeInterval)time arguments:(NSDictionary *)args;
 {
-	int positionLocation = [shader attributeLocationForName:@"position"];
-	int texCoordLocation = [shader attributeLocationForName:@"texCoord0"];
 	
-	ZAssert(positionLocation != -1, @"Couldn't find position in shader!");
-	ZAssert(texCoordLocation != -1, @"Couldn't find texCoord0 in shader!");
+	ZAssert([shader.vertexAttributeNames containsObject:@"position"], @"Couldn't find position in shader");
+	ZAssert([shader.vertexAttributeNames containsObject:@"texCoord0"], @"Couldn't find texCoord0 in shader");
+
 	
-	unsigned int enableMask = 1<<positionLocation | 1 << texCoordLocation;
+	//Find each relevant thing in the shader, attempt to bind to a part of the buffer
+	unsigned int enableMask = 0;
+	for (NSString *attribute in shader.vertexAttributeNames) {
+		int location = [shader attributeLocationForName:attribute];
+		if (location != -1 && [quadDef getFieldNamed:attribute outField:NULL outOffset:NULL]) {
+			enableMask |= 1 << location;
+		}
+	}
 	[inContext setVertexAttributeEnableState:enableMask];
+
 	
 	[inContext setDepthState:0];
 	
@@ -152,18 +177,31 @@ typedef struct {
 	
 	glUseProgram(shader.program);
 	
-	size_t stride = sizeof(WMQuadVertex);
-	
 	//Bind VBO, EBO
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
-	//upload GL_FLOAT[3] => Position vec4
-	glVertexAttribPointer(positionLocation, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMQuadVertex, v));
+
 	
-	//upload GL_FLOAT[2] => TexCoord0 vec2
-	glVertexAttribPointer(texCoordLocation, 2, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMQuadVertex, tc));
+	GL_CHECK_ERROR;
+
+	for (NSString *attribute in shader.vertexAttributeNames) {
+		int location = [shader attributeLocationForName:attribute];
+		ZAssert(location != -1, @"Couldn't fined attribute: %@", attribute);
+		if (location != -1) {
+			WMStructureField f;
+			NSUInteger offset = 0;
+			if ([quadDef getFieldNamed:attribute outField:&f outOffset:&offset]) {
+				glVertexAttribPointer(location, f.count, f.type, f.normalized, quadDef.size, (void *)offset);
+			} else {
+				//Couldn't bind anything to this.
+				NSLog(@"Couldn't find data for attribute: %@", attribute);
+			}
+		}
+	}
 	
+	GL_CHECK_ERROR;
+
 	int textureUniformLocation = [shader uniformLocationForName:@"texture"];
 	if (textureUniformLocation != -1) {
 		if (inputImage.image) {

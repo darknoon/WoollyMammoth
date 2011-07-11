@@ -86,6 +86,8 @@
 		49C26A541366A75100DB4962 /* BasicParticles.qtz in Resources */ = {isa = PBXBuildFile; fileRef = 49C26A531366A75100DB4962 /* BasicParticles.qtz */; };
 		49C26A5A1366A87B00DB4962 /* WMParticleSystem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49C26A591366A87B00DB4962 /* WMParticleSystem.mm */; };
 		49C2CA4E13653575008C1B74 /* AdvancedBlurShader.qtz in Resources */ = {isa = PBXBuildFile; fileRef = 49C2CA4D13653575008C1B74 /* AdvancedBlurShader.qtz */; };
+		49C407AE13CA7375007F5154 /* WMStructuredBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C407AB13CA7375007F5154 /* WMStructuredBuffer.m */; };
+		49C407AF13CA7375007F5154 /* WMStructureDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C407AD13CA7375007F5154 /* WMStructureDefinition.m */; };
 		49C55283126980610093FAFD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C55282126980610093FAFD /* CoreGraphics.framework */; };
 		49C95B2013650E2E009D5E42 /* FrontCamera.qtz in Resources */ = {isa = PBXBuildFile; fileRef = 49C95B1F13650E2E009D5E42 /* FrontCamera.qtz */; };
 		49DC0AA512BB893E002BABFB /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49DC0AA412BB893E002BABFB /* Entitlements.plist */; };
@@ -241,6 +243,10 @@
 		49C26A581366A87B00DB4962 /* WMParticleSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMParticleSystem.h; sourceTree = "<group>"; };
 		49C26A591366A87B00DB4962 /* WMParticleSystem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WMParticleSystem.mm; sourceTree = "<group>"; };
 		49C2CA4D13653575008C1B74 /* AdvancedBlurShader.qtz */ = {isa = PBXFileReference; explicitFileType = text.plist.xml; path = AdvancedBlurShader.qtz; sourceTree = "<group>"; };
+		49C407AA13CA7375007F5154 /* WMStructuredBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMStructuredBuffer.h; sourceTree = "<group>"; };
+		49C407AB13CA7375007F5154 /* WMStructuredBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMStructuredBuffer.m; sourceTree = "<group>"; };
+		49C407AC13CA7375007F5154 /* WMStructureDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMStructureDefinition.h; sourceTree = "<group>"; };
+		49C407AD13CA7375007F5154 /* WMStructureDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMStructureDefinition.m; sourceTree = "<group>"; };
 		49C55282126980610093FAFD /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		49C95B1F13650E2E009D5E42 /* FrontCamera.qtz */ = {isa = PBXFileReference; explicitFileType = text.plist; path = FrontCamera.qtz; sourceTree = "<group>"; };
 		49DC0AA412BB893E002BABFB /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
@@ -379,6 +385,7 @@
 			children = (
 				4917E36513653F7100AA4D55 /* Input */,
 				4917E36813653F7100AA4D55 /* Node */,
+				49C407A913CA7375007F5154 /* Buffer */,
 				4917E38B13653F7100AA4D55 /* Render */,
 				4917E3A513653F7100AA4D55 /* Resource */,
 				4917E3AC13653F7100AA4D55 /* Util */,
@@ -585,6 +592,17 @@
 			path = WMViewer;
 			sourceTree = "<group>";
 		};
+		49C407A913CA7375007F5154 /* Buffer */ = {
+			isa = PBXGroup;
+			children = (
+				49C407AA13CA7375007F5154 /* WMStructuredBuffer.h */,
+				49C407AB13CA7375007F5154 /* WMStructuredBuffer.m */,
+				49C407AC13CA7375007F5154 /* WMStructureDefinition.h */,
+				49C407AD13CA7375007F5154 /* WMStructureDefinition.m */,
+			);
+			path = Buffer;
+			sourceTree = "<group>";
+		};
 		49E81DD912712FE400127D48 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -737,6 +755,8 @@
 				49A39D00136A6D8900345EC4 /* WMSplitter.m in Sources */,
 				4928DA7513864967004A5F55 /* WMImageFilter.m in Sources */,
 				497362E3138B8BC800D00FBF /* WMStringPort.m in Sources */,
+				49C407AE13CA7375007F5154 /* WMStructuredBuffer.m in Sources */,
+				49C407AF13CA7375007F5154 /* WMStructureDefinition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
