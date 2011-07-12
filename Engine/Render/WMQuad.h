@@ -26,10 +26,12 @@
 	
 	//TODO: add quad features
 //	QCOpenGLPort_Image *inputMask;	// 180 = 0xb4
-//	QCOpenGLPort_Blending *inputBlending;	// 200 = 0xc8
+	WMIndexPort *inputBlending;
 //	QCBooleanPort *inputPixelAligned;	// 204 = 0xcc
 
 	WMShader *shader;
+	//Acronyms ftw
+	GLuint vao;
 	GLuint vbo;
 	GLuint ebo;
 }

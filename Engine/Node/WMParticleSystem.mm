@@ -181,7 +181,18 @@ typedef struct {
 	[context setVertexAttributeEnableState:enableMask];
 	
 	[context setDepthState:0];
-	[context setBlendState:DNGLStateBlendEnabled | DNGLStateBlendModeAdd];
+	switch (inputBlending.index) {
+		default:
+		case QCBlendModeReplace:
+			[context setBlendState:0];
+			break;
+		case QCBlendModeOver:
+			[context setBlendState:DNGLStateBlendEnabled];
+			break;
+		case QCBlendModeAdd:
+			[context setBlendState:DNGLStateBlendEnabled | DNGLStateBlendModeAdd];
+			break;
+	}
 
 	
 	glUseProgram(shader.program);

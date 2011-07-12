@@ -10,6 +10,12 @@
 
 #import "WMPort.h"
 
+enum QCBlendMode {
+	QCBlendModeReplace = 0, //ie, no blending
+	QCBlendModeOver,
+	QCBlendModeAdd,
+};
+
 @interface WMIndexPort : WMPort {
 }
 

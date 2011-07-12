@@ -33,7 +33,7 @@
 	WMNumberPort *inputAttraction;
 	WMNumberPort *inputGravity;
 	WMImagePort *inputImage;
-//	WMBlendingTypePort *inputBlending;
+	WMIndexPort *inputBlending;
 	WMNumberPort *inputSizeDelta;
 	WMNumberPort *inputRedDelta;
 	WMNumberPort *inputGreenDelta;

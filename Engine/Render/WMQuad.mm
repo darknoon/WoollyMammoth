@@ -166,14 +166,19 @@ WMStructureField WMQuadVertex_fields[] = {
 
 	
 	[inContext setDepthState:0];
-	
-//	if ([blendMode isEqualToString:WMRenderableBlendModeAdd]) {
-//		[inGLState setBlendState:DNGLStateBlendEnabled | DNGLStateBlendModeAdd];
-//	} else {
-//		[inGLState setBlendState:0];
-//	}
 
-	[inContext setBlendState: 0];
+	switch (inputBlending.index) {
+		default:
+		case QCBlendModeReplace:
+			[inContext setBlendState:0];
+			break;
+		case QCBlendModeOver:
+			[inContext setBlendState:DNGLStateBlendEnabled];
+			break;
+		case QCBlendModeAdd:
+			[inContext setBlendState:DNGLStateBlendEnabled | DNGLStateBlendModeAdd];
+			break;
+	}
 	
 	glUseProgram(shader.program);
 	
