@@ -44,8 +44,8 @@
 		NSLog(@"Attempt to create unsupported splitter of type: %@", portClassName);
 		return NO;
 	}
-	inputPort.name = @"input";
-	outputPort.name = @"output";
+	inputPort.key = @"input";
+	outputPort.key = @"output";
 	[self addInputPort:inputPort];
 	[self addOutputPort:outputPort];
 
