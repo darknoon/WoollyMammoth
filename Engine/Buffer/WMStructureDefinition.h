@@ -51,9 +51,12 @@ extern size_t WMStructureTypeSize(WMStructureType inType);
 - (id)initWithAnonymousFieldOfType:(WMStructureType)inType;
 
 //If yes, you don't need to ask about fields, it's just a single type (ie, single field with count = 1)
-@property (readonly) BOOL isSingleType;
+@property (nonatomic, readonly) BOOL isSingleType;
 
-@property (readonly) NSUInteger size;
+//Default is NO. If YES, additional empty bytes are added to pad out the structure.
+@property (nonatomic) BOOL shouldAlignTo4ByteBoundary;
+
+@property (nonatomic, readonly) NSUInteger size;
 
 //-1 = not found
 - (NSInteger)offsetOfField:(NSString *)inField;

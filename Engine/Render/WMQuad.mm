@@ -90,6 +90,7 @@ WMStructureField WMQuadVertex_fields[] = {
 	const float scale = 0.5;
 	
 	quadDef = [[WMStructureDefinition alloc] initWithFields:WMQuadVertex_fields count:sizeof(WMQuadVertex_fields) / sizeof(WMStructureField)];
+	quadDef.shouldAlignTo4ByteBoundary = YES;
 	WMStructuredBuffer *vertexData = [[[WMStructuredBuffer alloc] initWithDefinition:quadDef] autorelease];
 	
 	struct WMVertex_v3f_tc2f {

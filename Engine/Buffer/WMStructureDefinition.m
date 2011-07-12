@@ -37,7 +37,8 @@ size_t WMStructureTypeSize(WMStructureType inType) {
 }
 
 @synthesize size;
-	
+@synthesize shouldAlignTo4ByteBoundary;
+
 //- (id)initWithFields:(const WMStructureField *)firstField, ... NS_REQUIRES_NIL_TERMINATION;
 
 - (id)initWithAnonymousFieldOfType:(WMStructureType)inType;
@@ -70,7 +71,7 @@ size_t WMStructureTypeSize(WMStructureType inType) {
 	if (fieldCount > 100 || size > 1000 ) {
 		NSLog(@"Huge structure size: %d fieldCount: %d", size, fieldCount);
 	}
-	
+		
 	return self;
 }
 
@@ -121,7 +122,8 @@ size_t WMStructureTypeSize(WMStructureType inType) {
 
 - (NSUInteger)size;
 {
-	return size;
+	//Round up to nearest boundary if necessary
+	return shouldAlignTo4ByteBoundary ? ((size + 4-1) / 4) * 4 : size;
 }
 
 
@@ -170,6 +172,11 @@ size_t WMStructureTypeSize(WMStructureType inType) {
 		offset += WMStructureFieldSize(fields[i]);
 		[str appendString:@"}, "];
 	}
+	while (offset < self.size) {
+		//Append X (ie unused byte)
+		[str appendString:@"X"];
+		offset++;
+	}
 
 	[str appendString:@"}"];
 	return str;
@@ -177,7 +184,7 @@ size_t WMStructureTypeSize(WMStructureType inType) {
 
 - (NSString *)description;
 {
-	return [NSString stringWithFormat:@"<%@ : %p size:%d fields:%d>", [self class], self, size, fieldCount];
+	return [NSString stringWithFormat:@"<%@ : %p size:%d aligned:%d fields:%d>", [self class], self, size, self.size, fieldCount];
 }
 
 - (void)enumerateFieldsWithBlock:(void( (^)(NSUInteger idx, const WMStructureField *field, NSUInteger offset)))inBlock;
