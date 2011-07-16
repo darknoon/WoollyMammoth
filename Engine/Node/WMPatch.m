@@ -65,6 +65,15 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 	return classMap;
 }
 
++ (NSArray *)patchClasses;
+{
+	NSMutableArray *outPatchClasses = [NSMutableArray array];
+	[[self _classMap] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+		[outPatchClasses addObject:NSStringFromClass(obj)];
+	}];
+	return outPatchClasses;
+}
+
 
 + (void)load;
 {

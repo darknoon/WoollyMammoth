@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		49174A8913D1FA0F008B5B8D /* WMDraggingConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174A8813D1FA0F008B5B8D /* WMDraggingConnection.m */; };
+		49174A9113D22D9B008B5B8D /* WMPatchListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174A9013D22D9B008B5B8D /* WMPatchListTableViewController.m */; };
 		49A5253113D169C9004EC7F6 /* WMPatchPlugStripView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A5253013D169C9004EC7F6 /* WMPatchPlugStripView.m */; };
 		49A5253513D170BD004EC7F6 /* WMPatchConnectionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A5253413D170BD004EC7F6 /* WMPatchConnectionsView.m */; };
 		49A5261413D1725E004EC7F6 /* WMStructuredBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A525C013D1725E004EC7F6 /* WMStructuredBuffer.m */; };
@@ -104,6 +105,8 @@
 /* Begin PBXFileReference section */
 		49174A8713D1FA0F008B5B8D /* WMDraggingConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMDraggingConnection.h; sourceTree = "<group>"; };
 		49174A8813D1FA0F008B5B8D /* WMDraggingConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMDraggingConnection.m; sourceTree = "<group>"; };
+		49174A8F13D22D9B008B5B8D /* WMPatchListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchListTableViewController.h; sourceTree = "<group>"; };
+		49174A9013D22D9B008B5B8D /* WMPatchListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPatchListTableViewController.m; sourceTree = "<group>"; };
 		49A5252F13D169C9004EC7F6 /* WMPatchPlugStripView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchPlugStripView.h; sourceTree = "<group>"; };
 		49A5253013D169C9004EC7F6 /* WMPatchPlugStripView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPatchPlugStripView.m; sourceTree = "<group>"; };
 		49A5253313D170BD004EC7F6 /* WMPatchConnectionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchConnectionsView.h; sourceTree = "<group>"; };
@@ -289,6 +292,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		49174A8E13D22D9A008B5B8D /* Add */ = {
+			isa = PBXGroup;
+			children = (
+				49174A8F13D22D9B008B5B8D /* WMPatchListTableViewController.h */,
+				49174A9013D22D9B008B5B8D /* WMPatchListTableViewController.m */,
+			);
+			path = Add;
+			sourceTree = "<group>";
+		};
 		49A525BD13D1725E004EC7F6 /* Engine */ = {
 			isa = PBXGroup;
 			children = (
@@ -575,6 +587,7 @@
 				49A5285F13D17404004EC7F6 /* WMConnectionView.m */,
 				49174A8713D1FA0F008B5B8D /* WMDraggingConnection.h */,
 				49174A8813D1FA0F008B5B8D /* WMDraggingConnection.m */,
+				49174A8E13D22D9A008B5B8D /* Add */,
 			);
 			path = WMEdit;
 			sourceTree = "<group>";
@@ -780,6 +793,7 @@
 				49A5286013D17404004EC7F6 /* WMConnectionView.m in Sources */,
 				49A5286813D181E3004EC7F6 /* WMGraphEditView.m in Sources */,
 				49174A8913D1FA0F008B5B8D /* WMDraggingConnection.m in Sources */,
+				49174A9113D22D9B008B5B8D /* WMPatchListTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,12 +12,17 @@
 
 #import "WMPatchConnectionsView.h"
 
+#import "WMPatchListTableViewController.h"
+
 #import "WMGraphEditView.h"
 #import "WMPatch.h"
 
 @implementation WMEditViewController {
 	int keycnt; //TODO: better unique key system
 	NSMutableDictionary *patchViewsByKey;
+	
+	CGPoint addLocation;
+	UIPopoverController *addNodePopover;
 	
 	WMPatch *rootPatch;
 }
@@ -66,30 +71,55 @@
 	graphView.rootPatch = rootPatch;
 }
 
-- (void)addNodeAtLocation:(CGPoint)inPoint;
+- (void)addNodeAtLocation:(CGPoint)inPoint class:(NSString *)inClass;
 {
 	keycnt++;
 	
 	NSString *key = [NSString stringWithFormat:@"node-%d", keycnt];
+	
+	Class patchClass = NSClassFromString(inClass);
+	if (patchClass) {
+		WMPatch *patch = [[[patchClass alloc] initWithPlistRepresentation:nil] autorelease];
+		patch.key = key;
+		patch.editorPosition = inPoint;
 		
-	WMPatch *patch = [[[WMPatch alloc] initWithPlistRepresentation:nil] autorelease];
-	patch.key = key;
-	patch.editorPosition = inPoint;
+		WMPort *outputNumberPort = [[[WMNumberPort alloc] init] autorelease];
+		outputNumberPort.key = @"blahport";
+		
+		[patch addOutputPort:outputNumberPort];
+		
+		[graphView addPatch:patch];
+	} else {
+		NSLog(@"invalid class: %@", inClass);
+	}
 	
-	WMPort *outputNumberPort = [[[WMNumberPort alloc] init] autorelease];
-	outputNumberPort.key = @"blahport";
-	
-	[patch addOutputPort:outputNumberPort];
-	
-	[graphView addPatch:patch];
 }
 
 - (void)longPress:(UILongPressGestureRecognizer *)inR;
 {
 	if (inR.state == UIGestureRecognizerStateBegan) {
-		[self addNodeAtLocation:[inR locationInView:self.view]];
+		if (addNodePopover) {
+			[addNodePopover dismissPopoverAnimated:NO];
+			[addNodePopover release];
+		}
+		
+		WMPatchListTableViewController *patchList = [[WMPatchListTableViewController alloc] initWithStyle:UITableViewStylePlain];
+		patchList.delegate = (id<WMPatchListTableViewControllerDelegate>)self;
+		UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:patchList];
+		addNodePopover = [[UIPopoverController alloc] initWithContentViewController:nav];
+		addLocation = [inR locationInView:self.view];
+		[addNodePopover presentPopoverFromRect:(CGRect){.origin = addLocation} inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 	}
 }
+
+- (void)patchList:(WMPatchListTableViewController *)inPatchList selectedPatchClassName:(NSString *)inClassName;
+{
+	[self addNodeAtLocation:addLocation class:inClassName];
+	[addNodePopover dismissPopoverAnimated:YES];
+	[addNodePopover release];
+	addNodePopover = nil;
+}
+
 
 - (void)viewDidUnload
 {

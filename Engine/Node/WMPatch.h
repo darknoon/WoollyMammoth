@@ -45,6 +45,8 @@ typedef enum {
 
 }
 
++ (NSArray *)patchClasses;
+
 //Will pick the correct patch class to represent this object
 + (id)patchWithPlistRepresentation:(id)inPlist;
 
