@@ -122,7 +122,7 @@
 {
 	WMPatch *hitPatch = [self hitPatchForConnectionWithPoint:inPoint inPatchView:inView];
 	if (hitPatch) {
-		WMPort *hitPort = [inView outputPortAtPoint:inPoint inView:inView];
+		WMPort *hitPort = [[self patchViewForKey:hitPatch.key] inputPortAtPoint:inPoint inView:inView];
 		
 		NSLog(@"touching port: %@", hitPort);
 	} else {
@@ -137,9 +137,9 @@
 	//Did we connect?
 	WMPatch *hitPatch = [self hitPatchForConnectionWithPoint:inPoint inPatchView:inView];
 	if (hitPatch) {
-		WMPort *hitPort = [inView outputPortAtPoint:inPoint inView:inView];
+		WMPort *hitPort = [[self patchViewForKey:hitPatch.key] inputPortAtPoint:inPoint inView:inView];
 		
-		if (hitPatch) {
+		if (hitPatch && hitPort) {
 			[rootPatch addConnectionFromPort:[(WMPort *)[inView.patch.outputPorts objectAtIndex:0] key] ofPatch:inView.patch.key toPort:hitPort.key ofPatch:hitPatch.key];
 		}
 	}
