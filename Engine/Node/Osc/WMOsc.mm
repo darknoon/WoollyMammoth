@@ -24,7 +24,6 @@
     
     self = [super init];
     
-    _receiver.setup(3333);
     return self;
 }
 
@@ -81,6 +80,12 @@
     accelZ.value = z;
     
  }
+
+- (BOOL)setup:(WMEAGLContext *)context;
+{
+    _receiver.setup(3333);
+}
+
 - (BOOL)execute:(WMEAGLContext *)inContext time:(CFTimeInterval)time arguments:(NSDictionary *)args {
     
     OscReceiver::_oscMessages.flipMessageDoubleBuffer();
@@ -94,6 +99,11 @@
         delete msg;
     }
     return true;
+}
+
+- (void)cleanup:(WMEAGLContext *)context;
+{
+	//TODO:
 }
 
 @end
