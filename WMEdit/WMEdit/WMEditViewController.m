@@ -7,15 +7,12 @@
 //
 
 #import "WMEditViewController.h"
-
 #import "WMPatchView.h"
-
 #import "WMPatchConnectionsView.h"
-
 #import "WMPatchListTableViewController.h"
-
 #import "WMGraphEditView.h"
 #import "WMPatch.h"
+#import "WMViewController.h"
 
 @implementation WMEditViewController {
 	int keycnt; //TODO: better unique key system
@@ -24,25 +21,32 @@
 	CGPoint addLocation;
 	UIPopoverController *addNodePopover;
 	
+	WMViewController *previewController;
+	
 	WMPatch *rootPatch;
 }
 @synthesize graphView;
+
+- (void)sharedInit;
+{
+	patchViewsByKey = [[NSMutableDictionary alloc] init];
+	rootPatch = [[WMPatch alloc] initWithPlistRepresentation:nil];
+	previewController = [[WMViewController alloc] initWithRootPatch:rootPatch];
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil;
 {
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (!self) return nil;
 	
-	patchViewsByKey = [[NSMutableDictionary alloc] init];
-	rootPatch = [[WMPatch alloc] initWithPlistRepresentation:nil];
+	[self sharedInit];
 	
 	return self;
 }
 
 - (void)awakeFromNib;
 {
-	patchViewsByKey = [[NSMutableDictionary alloc] init];
-	rootPatch = [[WMPatch alloc] initWithPlistRepresentation:nil];
+	[self sharedInit];
 }
 
 - (void)dealloc
@@ -69,6 +73,13 @@
 	[self.view addGestureRecognizer:longPressRecognizer];
 	
 	graphView.rootPatch = rootPatch;
+	
+	CGSize previewSize = (CGSize){.width = 300, .height = 200};
+	CGRect bounds = self.view.bounds;
+	previewController.view.frame = (CGRect){.origin.x = bounds.size.width - previewSize.width, .origin.y = bounds.size.height - previewSize.height, .size = previewSize};
+	previewController.view.backgroundColor = [UIColor cyanColor];
+	previewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	[self.view addSubview:previewController.view];
 }
 
 - (void)addNodeAtLocation:(CGPoint)inPoint class:(NSString *)inClass;
@@ -120,6 +131,23 @@
 	addNodePopover = nil;
 }
 
+- (void)viewWillAppear:(BOOL)inAnimated;
+{
+	[super viewWillAppear:inAnimated];
+	[previewController viewWillAppear:inAnimated];
+}
+
+- (void)viewDidAppear:(BOOL)inAnimated;
+{
+	[super viewDidAppear:inAnimated];
+	[previewController viewDidAppear:inAnimated];
+}
+
+- (void)viewDidDisappear:(BOOL)inAnimated;
+{
+	[super viewDidDisappear:inAnimated];
+	[previewController viewDidDisappear:inAnimated];
+}
 
 - (void)viewDidUnload
 {

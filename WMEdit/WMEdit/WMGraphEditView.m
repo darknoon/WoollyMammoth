@@ -66,7 +66,7 @@
 	[patchViews addObject:newNodeView];
 	
 	[inPatch addObserver:self forKeyPath:@"editorPosition" options:NSKeyValueObservingOptionNew context:NULL];
-	
+		
 	[newNodeView sizeToFit];
 	newNodeView.center = inPatch.editorPosition;
 	

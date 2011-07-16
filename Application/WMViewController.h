@@ -16,6 +16,7 @@
 
 @class WMEngine;
 @class WMDebugViewController;
+@class WMPatch;
 
 @interface WMViewController : UIViewController <UIActionSheetDelegate>
 
@@ -23,6 +24,8 @@
 @property (readonly, nonatomic, getter=isAnimating) BOOL animating;
 @property (nonatomic) NSInteger animationFrameInterval;
 @property (nonatomic, retain) IBOutlet WMDebugViewController *debugViewController;
+
+- (id)initWithRootPatch:(WMPatch *)inPatch;
 
 - (UIImage *)screenshotImage;
 

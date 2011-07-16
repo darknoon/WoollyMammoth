@@ -22,6 +22,8 @@ typedef enum {
 @class WMEAGLContext;
 @class WMPort;
 @class WMNumberPort;
+@class WMEngine;
+
 @interface WMPatch : NSObject {
 @protected;
 	//These don't have input at the beginning
@@ -41,8 +43,7 @@ typedef enum {
 	NSMutableArray *outputPorts;
 	
 	//Render
-	CFAbsoluteTime lastExecutionTime;
-
+	CFAbsoluteTime lastExecutionTime;	
 }
 
 + (NSArray *)patchClasses;
@@ -65,6 +66,8 @@ typedef enum {
 
 @property (nonatomic, readonly) NSArray *systemInputPorts;
 @property (nonatomic, readonly) NSArray *systemOutputPorts;
+
+@property (nonatomic) BOOL hasSetup;
 
 - (void)addInputPort:(WMPort *)inPort;
 - (void)addOutputPort:(WMPort *)inPort;

@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		49174A8913D1FA0F008B5B8D /* WMDraggingConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174A8813D1FA0F008B5B8D /* WMDraggingConnection.m */; };
 		49174A9113D22D9B008B5B8D /* WMPatchListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174A9013D22D9B008B5B8D /* WMPatchListTableViewController.m */; };
+		49174AAC13D235BD008B5B8D /* DNAssertionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174AA413D235BD008B5B8D /* DNAssertionHandler.m */; };
+		49174AAD13D235BD008B5B8D /* EAGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174AA613D235BD008B5B8D /* EAGLView.m */; };
+		49174AAE13D235BD008B5B8D /* WMDebugViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174AA813D235BD008B5B8D /* WMDebugViewController.m */; };
+		49174AAF13D235BD008B5B8D /* WMDebugViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49174AA913D235BD008B5B8D /* WMDebugViewController.xib */; };
+		49174AB013D235BD008B5B8D /* WMViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49174AAB13D235BD008B5B8D /* WMViewController.mm */; };
 		49A5253113D169C9004EC7F6 /* WMPatchPlugStripView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A5253013D169C9004EC7F6 /* WMPatchPlugStripView.m */; };
 		49A5253513D170BD004EC7F6 /* WMPatchConnectionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A5253413D170BD004EC7F6 /* WMPatchConnectionsView.m */; };
 		49A5261413D1725E004EC7F6 /* WMStructuredBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A525C013D1725E004EC7F6 /* WMStructuredBuffer.m */; };
@@ -121,6 +126,15 @@
 		49174A8813D1FA0F008B5B8D /* WMDraggingConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMDraggingConnection.m; sourceTree = "<group>"; };
 		49174A8F13D22D9B008B5B8D /* WMPatchListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchListTableViewController.h; sourceTree = "<group>"; };
 		49174A9013D22D9B008B5B8D /* WMPatchListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPatchListTableViewController.m; sourceTree = "<group>"; };
+		49174AA313D235BD008B5B8D /* DNAssertionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNAssertionHandler.h; sourceTree = "<group>"; };
+		49174AA413D235BD008B5B8D /* DNAssertionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNAssertionHandler.m; sourceTree = "<group>"; };
+		49174AA513D235BD008B5B8D /* EAGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLView.h; sourceTree = "<group>"; };
+		49174AA613D235BD008B5B8D /* EAGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EAGLView.m; sourceTree = "<group>"; };
+		49174AA713D235BD008B5B8D /* WMDebugViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMDebugViewController.h; sourceTree = "<group>"; };
+		49174AA813D235BD008B5B8D /* WMDebugViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMDebugViewController.m; sourceTree = "<group>"; };
+		49174AA913D235BD008B5B8D /* WMDebugViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMDebugViewController.xib; sourceTree = "<group>"; };
+		49174AAA13D235BD008B5B8D /* WMViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMViewController.h; sourceTree = "<group>"; };
+		49174AAB13D235BD008B5B8D /* WMViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WMViewController.mm; sourceTree = "<group>"; };
 		49A5252F13D169C9004EC7F6 /* WMPatchPlugStripView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchPlugStripView.h; sourceTree = "<group>"; };
 		49A5253013D169C9004EC7F6 /* WMPatchPlugStripView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPatchPlugStripView.m; sourceTree = "<group>"; };
 		49A5253313D170BD004EC7F6 /* WMPatchConnectionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchConnectionsView.h; sourceTree = "<group>"; };
@@ -352,6 +366,23 @@
 			path = Add;
 			sourceTree = "<group>";
 		};
+		49174AA213D235BD008B5B8D /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				49174AA313D235BD008B5B8D /* DNAssertionHandler.h */,
+				49174AA413D235BD008B5B8D /* DNAssertionHandler.m */,
+				49174AA513D235BD008B5B8D /* EAGLView.h */,
+				49174AA613D235BD008B5B8D /* EAGLView.m */,
+				49174AA713D235BD008B5B8D /* WMDebugViewController.h */,
+				49174AA813D235BD008B5B8D /* WMDebugViewController.m */,
+				49174AA913D235BD008B5B8D /* WMDebugViewController.xib */,
+				49174AAA13D235BD008B5B8D /* WMViewController.h */,
+				49174AAB13D235BD008B5B8D /* WMViewController.mm */,
+			);
+			name = Application;
+			path = ../Application;
+			sourceTree = "<group>";
+		};
 		49A525BD13D1725E004EC7F6 /* Engine */ = {
 			isa = PBXGroup;
 			children = (
@@ -579,6 +610,7 @@
 			children = (
 				49F0595613D15F640056C506 /* WMEdit */,
 				49A5286113D174C6004EC7F6 /* Resources */,
+				49174AA213D235BD008B5B8D /* Application */,
 				49A525BD13D1725E004EC7F6 /* Engine */,
 				49A5264D13D17330004EC7F6 /* Externals */,
 				49F0597613D15F640056C506 /* WMEditTests */,
@@ -846,6 +878,7 @@
 				49A5261D13D1725E004EC7F6 /* WMGaussianBlur.glsl in Resources */,
 				49A5286313D174C6004EC7F6 /* connection-white~ipad.png in Resources */,
 				49A5286513D17A03004EC7F6 /* connection-shadow~ipad.png in Resources */,
+				49174AAF13D235BD008B5B8D /* WMDebugViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -954,6 +987,10 @@
 				80250FB113D224480031B4E7 /* OscPrintReceivedElements.cpp in Sources */,
 				80250FB213D224480031B4E7 /* OscReceivedElements.cpp in Sources */,
 				80250FB313D224480031B4E7 /* OscTypes.cpp in Sources */,
+				49174AAC13D235BD008B5B8D /* DNAssertionHandler.m in Sources */,
+				49174AAD13D235BD008B5B8D /* EAGLView.m in Sources */,
+				49174AAE13D235BD008B5B8D /* WMDebugViewController.m in Sources */,
+				49174AB013D235BD008B5B8D /* WMViewController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

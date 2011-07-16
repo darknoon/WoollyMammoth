@@ -69,6 +69,28 @@
 	return self;
 }
 
+- (id)initWithRootPatch:(WMPatch *)inPatch;
+{
+	self = [super initWithNibName:nil bundle:nil];
+	if (!self) return nil;
+		
+	self.compositionURL = nil;
+	
+	GL_CHECK_ERROR;
+	engine = [[WMEngine alloc] initWithRootObject:inPatch userData:nil];
+	
+	//TODO: start lazily
+	GL_CHECK_ERROR;
+	[engine start];
+	GL_CHECK_ERROR;
+	
+	[(EAGLView *)self.view setContext:engine.renderContext];
+	//This will create a framebuffer and set it on the context
+    [(EAGLView *)self.view setFramebuffer];
+	
+	
+	return self;
+}
 
 - (void)reloadEngine;
 {
@@ -218,6 +240,8 @@
 {
     [(EAGLView *)self.view setFramebuffer];
  
+	
+	
 	NSTimeInterval frameStartTime = CFAbsoluteTimeGetCurrent();
 	
 	[engine drawFrameInRect:self.view.bounds];

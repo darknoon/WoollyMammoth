@@ -10,7 +10,7 @@
 
 #import "WMConnection.h"
 #import "WMEAGLContext.h"
-
+#import "WMEngine.h"
 #import "WMPort.h"
 
 #import <objc/objc.h>
@@ -42,6 +42,7 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 @synthesize children;
 @synthesize key;
 @synthesize editorPosition;
+@synthesize hasSetup;
 
 + (NSMutableDictionary *)_classMap;
 {
