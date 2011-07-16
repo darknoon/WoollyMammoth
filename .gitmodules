@@ -1,3 +1,9 @@
 [submodule "Externals/midimonitor"]
 	path = Externals/midimonitor
 	url = git://gitorious.org/midimonitor/midimonitor.git
+[submodule "Externals/ASIHTTPRequest"]
+	path = Externals/ASIHTTPRequest
+	url = git://github.com/pokeb/asi-http-request.git
+[submodule "Externals/TouchJSON"]
+	path = Externals/TouchJSON
+	url = git://github.com/TouchCode/TouchJSON.git
