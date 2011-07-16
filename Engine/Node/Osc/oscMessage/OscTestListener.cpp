@@ -28,10 +28,6 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "ofConstants.h"
-#include "ofMath.h"
-#include "ofUtils.h"
-#include "ofTypes.h"
 #include "Osc.h"
 
 #define PORT 3333
