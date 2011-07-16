@@ -34,7 +34,6 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 
 @interface WMPatch ()
 
-@property (nonatomic) CGPoint editorPosition;
 
 @end
 
@@ -339,7 +338,7 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 	if (customInputPortStates) {
 		[inputPortStates addEntriesFromDictionary:customInputPortStates];
 	}
-	for (WMPort *inputPort in [self ivarInputPorts]) {
+	for (WMPort *inputPort in [self inputPorts]) {
 		NSDictionary *state = [inputPortStates objectForKey:inputPort.key];
 		id value = [state objectForKey:@"value"];
 		if (value) {
@@ -368,11 +367,11 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 	[outputPorts addObject:inPort];	
 }
 
-- (NSArray *)ivarInputPorts;
+- (NSArray *)inputPorts;
 {
 	return [[inputPorts retain] autorelease];
 }
-- (NSArray *)ivarOutputPorts;
+- (NSArray *)outputPorts;
 {
 	return [[outputPorts retain] autorelease];
 }
@@ -395,7 +394,7 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 
 - (WMPort *)inputPortWithKey:(NSString *)inName;
 {
-	for (WMPort *port in [self ivarInputPorts]) {
+	for (WMPort *port in [self inputPorts]) {
 		if ([port.key isEqualToString:inName]) {
 			return port;
 		}
@@ -405,7 +404,7 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 
 - (WMPort *)outputPortWithKey:(NSString *)inName;
 {
-	for (WMPort *port in [self ivarOutputPorts]) {
+	for (WMPort *port in [self outputPorts]) {
 		if ([port.key isEqualToString:inName]) {
 			return port;
 		}
@@ -463,10 +462,6 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 	return descriptionRecursive;
 }
 
-
-@end
-
-@implementation WMPatch (WMPatch_Editor)
 
 - (void)addChild:(WMPatch *)inPatch;
 {

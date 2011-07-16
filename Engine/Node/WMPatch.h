@@ -58,10 +58,11 @@ typedef enum {
 - (BOOL)setPlistState:(id)inPlist;
 - (id)plistState;
 
-- (NSArray *)ivarInputPorts;
-- (NSArray *)ivarOutputPorts;
-- (NSArray *)systemInputPorts;
-- (NSArray *)systemOutputPorts;
+@property (nonatomic, readonly) NSArray *inputPorts;
+@property (nonatomic, readonly) NSArray *outputPorts;
+
+@property (nonatomic, readonly) NSArray *systemInputPorts;
+@property (nonatomic, readonly) NSArray *systemOutputPorts;
 
 - (void)addInputPort:(WMPort *)inPort;
 - (void)addOutputPort:(WMPort *)inPort;
@@ -85,14 +86,9 @@ typedef enum {
 - (void)disable:(WMEAGLContext *)context;
 - (void)cleanup:(WMEAGLContext *)context;
 
-@end
-
-
-@interface WMPatch (WMPatch_Editor)
+//Editor
 @property (nonatomic) CGPoint editorPosition;
-
 - (void)addChild:(WMPatch *)inPatch;
-
 - (void)addConnectionFromPort:(NSString *)inPort ofPatch:(NSString *)fromPatch toPort:(NSString *)toPort ofPatch:(NSString *)toPatch;
 
 @end

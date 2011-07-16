@@ -268,7 +268,7 @@
 {
 	/// Write values of input ports to inPatch's children ///
 	//TODO: rename ivarInputPorts!
-	for (WMPort *port in [inPatch ivarInputPorts]) {
+	for (WMPort *port in [inPatch inputPorts]) {
 		if (port.originalPort) {
 			[port.originalPort takeValueFromPort:port];
 		}
@@ -281,7 +281,7 @@
 	BOOL success = YES;
 	for (WMPatch *patch in ordering) {
 		//Write the values of the input ports from the output ports of the connections
-		for (WMPort *inputPort in [patch ivarInputPorts]) {
+		for (WMPort *inputPort in [patch inputPorts]) {
 			//TODO: keep a record of what connections are connected to what ports for efficency here
 			//Find a connection to this input port
 			WMConnection *connection = [self connectionToInputPort:inputPort ofNode:patch inParent:inPatch];
@@ -326,7 +326,7 @@
 
 	
 	/// Write values of output ports from inPatch's children ///
-	for (WMPort *port in [inPatch ivarOutputPorts]) {
+	for (WMPort *port in [inPatch outputPorts]) {
 		if (port.originalPort) {
 			[port takeValueFromPort:port.originalPort];
 		}
