@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		49A5253113D169C9004EC7F6 /* WMPatchPlugStripView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A5253013D169C9004EC7F6 /* WMPatchPlugStripView.m */; };
 		49F0595113D15F640056C506 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595013D15F640056C506 /* UIKit.framework */; };
 		49F0595313D15F640056C506 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595213D15F640056C506 /* Foundation.framework */; };
 		49F0595513D15F640056C506 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595413D15F640056C506 /* CoreGraphics.framework */; };
@@ -37,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		49A5252F13D169C9004EC7F6 /* WMPatchPlugStripView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchPlugStripView.h; sourceTree = "<group>"; };
+		49A5253013D169C9004EC7F6 /* WMPatchPlugStripView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPatchPlugStripView.m; sourceTree = "<group>"; };
 		49F0594C13D15F640056C506 /* WMEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WMEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49F0595013D15F640056C506 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		49F0595213D15F640056C506 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -127,6 +130,8 @@
 				49F0596813D15F640056C506 /* WMEditViewController.xib */,
 				49F0598913D161090056C506 /* WMPatchView.h */,
 				49F0598A13D161090056C506 /* WMPatchView.m */,
+				49A5252F13D169C9004EC7F6 /* WMPatchPlugStripView.h */,
+				49A5253013D169C9004EC7F6 /* WMPatchPlugStripView.m */,
 				49F0599513D1615C0056C506 /* CGRoundRect.h */,
 				49F0599413D1615C0056C506 /* CGRoundRect.c */,
 				49F0595713D15F640056C506 /* Supporting Files */,
@@ -278,6 +283,7 @@
 				49F0596713D15F640056C506 /* WMEditViewController.m in Sources */,
 				49F0598B13D1610A0056C506 /* WMPatchView.m in Sources */,
 				49F0599613D1615C0056C506 /* CGRoundRect.c in Sources */,
+				49A5253113D169C9004EC7F6 /* WMPatchPlugStripView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,6 +383,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMEdit/WMEdit-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "WMEdit/WMEdit-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -390,6 +397,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMEdit/WMEdit-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "WMEdit/WMEdit-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALIDATE_PRODUCT = YES;
@@ -462,6 +470,7 @@
 				49F0598513D15F640056C506 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		49F0598613D15F640056C506 /* Build configuration list for PBXNativeTarget "WMEditTests" */ = {
 			isa = XCConfigurationList;
@@ -470,6 +479,7 @@
 				49F0598813D15F640056C506 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

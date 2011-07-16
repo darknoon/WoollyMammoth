@@ -7,10 +7,14 @@
 //
 
 #import "WMPatchView.h"
-
+#import "WMPatchPlugStripView.h"
 #import "CGRoundRect.h"
 
-@implementation WMPatchView
+@implementation WMPatchView {
+	WMPatchPlugStripView *inputPlugStrip;
+	WMPatchPlugStripView *outputPlugStrip;
+}
+
 @synthesize name;
 @synthesize dragging;
 @synthesize draggable;
@@ -23,6 +27,14 @@
 	self.opaque = NO;
 	self.draggable = YES;
 	
+	inputPlugStrip = [[WMPatchPlugStripView alloc] initWithFrame:CGRectZero];
+	inputPlugStrip.inputCount = 3;
+	[self addSubview:inputPlugStrip];
+	
+	outputPlugStrip = [[WMPatchPlugStripView alloc] initWithFrame:CGRectZero];
+	outputPlugStrip.inputCount = 2;
+	[self addSubview:outputPlugStrip];
+	
     return self;
 }
 
@@ -30,6 +42,15 @@
 {
 	[name release];
     [super dealloc];
+}
+
+- (void)layoutSubviews;
+{
+	inputPlugStrip.frame = (CGRect){.origin.x = 20.f, .origin.y = 0};
+	[inputPlugStrip sizeToFit];
+
+	outputPlugStrip.frame = (CGRect){.origin.x = 20.f, .origin.y = self.bounds.size.height - 20.f};
+	[outputPlugStrip sizeToFit];
 }
 
 - (void)drawRect:(CGRect)rect
@@ -43,7 +64,8 @@
 	CGContextAddRoundRect(ctx, CGRectInset(self.bounds, 0.5f, 0.5f), 9.0f);
 	CGContextStrokePath(ctx);
 	
-	[self.name drawInRect:self.bounds withFont:[UIFont boldSystemFontOfSize:14.f] lineBreakMode:UILineBreakModeMiddleTruncation alignment:UITextAlignmentCenter];
+	CGRect labelFrame = UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){.top = 40.f, .bottom = 30.f});
+	[self.name drawInRect:labelFrame withFont:[UIFont boldSystemFontOfSize:14.f] lineBreakMode:UILineBreakModeMiddleTruncation alignment:UITextAlignmentCenter];
 }
 
 
