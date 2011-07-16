@@ -28,6 +28,17 @@
     return 10 * clampedSpeed; // 0 - 10 seconds
 }
 
+
+- (void)setDefaultValues {
+    inputSpeed.value = 0.3; // 3 seconds
+}
+- (BOOL)setPlistState:(id)inPlist {
+    BOOL value = [super setPlistState:inPlist];
+    if (!inPlist) [self setDefaultValues];
+    return value;
+}
+
+
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
     double secondsUntilNextPull = [self timeForSpeed];
