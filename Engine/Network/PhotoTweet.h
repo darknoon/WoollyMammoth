@@ -11,6 +11,7 @@
 
 @interface PhotoTweet : NSObject
 @property (nonatomic, retain) NSMutableDictionary *tweet;
+@property (nonatomic, retain) UIImage *image;
 
 
 + (PhotoTweet *)photoTweetWithDictionary:(NSMutableDictionary *)d;

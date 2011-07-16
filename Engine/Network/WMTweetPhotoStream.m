@@ -18,7 +18,7 @@
 - (BOOL)setup:(WMEAGLContext *)context;
 {
     [TweetServerCommunicator commmunicator];
-    
+    return YES;
 }
 
 /* clamp 0 - 1 and return a decent time in seconds */
