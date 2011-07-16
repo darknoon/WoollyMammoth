@@ -1,0 +1,477 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		49F0595113D15F640056C506 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595013D15F640056C506 /* UIKit.framework */; };
+		49F0595313D15F640056C506 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595213D15F640056C506 /* Foundation.framework */; };
+		49F0595513D15F640056C506 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595413D15F640056C506 /* CoreGraphics.framework */; };
+		49F0595B13D15F640056C506 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49F0595913D15F640056C506 /* InfoPlist.strings */; };
+		49F0595E13D15F640056C506 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F0595D13D15F640056C506 /* main.m */; };
+		49F0596113D15F640056C506 /* WMEditAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F0596013D15F640056C506 /* WMEditAppDelegate.m */; };
+		49F0596413D15F640056C506 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49F0596213D15F640056C506 /* MainWindow.xib */; };
+		49F0596713D15F640056C506 /* WMEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F0596613D15F640056C506 /* WMEditViewController.m */; };
+		49F0596A13D15F640056C506 /* WMEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49F0596813D15F640056C506 /* WMEditViewController.xib */; };
+		49F0597113D15F640056C506 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595013D15F640056C506 /* UIKit.framework */; };
+		49F0597213D15F640056C506 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595213D15F640056C506 /* Foundation.framework */; };
+		49F0597313D15F640056C506 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595413D15F640056C506 /* CoreGraphics.framework */; };
+		49F0597B13D15F640056C506 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49F0597913D15F640056C506 /* InfoPlist.strings */; };
+		49F0597E13D15F640056C506 /* WMEditTests.h in Resources */ = {isa = PBXBuildFile; fileRef = 49F0597D13D15F640056C506 /* WMEditTests.h */; };
+		49F0598013D15F640056C506 /* WMEditTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F0597F13D15F640056C506 /* WMEditTests.m */; };
+		49F0598B13D1610A0056C506 /* WMPatchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F0598A13D161090056C506 /* WMPatchView.m */; };
+		49F0599613D1615C0056C506 /* CGRoundRect.c in Sources */ = {isa = PBXBuildFile; fileRef = 49F0599413D1615C0056C506 /* CGRoundRect.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		49F0597413D15F640056C506 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49F0594313D15F640056C506 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 49F0594B13D15F640056C506;
+			remoteInfo = WMEdit;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		49F0594C13D15F640056C506 /* WMEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WMEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		49F0595013D15F640056C506 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		49F0595213D15F640056C506 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		49F0595413D15F640056C506 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		49F0595813D15F640056C506 /* WMEdit-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WMEdit-Info.plist"; sourceTree = "<group>"; };
+		49F0595A13D15F640056C506 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		49F0595C13D15F640056C506 /* WMEdit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WMEdit-Prefix.pch"; sourceTree = "<group>"; };
+		49F0595D13D15F640056C506 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		49F0595F13D15F640056C506 /* WMEditAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WMEditAppDelegate.h; sourceTree = "<group>"; };
+		49F0596013D15F640056C506 /* WMEditAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WMEditAppDelegate.m; sourceTree = "<group>"; };
+		49F0596313D15F640056C506 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainWindow.xib; sourceTree = "<group>"; };
+		49F0596513D15F640056C506 /* WMEditViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WMEditViewController.h; sourceTree = "<group>"; };
+		49F0596613D15F640056C506 /* WMEditViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WMEditViewController.m; sourceTree = "<group>"; };
+		49F0596913D15F640056C506 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/WMEditViewController.xib; sourceTree = "<group>"; };
+		49F0597013D15F640056C506 /* WMEditTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WMEditTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		49F0597813D15F640056C506 /* WMEditTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WMEditTests-Info.plist"; sourceTree = "<group>"; };
+		49F0597A13D15F640056C506 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		49F0597C13D15F640056C506 /* WMEditTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WMEditTests-Prefix.pch"; sourceTree = "<group>"; };
+		49F0597D13D15F640056C506 /* WMEditTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WMEditTests.h; sourceTree = "<group>"; };
+		49F0597F13D15F640056C506 /* WMEditTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WMEditTests.m; sourceTree = "<group>"; };
+		49F0598913D161090056C506 /* WMPatchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchView.h; sourceTree = "<group>"; };
+		49F0598A13D161090056C506 /* WMPatchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPatchView.m; sourceTree = "<group>"; };
+		49F0599413D1615C0056C506 /* CGRoundRect.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = CGRoundRect.c; sourceTree = "<group>"; };
+		49F0599513D1615C0056C506 /* CGRoundRect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGRoundRect.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		49F0594913D15F640056C506 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49F0595113D15F640056C506 /* UIKit.framework in Frameworks */,
+				49F0595313D15F640056C506 /* Foundation.framework in Frameworks */,
+				49F0595513D15F640056C506 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		49F0596C13D15F640056C506 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49F0597113D15F640056C506 /* UIKit.framework in Frameworks */,
+				49F0597213D15F640056C506 /* Foundation.framework in Frameworks */,
+				49F0597313D15F640056C506 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		49F0594113D15F640056C506 = {
+			isa = PBXGroup;
+			children = (
+				49F0595613D15F640056C506 /* WMEdit */,
+				49F0597613D15F640056C506 /* WMEditTests */,
+				49F0594F13D15F640056C506 /* Frameworks */,
+				49F0594D13D15F640056C506 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		49F0594D13D15F640056C506 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				49F0594C13D15F640056C506 /* WMEdit.app */,
+				49F0597013D15F640056C506 /* WMEditTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		49F0594F13D15F640056C506 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				49F0595013D15F640056C506 /* UIKit.framework */,
+				49F0595213D15F640056C506 /* Foundation.framework */,
+				49F0595413D15F640056C506 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		49F0595613D15F640056C506 /* WMEdit */ = {
+			isa = PBXGroup;
+			children = (
+				49F0595F13D15F640056C506 /* WMEditAppDelegate.h */,
+				49F0596013D15F640056C506 /* WMEditAppDelegate.m */,
+				49F0596213D15F640056C506 /* MainWindow.xib */,
+				49F0596513D15F640056C506 /* WMEditViewController.h */,
+				49F0596613D15F640056C506 /* WMEditViewController.m */,
+				49F0596813D15F640056C506 /* WMEditViewController.xib */,
+				49F0598913D161090056C506 /* WMPatchView.h */,
+				49F0598A13D161090056C506 /* WMPatchView.m */,
+				49F0599513D1615C0056C506 /* CGRoundRect.h */,
+				49F0599413D1615C0056C506 /* CGRoundRect.c */,
+				49F0595713D15F640056C506 /* Supporting Files */,
+			);
+			path = WMEdit;
+			sourceTree = "<group>";
+		};
+		49F0595713D15F640056C506 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				49F0595813D15F640056C506 /* WMEdit-Info.plist */,
+				49F0595913D15F640056C506 /* InfoPlist.strings */,
+				49F0595C13D15F640056C506 /* WMEdit-Prefix.pch */,
+				49F0595D13D15F640056C506 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		49F0597613D15F640056C506 /* WMEditTests */ = {
+			isa = PBXGroup;
+			children = (
+				49F0597D13D15F640056C506 /* WMEditTests.h */,
+				49F0597F13D15F640056C506 /* WMEditTests.m */,
+				49F0597713D15F640056C506 /* Supporting Files */,
+			);
+			path = WMEditTests;
+			sourceTree = "<group>";
+		};
+		49F0597713D15F640056C506 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				49F0597813D15F640056C506 /* WMEditTests-Info.plist */,
+				49F0597913D15F640056C506 /* InfoPlist.strings */,
+				49F0597C13D15F640056C506 /* WMEditTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		49F0594B13D15F640056C506 /* WMEdit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 49F0598313D15F640056C506 /* Build configuration list for PBXNativeTarget "WMEdit" */;
+			buildPhases = (
+				49F0594813D15F640056C506 /* Sources */,
+				49F0594913D15F640056C506 /* Frameworks */,
+				49F0594A13D15F640056C506 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WMEdit;
+			productName = WMEdit;
+			productReference = 49F0594C13D15F640056C506 /* WMEdit.app */;
+			productType = "com.apple.product-type.application";
+		};
+		49F0596F13D15F640056C506 /* WMEditTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 49F0598613D15F640056C506 /* Build configuration list for PBXNativeTarget "WMEditTests" */;
+			buildPhases = (
+				49F0596B13D15F640056C506 /* Sources */,
+				49F0596C13D15F640056C506 /* Frameworks */,
+				49F0596D13D15F640056C506 /* Resources */,
+				49F0596E13D15F640056C506 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				49F0597513D15F640056C506 /* PBXTargetDependency */,
+			);
+			name = WMEditTests;
+			productName = WMEditTests;
+			productReference = 49F0597013D15F640056C506 /* WMEditTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		49F0594313D15F640056C506 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				ORGANIZATIONNAME = Darknoon;
+			};
+			buildConfigurationList = 49F0594613D15F640056C506 /* Build configuration list for PBXProject "WMEdit" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 49F0594113D15F640056C506;
+			productRefGroup = 49F0594D13D15F640056C506 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				49F0594B13D15F640056C506 /* WMEdit */,
+				49F0596F13D15F640056C506 /* WMEditTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		49F0594A13D15F640056C506 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49F0595B13D15F640056C506 /* InfoPlist.strings in Resources */,
+				49F0596413D15F640056C506 /* MainWindow.xib in Resources */,
+				49F0596A13D15F640056C506 /* WMEditViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		49F0596D13D15F640056C506 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49F0597B13D15F640056C506 /* InfoPlist.strings in Resources */,
+				49F0597E13D15F640056C506 /* WMEditTests.h in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		49F0596E13D15F640056C506 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		49F0594813D15F640056C506 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49F0595E13D15F640056C506 /* main.m in Sources */,
+				49F0596113D15F640056C506 /* WMEditAppDelegate.m in Sources */,
+				49F0596713D15F640056C506 /* WMEditViewController.m in Sources */,
+				49F0598B13D1610A0056C506 /* WMPatchView.m in Sources */,
+				49F0599613D1615C0056C506 /* CGRoundRect.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		49F0596B13D15F640056C506 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49F0598013D15F640056C506 /* WMEditTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		49F0597513D15F640056C506 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 49F0594B13D15F640056C506 /* WMEdit */;
+			targetProxy = 49F0597413D15F640056C506 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		49F0595913D15F640056C506 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				49F0595A13D15F640056C506 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		49F0596213D15F640056C506 /* MainWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				49F0596313D15F640056C506 /* en */,
+			);
+			name = MainWindow.xib;
+			sourceTree = "<group>";
+		};
+		49F0596813D15F640056C506 /* WMEditViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				49F0596913D15F640056C506 /* en */,
+			);
+			name = WMEditViewController.xib;
+			sourceTree = "<group>";
+		};
+		49F0597913D15F640056C506 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				49F0597A13D15F640056C506 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		49F0598113D15F640056C506 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		49F0598213D15F640056C506 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Release;
+		};
+		49F0598413D15F640056C506 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WMEdit/WMEdit-Prefix.pch";
+				INFOPLIST_FILE = "WMEdit/WMEdit-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		49F0598513D15F640056C506 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WMEdit/WMEdit-Prefix.pch";
+				INFOPLIST_FILE = "WMEdit/WMEdit-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALIDATE_PRODUCT = YES;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		49F0598713D15F640056C506 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WMEdit.app/WMEdit";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WMEditTests/WMEditTests-Prefix.pch";
+				INFOPLIST_FILE = "WMEditTests/WMEditTests-Info.plist";
+				OTHER_LDFLAGS = (
+					"-framework",
+					SenTestingKit,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		49F0598813D15F640056C506 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WMEdit.app/WMEdit";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WMEditTests/WMEditTests-Prefix.pch";
+				INFOPLIST_FILE = "WMEditTests/WMEditTests-Info.plist";
+				OTHER_LDFLAGS = (
+					"-framework",
+					SenTestingKit,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		49F0594613D15F640056C506 /* Build configuration list for PBXProject "WMEdit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				49F0598113D15F640056C506 /* Debug */,
+				49F0598213D15F640056C506 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		49F0598313D15F640056C506 /* Build configuration list for PBXNativeTarget "WMEdit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				49F0598413D15F640056C506 /* Debug */,
+				49F0598513D15F640056C506 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		49F0598613D15F640056C506 /* Build configuration list for PBXNativeTarget "WMEditTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				49F0598713D15F640056C506 /* Debug */,
+				49F0598813D15F640056C506 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 49F0594313D15F640056C506 /* Project object */;
+}
