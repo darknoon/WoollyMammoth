@@ -9,23 +9,26 @@
 #import "WMPatchView.h"
 #import "WMPatchPlugStripView.h"
 #import "CGRoundRect.h"
+#import "WMPatch.h"
 
 @implementation WMPatchView {
 	WMPatchPlugStripView *inputPlugStrip;
 	WMPatchPlugStripView *outputPlugStrip;
+	WMPatch *patch;
 }
 
-@synthesize name;
 @synthesize dragging;
 @synthesize draggable;
 
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithPatch:(WMPatch *)inPatch;
 {
-    self = [super initWithFrame:frame];
+	self = [self initWithFrame:CGRectZero];
 	if (!self) return nil;
 	
 	self.opaque = NO;
 	self.draggable = YES;
+	
+	patch = [inPatch retain];
 	
 	inputPlugStrip = [[WMPatchPlugStripView alloc] initWithFrame:CGRectZero];
 	inputPlugStrip.inputCount = 3;
@@ -35,13 +38,24 @@
 	outputPlugStrip.inputCount = 2;
 	[self addSubview:outputPlugStrip];
 	
+	UIGestureRecognizer *inputRecognizer = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(inputPlugsPan:)] autorelease];
+	[inputPlugStrip addGestureRecognizer:inputRecognizer];
+
+	UIGestureRecognizer *outputRecognizer = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(outputPlugsPan:)] autorelease];
+	[outputPlugStrip addGestureRecognizer:outputRecognizer];
+
     return self;
 }
 
 - (void)dealloc
 {
-	[name release];
+	[patch release];
     [super dealloc];
+}
+
+- (WMPatch *)patch;
+{
+	return [[patch retain] autorelease];
 }
 
 - (void)layoutSubviews;
@@ -51,6 +65,13 @@
 
 	outputPlugStrip.frame = (CGRect){.origin.x = 20.f, .origin.y = self.bounds.size.height - 20.f};
 	[outputPlugStrip sizeToFit];
+}
+
+- (CGSize)sizeThatFits:(CGSize)size;
+{
+	size.width = [inputPlugStrip sizeThatFits:CGSizeZero].width + 40.f;
+	size.height = 68.f;
+	return size;
 }
 
 - (void)drawRect:(CGRect)rect
@@ -65,7 +86,17 @@
 	CGContextStrokePath(ctx);
 	
 	CGRect labelFrame = UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){.top = 40.f, .bottom = 30.f});
-	[self.name drawInRect:labelFrame withFont:[UIFont boldSystemFontOfSize:14.f] lineBreakMode:UILineBreakModeMiddleTruncation alignment:UITextAlignmentCenter];
+	[self.patch.key drawInRect:labelFrame withFont:[UIFont boldSystemFontOfSize:14.f] lineBreakMode:UILineBreakModeMiddleTruncation alignment:UITextAlignmentCenter];
+}
+
+- (void)inputPlugsPan:(UIPanGestureRecognizer *)inR;
+{
+	NSLog(@"inputPlugsPan: %d", inR.state);
+}
+
+- (void)outputPlugsPan:(UIPanGestureRecognizer *)inR;
+{
+	
 }
 
 
@@ -85,6 +116,7 @@
 		center.y += location.y - previous.y;
 		
 		self.center = center;
+		self.patch.editorPosition = center;
 	}
 }
 

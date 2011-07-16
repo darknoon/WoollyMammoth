@@ -10,10 +10,39 @@
 
 #import "WMPatchView.h"
 
-@implementation WMEditViewController
+#import "WMPatchConnectionsView.h"
+
+#import "WMGraphEditView.h"
+#import "WMPatch.h"
+
+@implementation WMEditViewController {
+	int keycnt; //TODO: better unique key system
+	NSMutableDictionary *patchViewsByKey;
+	
+	WMPatch *rootPatch;
+}
+@synthesize graphView;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil;
+{
+	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+	if (!self) return nil;
+	
+	patchViewsByKey = [[NSMutableDictionary alloc] init];
+	rootPatch = [[WMPatch alloc] initWithPlistRepresentation:nil];
+	
+	return self;
+}
+
+- (void)awakeFromNib;
+{
+	patchViewsByKey = [[NSMutableDictionary alloc] init];
+	rootPatch = [[WMPatch alloc] initWithPlistRepresentation:nil];
+}
 
 - (void)dealloc
 {
+	[graphView release];
     [super dealloc];
 }
 
@@ -33,18 +62,26 @@
 	
 	UILongPressGestureRecognizer *longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
 	[self.view addGestureRecognizer:longPressRecognizer];
+	
+	graphView.rootPatch = rootPatch;
 }
 
 - (void)addNodeAtLocation:(CGPoint)inPoint;
 {
-	WMPatchView *newNodeView = [[[WMPatchView alloc] initWithFrame:(CGRect){.origin.x = inPoint.x - 100, .origin.y = inPoint.y - 50, .size.width = 200, .size.height = 100}] autorelease];
-	newNodeView.name = @"blah";
-	[self.view addSubview:newNodeView];
+	keycnt++;
+	
+	NSString *key = [NSString stringWithFormat:@"node-%d", keycnt];
+		
+	WMPatch *patch = [[[WMPatch alloc] initWithPlistRepresentation:nil] autorelease];
+	patch.key = key;
+	patch.editorPosition = inPoint;
+	
+	[graphView addPatch:patch];
 }
 
 - (void)longPress:(UILongPressGestureRecognizer *)inR;
 {
-	if (inR.state == UIGestureRecognizerStateRecognized) {
+	if (inR.state == UIGestureRecognizerStateBegan) {
 		[self addNodeAtLocation:[inR locationInView:self.view]];
 	}
 }
@@ -53,7 +90,7 @@
 {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+	self.graphView = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

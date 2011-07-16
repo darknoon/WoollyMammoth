@@ -31,10 +31,18 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 }
 @end
 
+
+@interface WMPatch ()
+
+@property (nonatomic) CGPoint editorPosition;
+
+@end
+
 @implementation WMPatch
 @synthesize connections;
 @synthesize children;
 @synthesize key;
+@synthesize editorPosition;
 
 + (NSMutableDictionary *)_classMap;
 {
@@ -198,26 +206,18 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 
 - (void)createChildrenWithState:(NSDictionary *)state;
 {
-	
 	NSArray *plistChildren = [state objectForKey:WMPatchChildrenPlistName];
-	NSMutableArray *mutableChildren = [NSMutableArray array];
-	NSMutableDictionary *mutableChildrenByKey = [NSMutableDictionary dictionary];
 	for (NSDictionary *childDictionary in plistChildren) {
 		WMPatch *child = [WMPatch patchWithPlistRepresentation:childDictionary];
 		if (child) {
-			[mutableChildren addObject:child];
-			[mutableChildrenByKey setObject:child forKey:child.key];
+			[self addChild:child];
 		}
 	}
-	
-	children = [mutableChildren copy];
-	childrenByKey = [mutableChildrenByKey copy];	
 }
 
 - (void)createConnectionsWithState:(NSDictionary *)state;
 {
 	NSDictionary *plistConnections = [state objectForKey:WMPatchConnectionsPlistName];
-	NSMutableArray *connectionsMutable = [NSMutableArray array];
 	for (NSString *connectionName in plistConnections) {
 		NSDictionary *connectionDictionary = [plistConnections objectForKey:connectionName];
 		WMConnection *connection = [[WMConnection alloc] init];
@@ -226,10 +226,9 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 		connection.sourcePort = [connectionDictionary objectForKey:@"sourcePort"];
 		connection.destinationNode = [connectionDictionary objectForKey:@"destinationNode"];
 		connection.destinationPort = [connectionDictionary objectForKey:@"destinationPort"];
-		[connectionsMutable addObject: connection];
+		[connections addObject: connection];
 		[connection release];
 	}
-	connections = [connectionsMutable copy];
 }
 
 
@@ -281,10 +280,13 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 {
 	self = [super init];
 	if (!self) return nil;
-	
-	
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	children = [[NSMutableArray alloc] init];
+	childrenByKey = [[NSMutableDictionary alloc] init];
+	connections = [[NSMutableArray alloc] init];
+	
 	self.key = [inPlist objectForKey:WMPatchKeyPlistName];
 	
 	outputPorts = [[NSMutableArray alloc] init];
@@ -461,6 +463,32 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 	return descriptionRecursive;
 }
 
+
+@end
+
+@implementation WMPatch (WMPatch_Editor)
+
+- (void)addChild:(WMPatch *)inPatch;
+{
+	[children addObject:inPatch];
+	[childrenByKey setObject:inPatch forKey:inPatch.key];
+}
+
+- (void)addConnectionFromPort:(NSString *)fromPort ofPatch:(NSString *)fromPatch toPort:(NSString *)toPort ofPatch:(NSString *)toPatch;
+{
+	NSMutableArray *connectionsMutable = [NSMutableArray arrayWithArray:connections];
+	
+	WMConnection *connection = [[WMConnection alloc] init];
+	connection.sourceNode = fromPatch;
+	connection.sourcePort = fromPort;
+	connection.destinationNode = toPatch;
+	connection.destinationPort = toPort;
+
+	[connectionsMutable addObject:connection];
+	
+	[connections release];
+	connections = [connectionsMutable copy];
+}
 
 @end
 

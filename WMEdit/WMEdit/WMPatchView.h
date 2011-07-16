@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@class WMPatch;
 
 @interface WMPatchView : UIView
 
 @property BOOL dragging;
 @property BOOL draggable;
 
+@property (nonatomic, readonly) WMPatch *patch;
 
-@property (nonatomic, retain) NSString *name;
+- (id)initWithPatch:(WMPatch *)inPatch;
 
 @end

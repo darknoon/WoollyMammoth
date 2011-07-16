@@ -29,9 +29,9 @@ typedef enum {
 	//TODO: QCBooleanPort system_inputEnable;
 	
 	NSString *key;
-    NSArray *connections;
-	NSArray *children;
-	NSDictionary *childrenByKey;
+    NSMutableArray *connections;
+	NSMutableArray *children;
+	NSMutableDictionary *childrenByKey;
 	id userInfo;
 	
 	WMBooleanPort *_inputEnable;
@@ -42,7 +42,7 @@ typedef enum {
 	
 	//Render
 	CFAbsoluteTime lastExecutionTime;
-	
+
 }
 
 //Will pick the correct patch class to represent this object
@@ -86,3 +86,14 @@ typedef enum {
 - (void)cleanup:(WMEAGLContext *)context;
 
 @end
+
+
+@interface WMPatch (WMPatch_Editor)
+@property (nonatomic) CGPoint editorPosition;
+
+- (void)addChild:(WMPatch *)inPatch;
+
+- (void)addConnectionFromPort:(NSString *)inPort ofPatch:(NSString *)fromPatch toPort:(NSString *)toPort ofPatch:(NSString *)toPatch;
+
+@end
+

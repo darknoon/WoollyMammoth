@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WMEditViewController : UIViewController {}
+@class WMGraphEditView;
+@interface WMEditViewController : UIViewController
+
+@property IBOutlet (nonatomic, retain) WMGraphEditView *graphView;
 
 @end

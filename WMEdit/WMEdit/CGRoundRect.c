@@ -1,11 +1,3 @@
-/*
- *  CGRoundRect.c
- *  yap-iphone
- *
- *  Created by Andrew Pouliot on 9/15/10.
- *  Copyright 2010 Yap.tv, Inc. All rights reserved.
- *
- */
 
 #include "CGRoundRect.h"
 #include "math.h"
