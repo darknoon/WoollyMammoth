@@ -21,9 +21,12 @@
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-
+	
+	patchViews = [[NSMutableArray alloc] init];
 	patchConnectionsView = [[WMPatchConnectionsView alloc] initWithFrame:self.bounds];	
+	patchConnectionsView.rootPatch = self.rootPatch;
 	patchConnectionsView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	patchConnectionsView.graphView = self;
 	[self addSubview:patchConnectionsView];
 	
 	return self;
@@ -31,11 +34,22 @@
 
 - (void)awakeFromNib;
 {
+	patchViews = [[NSMutableArray alloc] init];
 	patchConnectionsView = [[WMPatchConnectionsView alloc] initWithFrame:self.bounds];
 	patchConnectionsView.rootPatch = self.rootPatch;
 	patchConnectionsView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	patchConnectionsView.graphView = self;
 	[self addSubview:patchConnectionsView];
 
+}
+
+
+- (void)dealloc
+{
+	[rootPatch release];
+	[patchViews release];
+	[patchConnectionsView release];
+    [super dealloc];
 }
 
 - (void)updateConnectionPositions;
@@ -49,6 +63,7 @@
 	WMPatchView *newNodeView = [[[WMPatchView alloc] initWithPatch:inPatch] autorelease];	
 	newNodeView.graphView = self;
 	[self addSubview:newNodeView];
+	[patchViews addObject:newNodeView];
 	
 	[inPatch addObserver:self forKeyPath:@"editorPosition" options:NSKeyValueObservingOptionNew context:NULL];
 	
@@ -56,11 +71,6 @@
 	newNodeView.center = inPatch.editorPosition;
 	
 	[rootPatch addChild:inPatch];
-
-	if (rootPatch.children.count == 2) {
-		//Add a connection from 
-		[rootPatch addConnectionFromPort:@"blah" ofPatch:@"node-1" toPort:@"_enable" ofPatch:@"node-2"];
-	}
 	
 	[self updateConnectionPositions];
 }
@@ -77,26 +87,63 @@
 	}
 }
 
+- (WMPatchView *)patchViewForKey:(NSString *)inKey;
+{
+	for (WMPatchView *view in patchViews) {
+		if ([view.patch.key isEqualToString:inKey]) {
+			return view;
+		}
+	}
+	return nil;
+}
+
 #pragma mark - Connection dragging
+
+- (WMPatch *)hitPatchForConnectionWithPoint:(CGPoint)inPoint inPatchView:(WMPatchView *)inView;
+{
+	for (WMPatchView *patchView in patchViews) {
+		WMPort *port = [patchView inputPortAtPoint:inPoint inView:inView];
+		if (port) {
+			return patchView.patch;
+		}
+	}
+	return nil;
+}
 
 - (void)beginDraggingConnectionFromLocation:(CGPoint)inPoint inPatchView:(WMPatchView *)inView;
 {
-	[patchConnectionsView addDraggingConnectionFromPatchView:inView];
+	WMPort *startPort = [inView outputPortAtPoint:inPoint inView:inView];
+	NSLog(@"start dragging from port: %@ inView: %@ - %@", startPort, inView, inView.patch);
+	if (!startPort) return;
+	[patchConnectionsView addDraggingConnectionFromPatchView:inView port:startPort];
 }
 
 - (void)continueDraggingConnectionWithLocation:(CGPoint)inPoint inPatchView:(WMPatchView *)inView;
 {
+	WMPatch *hitPatch = [self hitPatchForConnectionWithPoint:inPoint inPatchView:inView];
+	if (hitPatch) {
+		WMPort *hitPort = [inView outputPortAtPoint:inPoint inView:inView];
+		
+		NSLog(@"touching port: %@", hitPort);
+	} else {
+		NSLog(@"not touching port");
+	}
+
 	[patchConnectionsView setConnectionEndpoint:inPoint fromPatchView:inView];
 }
 
 - (void)endDraggingConnectionWithLocation:(CGPoint)inPoint inPatchView:(WMPatchView *)inView;
 {
+	//Did we connect?
+	WMPatch *hitPatch = [self hitPatchForConnectionWithPoint:inPoint inPatchView:inView];
+	if (hitPatch) {
+		WMPort *hitPort = [inView outputPortAtPoint:inPoint inView:inView];
+		
+		if (hitPatch) {
+			[rootPatch addConnectionFromPort:[(WMPort *)[inView.patch.outputPorts objectAtIndex:0] key] ofPatch:inView.patch.key toPort:hitPort.key ofPatch:hitPatch.key];
+		}
+	}
 	[patchConnectionsView removeDraggingConnectionFromPatchView:inView];
+	[patchConnectionsView reloadAllConnections];
 }
-
-- (void)dealloc
-{
-    [super dealloc];
-}
-
 @end

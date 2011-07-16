@@ -10,6 +10,7 @@
 
 @class WMGraphEditView;
 @class WMPatch;
+@class WMPort;
 
 @interface WMPatchView : UIView
 
@@ -21,5 +22,11 @@
 @property (nonatomic, readonly) WMPatch *patch;
 
 - (id)initWithPatch:(WMPatch *)inPatch;
+
+- (WMPort *)inputPortAtPoint:(CGPoint)inPoint inView:(UIView *)inView;
+- (WMPort *)outputPortAtPoint:(CGPoint)inPoint inView:(UIView *)inView;
+
+- (CGPoint)pointForInputPort:(WMPort *)inputPort;
+- (CGPoint)pointForOutputPort:(WMPort *)outputPort;
 
 @end

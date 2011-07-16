@@ -11,6 +11,7 @@
 #import "WMPatch.h"
 #import "WMConnection.h"
 #import "WMConnectionView.h"
+#import "WMGraphEditView.h"
 
 #import "WMDraggingConnection.h"
 
@@ -21,6 +22,7 @@
 	NSMutableDictionary *draggingConnectionViewsByPatchKey;
 }
 @synthesize rootPatch;
+@synthesize graphView;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -51,20 +53,28 @@
 	for (WMConnection *connection in [rootPatch connections]) {
 		WMConnectionView *view = [[[WMConnectionView alloc] initWithFrame:CGRectZero] autorelease];
 		
+		WMPatchView *startPatchView = [graphView patchViewForKey:connection.sourceNode];
+		WMPatchView *endPatchView = [graphView patchViewForKey:connection.destinationNode];
+		
 		WMPatch *startPatch = [rootPatch patchWithKey:connection.sourceNode];
 		WMPatch *endPatch = [rootPatch patchWithKey:connection.destinationNode];
-			
+		
+		WMPort *startPort = [startPatch outputPortWithKey:connection.sourcePort];
+		WMPort *endPort = [endPatch inputPortWithKey:connection.destinationPort];
+		
 		[self addSubview:view];
-		view.startPoint = startPatch.editorPosition;
-		view.endPoint = endPatch.editorPosition;
+		view.startPoint = [startPatchView pointForOutputPort:startPort];
+		view.endPoint = [endPatchView pointForInputPort:endPort];
 
 		[connectionViews addObject:view];
 	}	
 }
 
-- (void)addDraggingConnectionFromPatchView:(WMPatchView *)inPatch;
+- (void)addDraggingConnectionFromPatchView:(WMPatchView *)inPatch port:(WMPort *)inPort;
 {
 	WMDraggingConnection *connection = [[[WMDraggingConnection alloc] init] autorelease];
+	connection.sourceNode = inPatch.patch.key;
+	connection.sourcePort = inPort.key;
 	[draggingConnectionsByPatchKey setObject:connection forKey:inPatch.patch.key];
 	
 	WMConnectionView *view = [[[WMConnectionView alloc] initWithFrame:CGRectZero] autorelease];

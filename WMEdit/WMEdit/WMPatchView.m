@@ -74,9 +74,11 @@
 
 - (void)layoutSubviews;
 {
+	inputPlugStrip.inputCount = patch.inputPorts.count;
 	inputPlugStrip.frame = (CGRect){.origin.x = 20.f, .origin.y = 0};
 	[inputPlugStrip sizeToFit];
 
+	outputPlugStrip.inputCount = patch.outputPorts.count;
 	outputPlugStrip.frame = (CGRect){.origin.x = 20.f, .origin.y = self.bounds.size.height - 20.f};
 	[outputPlugStrip sizeToFit];
 	
@@ -150,5 +152,67 @@
 	}
 }
 
+
+#pragma mark -
+
+- (WMPort *)inputPortAtPoint:(CGPoint)inPoint inView:(UIView *)inView;
+{
+	BOOL inInputs = [inputPlugStrip pointInside:[inputPlugStrip convertPoint:inPoint fromView:inView] withEvent:nil];
+	
+	if (inInputs && patch.inputPorts.count > 0) {
+		return [patch.inputPorts objectAtIndex:0];
+		
+		CGFloat offX = (inPoint.x - leftOffset) / offsetBetweenDots;
+		int offXi = (int)roundf(offX);
+		offXi = MAX(0, MIN(offXi, patch.inputPorts.count));
+		
+		return [patch.inputPorts objectAtIndex:offXi];
+	}
+	return nil;
+}
+
+
+- (WMPort *)outputPortAtPoint:(CGPoint)inPoint inView:(UIView *)inView;
+{
+	BOOL inOutputs = [outputPlugStrip pointInside:[outputPlugStrip convertPoint:inPoint fromView:inView] withEvent:nil];
+
+	if (inOutputs && patch.outputPorts.count > 0) {
+		CGFloat offX = (inPoint.x - leftOffset) / offsetBetweenDots;
+		int offXi = (int)roundf(offX);
+		offXi = MAX((int)0, (int)MIN((int)offXi, patch.outputPorts.count - 1));
+
+		return [patch.outputPorts objectAtIndex:offXi];
+	}
+	
+	return nil;
+	
+}
+
+- (CGPoint)pointForInputPort:(WMPort *)inputPort;
+{
+	WMPort *port = [self.patch inputPortWithKey:inputPort.key];
+	if (port) {
+		NSUInteger idx = [patch.inputPorts indexOfObject:port];
+		if (idx != NSNotFound) {
+			CGPoint p = (CGPoint){.x = leftOffset + idx * offsetBetweenDots, .y = inputPlugStrip.frame.origin.y + plugstripHeight / 2.f};
+			return [self convertPoint:p toView:self.superview];
+		}
+	}
+	return patch.editorPosition;
+
+}
+
+- (CGPoint)pointForOutputPort:(WMPort *)outputPort;
+{
+	WMPort *port = [self.patch outputPortWithKey:outputPort.key];
+	if (port) {
+		NSUInteger idx = [patch.outputPorts indexOfObject:port];
+		if (idx != NSNotFound) {
+			CGPoint p = (CGPoint){.x = leftOffset + idx * offsetBetweenDots, .y = outputPlugStrip.frame.origin.y + plugstripHeight / 2.f};
+			return [self convertPoint:p toView:self.superview];
+		}
+	}
+	return patch.editorPosition;
+}
 
 @end

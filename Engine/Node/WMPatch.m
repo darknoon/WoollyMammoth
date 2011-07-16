@@ -359,12 +359,16 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 
 - (void)addInputPort:(WMPort *)inPort;
 {
+	[self willChangeValueForKey:@"inputPorts"];
 	[inputPorts addObject:inPort];
+	[self didChangeValueForKey:@"inputPorts"];
 }
 
 - (void)addOutputPort:(WMPort *)inPort;
 {
+	[self willChangeValueForKey:@"outputPorts"];
 	[outputPorts addObject:inPort];	
+	[self didChangeValueForKey:@"outputPorts"];
 }
 
 - (NSArray *)inputPorts;

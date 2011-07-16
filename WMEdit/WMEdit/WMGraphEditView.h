@@ -10,11 +10,17 @@
 
 #import "WMPatchView.h"
 
+static const CGFloat offsetBetweenDots = 15.f;
+static const CGFloat leftOffset = 15.f;
+static const CGFloat plugstripHeight = 23.f;
+
 @interface WMGraphEditView : UIView
 
 @property (nonatomic, retain) WMPatch *rootPatch;
 
 - (void)addPatch:(WMPatch *)inPatch;
+
+- (WMPatchView *)patchViewForKey:(NSString *)inKey;
 
 - (void)beginDraggingConnectionFromLocation:(CGPoint)inPoint inPatchView:(WMPatchView *)inView;
 - (void)continueDraggingConnectionWithLocation:(CGPoint)inPoint inPatchView:(WMPatchView *)inView;

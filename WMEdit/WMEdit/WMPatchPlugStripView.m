@@ -10,9 +10,7 @@
 
 #import "CGRoundRect.h"
 
-static const CGFloat offsetBetweenDots = 15.f;
-static const CGFloat leftOffset = 15.f;
-static const CGFloat plugstripHeight = 23.f;
+#import "WMGraphEditView.h"
 
 @implementation WMPatchPlugStripView
 @synthesize inputCount;

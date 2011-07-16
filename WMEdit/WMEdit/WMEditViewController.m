@@ -76,6 +76,11 @@
 	patch.key = key;
 	patch.editorPosition = inPoint;
 	
+	WMPort *outputNumberPort = [[[WMNumberPort alloc] init] autorelease];
+	outputNumberPort.key = @"blahport";
+	
+	[patch addOutputPort:outputNumberPort];
+	
 	[graphView addPatch:patch];
 }
 

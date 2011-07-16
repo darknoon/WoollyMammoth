@@ -9,16 +9,19 @@
 #import <UIKit/UIKit.h>
 
 @class WMConnection;
+@class WMPort;
+@class WMGraphEditView;
 
 #import "WMPatchView.h"
 
 @interface WMPatchConnectionsView : UIView
 
+@property (nonatomic, assign) WMGraphEditView *graphView;
 @property (nonatomic, retain) WMPatch *rootPatch;
 
 - (void)reloadAllConnections;
 
-- (void)addDraggingConnectionFromPatchView:(WMPatchView *)inPatch;
+- (void)addDraggingConnectionFromPatchView:(WMPatchView *)inPatch port:(WMPort *)inPort;
 - (void)setConnectionEndpoint:(CGPoint)inPoint fromPatchView:(WMPatchView *)inPatch;
 - (void)removeDraggingConnectionFromPatchView:(WMPatchView *)inPatch;
 
