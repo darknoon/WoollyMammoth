@@ -8,12 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-#import "WMPatch.h"
+#import "WMPatchView.h"
 
 @interface WMGraphEditView : UIView
 
 @property (nonatomic, retain) WMPatch *rootPatch;
 
 - (void)addPatch:(WMPatch *)inPatch;
+
+- (void)beginDraggingConnectionFromLocation:(CGPoint)inPoint inPatchView:(WMPatchView *)inView;
+- (void)continueDraggingConnectionWithLocation:(CGPoint)inPoint inPatchView:(WMPatchView *)inView;
+- (void)endDraggingConnectionWithLocation:(CGPoint)inPoint inPatchView:(WMPatchView *)inView;
 
 @end

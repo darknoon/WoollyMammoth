@@ -9,6 +9,7 @@
 #import "WMGraphEditView.h"
 
 #import "WMPatchConnectionsView.h"
+#import "WMPatch.h"
 #import "WMPatchView.h"
 
 @implementation WMGraphEditView {
@@ -46,6 +47,7 @@
 - (void)addPatch:(WMPatch *)inPatch;
 {
 	WMPatchView *newNodeView = [[[WMPatchView alloc] initWithPatch:inPatch] autorelease];	
+	newNodeView.graphView = self;
 	[self addSubview:newNodeView];
 	
 	[inPatch addObserver:self forKeyPath:@"editorPosition" options:NSKeyValueObservingOptionNew context:NULL];
@@ -73,6 +75,23 @@
 	if ([keyPath isEqualToString:@"editorPosition"]) {
 		[self updateConnectionPositions];
 	}
+}
+
+#pragma mark - Connection dragging
+
+- (void)beginDraggingConnectionFromLocation:(CGPoint)inPoint inPatchView:(WMPatchView *)inView;
+{
+	[patchConnectionsView addDraggingConnectionFromPatchView:inView];
+}
+
+- (void)continueDraggingConnectionWithLocation:(CGPoint)inPoint inPatchView:(WMPatchView *)inView;
+{
+	[patchConnectionsView setConnectionEndpoint:inPoint fromPatchView:inView];
+}
+
+- (void)endDraggingConnectionWithLocation:(CGPoint)inPoint inPatchView:(WMPatchView *)inView;
+{
+	[patchConnectionsView removeDraggingConnectionFromPatchView:inView];
 }
 
 - (void)dealloc

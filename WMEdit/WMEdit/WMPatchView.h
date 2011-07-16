@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@class WMGraphEditView;
 @class WMPatch;
 
 @interface WMPatchView : UIView
+
+@property (nonatomic, assign) WMGraphEditView *graphView;
 
 @property BOOL dragging;
 @property BOOL draggable;

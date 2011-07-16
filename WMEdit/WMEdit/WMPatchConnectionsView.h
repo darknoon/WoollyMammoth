@@ -10,12 +10,16 @@
 
 @class WMConnection;
 
-#import "WMPatch.h"
+#import "WMPatchView.h"
 
 @interface WMPatchConnectionsView : UIView
 
 @property (nonatomic, retain) WMPatch *rootPatch;
 
 - (void)reloadAllConnections;
+
+- (void)addDraggingConnectionFromPatchView:(WMPatchView *)inPatch;
+- (void)setConnectionEndpoint:(CGPoint)inPoint fromPatchView:(WMPatchView *)inPatch;
+- (void)removeDraggingConnectionFromPatchView:(WMPatchView *)inPatch;
 
 @end

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		49174A8913D1FA0F008B5B8D /* WMDraggingConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174A8813D1FA0F008B5B8D /* WMDraggingConnection.m */; };
 		49A5253113D169C9004EC7F6 /* WMPatchPlugStripView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A5253013D169C9004EC7F6 /* WMPatchPlugStripView.m */; };
 		49A5253513D170BD004EC7F6 /* WMPatchConnectionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A5253413D170BD004EC7F6 /* WMPatchConnectionsView.m */; };
 		49A5261413D1725E004EC7F6 /* WMStructuredBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A525C013D1725E004EC7F6 /* WMStructuredBuffer.m */; };
@@ -101,6 +102,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		49174A8713D1FA0F008B5B8D /* WMDraggingConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMDraggingConnection.h; sourceTree = "<group>"; };
+		49174A8813D1FA0F008B5B8D /* WMDraggingConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMDraggingConnection.m; sourceTree = "<group>"; };
 		49A5252F13D169C9004EC7F6 /* WMPatchPlugStripView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchPlugStripView.h; sourceTree = "<group>"; };
 		49A5253013D169C9004EC7F6 /* WMPatchPlugStripView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPatchPlugStripView.m; sourceTree = "<group>"; };
 		49A5253313D170BD004EC7F6 /* WMPatchConnectionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchConnectionsView.h; sourceTree = "<group>"; };
@@ -570,6 +573,8 @@
 				49A5253413D170BD004EC7F6 /* WMPatchConnectionsView.m */,
 				49A5285E13D17404004EC7F6 /* WMConnectionView.h */,
 				49A5285F13D17404004EC7F6 /* WMConnectionView.m */,
+				49174A8713D1FA0F008B5B8D /* WMDraggingConnection.h */,
+				49174A8813D1FA0F008B5B8D /* WMDraggingConnection.m */,
 			);
 			path = WMEdit;
 			sourceTree = "<group>";
@@ -774,6 +779,7 @@
 				49A5285D13D173B8004EC7F6 /* PGMidiFind.mm in Sources */,
 				49A5286013D17404004EC7F6 /* WMConnectionView.m in Sources */,
 				49A5286813D181E3004EC7F6 /* WMGraphEditView.m in Sources */,
+				49174A8913D1FA0F008B5B8D /* WMDraggingConnection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

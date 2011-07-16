@@ -67,6 +67,9 @@ const CGFloat lineWidth = 8.f;
 
 - (void)layoutSubviews;
 {
+	[CATransaction begin];
+	[CATransaction setDisableActions:YES];
+	
 	float radians = - atan2f(endPoint.x - startPoint.x, endPoint.y - startPoint.y);
 	float length = sqrtf( (endPoint.x - startPoint.x)*(endPoint.x - startPoint.x) + (endPoint.y - startPoint.y)*(endPoint.y - startPoint.y) );
 	
@@ -81,6 +84,8 @@ const CGFloat lineWidth = 8.f;
 	shadowLayer.anchorPoint = (CGPoint){.x = 0.5f, .y = 0.0f};
 	shadowLayer.bounds = (CGRect){.origin.x = -lineWidth, .size.width = lineWidth, .size.height = length};
 	shadowLayer.transform = CATransform3DMakeRotation(radians, 0, 0, 1);
+	
+	[CATransaction commit];
 
 }
 
