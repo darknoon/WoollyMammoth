@@ -78,6 +78,9 @@
 		49A5286313D174C6004EC7F6 /* connection-white~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49A5286213D174C6004EC7F6 /* connection-white~ipad.png */; };
 		49A5286513D17A03004EC7F6 /* connection-shadow~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49A5286413D17A03004EC7F6 /* connection-shadow~ipad.png */; };
 		49A5286813D181E3004EC7F6 /* WMGraphEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A5286713D181E2004EC7F6 /* WMGraphEditView.m */; };
+		49B0E03913D24317009F5B32 /* PhotoTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B0E03413D24317009F5B32 /* PhotoTweet.m */; };
+		49B0E03A13D24317009F5B32 /* TweetServerCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B0E03613D24317009F5B32 /* TweetServerCommunicator.m */; };
+		49B0E03B13D24317009F5B32 /* WMTweetPhotoStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B0E03813D24317009F5B32 /* WMTweetPhotoStream.m */; };
 		49F0595113D15F640056C506 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595013D15F640056C506 /* UIKit.framework */; };
 		49F0595313D15F640056C506 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595213D15F640056C506 /* Foundation.framework */; };
 		49F0595513D15F640056C506 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595413D15F640056C506 /* CoreGraphics.framework */; };
@@ -261,6 +264,12 @@
 		49A5286413D17A03004EC7F6 /* connection-shadow~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "connection-shadow~ipad.png"; sourceTree = "<group>"; };
 		49A5286613D181E2004EC7F6 /* WMGraphEditView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMGraphEditView.h; sourceTree = "<group>"; };
 		49A5286713D181E2004EC7F6 /* WMGraphEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMGraphEditView.m; sourceTree = "<group>"; };
+		49B0E03313D24317009F5B32 /* PhotoTweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoTweet.h; sourceTree = "<group>"; };
+		49B0E03413D24317009F5B32 /* PhotoTweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoTweet.m; sourceTree = "<group>"; };
+		49B0E03513D24317009F5B32 /* TweetServerCommunicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetServerCommunicator.h; sourceTree = "<group>"; };
+		49B0E03613D24317009F5B32 /* TweetServerCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TweetServerCommunicator.m; sourceTree = "<group>"; };
+		49B0E03713D24317009F5B32 /* WMTweetPhotoStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMTweetPhotoStream.h; sourceTree = "<group>"; };
+		49B0E03813D24317009F5B32 /* WMTweetPhotoStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMTweetPhotoStream.m; sourceTree = "<group>"; };
 		49F0594C13D15F640056C506 /* WMEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WMEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49F0595013D15F640056C506 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		49F0595213D15F640056C506 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -386,6 +395,7 @@
 		49A525BD13D1725E004EC7F6 /* Engine */ = {
 			isa = PBXGroup;
 			children = (
+				49B0E03213D24317009F5B32 /* Network */,
 				49A525BE13D1725E004EC7F6 /* Buffer */,
 				49A525C313D1725E004EC7F6 /* Input */,
 				49A525C613D1725E004EC7F6 /* Node */,
@@ -603,6 +613,19 @@
 				49A5286213D174C6004EC7F6 /* connection-white~ipad.png */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		49B0E03213D24317009F5B32 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				49B0E03313D24317009F5B32 /* PhotoTweet.h */,
+				49B0E03413D24317009F5B32 /* PhotoTweet.m */,
+				49B0E03513D24317009F5B32 /* TweetServerCommunicator.h */,
+				49B0E03613D24317009F5B32 /* TweetServerCommunicator.m */,
+				49B0E03713D24317009F5B32 /* WMTweetPhotoStream.h */,
+				49B0E03813D24317009F5B32 /* WMTweetPhotoStream.m */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 		49F0594113D15F640056C506 = {
@@ -991,6 +1014,9 @@
 				49174AAD13D235BD008B5B8D /* EAGLView.m in Sources */,
 				49174AAE13D235BD008B5B8D /* WMDebugViewController.m in Sources */,
 				49174AB013D235BD008B5B8D /* WMViewController.mm in Sources */,
+				49B0E03913D24317009F5B32 /* PhotoTweet.m in Sources */,
+				49B0E03A13D24317009F5B32 /* TweetServerCommunicator.m in Sources */,
+				49B0E03B13D24317009F5B32 /* WMTweetPhotoStream.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
