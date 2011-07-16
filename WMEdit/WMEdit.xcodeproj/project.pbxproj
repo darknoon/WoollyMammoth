@@ -104,6 +104,11 @@
 		80250FB213D224480031B4E7 /* OscReceivedElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80250F9B13D224480031B4E7 /* OscReceivedElements.cpp */; };
 		80250FB313D224480031B4E7 /* OscTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80250F9D13D224480031B4E7 /* OscTypes.cpp */; };
 		80BB75D613D20AD2009B5542 /* WMOsc.mm in Sources */ = {isa = PBXBuildFile; fileRef = 80BB75D513D20AD2009B5542 /* WMOsc.mm */; };
+=======
+		B472392313D2184A00DBFB08 /* TweetServerCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = B472392213D2184A00DBFB08 /* TweetServerCommunicator.m */; };
+		B472392613D2192100DBFB08 /* PhotoTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = B472392513D2192100DBFB08 /* PhotoTweet.m */; };
+		B472393113D2218A00DBFB08 /* WMTweetPhotoStream.m in Sources */ = {isa = PBXBuildFile; fileRef = B472393013D2218A00DBFB08 /* WMTweetPhotoStream.m */; };
+>>>>>>> WMTweetPhotoStream, PhotoTweet (the data and image) and TweetServerCommunicator classes
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -308,6 +313,14 @@
 		80250FB613D2258C0031B4E7 /* DoubleBufferThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DoubleBufferThread.h; path = Osc/DoubleBufferThread.h; sourceTree = "<group>"; };
 		80BB75D413D20AD2009B5542 /* WMOsc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WMOsc.h; path = Osc/WMOsc.h; sourceTree = "<group>"; };
 		80BB75D513D20AD2009B5542 /* WMOsc.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = WMOsc.mm; path = Osc/WMOsc.mm; sourceTree = "<group>"; };
+=======
+		B472392113D2184A00DBFB08 /* TweetServerCommunicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TweetServerCommunicator.h; path = Network/TweetServerCommunicator.h; sourceTree = "<group>"; };
+		B472392213D2184A00DBFB08 /* TweetServerCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TweetServerCommunicator.m; path = Network/TweetServerCommunicator.m; sourceTree = "<group>"; };
+		B472392413D2192100DBFB08 /* PhotoTweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoTweet.h; path = Network/PhotoTweet.h; sourceTree = "<group>"; };
+		B472392513D2192100DBFB08 /* PhotoTweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoTweet.m; path = Network/PhotoTweet.m; sourceTree = "<group>"; };
+		B472392F13D2218A00DBFB08 /* WMTweetPhotoStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WMTweetPhotoStream.h; path = Network/WMTweetPhotoStream.h; sourceTree = "<group>"; };
+		B472393013D2218A00DBFB08 /* WMTweetPhotoStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WMTweetPhotoStream.m; path = Network/WMTweetPhotoStream.m; sourceTree = "<group>"; };
+>>>>>>> WMTweetPhotoStream, PhotoTweet (the data and image) and TweetServerCommunicator classes
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -355,6 +368,7 @@
 		49A525BD13D1725E004EC7F6 /* Engine */ = {
 			isa = PBXGroup;
 			children = (
+				B472391F13D2180700DBFB08 /* Network */,
 				49A525BE13D1725E004EC7F6 /* Buffer */,
 				49A525C313D1725E004EC7F6 /* Input */,
 				49A525C613D1725E004EC7F6 /* Node */,
@@ -767,6 +781,19 @@
 				80250FB613D2258C0031B4E7 /* DoubleBufferThread.h */,
 			);
 			name = Osc;
+=======
+		B472391F13D2180700DBFB08 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				B472392113D2184A00DBFB08 /* TweetServerCommunicator.h */,
+				B472392213D2184A00DBFB08 /* TweetServerCommunicator.m */,
+				B472392413D2192100DBFB08 /* PhotoTweet.h */,
+				B472392513D2192100DBFB08 /* PhotoTweet.m */,
+				B472392F13D2218A00DBFB08 /* WMTweetPhotoStream.h */,
+				B472393013D2218A00DBFB08 /* WMTweetPhotoStream.m */,
+			);
+			name = Network;
+>>>>>>> WMTweetPhotoStream, PhotoTweet (the data and image) and TweetServerCommunicator classes
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -954,6 +981,11 @@
 				80250FB113D224480031B4E7 /* OscPrintReceivedElements.cpp in Sources */,
 				80250FB213D224480031B4E7 /* OscReceivedElements.cpp in Sources */,
 				80250FB313D224480031B4E7 /* OscTypes.cpp in Sources */,
+=======
+				B472392313D2184A00DBFB08 /* TweetServerCommunicator.m in Sources */,
+				B472392613D2192100DBFB08 /* PhotoTweet.m in Sources */,
+				B472393113D2218A00DBFB08 /* WMTweetPhotoStream.m in Sources */,
+>>>>>>> WMTweetPhotoStream, PhotoTweet (the data and image) and TweetServerCommunicator classes
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
