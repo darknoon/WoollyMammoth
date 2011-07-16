@@ -483,9 +483,19 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 	[childrenByKey setObject:inPatch forKey:inPatch.key];
 }
 
+
 - (void)addConnectionFromPort:(NSString *)fromPort ofPatch:(NSString *)fromPatch toPort:(NSString *)toPort ofPatch:(NSString *)toPatch;
 {
-	NSMutableArray *connectionsMutable = [NSMutableArray arrayWithArray:connections];
+	//Find an existing connection
+	WMConnection *existingConnectionToInputPort = nil;
+	for (WMConnection *connection in connections) {
+		if ([connection.destinationNode isEqualToString:toPatch] && [connection.destinationPort isEqualToString:toPort]) {
+			existingConnectionToInputPort = connection;
+		}
+	}
+	if (existingConnectionToInputPort) {
+		[connections removeObject:existingConnectionToInputPort];
+	}
 	
 	WMConnection *connection = [[WMConnection alloc] init];
 	connection.sourceNode = fromPatch;
@@ -493,10 +503,7 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 	connection.destinationNode = toPatch;
 	connection.destinationPort = toPort;
 
-	[connectionsMutable addObject:connection];
-	
-	[connections release];
-	connections = [connectionsMutable copy];
+	[connections addObject:connection];	
 }
 
 @end
