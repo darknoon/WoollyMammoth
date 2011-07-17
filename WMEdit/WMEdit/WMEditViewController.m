@@ -28,9 +28,14 @@
 	
 	WMPatch *rootPatch; 
     WMGraphEditView *graphicView;
+    
 }
 
+
 @synthesize graphView;
+@synthesize libraryButton, patchesButton;
+
+@synthesize compositionLibrary;
 
 - (void)sharedInit;
 {
@@ -74,7 +79,8 @@
 {
     [super viewDidLoad];
 	
-	UILongPressGestureRecognizer *longPressRecognizer = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]autorelease];
+	UITapGestureRecognizer *longPressRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]autorelease];
+    [longPressRecognizer setNumberOfTapsRequired:2];
 	[self.view addGestureRecognizer:longPressRecognizer];
 	
 //    UISwipeGestureRecognizer *swipe = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swiperAction:)]autorelease];
@@ -114,12 +120,7 @@
 }
 
 - (void)popupMenu:(CGPoint)origin {
-    if (addNodePopover) {
-        [addNodePopover dismissPopoverAnimated:NO];
-        [addNodePopover release];
-        addNodePopover = nil;
-    }
-    
+//    [self bringUpPatchesAction:self];
     WMPatchListTableViewController *patchList = [[WMPatchListTableViewController alloc] initWithStyle:UITableViewStylePlain];
     patchList.delegate = (id<WMPatchListTableViewControllerDelegate>)self;
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:patchList];
@@ -128,6 +129,30 @@
     [addNodePopover presentPopoverFromRect:(CGRect){.origin = addLocation} inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
+- (IBAction)bringUpPatchesAction:(id)sender {
+    if (addNodePopover) {
+        if (addNodePopover) {
+            [addNodePopover dismissPopoverAnimated:NO];
+            [addNodePopover release];
+            addNodePopover = nil;
+        }
+    } else  [self popupMenu:patchesButton.frame.origin];
+}
+
+- (IBAction)bringUpLibraryAction:(id)sender {
+    if (self.compositionLibrary) {
+        [self.compositionLibrary.view removeFromSuperview];
+        self.compositionLibrary = nil;
+    } else {
+        self.compositionLibrary = [[[WMCompositionLibraryViewController alloc] init] autorelease];
+        CGRect r = self.view.bounds;
+        UIView *v = [self.compositionLibrary view];
+        CGRect vr = v.frame;
+        vr.origin.y = r.size.height - vr.size.height;
+        v.frame = vr;
+        [self.view addSubview:v];
+    }
+}
 
 - (void)popupMenu {
     [self popupMenu:CGPointMake(self.view.bounds.size.width/3.0, self.view.bounds.size.height/2.0)];
@@ -139,12 +164,8 @@
     addNodePopover = nil;
 }
 
+
 - (void)swiperAction:(UISwipeGestureRecognizer *)gesture {
-    WMCompositionLibraryViewController *wm = [[[WMCompositionLibraryViewController alloc] init] autorelease];
-    [self checkPopover:NO];
-    addNodePopover = [[UIPopoverController alloc] initWithContentViewController:wm];
-    addLocation = [gesture locationInView:self.view];
-    [addNodePopover presentPopoverFromRect:(CGRect){.origin = addLocation} inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 - (void)longPress:(UILongPressGestureRecognizer *)inR;

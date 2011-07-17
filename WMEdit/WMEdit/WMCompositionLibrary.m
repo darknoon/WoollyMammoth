@@ -7,6 +7,8 @@
 //
 
 #import "WMCompositionLibrary.h"
+#import "WMPatch.h"
+
 
 @interface WMCompositionLibrary(myPascalLikeStuff)
 - (void)findResources;
@@ -174,11 +176,28 @@ NSString *base62FromBase10(int num)
 	return base62FromBase10(num);
 }
 
+- (NSString *)pathForThumbOfComposition:(NSString *)fullCompositionPath {
+    return [[fullCompositionPath stringByDeletingPathExtension] stringByAppendingPathExtension:@"jpg"];
+}
 
-- (BOOL)saveComposition:(id)thing {
+- (UIImage *)imageForCompositionPath:(NSString *)fullCompositionPath {
+    NSString *path = [self pathForThumbOfComposition:fullCompositionPath];
+    NSData *d = [NSData dataWithContentsOfFile:path];
+    if (d) return [UIImage imageWithData:d];
+    return [UIImage imageNamed:@"missing_effect_thumb.jpg"];
+}
+
+
+- (BOOL)saveComposition:(WMRootPatch *)root image:(UIImage *)image {
     NSString *path = [self pathForResource:[self timeAsCompactString]];
-    NSDictionary *d = [thing propertyListRepresentation];
-    return [self savePropertyList:d toFile:path];
+    NSDictionary *d = [root propertyListRepresentation];
+    if ( [self savePropertyList:d toFile:path]) {
+        path = [self pathForThumbOfComposition:path];
+        NSData *data = UIImageJPEGRepresentation(image, 0.95);
+        if (data) [data writeToFile:path atomically:YES];
+        return YES;
+    }
+    return NO;
 }
 
 

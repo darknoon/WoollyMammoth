@@ -10,13 +10,12 @@
 #import "WMCompositionLibrary.h"
 
 @implementation WMCompositionLibraryViewController
+@synthesize scrollView, compositions;
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
+- (id)init {
+    self = [super init];
+    compositions = [[WMCompositionLibrary compositionLibrary] compositions];
+    
     return self;
 }
 
@@ -43,6 +42,25 @@
 {
     [super viewDidLoad];
 
+    // grab subviews dynamically:
+    NSArray *a = [[WMCompositionLibrary compositionLibrary] compositions];
+    
+    CGFloat xOrigin = 0.0f;
+    CGFloat height = scrollView.bounds.size.height;
+    int tag = 0;
+    for (NSString *fullpath in a) {
+        UIImage *im = [[WMCompositionLibrary compositionLibrary] imageForCompositionPath:fullpath];
+        UIButton *b = [UIButton buttonWithType:UIButtonTypeCustom];
+        [b addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        b.frame = CGRectMake(xOrigin, 0.0f, height, height);
+        [b setImage:im forState:UIControlStateNormal];
+        [b setTag:tag];
+        tag++;
+        xOrigin += height;
+        [self.scrollView addSubview:b];
+    }
+    scrollView.contentSize = CGSizeMake(xOrigin, height);
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -104,7 +122,7 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
-    cell.text = [[(NSString *)[[self compostionsAsPaths] objectAtIndex:indexPath.row] lastPathComponent] stringByDeletingPathExtension];
+    cell.textLabel.text = [[(NSString *)[[self compostionsAsPaths] objectAtIndex:indexPath.row] lastPathComponent] stringByDeletingPathExtension];
     
     return cell;
 }

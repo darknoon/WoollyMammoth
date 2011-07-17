@@ -11,9 +11,17 @@
 
 #import "WMGraphEditView.h"
 
+@class WMCompositionLibraryViewController;
+
 @interface WMEditViewController : UIViewController
 
 @property (nonatomic, retain) IBOutlet WMGraphEditView *graphView;
+@property (nonatomic, retain) IBOutlet UIButton *libraryButton;
+@property (nonatomic, retain) IBOutlet UIButton *patchesButton;
+@property (nonatomic, retain) WMCompositionLibraryViewController *compositionLibrary;
 
 - (void)popupMenu;
+
+- (IBAction)bringUpPatchesAction:(id)sender;
+- (IBAction)bringUpLibraryAction:(id)sender;
 @end

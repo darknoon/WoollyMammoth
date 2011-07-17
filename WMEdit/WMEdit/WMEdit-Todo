@@ -1,6 +1,6 @@
 Bugs
 - openGl doesn't zoom
-- 
+- take image orientation when moving from uiimage to CGImageRef
 
 
 Tasks:

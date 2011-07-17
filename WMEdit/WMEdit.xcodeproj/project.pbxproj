@@ -162,6 +162,7 @@
 		B43F38B813D32B86004A6A47 /* WMCompositionLibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B43F38B613D32B86004A6A47 /* WMCompositionLibraryViewController.m */; };
 		B43F38B913D32B86004A6A47 /* WMCompositionLibraryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B43F38B713D32B86004A6A47 /* WMCompositionLibraryViewController.xib */; };
 		B43F38BB13D330ED004A6A47 /* linen.png in Resources */ = {isa = PBXBuildFile; fileRef = B43F38BA13D330ED004A6A47 /* linen.png */; };
+		B43F38BD13D358B4004A6A47 /* missing_effect_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B43F38BC13D358B4004A6A47 /* missing_effect_thumb.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -473,6 +474,7 @@
 		B43F38B613D32B86004A6A47 /* WMCompositionLibraryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMCompositionLibraryViewController.m; sourceTree = "<group>"; };
 		B43F38B713D32B86004A6A47 /* WMCompositionLibraryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMCompositionLibraryViewController.xib; sourceTree = "<group>"; };
 		B43F38BA13D330ED004A6A47 /* linen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = linen.png; sourceTree = "<group>"; };
+		B43F38BC13D358B4004A6A47 /* missing_effect_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = missing_effect_thumb.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -895,6 +897,7 @@
 			children = (
 				49752E9513D35C2000F20447 /* plug-popover-dot~ipad.png */,
 				49752E9613D35C2000F20447 /* plug-popover-highlight~ipad.png */,
+				B43F38BC13D358B4004A6A47 /* missing_effect_thumb.jpg */,
 				496150BE13D2D807006C8B57 /* plug-popover-arrow~ipad.png */,
 				496150BF13D2D807006C8B57 /* plug-popover~ipad.png */,
 				49A5286413D17A03004EC7F6 /* connection-shadow~ipad.png */,
@@ -1225,7 +1228,7 @@
 				8073975213D3336200917088 /* RainbowLight.pal in Resources */,
 				49752E9713D35C2000F20447 /* plug-popover-dot~ipad.png in Resources */,
 				49752E9813D35C2000F20447 /* plug-popover-highlight~ipad.png in Resources */,
->>>>>>> f4b047532a494bafef6f00e8528e8b3d9569cf42
+				B43F38BD13D358B4004A6A47 /* missing_effect_thumb.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
