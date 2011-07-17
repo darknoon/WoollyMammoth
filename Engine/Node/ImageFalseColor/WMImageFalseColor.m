@@ -185,6 +185,7 @@ typedef struct {
 
 	int tex0 = [shader uniformLocationForName:@"s_texMono"];
 	if (tex0 != -1) {
+        glActiveTexture ( GL_TEXTURE0 );
 		glBindTexture(GL_TEXTURE_2D, inSourceTexture.name);
 		glUniform1i(tex0, 0);
 	}
@@ -193,14 +194,12 @@ typedef struct {
 	if (tex1 != -1) {
         
         glActiveTexture ( GL_TEXTURE1 );
-
 		glBindTexture(GL_TEXTURE_2D, texPal.name);
 		glUniform1i(tex1, 1);
         glActiveTexture ( GL_TEXTURE0 );
-
 	}
 	
-	GL_CHECK_ERROR;
+
 	
 #if DEBUG
 	if (![shader validateProgram])

@@ -28,7 +28,7 @@ void main () {
 
     vec4 realColor = texture2D(s_texMono, v_texCoord.xy);
     //gl_FragColor = texture2D(s_texPal, v_texCoord.xy);
-    gl_FragColor = texture2D(s_texPal, vec2(Mono(realColor),0.));
+    gl_FragColor = texture2D(s_texPal, vec2(m.r,0.));
     //gl_FragColor = realColor; // test
 }
 
