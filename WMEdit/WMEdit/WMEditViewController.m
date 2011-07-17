@@ -78,7 +78,7 @@
 	CGRect bounds = self.view.bounds;
 	previewController.view.frame = (CGRect){.origin.x = bounds.size.width - previewSize.width, .origin.y = bounds.size.height - previewSize.height, .size = previewSize};
 	previewController.view.backgroundColor = [UIColor cyanColor];
-	previewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	previewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
 	[self.view addSubview:previewController.view];
 }
 
@@ -93,11 +93,6 @@
 		WMPatch *patch = [[[patchClass alloc] initWithPlistRepresentation:nil] autorelease];
 		patch.key = key;
 		patch.editorPosition = inPoint;
-		
-		WMPort *outputNumberPort = [[[WMNumberPort alloc] init] autorelease];
-		outputNumberPort.key = @"blahport";
-		
-		[patch addOutputPort:outputNumberPort];
 		
 		[graphView addPatch:patch];
 	} else {

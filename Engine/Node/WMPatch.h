@@ -51,6 +51,8 @@ typedef enum {
 //Will pick the correct patch class to represent this object
 + (id)patchWithPlistRepresentation:(id)inPlist;
 
++ (id)defaultValueForInputPortKey:(NSString *)inKey;
+
 //Override to do your own setup
 - (id)initWithPlistRepresentation:(id)inPlist;
 

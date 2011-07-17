@@ -132,6 +132,11 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 	return [[patchClass alloc] initWithPlistRepresentation:inPlist];
 }
 
++ (id)defaultValueForInputPortKey:(NSString *)inKey;
+{
+	return nil;
+}
+
 - (WMPort *)portForIvar:(Ivar)inIvar key:(NSString *)inKey;
 {
 	const char* type = ivar_getTypeEncoding(inIvar);
@@ -308,6 +313,17 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 		
 	//Set state of ivar ports
 	[self setPlistState:state];
+	if (!state) {
+		for (WMPort *port in inputPorts) {
+			id value = [[self class] defaultValueForInputPortKey:port.key];
+			if (value) {
+				BOOL ok = [port setStateValue:value];
+				if (!ok) {
+					NSLog(@"Could not set default value for port key: %@", port.key);
+				}
+			}
+		}
+	}
 	
 	//Create children
 	[self createChildrenWithState:state];
