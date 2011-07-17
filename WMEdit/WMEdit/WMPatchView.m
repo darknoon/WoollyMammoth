@@ -50,6 +50,9 @@
 	
 	UITapGestureRecognizer *tapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)] autorelease];
 	[self addGestureRecognizer:tapRecognizer];
+	
+	UIGestureRecognizer *inputTapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(inputsTapped:)] autorelease];
+	[inputPlugStrip addGestureRecognizer:inputTapRecognizer];
 
 	label = [[UILabel alloc] initWithFrame:CGRectZero];
 	label.text = [[inPatch class] humanReadableTitle];
@@ -162,16 +165,12 @@
 
 - (WMPort *)inputPortAtPoint:(CGPoint)inPoint inView:(UIView *)inView;
 {
-	BOOL inInputs = [inputPlugStrip pointInside:[inputPlugStrip convertPoint:inPoint fromView:inView] withEvent:nil];
+	CGPoint point = [inputPlugStrip convertPoint:inPoint fromView:inView];
+	BOOL inInputs = [inputPlugStrip pointInside:point withEvent:nil];
 	
 	if (inInputs && patch.inputPorts.count > 0) {
-		return [patch.inputPorts objectAtIndex:0];
-		
-		CGFloat offX = (inPoint.x - leftOffset) / offsetBetweenDots;
-		int offXi = (int)roundf(offX);
-		offXi = MAX(0, MIN(offXi, patch.inputPorts.count));
-		
-		return [patch.inputPorts objectAtIndex:offXi];
+		NSUInteger portIndex = [inputPlugStrip portIndexAtPoint:point];
+		return [self.patch.inputPorts objectAtIndex:portIndex];
 	}
 	return nil;
 }
@@ -179,18 +178,14 @@
 
 - (WMPort *)outputPortAtPoint:(CGPoint)inPoint inView:(UIView *)inView;
 {
-	BOOL inOutputs = [outputPlugStrip pointInside:[outputPlugStrip convertPoint:inPoint fromView:inView] withEvent:nil];
-
-	if (inOutputs && patch.outputPorts.count > 0) {
-		CGFloat offX = (inPoint.x - leftOffset) / offsetBetweenDots;
-		int offXi = (int)roundf(offX);
-		offXi = MAX((int)0, (int)MIN((int)offXi, patch.outputPorts.count - 1));
-
-		return [patch.outputPorts objectAtIndex:offXi];
+	CGPoint point = [outputPlugStrip convertPoint:inPoint fromView:inView];
+	BOOL inInputs = [outputPlugStrip pointInside:point withEvent:nil];
+	
+	if (inInputs && patch.outputPorts.count > 0) {
+		NSUInteger portIndex = [outputPlugStrip portIndexAtPoint:point];
+		return [self.patch.outputPorts objectAtIndex:portIndex];
 	}
-	
 	return nil;
-	
 }
 
 - (CGPoint)pointForInputPort:(WMPort *)inputPort;
@@ -199,12 +194,10 @@
 	if (port) {
 		NSUInteger idx = [patch.inputPorts indexOfObject:port];
 		if (idx != NSNotFound) {
-			CGPoint p = (CGPoint){.x = leftOffset + idx * offsetBetweenDots, .y = inputPlugStrip.frame.origin.y + plugstripHeight / 2.f};
-			return [self convertPoint:p toView:self.superview];
+			return [self.superview convertPoint:[inputPlugStrip pointForPortIndex:idx] fromView:inputPlugStrip];
 		}
 	}
 	return patch.editorPosition;
-
 }
 
 - (CGPoint)pointForOutputPort:(WMPort *)outputPort;
@@ -213,11 +206,15 @@
 	if (port) {
 		NSUInteger idx = [patch.outputPorts indexOfObject:port];
 		if (idx != NSNotFound) {
-			CGPoint p = (CGPoint){.x = leftOffset + idx * offsetBetweenDots, .y = outputPlugStrip.frame.origin.y + plugstripHeight / 2.f};
-			return [self convertPoint:p toView:self.superview];
+			return [self.superview convertPoint:[outputPlugStrip pointForPortIndex:idx] fromView:outputPlugStrip];
 		}
 	}
 	return patch.editorPosition;
+}
+
+- (void)inputsTapped:(UITapGestureRecognizer *)inR;
+{
+	NSLog(@"tapped inputs. bring up the top");
 }
 
 #pragma mark - Menu

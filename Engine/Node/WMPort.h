@@ -16,6 +16,8 @@
 - (id)stateValue;
 - (BOOL)setStateValue:(id)inStateValue;
 
+- (BOOL)canTakeValueFromPort:(WMPort *)inPort;
+
 //Here we deviate slightly from the QC api, which has takeValue:fromPort:
 //I'm not sure yet why that's necessary, so I'm omitting passing values and dealing with ports directly instead of values
 - (BOOL)takeValueFromPort:(WMPort *)inPort;

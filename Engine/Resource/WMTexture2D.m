@@ -156,7 +156,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 @implementation WMTexture2D (Image)
 
-- (id) initWithImage:(UIImage *)uiImage
+- (id)initWithImage:(UIImage *)uiImage
 {
 	NSUInteger				width,
 	height,
@@ -184,6 +184,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 		return nil;
 	}
 	
+#warning Need to consider image orientation and alter transform to match
 	
 	info = CGImageGetAlphaInfo(image);
 	hasAlpha = ((info == kCGImageAlphaPremultipliedLast) || (info == kCGImageAlphaPremultipliedFirst) || (info == kCGImageAlphaLast) || (info == kCGImageAlphaFirst) ? YES : NO);

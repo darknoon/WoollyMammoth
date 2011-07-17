@@ -29,6 +29,11 @@
 	return YES;
 }
 
+- (BOOL)canTakeValueFromPort:(WMPort *)inPort;
+{
+	return [[inPort class] isEqual:[self class]];
+}
+
 - (NSString *)description;
 {
 	NSString *origStr = originalPort ? [NSString stringWithFormat:@" orig:%@", originalPort.name] : @"";
