@@ -72,7 +72,7 @@
 
 - (WMConnection *)draggingConnectionFromPatchView:(WMPatchView *)inPatchView;
 {
-	WMDraggingConnection *connection = [draggingConnectionsByPatchKey objectForKey:inPatchView.patch];
+	WMDraggingConnection *connection = [draggingConnectionsByPatchKey objectForKey:inPatchView.patch.key];
 	return connection;
 }
 
@@ -88,7 +88,7 @@
 	[self addSubview:view];
 }
 
-- (void)setConnectionEndpoint:(CGPoint)inPoint fromPatchView:(WMPatchView *)inPatch;
+- (void)setConnectionEndpoint:(CGPoint)inPoint fromPatchView:(WMPatchView *)inPatch canConnect:(BOOL)inCanConnect;
 {
 	CGPoint point = [self convertPoint:inPoint fromView:inPatch];
 	
@@ -98,6 +98,9 @@
 	WMConnectionView *view = [draggingConnectionViewsByPatchKey objectForKey:inPatch.patch.key];
 	view.endPoint = point;
 	view.startPoint = inPatch.patch.editorPosition;
+
+	view.alpha = inCanConnect ? 1.0f : 0.5f;
+	
 }
 
 - (void)removeDraggingConnectionFromPatchView:(WMPatchView *)inPatch;

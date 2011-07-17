@@ -129,6 +129,7 @@
 - (void)continueDraggingConnectionWithLocation:(CGPoint)inPoint inPatchView:(WMPatchView *)inView;
 {
 	WMPatch *hitPatch = [self hitPatchForConnectionWithPoint:inPoint inPatchView:inView];
+	BOOL canConnect = NO;
 	if (hitPatch) {
 		WMPort *hitPort = [[self patchViewForKey:hitPatch.key] inputPortAtPoint:inPoint inView:inView];
 		
@@ -136,14 +137,14 @@
 		
 		WMPort *sourcePort = [inView.patch outputPortWithKey:connection.sourcePort];
 		
-		BOOL canConnect = [hitPort canTakeValueFromPort:sourcePort];
+		canConnect = [hitPort canTakeValueFromPort:sourcePort];
 		
 		NSLog(@"%@ touching port: %@", canConnect ? @"Y" : @"N", hitPort);
 	} else {
 		NSLog(@"not touching port");
 	}
 
-	[patchConnectionsView setConnectionEndpoint:inPoint fromPatchView:inView];
+	[patchConnectionsView setConnectionEndpoint:inPoint fromPatchView:inView canConnect:canConnect];
 }
 
 - (void)endDraggingConnectionWithLocation:(CGPoint)inPoint inPatchView:(WMPatchView *)inView;
@@ -152,8 +153,11 @@
 	WMPatch *hitPatch = [self hitPatchForConnectionWithPoint:inPoint inPatchView:inView];
 	if (hitPatch) {
 		WMPort *hitPort = [[self patchViewForKey:hitPatch.key] inputPortAtPoint:inPoint inView:inView];
-		
-		if (hitPatch && hitPort) {
+		WMConnection *connection = [patchConnectionsView draggingConnectionFromPatchView:inView];
+		WMPort *sourcePort = [inView.patch outputPortWithKey:connection.sourcePort];
+
+		BOOL canConnect = [hitPort canTakeValueFromPort:sourcePort];
+		if (hitPatch && hitPort && canConnect) {
 			[rootPatch addConnectionFromPort:[(WMPort *)[inView.patch.outputPorts objectAtIndex:0] key] ofPatch:inView.patch.key toPort:hitPort.key ofPatch:hitPatch.key];
 		}
 	}

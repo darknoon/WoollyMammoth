@@ -44,7 +44,7 @@
 	CGRect bounds = self.bounds;
 	const CGFloat dotSize = 9.f;
 	
-	[[UIColor whiteColor] setFill];
+	[[UIColor colorWithWhite:1.0f alpha:0.7f] setFill];
 	CGContextAddRoundRect(ctx, bounds, bounds.size.height / 2);
 	CGContextFillPath(ctx);
 	
