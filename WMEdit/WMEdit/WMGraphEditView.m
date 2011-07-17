@@ -9,13 +9,16 @@
 #import "WMGraphEditView.h"
 
 #import "WMPatchConnectionsView.h"
-#import "WMPatch.h"
 #import "WMPatchView.h"
+#import "WMConnectionPopover.h"
+
+#import "WMPatch.h"
 #import "WMConnection.h"
 
 @implementation WMGraphEditView {
     NSMutableArray *patchViews;
     WMPatchConnectionsView *patchConnectionsView;
+	WMConnectionPopover *connectionPopover;
 }
 @synthesize rootPatch;
 
@@ -29,6 +32,9 @@
 	patchConnectionsView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	patchConnectionsView.graphView = self;
 	[self addSubview:patchConnectionsView];
+
+	connectionPopover = [[WMConnectionPopover alloc] initWithFrame:CGRectZero];
+	[self addSubview:connectionPopover];
 	
 	return self;
 }
@@ -36,12 +42,14 @@
 - (void)awakeFromNib;
 {
 	patchViews = [[NSMutableArray alloc] init];
-	patchConnectionsView = [[WMPatchConnectionsView alloc] initWithFrame:self.bounds];
+	patchConnectionsView = [[WMPatchConnectionsView alloc] initWithFrame:self.bounds];	
 	patchConnectionsView.rootPatch = self.rootPatch;
 	patchConnectionsView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	patchConnectionsView.graphView = self;
 	[self addSubview:patchConnectionsView];
-
+	
+	connectionPopover = [[WMConnectionPopover alloc] initWithFrame:CGRectZero];
+	[self addSubview:connectionPopover];
 }
 
 
@@ -139,7 +147,8 @@
 	WMPatch *hitPatch = [self hitPatchForConnectionWithPoint:inPoint inPatchView:inView];
 	BOOL canConnect = NO;
 	if (hitPatch) {
-		WMPort *hitPort = [[self patchViewForKey:hitPatch.key] inputPortAtPoint:inPoint inView:inView];
+		WMPatchView *hitPatchView = [self patchViewForKey:hitPatch.key];
+		WMPort *hitPort = [hitPatchView inputPortAtPoint:inPoint inView:inView];
 		
 		WMConnection *connection = [patchConnectionsView draggingConnectionFromPatchView:inView];
 		
@@ -147,8 +156,17 @@
 		
 		canConnect = [hitPort canTakeValueFromPort:sourcePort];
 		
+		//Show connection popover
+		connectionPopover.hidden = NO;
+		connectionPopover.ports = hitPatch.inputPorts;
+		connectionPopover.connectionIndex = [hitPatch.inputPorts indexOfObject:hitPort];
+		[connectionPopover setTargetPoint: [hitPatchView pointForInputPort:hitPort]];
+		[connectionPopover refresh];
+		[self bringSubviewToFront:connectionPopover];
+		
 		NSLog(@"%@ touching port: %@", canConnect ? @"Y" : @"N", hitPort);
 	} else {
+		connectionPopover.hidden = YES;
 		NSLog(@"not touching port");
 	}
 
@@ -171,5 +189,7 @@
 	}
 	[patchConnectionsView removeDraggingConnectionFromPatchView:inView];
 	[patchConnectionsView reloadAllConnections];
+	
+	connectionPopover.hidden = YES;
 }
 @end
