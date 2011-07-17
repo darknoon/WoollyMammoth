@@ -49,6 +49,11 @@
     return value;
 }
 
+- (id)init {
+    self = [super init];
+    [TweetServerCommunicator commmunicator];
+    return self;
+}
 
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
