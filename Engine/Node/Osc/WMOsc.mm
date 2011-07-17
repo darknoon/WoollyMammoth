@@ -16,16 +16,10 @@
 + (void)load;
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[self registerToRepresentClassNames:[NSSet setWithObject:@"WMOsc"]];
+	[self registerToRepresentClassNames:[NSSet setWithObject:NSStringFromClass(self)]];
 	[pool drain];
 }
 
--(id) init {
-    
-    self = [super init];
-    
-    return self;
-}
 
 -(void) OscReceiverLog:(OscMessage *)msg {
     
@@ -61,13 +55,13 @@
     float y = msg->getArg(1)._fvalue;
     float z = msg->getArg(2)._fvalue;
     
-    accelX.value = x;
-    accelY.value = y;
-    accelZ.value = z;
+    outputAccelX.value = x;
+    outputAccelY.value = y;
+    outputAccelZ.value = z;
  }
 -(void) OscMsaAccelerometer:(OscMessage *)msg { 
 
-    // not really an Osc message but using the same port - put out by the MSA remote
+    // accelerometer put out by the MSA remote App
     
     float x = msg->getArg(0)._fvalue;
     float y = msg->getArg(1)._fvalue;
@@ -75,14 +69,14 @@
 
     NSLog(@"WMOsc OscMsaAccelerometer x:%.2f y:%.2f z:%.2f ",x,y,z);
      
-    accelX.value = x;
-    accelY.value = y;
-    accelZ.value = z;
+    outputAccelX.value = x;
+    outputAccelY.value = y;
+    outputAccelZ.value = z;
     
  }
 
-- (BOOL)setup:(WMEAGLContext *)context;
-{
+- (BOOL)setup:(WMEAGLContext *)context {
+    
     _receiver.setup(3333);
 }
 
@@ -90,12 +84,21 @@
     
     OscReceiver::_oscMessages.flipMessageDoubleBuffer();
     OscMessage *msg;
-
+    
     while ((msg = _receiver.getNextMessage()) != NULL) {
 
-        if      (msg->_address=="/accxyz")                  { [self OscAccxyz:msg];}
-        else if (msg->_address=="/msaremote/accelerometer") { [self OscMsaAccelerometer:msg];}
-        else                                                { [self OscReceiverLog:msg];}
+        if (msg->_address=="/accxyz") { 
+            
+            [self OscAccxyz:msg];
+        }
+        else if (msg->_address=="/msaremote/accelerometer") { 
+            
+            [self OscMsaAccelerometer:msg];
+        }
+        else { 
+             
+            [self OscReceiverLog:msg];
+        }
         delete msg;
     }
     return true;
