@@ -91,13 +91,8 @@ typedef struct {
 	
 	[self loadQuadData];
 
-    //NSData *palette = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RainbowDark" ofType:@"pal"]];
-    int *palette = (int*)malloc(256*4);
-    int *pali =palette;
-    for (int i =0; i<256; i++, pali++) {
-        *pali = 0xF42F;
-    }
-    texPal = [[WMTexture2D alloc] initWithData:palette
+    NSData *palette = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RainbowDark" ofType:@"pal"]];
+    texPal = [[WMTexture2D alloc] initWithData:[palette bytes]
                                        pixelFormat:kWMTexture2DPixelFormat_RGBA8888 
                                         pixelsWide:256 
                                         pixelsHigh:1 
@@ -196,8 +191,13 @@ typedef struct {
 	
 	int tex1 = [shader uniformLocationForName:@"s_texPal"];
 	if (tex1 != -1) {
-		glBindTexture(GL_TEXTURE_2D, inSourceTexture.name);
+        
+        glActiveTexture ( GL_TEXTURE1 );
+
+		glBindTexture(GL_TEXTURE_2D, texPal.name);
 		glUniform1i(tex1, 1);
+        glActiveTexture ( GL_TEXTURE0 );
+
 	}
 	
 	GL_CHECK_ERROR;
