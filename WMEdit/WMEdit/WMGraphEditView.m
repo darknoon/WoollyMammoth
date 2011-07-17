@@ -53,6 +53,14 @@
     [super dealloc];
 }
 
+- (BOOL)patchHit:(CGPoint)pt {
+//    pt = [self convertPoint:pt fromView:[self superview]];
+    for (WMPatchView *p in patchViews) {
+        CGRect r = [p frame];
+        if (CGRectContainsPoint(r, pt)) return YES;
+    }
+    return NO;
+}
 - (void)updateConnectionPositions;
 {
 	patchConnectionsView.rootPatch = self.rootPatch;

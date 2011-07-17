@@ -23,8 +23,10 @@
 	
 	WMViewController *previewController;
 	
-	WMPatch *rootPatch;
+	WMPatch *rootPatch; 
+    WMGraphEditView *graphicView;
 }
+
 @synthesize graphView;
 
 - (void)sharedInit;
@@ -101,20 +103,37 @@
 	
 }
 
+- (void)popupMenu:(CGPoint)origin {
+    if (addNodePopover) {
+        [addNodePopover dismissPopoverAnimated:NO];
+        [addNodePopover release];
+        addNodePopover = nil;
+    }
+    
+    WMPatchListTableViewController *patchList = [[WMPatchListTableViewController alloc] initWithStyle:UITableViewStylePlain];
+    patchList.delegate = (id<WMPatchListTableViewControllerDelegate>)self;
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:patchList];
+    addNodePopover = [[UIPopoverController alloc] initWithContentViewController:nav];
+    addLocation = origin;
+    [addNodePopover presentPopoverFromRect:(CGRect){.origin = addLocation} inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+}
+
+
+- (void)popupMenu {
+    [self popupMenu:CGPointMake(self.view.bounds.size.width/3.0, self.view.bounds.size.height/2.0)];
+}
+
+
 - (void)longPress:(UILongPressGestureRecognizer *)inR;
 {
 	if (inR.state == UIGestureRecognizerStateBegan) {
-		if (addNodePopover) {
-			[addNodePopover dismissPopoverAnimated:NO];
-			[addNodePopover release];
-		}
-		
-		WMPatchListTableViewController *patchList = [[WMPatchListTableViewController alloc] initWithStyle:UITableViewStylePlain];
-		patchList.delegate = (id<WMPatchListTableViewControllerDelegate>)self;
-		UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:patchList];
-		addNodePopover = [[UIPopoverController alloc] initWithContentViewController:nav];
-		addLocation = [inR locationInView:self.view];
-		[addNodePopover presentPopoverFromRect:(CGRect){.origin = addLocation} inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+//        CGPoint p = [inR locationInView:graphView)];
+        
+        // for each of our little patch guys do
+        //     - is P in bounds ?
+        //      - if so, bail, otherwise fall through to the next line
+        
+        [self popupMenu];
 	}
 }
 
