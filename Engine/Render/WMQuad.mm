@@ -30,6 +30,10 @@ WMStructureField WMQuadVertex_fields[] = {
 	WMStructureDefinition *quadDef;
 }
 
++ (NSString *)humanReadableTitle {
+    return @"Billboard";
+}
+
 + (void)load;
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
