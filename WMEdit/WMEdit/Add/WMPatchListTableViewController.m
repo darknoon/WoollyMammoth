@@ -78,8 +78,9 @@
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
-    
-	cell.textLabel.text = [patchList objectAtIndex:indexPath.row];
+    NSString *className = [patchList objectAtIndex:indexPath.row];
+    NSString *pretty = [NSClassFromString(className) humanReadableTitle];
+	cell.textLabel.text = pretty ? pretty : className;
     
     return cell;
 }
@@ -89,7 +90,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	[delegate patchList:self selectedPatchClassName:[patchList objectAtIndex:indexPath.row]];
+	[delegate patchList:self selectedPatchClassName:[[WMPatch patchClasses] objectAtIndex:indexPath.row]];
 }
 
 @end

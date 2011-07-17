@@ -13,6 +13,10 @@
 
 @implementation WMMIDIReciever
 
++ (NSString *)humanReadableTitle {
+    return @"Midi Controller";
+}
+
 + (void)load;
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];

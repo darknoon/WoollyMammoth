@@ -15,6 +15,17 @@
 @implementation WMTweetPhotoStream
 @synthesize photoTweet, lastTexture;
 
++ (NSString *)humanReadableTitle {
+    return @"Tweeted Photos";
+}
+
++ (void)load;
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	[self registerToRepresentClassNames:[NSSet setWithObject:NSStringFromClass(self)]];
+	[pool drain];
+}
+
 - (BOOL)setup:(WMEAGLContext *)context;
 {
     [TweetServerCommunicator commmunicator];

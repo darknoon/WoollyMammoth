@@ -7,9 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ASIHTTPRequest.h"
 
+@interface PhotoTweet : NSObject <ASIHTTPRequestDelegate>
 
-@interface PhotoTweet : NSObject
 @property (nonatomic, retain) NSMutableDictionary *tweet;
 @property (nonatomic, retain) UIImage *image;
 
@@ -19,8 +20,8 @@
 
 - (NSString *)photoImageMediumURLString;
 - (NSString *)cleanText; // stripped of tags, urls, and maybe with user name prepended
-- (BOOL)imageLoaded;
 - (UIImage *)photoImage;
+- (BOOL)hasImage;
 
 @end
 

@@ -32,6 +32,27 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 @end
 
 
+@interface NSString(uncamelcase)
+- (NSString *)uncamelcase;
+@end
+
+@implementation NSString(uncamelcase)
+
+- (NSString *)uncamelcase {
+    NSMutableString *s = [NSMutableString string];
+    NSCharacterSet *set = [NSCharacterSet uppercaseLetterCharacterSet];
+    for (unsigned i = 0; i < self.length; i++) {
+        unichar c = [self characterAtIndex:i];
+        if ([set characterIsMember:c]) {
+            if (i > 0) [s appendString:@" "];
+        }
+        [s appendFormat:@"%C",c];
+    }
+    return s;
+}
+
+@end
+
 @interface WMPatch ()
 
 
@@ -533,6 +554,12 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 	[connections addObject:connection];	
 }
 
++ (NSString *)humanReadableTitle {
+    NSString *s = [NSMutableString stringWithString:NSStringFromClass(self)];
+    if ([s hasPrefix:@"WM"]) s = [s substringFromIndex:2];
+    return [s uncamelcase];
+}
+
 @end
 
 @implementation WMPlaceholderPatch
@@ -551,5 +578,6 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 {
 	return [NSString stringWithFormat:@"<%@ (was %@) : %p>{key: %@, connections: %u, childen: %u>}", NSStringFromClass([self class]), originalClassName, self, key, connections.count, children.count];
 }
+
 
 @end

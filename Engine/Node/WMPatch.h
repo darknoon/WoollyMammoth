@@ -43,7 +43,7 @@ typedef enum {
 	NSMutableArray *outputPorts;
 	
 	//Render
-	CFAbsoluteTime lastExecutionTime;	
+	CFAbsoluteTime lastExecutionTime;
 }
 
 + (NSArray *)patchClasses;
@@ -59,6 +59,7 @@ typedef enum {
 //Call +registerToRepresentClassNames: in your subclass's +load if you want to be the decoder for a given class name
 + (void)registerToRepresentClassNames:(NSSet *)inClassNames;
 + (void)registerToRepresentPluginClassNames:(NSSet *)inClassNames;
++ (NSString *)humanReadableTitle;
 
 - (BOOL)setPlistState:(id)inPlist;
 - (id)plistState;

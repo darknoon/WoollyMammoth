@@ -52,12 +52,14 @@
 	[self addGestureRecognizer:tapRecognizer];
 
 	label = [[UILabel alloc] initWithFrame:CGRectZero];
-	label.text = inPatch.key;
+	label.text = [[inPatch class] humanReadableTitle];
+    label.minimumFontSize = 10.0f;
 	label.shadowColor = [UIColor blackColor];
 	label.shadowOffset = (CGSize){.height = -1};
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor];
 	label.font = [UIFont boldSystemFontOfSize:14.f];
+    label.textAlignment = UITextAlignmentCenter;
 	[self addSubview:label];
 	
     return self;

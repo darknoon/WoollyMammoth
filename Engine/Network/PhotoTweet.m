@@ -7,10 +7,26 @@
 //
 
 #import "PhotoTweet.h"
-
+#import "TweetServerCommunicator.h"
 
 @implementation PhotoTweet
 @synthesize tweet, image;
+
+
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    NSData *data = [request responseData];
+    self.image = [UIImage imageWithData:data];
+    [[TweetServerCommunicator commmunicator] photoTweetGotImage:self];
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+    NSError *error = [request error];
+    NSLog([error localizedDescription]);
+    [[TweetServerCommunicator commmunicator] photoTweetFailedToGetImage:self];
+}
+
 
 + (PhotoTweet *)photoTweetWithDictionary:(NSMutableDictionary *)d {
     return [[[PhotoTweet alloc] initWithDictionary:d] autorelease];
@@ -129,17 +145,20 @@
 
 - (NSString *)photoImageMediumURLString;
 {
-    return [self exactURLForMediumImageFromPhotoServiceURL:[tweet valueForKey:@"url"]];
+    return [self exactURLForMediumImageFromPhotoServiceURL:[tweet valueForKey:@"image_url"]];
 }
 
+- (BOOL)hasImage {
+    return image != nil;
+}
 - (UIImage *)photoImage {
     return image;
 }
 
 - (NSString *)cleanText {
     NSString *sender = [tweet
-                        valueForKey:@"screen_name"];
-    NSString *clean = [tweet valueForKey:@"cleantext"];
+                        valueForKey:@"user"];
+    NSString *clean = [tweet valueForKey:@"text"];
     return [NSString stringWithFormat:@"%C%@ %@",'@',sender ? sender : @"twittelator", clean ? clean : @""];
 }
 
