@@ -48,6 +48,8 @@
 		494E4ED513D24A8C00402784 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 494E4ED413D24A8C00402784 /* Reachability.m */; };
 		494E4ED713D24AD600402784 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494E4ED613D24AD600402784 /* MobileCoreServices.framework */; };
 		494E4ED913D24ADD00402784 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 494E4ED813D24ADD00402784 /* libz.dylib */; };
+		494E4EF013D25D1C00402784 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494E4EEF13D25D1C00402784 /* AVFoundation.framework */; };
+		494E4EF213D25D2B00402784 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494E4EF113D25D2B00402784 /* CoreMedia.framework */; };
 		49A5253113D169C9004EC7F6 /* WMPatchPlugStripView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A5253013D169C9004EC7F6 /* WMPatchPlugStripView.m */; };
 		49A5253513D170BD004EC7F6 /* WMPatchConnectionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A5253413D170BD004EC7F6 /* WMPatchConnectionsView.m */; };
 		49A5261413D1725E004EC7F6 /* WMStructuredBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A525C013D1725E004EC7F6 /* WMStructuredBuffer.m */; };
@@ -99,7 +101,7 @@
 		49A5264C13D17308004EC7F6 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5264B13D17308004EC7F6 /* AudioToolbox.framework */; };
 		49A5279413D17331004EC7F6 /* BrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A5265013D17330004EC7F6 /* BrowserViewController.m */; };
 		49A527F413D17331004EC7F6 /* Matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49A526E413D17330004EC7F6 /* Matrix.cpp */; };
-		49A527F513D17331004EC7F6 /* neon_matrix_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49A526E713D17330004EC7F6 /* neon_matrix_impl.cpp */; };
+		49A527F513D17331004EC7F6 /* neon_matrix_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49A526E713D17330004EC7F6 /* neon_matrix_impl.cpp */; settings = {COMPILER_FLAGS = "-marm"; }; };
 		49A527F613D17331004EC7F6 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49A526EA13D17330004EC7F6 /* Random.cpp */; };
 		49A527F713D17331004EC7F6 /* Transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49A526EC13D17330004EC7F6 /* Transform.cpp */; };
 		49A527F813D17331004EC7F6 /* Vector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49A526EF13D17330004EC7F6 /* Vector.cpp */; };
@@ -244,6 +246,8 @@
 		494E4ED413D24A8C00402784 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		494E4ED613D24AD600402784 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		494E4ED813D24ADD00402784 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		494E4EEF13D25D1C00402784 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		494E4EF113D25D2B00402784 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		49A5252F13D169C9004EC7F6 /* WMPatchPlugStripView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchPlugStripView.h; sourceTree = "<group>"; };
 		49A5253013D169C9004EC7F6 /* WMPatchPlugStripView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPatchPlugStripView.m; sourceTree = "<group>"; };
 		49A5253313D170BD004EC7F6 /* WMPatchConnectionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchConnectionsView.h; sourceTree = "<group>"; };
@@ -444,6 +448,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				494E4EF213D25D2B00402784 /* CoreMedia.framework in Frameworks */,
+				494E4EF013D25D1C00402784 /* AVFoundation.framework in Frameworks */,
 				494E4ED913D24ADD00402784 /* libz.dylib in Frameworks */,
 				494E4ED713D24AD600402784 /* MobileCoreServices.framework in Frameworks */,
 				49A5264C13D17308004EC7F6 /* AudioToolbox.framework in Frameworks */,
@@ -899,6 +905,8 @@
 		49F0594F13D15F640056C506 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				494E4EF113D25D2B00402784 /* CoreMedia.framework */,
+				494E4EEF13D25D1C00402784 /* AVFoundation.framework */,
 				494E4ED813D24ADD00402784 /* libz.dylib */,
 				494E4ED613D24AD600402784 /* MobileCoreServices.framework */,
 				49A5264B13D17308004EC7F6 /* AudioToolbox.framework */,
@@ -1362,12 +1370,14 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
+				mthumb = YES;
 			};
 			name = Debug;
 		};
@@ -1377,13 +1387,15 @@
 				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
+				mthumb = YES;
 			};
 			name = Release;
 		};
@@ -1395,7 +1407,6 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMEdit/WMEdit-Prefix.pch";
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "WMEdit/WMEdit-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -1409,7 +1420,6 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMEdit/WMEdit-Prefix.pch";
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "WMEdit/WMEdit-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALIDATE_PRODUCT = YES;
