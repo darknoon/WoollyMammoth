@@ -10,6 +10,7 @@
 
 #import "WMConnection.h"
 #import "WMEAGLContext.h"
+#import "WMPatchCategories.h"
 
 #import "WMPort.h"
 
@@ -65,6 +66,12 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 	return classMap;
 }
 
++ (NSString *)category;
+{
+    NSLog(@"Need to override category in %@.", self);
+    return WMPatchCategoryUnknown;
+}
+
 + (NSArray *)patchClasses;
 {
 	NSMutableArray *outPatchClasses = [NSMutableArray array];
@@ -88,6 +95,7 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 	NSMutableDictionary *classMap = [self _classMap];
 	for (NSString *className in inClassNames) {
 		[classMap setObject:self forKey:className];
+        [[WMPatchCategories sharedInstance] addClassWithName:self key:className];
 	}
 }
 
@@ -98,6 +106,12 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 	for (NSString *className in inClassNames) {
 		[classMap setObject:self forKey:className];
 	}
+}
+
++ (Class)findClassWithName:(NSString*)className;
+{
+	NSMutableDictionary *classMap = [self _classMap];
+    return [classMap objectForKey:className];
 }
 
 + (id)patchWithPlistRepresentation:(id)inPlist;

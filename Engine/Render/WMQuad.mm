@@ -30,6 +30,11 @@ WMStructureField WMQuadVertex_fields[] = {
 	WMStructureDefinition *quadDef;
 }
 
++ (NSString *)category;
+{
+    return WMPatchCategoryRender;
+}
+
 + (void)load;
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];

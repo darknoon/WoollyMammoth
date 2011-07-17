@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		20001FB613D257BE00D9686C /* WMPatchCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 20001FB513D257BE00D9686C /* WMPatchCategories.m */; };
+		2004A75813D29299009EC292 /* WMPatchCategoryListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2004A75713D29299009EC292 /* WMPatchCategoryListTableViewController.m */; };
 		49174A8913D1FA0F008B5B8D /* WMDraggingConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174A8813D1FA0F008B5B8D /* WMDraggingConnection.m */; };
 		49174A9113D22D9B008B5B8D /* WMPatchListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174A9013D22D9B008B5B8D /* WMPatchListTableViewController.m */; };
 		49A5253113D169C9004EC7F6 /* WMPatchPlugStripView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A5253013D169C9004EC7F6 /* WMPatchPlugStripView.m */; };
@@ -117,10 +119,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		20001FB413D257BE00D9686C /* WMPatchCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = WMPatchCategories.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		20001FB513D257BE00D9686C /* WMPatchCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WMPatchCategories.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		2004A75613D29299009EC292 /* WMPatchCategoryListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchCategoryListTableViewController.h; sourceTree = "<group>"; };
+		2004A75713D29299009EC292 /* WMPatchCategoryListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPatchCategoryListTableViewController.m; sourceTree = "<group>"; };
 		49174A8713D1FA0F008B5B8D /* WMDraggingConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMDraggingConnection.h; sourceTree = "<group>"; };
 		49174A8813D1FA0F008B5B8D /* WMDraggingConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMDraggingConnection.m; sourceTree = "<group>"; };
 		49174A8F13D22D9B008B5B8D /* WMPatchListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchListTableViewController.h; sourceTree = "<group>"; };
-		49174A9013D22D9B008B5B8D /* WMPatchListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPatchListTableViewController.m; sourceTree = "<group>"; };
+		49174A9013D22D9B008B5B8D /* WMPatchListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WMPatchListTableViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		49A5252F13D169C9004EC7F6 /* WMPatchPlugStripView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchPlugStripView.h; sourceTree = "<group>"; };
 		49A5253013D169C9004EC7F6 /* WMPatchPlugStripView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPatchPlugStripView.m; sourceTree = "<group>"; };
 		49A5253313D170BD004EC7F6 /* WMPatchConnectionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchConnectionsView.h; sourceTree = "<group>"; };
@@ -162,8 +168,8 @@
 		49A525E313D1725E004EC7F6 /* WMNumberPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMNumberPort.m; sourceTree = "<group>"; };
 		49A525E413D1725E004EC7F6 /* WMParticleSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMParticleSystem.h; sourceTree = "<group>"; };
 		49A525E513D1725E004EC7F6 /* WMParticleSystem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WMParticleSystem.mm; sourceTree = "<group>"; };
-		49A525E613D1725E004EC7F6 /* WMPatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatch.h; sourceTree = "<group>"; };
-		49A525E713D1725E004EC7F6 /* WMPatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPatch.m; sourceTree = "<group>"; };
+		49A525E613D1725E004EC7F6 /* WMPatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = WMPatch.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		49A525E713D1725E004EC7F6 /* WMPatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WMPatch.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		49A525E813D1725E004EC7F6 /* WMPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPort.h; sourceTree = "<group>"; };
 		49A525E913D1725E004EC7F6 /* WMPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPort.m; sourceTree = "<group>"; };
 		49A525EA13D1725E004EC7F6 /* WMPorts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPorts.h; sourceTree = "<group>"; };
@@ -348,6 +354,8 @@
 			children = (
 				49174A8F13D22D9B008B5B8D /* WMPatchListTableViewController.h */,
 				49174A9013D22D9B008B5B8D /* WMPatchListTableViewController.m */,
+				2004A75613D29299009EC292 /* WMPatchCategoryListTableViewController.h */,
+				2004A75713D29299009EC292 /* WMPatchCategoryListTableViewController.m */,
 			);
 			path = Add;
 			sourceTree = "<group>";
@@ -425,6 +433,8 @@
 				49A525E513D1725E004EC7F6 /* WMParticleSystem.mm */,
 				49A525E613D1725E004EC7F6 /* WMPatch.h */,
 				49A525E713D1725E004EC7F6 /* WMPatch.m */,
+				20001FB413D257BE00D9686C /* WMPatchCategories.h */,
+				20001FB513D257BE00D9686C /* WMPatchCategories.m */,
 				49A525E813D1725E004EC7F6 /* WMPort.h */,
 				49A525E913D1725E004EC7F6 /* WMPort.m */,
 				49A525EA13D1725E004EC7F6 /* WMPorts.h */,
@@ -954,6 +964,8 @@
 				80250FB113D224480031B4E7 /* OscPrintReceivedElements.cpp in Sources */,
 				80250FB213D224480031B4E7 /* OscReceivedElements.cpp in Sources */,
 				80250FB313D224480031B4E7 /* OscTypes.cpp in Sources */,
+				20001FB613D257BE00D9686C /* WMPatchCategories.m in Sources */,
+				2004A75813D29299009EC292 /* WMPatchCategoryListTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

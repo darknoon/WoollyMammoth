@@ -10,19 +10,23 @@
 
 #import "WMPatch.h"
 
-@implementation WMPatchListTableViewController {
-	NSArray *patchList;
-}
-@synthesize delegate;
+@implementation WMPatchListTableViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
+@synthesize delegate, patchList, category;
+
+#define kCellHeightPatches  45.0
+
+- (id)initWithPatchesAndCategory:(NSArray *)array category:(NSString*)categoryIn;
 {
-    self = [super initWithStyle:style];
-	
-	patchList = [[WMPatch patchClasses] copy];
-	
+    self = [super initWithStyle:UITableViewStylePlain];
+    patchList = [[NSArray alloc] initWithArray:array];
+    category = categoryIn;
+    self.title = NSLocalizedString(categoryIn, nil);
+    self.contentSizeForViewInPopover = CGSizeMake(320.0, patchList.count * kCellHeightPatches);
+
     return self;
 }
+
 
 - (void)dealloc
 {
@@ -89,7 +93,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	[delegate patchList:self selectedPatchClassName:[patchList objectAtIndex:indexPath.row]];
+    NSString* name = [patchList objectAtIndex:indexPath.row];
+    NSString* className = [[WMPatchCategories sharedInstance] classFromCategoryAndName:category name:name];
+	[delegate patchList:self selectedPatchClassName:className];
 }
 
 @end

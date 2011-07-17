@@ -10,6 +10,8 @@
 
 #import "WMPorts.h"
 
+#import "WMPatchCategories.h"
+
 extern NSString *WMCompositionPathKey;
 
 typedef enum {
@@ -53,9 +55,12 @@ typedef enum {
 //Override to do your own setup
 - (id)initWithPlistRepresentation:(id)inPlist;
 
++ (NSString *)category;
+
 //Call +registerToRepresentClassNames: in your subclass's +load if you want to be the decoder for a given class name
 + (void)registerToRepresentClassNames:(NSSet *)inClassNames;
 + (void)registerToRepresentPluginClassNames:(NSSet *)inClassNames;
++ (Class)findClassWithName:(NSString*)className;
 
 - (BOOL)setPlistState:(id)inPlist;
 - (id)plistState;

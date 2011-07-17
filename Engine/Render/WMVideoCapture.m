@@ -45,6 +45,10 @@
 	[super dealloc];
 }
 
++ (NSString *)category;
+{
+    return WMPatchCategoryInput;
+}
 
 - (BOOL)setup:(WMEAGLContext *)context;
 {	

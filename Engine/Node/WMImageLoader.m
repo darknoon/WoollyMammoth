@@ -14,6 +14,11 @@
 @implementation WMImageLoader
 @synthesize outputImage;
 
++ (NSString *)category;
+{
+    return WMPatchCategoryInput;
+}
+
 + (void)load;
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];

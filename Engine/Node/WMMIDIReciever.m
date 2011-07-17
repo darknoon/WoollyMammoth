@@ -13,6 +13,11 @@
 
 @implementation WMMIDIReciever
 
++ (NSString *)category;
+{
+    return WMPatchCategoryInput;
+}
+
 + (void)load;
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];

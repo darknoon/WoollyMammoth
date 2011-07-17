@@ -186,6 +186,11 @@ int particleZCompare(const void *a, const void *b) {
 
 @implementation WMQuadParticleSystem
 
++ (NSString *)category;
+{
+    return WMPatchCategoryRender;
+}
+
 - (id)initWithPlistRepresentation:(id)inPlist;
 {
 	[super initWithPlistRepresentation:inPlist];

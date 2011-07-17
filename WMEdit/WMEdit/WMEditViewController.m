@@ -12,6 +12,7 @@
 
 #import "WMPatchConnectionsView.h"
 
+#import "WMPatchCategoryListTableViewController.h"
 #import "WMPatchListTableViewController.h"
 
 #import "WMGraphEditView.h"
@@ -103,9 +104,9 @@
 			[addNodePopover release];
 		}
 		
-		WMPatchListTableViewController *patchList = [[WMPatchListTableViewController alloc] initWithStyle:UITableViewStylePlain];
-		patchList.delegate = (id<WMPatchListTableViewControllerDelegate>)self;
-		UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:patchList];
+		WMPatchCategoryListTableViewController *patchCategoryList = [[WMPatchCategoryListTableViewController alloc] initWithStyle:UITableViewStylePlain];
+		patchCategoryList.delegate = (id<WMPatchCategoryListTableViewControllerDelegate>)self;
+		UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:patchCategoryList];
 		addNodePopover = [[UIPopoverController alloc] initWithContentViewController:nav];
 		addLocation = [inR locationInView:self.view];
 		[addNodePopover presentPopoverFromRect:(CGRect){.origin = addLocation} inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];

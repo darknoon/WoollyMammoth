@@ -65,6 +65,11 @@ COLOUR HSL2RGB(HSL c1)
 
 @implementation WMColorFromComponents
 
++ (NSString *)category;
+{
+    return WMPatchCategoryRender;
+}
+
 + (void)load;
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];

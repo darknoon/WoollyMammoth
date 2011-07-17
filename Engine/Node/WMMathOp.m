@@ -11,6 +11,11 @@
 
 @implementation WMMathOp
 
++ (NSString *)category;
+{
+    return WMPatchCategoryRender;
+}
+
 + (void)load;
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
