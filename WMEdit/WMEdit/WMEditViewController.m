@@ -84,6 +84,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 {
     [super viewDidLoad];
 	
+    libraryButton.hidden = [[[WMCompositionLibrary compositionLibrary] compositions]count] == 0;
 	UILongPressGestureRecognizer *longPressRecognizer = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]autorelease];
 	[self.view addGestureRecognizer:longPressRecognizer];
 	

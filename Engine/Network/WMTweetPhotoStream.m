@@ -36,6 +36,7 @@
 
 - (double)timeForSpeed {
     double clampedSpeed = inputSpeed.value;
+    if (clampedSpeed == 0.0) clampedSpeed = 0.5;
     return 10 * clampedSpeed; // 0 - 10 seconds
 }
 
@@ -72,6 +73,8 @@
     
     if (!self.lastTexture) {
         UIImage *photoImage = [self.photoTweet photoImage];
+        if (!photoImage) photoImage = [UIImage imageNamed:@"eli"];
+        
         self.lastTexture = [[WMTexture2D alloc] initWithImage:photoImage];
         lastTimeChanged = time;
     }
