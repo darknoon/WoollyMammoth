@@ -13,4 +13,7 @@
 
 @property (nonatomic) NSUInteger inputCount;
 
+- (NSUInteger)portIndexAtPoint:(CGPoint)inPoint;
+- (CGPoint)pointForPortIndex:(NSUInteger)inIndex;
+
 @end

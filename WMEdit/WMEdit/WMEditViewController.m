@@ -7,16 +7,19 @@
 //
 
 #import "WMEditViewController.h"
-
 #import "WMPatchView.h"
-
 #import "WMPatchConnectionsView.h"
 
 #import "WMPatchCategoryListTableViewController.h"
 #import "WMPatchListTableViewController.h"
-
 #import "WMGraphEditView.h"
 #import "WMPatch.h"
+#import "WMViewController.h"
+#import "WMCompositionLibrary.h"
+#import "WMCompositionLibraryViewController.h"
+
+const CGSize previewSize = (CGSize){.width = 300, .height = 200};
+
 
 @implementation WMEditViewController {
 	int keycnt; //TODO: better unique key system
@@ -25,25 +28,40 @@
 	CGPoint addLocation;
 	UIPopoverController *addNodePopover;
 	
-	WMPatch *rootPatch;
+	BOOL previewFullScreen;
+	WMViewController *previewController;
+	
+	WMPatch *rootPatch; 
+    WMGraphEditView *graphicView;
+    
 }
+
+
 @synthesize graphView;
+@synthesize libraryButton, patchesButton;
+
+@synthesize compositionLibrary;
+
+- (void)sharedInit;
+{
+	patchViewsByKey = [[NSMutableDictionary alloc] init];
+	rootPatch = [[WMPatch alloc] initWithPlistRepresentation:nil];
+	previewController = [[WMViewController alloc] initWithRootPatch:rootPatch];
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil;
 {
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (!self) return nil;
 	
-	patchViewsByKey = [[NSMutableDictionary alloc] init];
-	rootPatch = [[WMPatch alloc] initWithPlistRepresentation:nil];
+	[self sharedInit];
 	
 	return self;
 }
 
 - (void)awakeFromNib;
 {
-	patchViewsByKey = [[NSMutableDictionary alloc] init];
-	rootPatch = [[WMPatch alloc] initWithPlistRepresentation:nil];
+	[self sharedInit];
 }
 
 - (void)dealloc
@@ -66,10 +84,40 @@
 {
     [super viewDidLoad];
 	
-	UILongPressGestureRecognizer *longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+	UILongPressGestureRecognizer *longPressRecognizer = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]autorelease];
 	[self.view addGestureRecognizer:longPressRecognizer];
 	
+//    UISwipeGestureRecognizer *swipe = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swiperAction:)]autorelease];
+//    [swipe setDirection:UISwipeGestureRecognizerDirectionRight];
+//    [self.view addGestureRecognizer:swipe];
+//    swipe = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swiperAction:)]autorelease];
+//    [swipe setDirection:UISwipeGestureRecognizerDirectionLeft];
+//    [self.view addGestureRecognizer:swipe];
+
 	graphView.rootPatch = rootPatch;
+	
+	CGRect bounds = self.view.bounds;
+	previewController.view.frame = (CGRect){.origin.x = bounds.size.width - previewSize.width, .origin.y = bounds.size.height - previewSize.height, .size = previewSize};
+	previewController.view.backgroundColor = [UIColor blackColor];
+	previewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
+	[self.view addSubview:previewController.view];
+	
+	UITapGestureRecognizer *enlargeRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(togglePreviewFullscreen:)] autorelease];
+	[previewController.view addGestureRecognizer:enlargeRecognizer];
+	
+}
+
+- (void)togglePreviewFullscreen:(UITapGestureRecognizer *)inR;
+{
+	CGRect bounds = self.view.bounds;
+	previewFullScreen = !previewFullScreen;
+	[UIView animateWithDuration:0.2 animations:^(void) {
+		if (previewFullScreen) {
+			previewController.view.frame = bounds;
+		} else {
+			previewController.view.frame = (CGRect){.origin.x = bounds.size.width - previewSize.width, .origin.y = bounds.size.height - previewSize.height, .size = previewSize};
+		}
+	}];
 }
 
 - (void)addNodeAtLocation:(CGPoint)inPoint class:(NSString *)inClass;
@@ -84,16 +132,59 @@
 		patch.key = key;
 		patch.editorPosition = inPoint;
 		
-		WMPort *outputNumberPort = [[[WMNumberPort alloc] init] autorelease];
-		outputNumberPort.key = @"blahport";
-		
-		[patch addOutputPort:outputNumberPort];
-		
 		[graphView addPatch:patch];
 	} else {
 		NSLog(@"invalid class: %@", inClass);
 	}
 	
+}
+
+- (void)popupMenu:(CGPoint)origin {
+//    [self bringUpPatchesAction:self];
+    WMPatchListTableViewController *patchList = [[WMPatchListTableViewController alloc] initWithStyle:UITableViewStylePlain];
+    patchList.delegate = (id<WMPatchListTableViewControllerDelegate>)self;
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:patchList];
+    addNodePopover = [[UIPopoverController alloc] initWithContentViewController:nav];
+    addLocation = origin;
+    [addNodePopover presentPopoverFromRect:(CGRect){.origin = addLocation} inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+}
+
+- (IBAction)bringUpPatchesAction:(id)sender {
+    if (addNodePopover) {
+        [addNodePopover dismissPopoverAnimated:NO];
+        [addNodePopover release];
+        addNodePopover = nil;
+    }
+    [self popupMenu:patchesButton.frame.origin];
+}
+
+- (IBAction)bringUpLibraryAction:(id)sender {
+    if (self.compositionLibrary) {
+        [self.compositionLibrary.view removeFromSuperview];
+        self.compositionLibrary = nil;
+    } else {
+        self.compositionLibrary = [[[WMCompositionLibraryViewController alloc] init] autorelease];
+        CGRect r = self.view.bounds;
+        UIView *v = [self.compositionLibrary view];
+        CGRect vr = v.frame;
+        vr.origin.y = r.size.height - vr.size.height;
+        v.frame = vr;
+        [self.view addSubview:v];
+    }
+}
+
+- (void)popupMenu {
+    [self popupMenu:CGPointMake(self.view.bounds.size.width/3.0, self.view.bounds.size.height/2.0)];
+}
+
+- (void)checkPopover:(BOOL)animage {
+    [addNodePopover dismissPopoverAnimated:animage];
+    [addNodePopover release];
+    addNodePopover = nil;
+}
+
+
+- (void)swiperAction:(UISwipeGestureRecognizer *)gesture {
 }
 
 - (void)longPress:(UILongPressGestureRecognizer *)inR;
@@ -112,6 +203,7 @@
 		[addNodePopover presentPopoverFromRect:(CGRect){.origin = addLocation} inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 	}
 }
+         
 
 - (void)patchList:(WMPatchListTableViewController *)inPatchList selectedPatchClassName:(NSString *)inClassName;
 {
@@ -121,6 +213,23 @@
 	addNodePopover = nil;
 }
 
+- (void)viewWillAppear:(BOOL)inAnimated;
+{
+	[super viewWillAppear:inAnimated];
+	[previewController viewWillAppear:inAnimated];
+}
+
+- (void)viewDidAppear:(BOOL)inAnimated;
+{
+	[super viewDidAppear:inAnimated];
+	[previewController viewDidAppear:inAnimated];
+}
+
+- (void)viewDidDisappear:(BOOL)inAnimated;
+{
+	[super viewDidDisappear:inAnimated];
+	[previewController viewDidDisappear:inAnimated];
+}
 
 - (void)viewDidUnload
 {

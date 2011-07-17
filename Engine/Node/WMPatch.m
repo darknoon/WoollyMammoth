@@ -12,6 +12,7 @@
 #import "WMEAGLContext.h"
 #import "WMPatchCategories.h"
 
+#import "WMEngine.h"
 #import "WMPort.h"
 
 #import <objc/objc.h>
@@ -26,12 +27,36 @@ NSString *WMPatchStatePlistName = @"state";
 NSString *WMPatchConnectionsPlistName = @"connections";
 NSString *WMPatchChildrenPlistName = @"nodes";
 
+NSString *WMPatchEditorPositionPlistName = @"editorPosition";
+
+
 @interface WMPlaceholderPatch : WMPatch {
 @private
     NSString *originalClassName;
 }
 @end
 
+
+@interface NSString(uncamelcase)
+- (NSString *)uncamelcase;
+@end
+
+@implementation NSString(uncamelcase)
+
+- (NSString *)uncamelcase {
+    NSMutableString *s = [NSMutableString string];
+    NSCharacterSet *set = [NSCharacterSet uppercaseLetterCharacterSet];
+    for (unsigned i = 0; i < self.length; i++) {
+        unichar c = [self characterAtIndex:i];
+        if ([set characterIsMember:c]) {
+            if (i > 0) [s appendString:@" "];
+        }
+        [s appendFormat:@"%C",c];
+    }
+    return s;
+}
+
+@end
 
 @interface WMPatch ()
 
@@ -43,6 +68,7 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 @synthesize children;
 @synthesize key;
 @synthesize editorPosition;
+@synthesize hasSetup;
 
 + (NSMutableDictionary *)_classMap;
 {
@@ -143,6 +169,11 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 	}
 	
 	return [[patchClass alloc] initWithPlistRepresentation:inPlist];
+}
+
++ (id)defaultValueForInputPortKey:(NSString *)inKey;
+{
+	return nil;
 }
 
 - (WMPort *)portForIvar:(Ivar)inIvar key:(NSString *)inKey;
@@ -321,6 +352,17 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 		
 	//Set state of ivar ports
 	[self setPlistState:state];
+	if (!state) {
+		for (WMPort *port in inputPorts) {
+			id value = [[self class] defaultValueForInputPortKey:port.key];
+			if (value) {
+				BOOL ok = [port setStateValue:value];
+				if (!ok) {
+					NSLog(@"Could not set default value for port key: %@", port.key);
+				}
+			}
+		}
+	}
 	
 	//Create children
 	[self createChildrenWithState:state];
@@ -332,9 +374,48 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 	[self createPublishedInputPortsWithState:state];
 	[self createPublishedOutputPortsWithState:state];
 		
+	//Set position
+	NSString *posStr = [inPlist objectForKey:WMPatchEditorPositionPlistName];
+	if (posStr) {
+		self.editorPosition = CGPointFromString(posStr);
+	}
+	
 	[pool drain];
 	
 	return self;
+}
+
+- (id)plistRepresentation;
+{
+	NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+	
+	//Serialize plist state
+	[dict setObject:self.plistState forKey:WMPatchStatePlistName];
+	
+	//Serialize connections
+	NSMutableArray *cpl = [NSMutableArray array];
+	for (WMConnection *c in connections) {
+		NSMutableDictionary *d = [NSMutableDictionary dictionary];
+		
+		[d setObject:c.sourceNode forKey:@"sourceNode"];
+		[d setObject:c.sourcePort forKey:@"sourcePort"];
+		[d setObject:c.destinationNode forKey:@"destinationNode"];
+		[d setObject:c.destinationPort forKey:@"destinationPort"];
+				
+		[cpl addObject:d];
+	}
+	
+	//Serialize children
+	NSMutableArray *childrenRep = [NSMutableArray array];
+	for (WMPatch *p in self.children) {
+		[childrenRep addObject:[p plistRepresentation]];
+	}
+	[dict setObject:childrenRep forKey:WMPatchChildrenPlistName];
+	
+	//Serialize position
+	[dict setObject:NSStringFromCGPoint(self.editorPosition) forKey:WMPatchEditorPositionPlistName];
+	
+	return dict;
 }
 
 - (void)dealloc {
@@ -377,7 +458,22 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 
 - (id)plistState;
 {
-	return nil;
+	
+	NSMutableDictionary *plistState = [NSMutableDictionary dictionary];
+	//TODO: serialize custom input ports
+	
+	NSMutableDictionary *inputPortStates = [NSMutableDictionary dictionary];
+	//Save values of input ports
+	for (WMPort *inputPort in [self inputPorts]) {
+		NSDictionary *value = [inputPort stateValue];
+		if (value) {
+			[inputPortStates setObject:value forKey:inputPort.key];
+		}
+	}
+	
+	[plistState setObject:inputPortStates forKey:@"ivarInputPortStates"];
+	
+	return plistState;
 }
 
 - (void)addInputPort:(WMPort *)inPort;
@@ -496,9 +592,30 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 	[childrenByKey setObject:inPatch forKey:inPatch.key];
 }
 
+- (void)removeChild:(WMPatch *)inPatch;
+{
+	//Remove any connections related
+	for (WMConnection *connection in [[connections copy] autorelease]) {
+		if ([connection.destinationNode isEqualToString:inPatch.key] || [connection.sourceNode isEqualToString:inPatch.key]) {
+			[connections removeObject:connection];
+		}
+	}
+	[children removeObject:inPatch];
+	[childrenByKey removeObjectForKey:inPatch.key];
+}
+
 - (void)addConnectionFromPort:(NSString *)fromPort ofPatch:(NSString *)fromPatch toPort:(NSString *)toPort ofPatch:(NSString *)toPatch;
 {
-	NSMutableArray *connectionsMutable = [NSMutableArray arrayWithArray:connections];
+	//Find an existing connection
+	WMConnection *existingConnectionToInputPort = nil;
+	for (WMConnection *connection in connections) {
+		if ([connection.destinationNode isEqualToString:toPatch] && [connection.destinationPort isEqualToString:toPort]) {
+			existingConnectionToInputPort = connection;
+		}
+	}
+	if (existingConnectionToInputPort) {
+		[connections removeObject:existingConnectionToInputPort];
+	}
 	
 	WMConnection *connection = [[WMConnection alloc] init];
 	connection.sourceNode = fromPatch;
@@ -506,10 +623,13 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 	connection.destinationNode = toPatch;
 	connection.destinationPort = toPort;
 
-	[connectionsMutable addObject:connection];
-	
-	[connections release];
-	connections = [connectionsMutable copy];
+	[connections addObject:connection];	
+}
+
++ (NSString *)humanReadableTitle {
+    NSString *s = [NSMutableString stringWithString:NSStringFromClass(self)];
+    if ([s hasPrefix:@"WM"]) s = [s substringFromIndex:2];
+    return [s uncamelcase];
 }
 
 @end
@@ -530,5 +650,6 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 {
 	return [NSString stringWithFormat:@"<%@ (was %@) : %p>{key: %@, connections: %u, childen: %u>}", NSStringFromClass([self class]), originalClassName, self, key, connections.count, children.count];
 }
+
 
 @end

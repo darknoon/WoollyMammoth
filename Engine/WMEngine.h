@@ -22,6 +22,8 @@
 	NSDictionary *compositionUserData;
 }
 
+- (id)initWithRootObject:(WMPatch *)inNode userData:(NSDictionary *)inUserData;
+
 - (id)initWithComposition:(DNQCComposition *)inComposition;
 
 @property (nonatomic, retain, readonly) WMEAGLContext *renderContext;

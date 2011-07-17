@@ -24,6 +24,8 @@ typedef enum {
 @class WMEAGLContext;
 @class WMPort;
 @class WMNumberPort;
+@class WMEngine;
+
 @interface WMPatch : NSObject {
 @protected;
 	//These don't have input at the beginning
@@ -44,7 +46,6 @@ typedef enum {
 	
 	//Render
 	CFAbsoluteTime lastExecutionTime;
-
 }
 
 + (NSArray *)patchClasses;
@@ -52,8 +53,11 @@ typedef enum {
 //Will pick the correct patch class to represent this object
 + (id)patchWithPlistRepresentation:(id)inPlist;
 
++ (id)defaultValueForInputPortKey:(NSString *)inKey;
+
 //Override to do your own setup
 - (id)initWithPlistRepresentation:(id)inPlist;
+- (id)plistRepresentation;
 
 + (NSString *)category;
 
@@ -61,6 +65,7 @@ typedef enum {
 + (void)registerToRepresentClassNames:(NSSet *)inClassNames;
 + (void)registerToRepresentPluginClassNames:(NSSet *)inClassNames;
 + (Class)findClassWithName:(NSString*)className;
++ (NSString *)humanReadableTitle;
 
 - (BOOL)setPlistState:(id)inPlist;
 - (id)plistState;
@@ -70,6 +75,8 @@ typedef enum {
 
 @property (nonatomic, readonly) NSArray *systemInputPorts;
 @property (nonatomic, readonly) NSArray *systemOutputPorts;
+
+@property (nonatomic) BOOL hasSetup;
 
 - (void)addInputPort:(WMPort *)inPort;
 - (void)addOutputPort:(WMPort *)inPort;
@@ -96,6 +103,7 @@ typedef enum {
 //Editor
 @property (nonatomic) CGPoint editorPosition;
 - (void)addChild:(WMPatch *)inPatch;
+- (void)removeChild:(WMPatch *)inPatch;
 - (void)addConnectionFromPort:(NSString *)inPort ofPatch:(NSString *)fromPatch toPort:(NSString *)toPort ofPatch:(NSString *)toPatch;
 
 @end

@@ -14,6 +14,12 @@
 @synthesize name;
 @synthesize originalPort;
 
+- (NSString *)name;
+{
+	return [[name ? name : key retain] autorelease];
+}
+
+
 - (id)stateValue;
 {
 	return nil;
@@ -27,6 +33,11 @@
 - (BOOL)takeValueFromPort:(WMPort *)inPort;
 {
 	return YES;
+}
+
+- (BOOL)canTakeValueFromPort:(WMPort *)inPort;
+{
+	return [[inPort class] isEqual:[self class]];
 }
 
 - (NSString *)description;

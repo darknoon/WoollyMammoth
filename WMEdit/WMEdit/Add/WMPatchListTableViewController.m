@@ -82,8 +82,9 @@
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
-    
-	cell.textLabel.text = [patchList objectAtIndex:indexPath.row];
+    NSString *className = [patchList objectAtIndex:indexPath.row];
+    NSString *pretty = [NSClassFromString(className) humanReadableTitle];
+	cell.textLabel.text = pretty ? pretty : className;
     
     return cell;
 }

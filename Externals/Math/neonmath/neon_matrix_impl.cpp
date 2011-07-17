@@ -24,7 +24,7 @@
 #include "neon_matrix_impl.h"
 
 #ifdef __thumb__
-#error "This file should be compiled in ARM mode only."
+//#error "This file should be compiled in ARM mode only."
 // Note in Xcode, right click file, Get Info->Build, Other compiler flags = "-marm"
 #endif
 
@@ -32,7 +32,7 @@
 
 void NEON_Matrix4Mul(const float* a, const float* b, float* output )
 {
-	_asm volatile 
+	__asm__ volatile 
 	(
 	 // Store A & B leaving room for q4-q7, which should be preserved
 	 "vldmia %1, { q0-q3 } \n\t"
@@ -72,7 +72,7 @@ void NEON_Matrix4Mul(const float* a, const float* b, float* output )
 	 
 void NEON_Matrix4Vector4Mul(const float* m, const float* v, float* output)
 {
-	_asm volatile 
+	__asm__ volatile 
 	(
 	 // Store m & v - avoiding q4-q7 which need to be preserved - q0 = result
 	 "vldmia %1, { q8-q11 }	\n\t"	// q8-q11 = m

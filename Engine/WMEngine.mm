@@ -30,16 +30,25 @@
 @synthesize renderContext;
 @synthesize rootObject;
 
-- (id)initWithComposition:(DNQCComposition *)inComposition;
+- (id)initWithRootObject:(WMPatch *)inNode userData:(NSDictionary *)inUserData;
 {
 	self = [super init];
 	if (self == nil) return self; 
 	
 	renderContext = [[WMEAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-	self.rootObject = inComposition.rootPatch;
-	compositionUserData = [inComposition.userDictionary retain];
+	self.rootObject = inNode;
+	compositionUserData = [inUserData retain];
 	
 	return self;
+}
+
+- (id)initWithComposition:(DNQCComposition *)inComposition;
+{
+	if (inComposition.rootPatch) {
+		return [self initWithRootObject:inComposition.rootPatch userData:inComposition.userDictionary];
+	} else {
+		return nil;
+	}
 }
 
 //TODO: This could be done with an "enumerate children recursive with block"
@@ -66,7 +75,11 @@
 
 - (void)_setupRecursive:(WMPatch *)inPatch;
 {
-	[inPatch setup:renderContext];
+	if (!inPatch.hasSetup) {
+		[inPatch setup:renderContext];
+		inPatch.hasSetup = YES;
+		
+	}
 	for (WMPatch *patch in inPatch.children) {
 		//This could be done with an "enumerate children recursive with block"
 		[self _setupRecursive:patch];
@@ -148,10 +161,10 @@
 {
 	//TODO: reduce complexity of this method
 	//TODO: define this algorithm formally
-
+    
 	//The following while loop will only apply to these nodes
 	NSSet *nonConsumerNodes = [self _nonConsumerNodesInNodes:inPatch.children connections:inPatch.connections];
-
+    
 	NSMutableSet *hiddenEdges = [NSMutableSet set]; //hidden WMConnecitions
 	
 	NSMutableArray *sorted = [NSMutableArray array];
@@ -162,7 +175,7 @@
 			[noIncomingEdgeNodeSet addObject:node];		
 		}
 	}
-		
+    
 	while (noIncomingEdgeNodeSet.count > 0) {
 		WMPatch *n = [self _firstRenderingNodeInSet:noIncomingEdgeNodeSet orderedNodes:inPatch.children]; //TODO: require nodes with lower rendering order to be rendered first
 		[noIncomingEdgeNodeSet removeObject:n];
@@ -336,6 +349,9 @@
 
 - (void)drawFrameInRect:(CGRect)inBounds;
 {
+	//Make sure we have set up all new node
+	[self _setupRecursive:self.rootObject];
+	
 	//TODO: abstract this state out
 	glViewport(0, 0, renderContext.boundFramebuffer.framebufferWidth, renderContext.boundFramebuffer.framebufferHeight);
 

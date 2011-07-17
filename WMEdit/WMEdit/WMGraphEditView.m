@@ -9,19 +9,29 @@
 #import "WMGraphEditView.h"
 
 #import "WMPatchConnectionsView.h"
-#import "WMPatch.h"
 #import "WMPatchView.h"
+#import "WMConnectionPopover.h"
+
+#import "WMPatch.h"
+#import "WMConnection.h"
 
 @implementation WMGraphEditView {
     NSMutableArray *patchViews;
     WMPatchConnectionsView *patchConnectionsView;
+	WMConnectionPopover *connectionPopover;
+	
+	UIImageView *lighting;
 }
 @synthesize rootPatch;
 
-- (id)initWithFrame:(CGRect)frame
+- (void)initShared;
 {
-    self = [super initWithFrame:frame];
-	
+	lighting = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"connection-lighting"]];
+	[self addSubview:lighting];
+	lighting.center = (CGPoint){CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds)};
+	lighting.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+	lighting.alpha = 0.0f;
+
 	patchViews = [[NSMutableArray alloc] init];
 	patchConnectionsView = [[WMPatchConnectionsView alloc] initWithFrame:self.bounds];	
 	patchConnectionsView.rootPatch = self.rootPatch;
@@ -29,20 +39,25 @@
 	patchConnectionsView.graphView = self;
 	[self addSubview:patchConnectionsView];
 	
+	connectionPopover = [[WMConnectionPopover alloc] initWithFrame:CGRectZero];
+	connectionPopover.hidden = YES;
+	[self addSubview:connectionPopover];
+
+}
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+	
+	[self initShared];
+	
 	return self;
 }
 
 - (void)awakeFromNib;
 {
-	patchViews = [[NSMutableArray alloc] init];
-	patchConnectionsView = [[WMPatchConnectionsView alloc] initWithFrame:self.bounds];
-	patchConnectionsView.rootPatch = self.rootPatch;
-	patchConnectionsView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	patchConnectionsView.graphView = self;
-	[self addSubview:patchConnectionsView];
-
+	[self initShared];
 }
-
 
 - (void)dealloc
 {
@@ -52,6 +67,14 @@
     [super dealloc];
 }
 
+- (BOOL)patchHit:(CGPoint)pt {
+//    pt = [self convertPoint:pt fromView:[self superview]];
+    for (WMPatchView *p in patchViews) {
+        CGRect r = [p frame];
+        if (CGRectContainsPoint(r, pt)) return YES;
+    }
+    return NO;
+}
 - (void)updateConnectionPositions;
 {
 	patchConnectionsView.rootPatch = self.rootPatch;
@@ -66,7 +89,7 @@
 	[patchViews addObject:newNodeView];
 	
 	[inPatch addObserver:self forKeyPath:@"editorPosition" options:NSKeyValueObservingOptionNew context:NULL];
-	
+		
 	[newNodeView sizeToFit];
 	newNodeView.center = inPatch.editorPosition;
 	
@@ -77,7 +100,14 @@
 
 - (void)removePatch:(WMPatch *)inPatch;
 {
+	WMPatchView *patchView = [self patchViewForKey:inPatch.key];
+
 	[inPatch removeObserver:self forKeyPath:@"editorPosition"];
+	[rootPatch removeChild:inPatch];
+	
+	[patchViews removeObject:patchView];
+	[patchView removeFromSuperview];
+	[self updateConnectionPositions];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context;
@@ -116,20 +146,42 @@
 	NSLog(@"start dragging from port: %@ inView: %@ - %@", startPort, inView, inView.patch);
 	if (!startPort) return;
 	[patchConnectionsView addDraggingConnectionFromPatchView:inView port:startPort];
+	
+	[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionAllowUserInteraction animations:^{
+		lighting.alpha = 1.0f;
+	} completion: NULL];;
 }
 
 - (void)continueDraggingConnectionWithLocation:(CGPoint)inPoint inPatchView:(WMPatchView *)inView;
 {
 	WMPatch *hitPatch = [self hitPatchForConnectionWithPoint:inPoint inPatchView:inView];
+	BOOL canConnect = NO;
 	if (hitPatch) {
-		WMPort *hitPort = [[self patchViewForKey:hitPatch.key] inputPortAtPoint:inPoint inView:inView];
+		WMPatchView *hitPatchView = [self patchViewForKey:hitPatch.key];
+		WMPort *hitPort = [hitPatchView inputPortAtPoint:inPoint inView:inView];
 		
-		NSLog(@"touching port: %@", hitPort);
+		WMConnection *connection = [patchConnectionsView draggingConnectionFromPatchView:inView];
+		
+		WMPort *sourcePort = [inView.patch outputPortWithKey:connection.sourcePort];
+		
+		canConnect = [hitPort canTakeValueFromPort:sourcePort];
+		
+		//Show connection popover
+		connectionPopover.hidden = NO;
+		connectionPopover.ports = hitPatch.inputPorts;
+		connectionPopover.connectionIndex = [hitPatch.inputPorts indexOfObject:hitPort];
+		[connectionPopover setTargetPoint: [hitPatchView pointForInputPort:hitPort]];
+		connectionPopover.canConnect = canConnect;
+		[connectionPopover refresh];
+		[self bringSubviewToFront:connectionPopover];
+		
+		NSLog(@"%@ touching port: %@", canConnect ? @"Y" : @"N", hitPort);
 	} else {
+		connectionPopover.hidden = YES;
 		NSLog(@"not touching port");
 	}
 
-	[patchConnectionsView setConnectionEndpoint:inPoint fromPatchView:inView];
+	[patchConnectionsView setConnectionEndpoint:inPoint fromPatchView:inView canConnect:canConnect];
 }
 
 - (void)endDraggingConnectionWithLocation:(CGPoint)inPoint inPatchView:(WMPatchView *)inView;
@@ -138,12 +190,21 @@
 	WMPatch *hitPatch = [self hitPatchForConnectionWithPoint:inPoint inPatchView:inView];
 	if (hitPatch) {
 		WMPort *hitPort = [[self patchViewForKey:hitPatch.key] inputPortAtPoint:inPoint inView:inView];
-		
-		if (hitPatch && hitPort) {
+		WMConnection *connection = [patchConnectionsView draggingConnectionFromPatchView:inView];
+		WMPort *sourcePort = [inView.patch outputPortWithKey:connection.sourcePort];
+
+		BOOL canConnect = [hitPort canTakeValueFromPort:sourcePort];
+		if (hitPatch && hitPort && canConnect) {
 			[rootPatch addConnectionFromPort:[(WMPort *)[inView.patch.outputPorts objectAtIndex:0] key] ofPatch:inView.patch.key toPort:hitPort.key ofPatch:hitPatch.key];
 		}
 	}
 	[patchConnectionsView removeDraggingConnectionFromPatchView:inView];
 	[patchConnectionsView reloadAllConnections];
+	
+	[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionAllowUserInteraction animations:^{
+		lighting.alpha = 0.0f;
+	} completion: NULL];
+	
+	connectionPopover.hidden = YES;
 }
 @end

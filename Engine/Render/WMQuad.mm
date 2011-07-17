@@ -35,6 +35,10 @@ WMStructureField WMQuadVertex_fields[] = {
     return WMPatchCategoryRender;
 }
 
++ (NSString *)humanReadableTitle {
+    return @"Billboard";
+}
+
 + (void)load;
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -42,6 +46,20 @@ WMStructureField WMQuadVertex_fields[] = {
 	[pool drain];
 }
 
++ (id)defaultValueForInputPortKey:(NSString *)inKey;
+{
+	if ([inKey isEqualToString:@"inputScale"]) {
+		return [NSNumber numberWithFloat:1.0f];
+	} else if ([inKey isEqualToString:@"inputColor"]) {
+		return [NSDictionary dictionaryWithObjectsAndKeys:
+				[NSNumber numberWithFloat:1.0f], @"red",
+				[NSNumber numberWithFloat:1.0f], @"green",
+				[NSNumber numberWithFloat:1.0f], @"blue",
+				[NSNumber numberWithFloat:1.0f], @"alpha",
+				nil];
+	}
+	return nil;
+}
 
 - (id)initWithPlistRepresentation:(id)inPlist;
 {
@@ -159,7 +177,6 @@ WMStructureField WMQuadVertex_fields[] = {
 	ZAssert([shader.vertexAttributeNames containsObject:@"position"], @"Couldn't find position in shader");
 	ZAssert([shader.vertexAttributeNames containsObject:@"texCoord0"], @"Couldn't find texCoord0 in shader");
 
-	
 	//Find each relevant thing in the shader, attempt to bind to a part of the buffer
 	unsigned int enableMask = 0;
 	for (NSString *attribute in shader.vertexAttributeNames) {

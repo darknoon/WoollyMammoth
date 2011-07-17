@@ -44,7 +44,7 @@
 	CGRect bounds = self.bounds;
 	const CGFloat dotSize = 9.f;
 	
-	[[UIColor whiteColor] setFill];
+	[[UIColor colorWithWhite:1.0f alpha:0.7f] setFill];
 	CGContextAddRoundRect(ctx, bounds, bounds.size.height / 2);
 	CGContextFillPath(ctx);
 	
@@ -59,6 +59,27 @@
 - (void)dealloc
 {
     [super dealloc];
+}
+
+#pragma mark -
+
+- (NSUInteger)portIndexAtPoint:(CGPoint)inPoint;
+{
+	if (inputCount > 0) {
+		CGFloat offX = (inPoint.x - leftOffset) / offsetBetweenDots;
+		int offXi = (int)roundf(offX);
+		return MAX(0, MIN(offXi, inputCount - 1));
+	}
+	return NSNotFound;
+}
+
+- (CGPoint)pointForPortIndex:(NSUInteger)inIndex;
+{
+	if (inIndex != NSNotFound) {
+		return (CGPoint){.x = leftOffset + inIndex * offsetBetweenDots, .y = plugstripHeight / 2.f};
+	}
+	return CGPointZero;
+	
 }
 
 @end

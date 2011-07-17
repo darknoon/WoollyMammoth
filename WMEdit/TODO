@@ -1,0 +1,14 @@
+
+Features
+- Show the name of the input port you're connecting to (stone)
+- Tap the input ports, see a list of sliders or editors for the input ports
+- Improve the appearance of the patches
+- saving / loading compositions
+
+- Text => image node
+- Quad should resize to match the aspect ratio (look at S and T in wmtexture 2d)
+
+- More cool filters
+
+Bugs
+- Image orientation bug 

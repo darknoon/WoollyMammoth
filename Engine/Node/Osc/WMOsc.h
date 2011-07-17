@@ -16,9 +16,9 @@
 
     OscReceiver	_receiver;
 
-	WMNumberPort *accelX;
-	WMNumberPort *accelY;
-	WMNumberPort *accelZ;
+	//WMNumberPort *outputAccelX;
+	//WMNumberPort *outputAccelY;
+	WMNumberPort *outputAccelZ;
 }
 
 @end

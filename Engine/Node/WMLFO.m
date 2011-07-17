@@ -24,7 +24,13 @@
 	[self registerToRepresentClassNames:[NSSet setWithObject:@"QCLFO"]];
 	[pool drain];
 }
-
+- (BOOL)setup:(WMEAGLContext *)context;
+{
+	inputPeriod.value    = 1;
+	inputPhase.value     = 0.;
+	inputAmplitude.value = 1.;
+	inputOffset.value    = 0.;
+}
 - (BOOL)execute:(WMEAGLContext *)inContext time:(CFTimeInterval)time arguments:(NSDictionary *)args;
 {
 	//Calculate the output value;

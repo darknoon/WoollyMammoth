@@ -18,6 +18,10 @@
     return WMPatchCategoryInput;
 }
 
++ (NSString *)humanReadableTitle {
+    return @"Midi Controller";
+}
+
 + (void)load;
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
