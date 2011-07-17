@@ -77,7 +77,14 @@
 
 - (void)removePatch:(WMPatch *)inPatch;
 {
+	WMPatchView *patchView = [self patchViewForKey:inPatch.key];
+
 	[inPatch removeObserver:self forKeyPath:@"editorPosition"];
+	[rootPatch removeChild:inPatch];
+	
+	[patchViews removeObject:patchView];
+	[patchView removeFromSuperview];
+	[self updateConnectionPositions];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context;

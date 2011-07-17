@@ -47,6 +47,9 @@
 
 	UIGestureRecognizer *outputRecognizer = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(outputPlugsPan:)] autorelease];
 	[outputPlugStrip addGestureRecognizer:outputRecognizer];
+	
+	UITapGestureRecognizer *tapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)] autorelease];
+	[self addGestureRecognizer:tapRecognizer];
 
 	label = [[UILabel alloc] initWithFrame:CGRectZero];
 	label.text = inPatch.key;
@@ -213,6 +216,33 @@
 		}
 	}
 	return patch.editorPosition;
+}
+
+#pragma mark - Menu
+
+
+- (BOOL)canBecomeFirstResponder;
+{
+	return YES;
+}
+
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
+{
+	return action == @selector(delete:);
+}
+
+- (void)tapped:(UITapGestureRecognizer *)inR;
+{
+	[[UIMenuController sharedMenuController] setTargetRect:self.bounds inView:self];
+	[[UIMenuController sharedMenuController] setMenuVisible:YES animated:YES];
+	
+	[self becomeFirstResponder];
+	
+}
+
+- (void)delete:(id)sender;
+{
+	[graphView removePatch:self.patch];
 }
 
 @end

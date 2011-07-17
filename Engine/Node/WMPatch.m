@@ -499,6 +499,17 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 	[childrenByKey setObject:inPatch forKey:inPatch.key];
 }
 
+- (void)removeChild:(WMPatch *)inPatch;
+{
+	//Remove any connections related
+	for (WMConnection *connection in [[connections copy] autorelease]) {
+		if ([connection.destinationNode isEqualToString:inPatch.key] || [connection.sourceNode isEqualToString:inPatch.key]) {
+			[connections removeObject:connection];
+		}
+	}
+	[children removeObject:inPatch];
+	[childrenByKey removeObjectForKey:inPatch.key];
+}
 
 - (void)addConnectionFromPort:(NSString *)fromPort ofPatch:(NSString *)fromPatch toPort:(NSString *)toPort ofPatch:(NSString *)toPatch;
 {

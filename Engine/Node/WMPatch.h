@@ -96,6 +96,7 @@ typedef enum {
 //Editor
 @property (nonatomic) CGPoint editorPosition;
 - (void)addChild:(WMPatch *)inPatch;
+- (void)removeChild:(WMPatch *)inPatch;
 - (void)addConnectionFromPort:(NSString *)inPort ofPatch:(NSString *)fromPatch toPort:(NSString *)toPort ofPatch:(NSString *)toPatch;
 
 @end

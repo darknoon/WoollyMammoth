@@ -19,11 +19,14 @@ static const CGFloat plugstripHeight = 23.f;
 @property (nonatomic, retain) WMPatch *rootPatch;
 
 - (void)addPatch:(WMPatch *)inPatch;
+- (void)removePatch:(WMPatch *)inPatch;
 
 - (WMPatchView *)patchViewForKey:(NSString *)inKey;
 
 - (void)beginDraggingConnectionFromLocation:(CGPoint)inPoint inPatchView:(WMPatchView *)inView;
 - (void)continueDraggingConnectionWithLocation:(CGPoint)inPoint inPatchView:(WMPatchView *)inView;
 - (void)endDraggingConnectionWithLocation:(CGPoint)inPoint inPatchView:(WMPatchView *)inView;
+
+
 
 @end
