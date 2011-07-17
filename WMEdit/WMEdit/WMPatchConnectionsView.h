@@ -21,6 +21,7 @@
 
 - (void)reloadAllConnections;
 
+- (WMConnection *)draggingConnectionFromPatchView:(WMPatchView *)inPatchView;
 - (void)addDraggingConnectionFromPatchView:(WMPatchView *)inPatch port:(WMPort *)inPort;
 - (void)setConnectionEndpoint:(CGPoint)inPoint fromPatchView:(WMPatchView *)inPatch;
 - (void)removeDraggingConnectionFromPatchView:(WMPatchView *)inPatch;

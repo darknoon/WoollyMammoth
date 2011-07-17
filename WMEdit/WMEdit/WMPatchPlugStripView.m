@@ -61,4 +61,25 @@
     [super dealloc];
 }
 
+#pragma mark -
+
+- (NSUInteger)portIndexAtPoint:(CGPoint)inPoint;
+{
+	if (inputCount > 0) {
+		CGFloat offX = (inPoint.x - leftOffset) / offsetBetweenDots;
+		int offXi = (int)roundf(offX);
+		return MAX(0, MIN(offXi, inputCount - 1));
+	}
+	return NSNotFound;
+}
+
+- (CGPoint)pointForPortIndex:(NSUInteger)inIndex;
+{
+	if (inIndex != NSNotFound) {
+		return (CGPoint){.x = leftOffset + inIndex * offsetBetweenDots, .y = plugstripHeight / 2.f};
+	}
+	return CGPointZero;
+	
+}
+
 @end

@@ -70,6 +70,12 @@
 	}	
 }
 
+- (WMConnection *)draggingConnectionFromPatchView:(WMPatchView *)inPatchView;
+{
+	WMDraggingConnection *connection = [draggingConnectionsByPatchKey objectForKey:inPatchView.patch];
+	return connection;
+}
+
 - (void)addDraggingConnectionFromPatchView:(WMPatchView *)inPatch port:(WMPort *)inPort;
 {
 	WMDraggingConnection *connection = [[[WMDraggingConnection alloc] init] autorelease];

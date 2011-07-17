@@ -11,6 +11,7 @@
 #import "WMPatchConnectionsView.h"
 #import "WMPatch.h"
 #import "WMPatchView.h"
+#import "WMConnection.h"
 
 @implementation WMGraphEditView {
     NSMutableArray *patchViews;
@@ -131,7 +132,13 @@
 	if (hitPatch) {
 		WMPort *hitPort = [[self patchViewForKey:hitPatch.key] inputPortAtPoint:inPoint inView:inView];
 		
-		NSLog(@"touching port: %@", hitPort);
+		WMConnection *connection = [patchConnectionsView draggingConnectionFromPatchView:inView];
+		
+		WMPort *sourcePort = [inView.patch outputPortWithKey:connection.sourcePort];
+		
+		BOOL canConnect = [hitPort canTakeValueFromPort:sourcePort];
+		
+		NSLog(@"%@ touching port: %@", canConnect ? @"Y" : @"N", hitPort);
 	} else {
 		NSLog(@"not touching port");
 	}
