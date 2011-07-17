@@ -140,25 +140,6 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	
 }
 
-- (void)popupMenu:(CGPoint)origin {
-//    [self bringUpPatchesAction:self];
-    WMPatchListTableViewController *patchList = [[WMPatchListTableViewController alloc] initWithStyle:UITableViewStylePlain];
-    patchList.delegate = (id<WMPatchListTableViewControllerDelegate>)self;
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:patchList];
-    addNodePopover = [[UIPopoverController alloc] initWithContentViewController:nav];
-    addLocation = origin;
-    [addNodePopover presentPopoverFromRect:(CGRect){.origin = addLocation} inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-}
-
-- (IBAction)bringUpPatchesAction:(id)sender {
-    if (addNodePopover) {
-        [addNodePopover dismissPopoverAnimated:NO];
-        [addNodePopover release];
-        addNodePopover = nil;
-    }
-    [self popupMenu:patchesButton.frame.origin];
-}
-
 - (IBAction)bringUpLibraryAction:(id)sender {
     if (self.compositionLibrary) {
         [self.compositionLibrary.view removeFromSuperview];
@@ -172,10 +153,6 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
         v.frame = vr;
         [self.view addSubview:v];
     }
-}
-
-- (void)popupMenu {
-    [self popupMenu:CGPointMake(self.view.bounds.size.width/3.0, self.view.bounds.size.height/2.0)];
 }
 
 - (void)checkPopover:(BOOL)animage {
