@@ -35,6 +35,14 @@
 	return self;
 }
 
++ (id)defaultValueForInputPortKey:(NSString *)inKey;
+{
+	if ([inKey isEqualToString:@"inputCapture"]) {
+		return [NSNumber numberWithBool:YES];
+	}
+	return nil;
+}
+
 - (WMPatchExecutionMode)executionMode;
 {
 	return kWMPatchExecutionModeProvider;
