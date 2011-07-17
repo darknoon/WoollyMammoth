@@ -161,10 +161,10 @@
 {
 	//TODO: reduce complexity of this method
 	//TODO: define this algorithm formally
-
+    
 	//The following while loop will only apply to these nodes
 	NSSet *nonConsumerNodes = [self _nonConsumerNodesInNodes:inPatch.children connections:inPatch.connections];
-
+    
 	NSMutableSet *hiddenEdges = [NSMutableSet set]; //hidden WMConnecitions
 	
 	NSMutableArray *sorted = [NSMutableArray array];
@@ -175,7 +175,7 @@
 			[noIncomingEdgeNodeSet addObject:node];		
 		}
 	}
-		
+    
 	while (noIncomingEdgeNodeSet.count > 0) {
 		WMPatch *n = [self _firstRenderingNodeInSet:noIncomingEdgeNodeSet orderedNodes:inPatch.children]; //TODO: require nodes with lower rendering order to be rendered first
 		[noIncomingEdgeNodeSet removeObject:n];

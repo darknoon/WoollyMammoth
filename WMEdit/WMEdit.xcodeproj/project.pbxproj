@@ -147,6 +147,9 @@
 		80250FB113D224480031B4E7 /* OscPrintReceivedElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80250F9913D224480031B4E7 /* OscPrintReceivedElements.cpp */; };
 		80250FB213D224480031B4E7 /* OscReceivedElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80250F9B13D224480031B4E7 /* OscReceivedElements.cpp */; };
 		80250FB313D224480031B4E7 /* OscTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80250F9D13D224480031B4E7 /* OscTypes.cpp */; };
+		80843C8713D26F71002C0693 /* WMImageFalseColor.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 80843C8413D26F71002C0693 /* WMImageFalseColor.glsl */; };
+		80843C8813D26F71002C0693 /* WMImageFalseColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 80843C8613D26F71002C0693 /* WMImageFalseColor.m */; };
+		80843CA213D28F5A002C0693 /* RainbowDark.pal in Resources */ = {isa = PBXBuildFile; fileRef = 80843CA113D28F5A002C0693 /* RainbowDark.pal */; };
 		80BB75D613D20AD2009B5542 /* WMOsc.mm in Sources */ = {isa = PBXBuildFile; fileRef = 80BB75D513D20AD2009B5542 /* WMOsc.mm */; };
 /* End PBXBuildFile section */
 
@@ -439,6 +442,10 @@
 		80250F9D13D224480031B4E7 /* OscTypes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OscTypes.cpp; sourceTree = "<group>"; };
 		80250F9E13D224480031B4E7 /* OscTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OscTypes.h; sourceTree = "<group>"; };
 		80250FB613D2258C0031B4E7 /* DoubleBufferThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DoubleBufferThread.h; path = Osc/DoubleBufferThread.h; sourceTree = "<group>"; };
+		80843C8413D26F71002C0693 /* WMImageFalseColor.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WMImageFalseColor.glsl; sourceTree = "<group>"; };
+		80843C8513D26F71002C0693 /* WMImageFalseColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMImageFalseColor.h; sourceTree = "<group>"; };
+		80843C8613D26F71002C0693 /* WMImageFalseColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMImageFalseColor.m; sourceTree = "<group>"; };
+		80843CA113D28F5A002C0693 /* RainbowDark.pal */ = {isa = PBXFileReference; lastKnownFileType = file; path = RainbowDark.pal; sourceTree = "<group>"; };
 		80BB75D413D20AD2009B5542 /* WMOsc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WMOsc.h; path = Osc/WMOsc.h; sourceTree = "<group>"; };
 		80BB75D513D20AD2009B5542 /* WMOsc.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = WMOsc.mm; path = Osc/WMOsc.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -681,6 +688,7 @@
 		49A525C613D1725E004EC7F6 /* Node */ = {
 			isa = PBXGroup;
 			children = (
+				80843C8313D26F71002C0693 /* ImageFalseColor */,
 				80BB75D213D20ABD009B5542 /* Osc */,
 				49A525C713D1725E004EC7F6 /* DNQCComposition.h */,
 				49A525C813D1725E004EC7F6 /* DNQCComposition.m */,
@@ -1067,6 +1075,17 @@
 			path = osc;
 			sourceTree = "<group>";
 		};
+		80843C8313D26F71002C0693 /* ImageFalseColor */ = {
+			isa = PBXGroup;
+			children = (
+				80843CA113D28F5A002C0693 /* RainbowDark.pal */,
+				80843C8413D26F71002C0693 /* WMImageFalseColor.glsl */,
+				80843C8513D26F71002C0693 /* WMImageFalseColor.h */,
+				80843C8613D26F71002C0693 /* WMImageFalseColor.m */,
+			);
+			path = ImageFalseColor;
+			sourceTree = "<group>";
+		};
 		80BB75D213D20ABD009B5542 /* Osc */ = {
 			isa = PBXGroup;
 			children = (
@@ -1157,6 +1176,8 @@
 				49A5286313D174C6004EC7F6 /* connection-white~ipad.png in Resources */,
 				49A5286513D17A03004EC7F6 /* connection-shadow~ipad.png in Resources */,
 				49174AAF13D235BD008B5B8D /* WMDebugViewController.xib in Resources */,
+				80843C8713D26F71002C0693 /* WMImageFalseColor.glsl in Resources */,
+				80843CA213D28F5A002C0693 /* RainbowDark.pal in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1304,6 +1325,7 @@
 				494E4ED013D24A6E00402784 /* CJSONScanner.m in Sources */,
 				494E4ED113D24A6E00402784 /* CJSONSerializer.m in Sources */,
 				494E4ED513D24A8C00402784 /* Reachability.m in Sources */,
+				80843C8813D26F71002C0693 /* WMImageFalseColor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
