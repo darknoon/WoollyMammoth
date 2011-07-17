@@ -60,8 +60,8 @@
     float y = msg->getArg(1)._fvalue;
     float z = msg->getArg(2)._fvalue;
     
-    //outputAccelX.value = x;
-    //outputAccelY.value = y;
+    outputAccelX.value = x;
+    outputAccelY.value = y;
     outputAccelZ.value = z;
  }
 -(void) OscMsaAccelerometer:(OscMessage *)msg { 
@@ -74,8 +74,8 @@
 
     NSLog(@"WMOsc OscMsaAccelerometer x:%.2f y:%.2f z:%.2f ",x,y,z);
      
-    //outputAccelX.value = x;
-    //outputAccelY.value = y;
+    outputAccelX.value = x;
+    outputAccelY.value = y;
     outputAccelZ.value = z;
     
  }

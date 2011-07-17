@@ -124,7 +124,7 @@ typedef struct {
         *pali++ = i*4;
         *pali++ = 255;
     }
-    for (int i=32; i>1; i--) {
+    for (int i=32; i>0; i--) {
         *pali++ = 0;
         *pali++ = 0;
         *pali++ = i*4;
