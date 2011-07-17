@@ -134,7 +134,7 @@ NSArray *directoriesToAdd(NSString *path, NSString *existing) {
     if (d) {
         id propertyList = [self propertyListWithData:d];
         id thingy = [self thingFromPropertyList:propertyList];
-//        if (thingy) [self.compositions addObject:thingy];
+        if (thingy) [self.compositions addObject:thingy];
     }
 }
 

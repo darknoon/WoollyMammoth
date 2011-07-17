@@ -79,8 +79,7 @@
 {
     [super viewDidLoad];
 	
-	UITapGestureRecognizer *longPressRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]autorelease];
-    [longPressRecognizer setNumberOfTapsRequired:2];
+	UILongPressGestureRecognizer *longPressRecognizer = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]autorelease];
 	[self.view addGestureRecognizer:longPressRecognizer];
 	
 //    UISwipeGestureRecognizer *swipe = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swiperAction:)]autorelease];
@@ -131,12 +130,11 @@
 
 - (IBAction)bringUpPatchesAction:(id)sender {
     if (addNodePopover) {
-        if (addNodePopover) {
-            [addNodePopover dismissPopoverAnimated:NO];
-            [addNodePopover release];
-            addNodePopover = nil;
-        }
-    } else  [self popupMenu:patchesButton.frame.origin];
+        [addNodePopover dismissPopoverAnimated:NO];
+        [addNodePopover release];
+        addNodePopover = nil;
+    }
+    [self popupMenu:patchesButton.frame.origin];
 }
 
 - (IBAction)bringUpLibraryAction:(id)sender {
@@ -177,7 +175,7 @@
         //     - is P in bounds ?
         //      - if so, bail, otherwise fall through to the next line
         
-        [self popupMenu];
+        [self popupMenu:[inR locationInView:graphView]];
 	}
 }
          
