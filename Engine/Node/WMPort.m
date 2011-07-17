@@ -14,6 +14,12 @@
 @synthesize name;
 @synthesize originalPort;
 
+- (NSString *)name;
+{
+	return [[name ? name : key retain] autorelease];
+}
+
+
 - (id)stateValue;
 {
 	return nil;

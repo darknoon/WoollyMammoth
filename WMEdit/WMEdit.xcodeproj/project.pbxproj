@@ -52,6 +52,9 @@
 		494E4EF213D25D2B00402784 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494E4EF113D25D2B00402784 /* CoreMedia.framework */; };
 		496150C013D2D807006C8B57 /* plug-popover-arrow~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 496150BE13D2D807006C8B57 /* plug-popover-arrow~ipad.png */; };
 		496150C113D2D807006C8B57 /* plug-popover~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 496150BF13D2D807006C8B57 /* plug-popover~ipad.png */; };
+		49752E9313D3592D00F20447 /* WMConnectionPopover.m in Sources */ = {isa = PBXBuildFile; fileRef = 49752E9213D3592D00F20447 /* WMConnectionPopover.m */; };
+		49752E9713D35C2000F20447 /* plug-popover-dot~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49752E9513D35C2000F20447 /* plug-popover-dot~ipad.png */; };
+		49752E9813D35C2000F20447 /* plug-popover-highlight~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49752E9613D35C2000F20447 /* plug-popover-highlight~ipad.png */; };
 		49A5253113D169C9004EC7F6 /* WMPatchPlugStripView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A5253013D169C9004EC7F6 /* WMPatchPlugStripView.m */; };
 		49A5253513D170BD004EC7F6 /* WMPatchConnectionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A5253413D170BD004EC7F6 /* WMPatchConnectionsView.m */; };
 		49A5261413D1725E004EC7F6 /* WMStructuredBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A525C013D1725E004EC7F6 /* WMStructuredBuffer.m */; };
@@ -261,6 +264,10 @@
 		494E4EF113D25D2B00402784 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		496150BE13D2D807006C8B57 /* plug-popover-arrow~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plug-popover-arrow~ipad.png"; sourceTree = "<group>"; };
 		496150BF13D2D807006C8B57 /* plug-popover~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plug-popover~ipad.png"; sourceTree = "<group>"; };
+		49752E9113D3592D00F20447 /* WMConnectionPopover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMConnectionPopover.h; sourceTree = "<group>"; };
+		49752E9213D3592D00F20447 /* WMConnectionPopover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMConnectionPopover.m; sourceTree = "<group>"; };
+		49752E9513D35C2000F20447 /* plug-popover-dot~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plug-popover-dot~ipad.png"; sourceTree = "<group>"; };
+		49752E9613D35C2000F20447 /* plug-popover-highlight~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plug-popover-highlight~ipad.png"; sourceTree = "<group>"; };
 		49A5252F13D169C9004EC7F6 /* WMPatchPlugStripView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchPlugStripView.h; sourceTree = "<group>"; };
 		49A5253013D169C9004EC7F6 /* WMPatchPlugStripView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPatchPlugStripView.m; sourceTree = "<group>"; };
 		49A5253313D170BD004EC7F6 /* WMPatchConnectionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchConnectionsView.h; sourceTree = "<group>"; };
@@ -886,6 +893,8 @@
 		49A5286113D174C6004EC7F6 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				49752E9513D35C2000F20447 /* plug-popover-dot~ipad.png */,
+				49752E9613D35C2000F20447 /* plug-popover-highlight~ipad.png */,
 				496150BE13D2D807006C8B57 /* plug-popover-arrow~ipad.png */,
 				496150BF13D2D807006C8B57 /* plug-popover~ipad.png */,
 				49A5286413D17A03004EC7F6 /* connection-shadow~ipad.png */,
@@ -973,6 +982,8 @@
 				49F0598A13D161090056C506 /* WMPatchView.m */,
 				49A5252F13D169C9004EC7F6 /* WMPatchPlugStripView.h */,
 				49A5253013D169C9004EC7F6 /* WMPatchPlugStripView.m */,
+				49752E9113D3592D00F20447 /* WMConnectionPopover.h */,
+				49752E9213D3592D00F20447 /* WMConnectionPopover.m */,
 				49A5253313D170BD004EC7F6 /* WMPatchConnectionsView.h */,
 				49A5253413D170BD004EC7F6 /* WMPatchConnectionsView.m */,
 				49A5285E13D17404004EC7F6 /* WMConnectionView.h */,
@@ -1212,6 +1223,9 @@
 				B43F38B913D32B86004A6A47 /* WMCompositionLibraryViewController.xib in Resources */,
 				B43F38BB13D330ED004A6A47 /* linen.png in Resources */,
 				8073975213D3336200917088 /* RainbowLight.pal in Resources */,
+				49752E9713D35C2000F20447 /* plug-popover-dot~ipad.png in Resources */,
+				49752E9813D35C2000F20447 /* plug-popover-highlight~ipad.png in Resources */,
+>>>>>>> f4b047532a494bafef6f00e8528e8b3d9569cf42
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1362,6 +1376,7 @@
 				80843C8813D26F71002C0693 /* WMImageFalseColor.m in Sources */,
 				B43F38A313D323A0004A6A47 /* WMCompositionLibrary.m in Sources */,
 				B43F38B813D32B86004A6A47 /* WMCompositionLibraryViewController.m in Sources */,
+				49752E9313D3592D00F20447 /* WMConnectionPopover.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

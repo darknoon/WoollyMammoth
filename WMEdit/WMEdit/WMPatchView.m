@@ -17,6 +17,8 @@
 	WMPatchPlugStripView *outputPlugStrip;
 	WMPatch *patch;
 	
+	BOOL draggingOutputConnection;
+	
 	UILabel *label;
 }
 
@@ -41,13 +43,7 @@
 	outputPlugStrip = [[WMPatchPlugStripView alloc] initWithFrame:CGRectZero];
 	outputPlugStrip.inputCount = 2;
 	[self addSubview:outputPlugStrip];
-	
-	UIGestureRecognizer *inputRecognizer = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(inputPlugsPan:)] autorelease];
-	[inputPlugStrip addGestureRecognizer:inputRecognizer];
-
-	UIGestureRecognizer *outputRecognizer = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(outputPlugsPan:)] autorelease];
-	[outputPlugStrip addGestureRecognizer:outputRecognizer];
-	
+		
 	UITapGestureRecognizer *tapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)] autorelease];
 	[self addGestureRecognizer:tapRecognizer];
 	
@@ -114,32 +110,23 @@
 	
 }
 
-- (void)inputPlugsPan:(UIPanGestureRecognizer *)inR;
-{
-	NSLog(@"inputPlugsPan: %d", inR.state);
-	
-}
-
-- (void)outputPlugsPan:(UIPanGestureRecognizer *)inR;
-{
-	if (inR.state == UIGestureRecognizerStateBegan) {
-		[graphView beginDraggingConnectionFromLocation:[inR locationInView:self] inPatchView:self];
-	} else if (inR.state == UIGestureRecognizerStateChanged) {
-		[graphView continueDraggingConnectionWithLocation:[inR locationInView:self] inPatchView:self];
-	} else if (inR.state == UIGestureRecognizerStateEnded) {
-		[graphView endDraggingConnectionWithLocation:[inR locationInView:self] inPatchView:self];
-	}
-}
 
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+	CGPoint p = [[touches anyObject] locationInView:self];
+	if ([outputPlugStrip pointInside:[outputPlugStrip convertPoint:p fromView:self] withEvent:event] && self.patch.outputPorts.count > 0) {
+		[graphView beginDraggingConnectionFromLocation:p inPatchView:self];
+		draggingOutputConnection = YES;
+	}
 	if (draggable) {
 		dragging = YES;
 	}
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-	if (draggable && dragging) {
+	if (draggingOutputConnection) {
+		[graphView continueDraggingConnectionWithLocation:[[touches anyObject] locationInView:self] inPatchView:self];
+	} else if (draggable && dragging) {
 		UITouch *touch = [touches anyObject];
 		CGPoint location = [touch locationInView:self];
 		CGPoint previous = [touch previousLocationInView:self];
@@ -153,7 +140,10 @@
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-	if (draggable && dragging) {
+	if (draggingOutputConnection) {
+		[graphView endDraggingConnectionWithLocation:[[touches anyObject] locationInView:self] inPatchView:self];
+		draggingOutputConnection = NO;
+	} if (draggable && dragging) {
 		CGPoint center = self.center;
 		self.center = center;
 		dragging = NO;
