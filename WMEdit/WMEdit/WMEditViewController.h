@@ -12,6 +12,6 @@
 @class WMGraphEditView;
 @interface WMEditViewController : UIViewController
 
-@property IBOutlet (nonatomic, retain) WMGraphEditView *graphView;
+@property (nonatomic, retain) IBOutlet WMGraphEditView *graphView;
 
 @end
