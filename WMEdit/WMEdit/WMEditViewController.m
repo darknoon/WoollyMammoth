@@ -77,8 +77,13 @@
 	UILongPressGestureRecognizer *longPressRecognizer = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]autorelease];
 	[self.view addGestureRecognizer:longPressRecognizer];
 	
-    UIRotationGestureRecognizer *rotator = [[[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotatingGesture:)]autorelease];
-    [self.view addGestureRecognizer:rotator];
+//    UISwipeGestureRecognizer *swipe = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swiperAction:)]autorelease];
+//    [swipe setDirection:UISwipeGestureRecognizerDirectionRight];
+//    [self.view addGestureRecognizer:swipe];
+//    swipe = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swiperAction:)]autorelease];
+//    [swipe setDirection:UISwipeGestureRecognizerDirectionLeft];
+//    [self.view addGestureRecognizer:swipe];
+
 	graphView.rootPatch = rootPatch;
 	
 	CGSize previewSize = (CGSize){.width = 300, .height = 200};
@@ -134,11 +139,11 @@
     addNodePopover = nil;
 }
 
-- (void)rotatingGesture:(UIRotationGestureRecognizer *)gesture {
+- (void)swiperAction:(UISwipeGestureRecognizer *)gesture {
     WMCompositionLibraryViewController *wm = [[[WMCompositionLibraryViewController alloc] init] autorelease];
     [self checkPopover:NO];
     addNodePopover = [[UIPopoverController alloc] initWithContentViewController:wm];
-    CGPoint addLocation = [gesture locationInView:self.view];
+    addLocation = [gesture locationInView:self.view];
     [addNodePopover presentPopoverFromRect:(CGRect){.origin = addLocation} inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 

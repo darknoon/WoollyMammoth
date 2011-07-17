@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface WMCompositionLibraryViewController : UITableViewController {
+@interface WMCompositionLibraryViewController : UIViewController {
     
 }
 
