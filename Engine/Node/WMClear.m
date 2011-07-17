@@ -29,6 +29,19 @@
 	return self;
 }
 
++ (id)defaultValueForInputPortKey:(NSString *)inKey;
+{
+	if ([inKey isEqualToString:@"inputColor"]) {
+		return [NSDictionary dictionaryWithObjectsAndKeys:
+				[NSNumber numberWithFloat:0.2f], @"red",
+				[NSNumber numberWithFloat:0.2f], @"green",
+				[NSNumber numberWithFloat:0.2f], @"blue",
+				[NSNumber numberWithFloat:1.0f], @"alpha",
+				nil];
+	}
+	return nil;
+}
+
 - (BOOL)execute:(WMEAGLContext *)inContext time:(CFTimeInterval)time arguments:(NSDictionary *)args;
 {
 	glClearColor(inputColor.red, inputColor.green, inputColor.blue, inputColor.alpha);
