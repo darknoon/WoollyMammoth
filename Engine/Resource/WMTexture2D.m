@@ -52,6 +52,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #endif
 
 #import "WMTexture2D.h"
+#import "UIImage+resize.h"
 
 @interface WMTexture2D ()
 - (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
@@ -184,7 +185,6 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 		return nil;
 	}
 	
-#warning Need to consider image orientation and alter transform to match
 	
 	info = CGImageGetAlphaInfo(image);
 	hasAlpha = ((info == kCGImageAlphaPremultipliedLast) || (info == kCGImageAlphaPremultipliedFirst) || (info == kCGImageAlphaLast) || (info == kCGImageAlphaFirst) ? YES : NO);
@@ -200,6 +200,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 	imageSize = CGSizeMake(CGImageGetWidth(image), CGImageGetHeight(image));
 	transform = CGAffineTransformIdentity;
 	
+    image = [uiImage CGImage];
 	width = imageSize.width;
 	
 	if((width != 1) && (width & (width - 1))) {

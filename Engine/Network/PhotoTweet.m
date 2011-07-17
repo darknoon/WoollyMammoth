@@ -8,6 +8,7 @@
 
 #import "PhotoTweet.h"
 #import "TweetServerCommunicator.h"
+#import "UIImage+Resize.h"
 
 @implementation PhotoTweet
 @synthesize tweet, image;
@@ -19,7 +20,15 @@
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
     NSData *data = [request responseData];
-    self.image = [UIImage imageWithData:data];
+    UIImage *photoImage = [UIImage imageWithData:data];
+    UIImageOrientation orient = [photoImage imageOrientation];
+    // now fix it first!
+//    if (orient != UIImageOrientationUp)
+//        
+//        photoImage = [photoImage resizedImage:photoImage.size interpolationQuality:kCGInterpolationNone];
+    
+    self.image = photoImage;
+
     [[TweetServerCommunicator commmunicator] photoTweetGotImage:self];
 }
 

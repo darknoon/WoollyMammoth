@@ -75,6 +75,8 @@
         UIImage *photoImage = [self.photoTweet photoImage];
         if (!photoImage) photoImage = [UIImage imageNamed:@"eli"];
         
+
+        
         self.lastTexture = [[WMTexture2D alloc] initWithImage:photoImage];
         lastTimeChanged = time;
     }

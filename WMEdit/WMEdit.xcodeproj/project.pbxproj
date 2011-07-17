@@ -167,6 +167,9 @@
 		B43F38B813D32B86004A6A47 /* WMCompositionLibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B43F38B613D32B86004A6A47 /* WMCompositionLibraryViewController.m */; };
 		B43F38B913D32B86004A6A47 /* WMCompositionLibraryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B43F38B713D32B86004A6A47 /* WMCompositionLibraryViewController.xib */; };
 		B43F38BD13D358B4004A6A47 /* missing_effect_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B43F38BC13D358B4004A6A47 /* missing_effect_thumb.jpg */; };
+		B4A09C2413D37EA600D7FB55 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A09C1F13D37EA600D7FB55 /* UIImage+Alpha.m */; };
+		B4A09C2513D37EA600D7FB55 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A09C2113D37EA600D7FB55 /* UIImage+Resize.m */; };
+		B4A09C2613D37EA600D7FB55 /* UIImage+RoundedCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A09C2313D37EA600D7FB55 /* UIImage+RoundedCorner.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -486,6 +489,12 @@
 		B43F38B613D32B86004A6A47 /* WMCompositionLibraryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMCompositionLibraryViewController.m; sourceTree = "<group>"; };
 		B43F38B713D32B86004A6A47 /* WMCompositionLibraryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMCompositionLibraryViewController.xib; sourceTree = "<group>"; };
 		B43F38BC13D358B4004A6A47 /* missing_effect_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = missing_effect_thumb.jpg; sourceTree = "<group>"; };
+		B4A09C1E13D37EA600D7FB55 /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Alpha.h"; sourceTree = "<group>"; };
+		B4A09C1F13D37EA600D7FB55 /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Alpha.m"; sourceTree = "<group>"; };
+		B4A09C2013D37EA600D7FB55 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
+		B4A09C2113D37EA600D7FB55 /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
+		B4A09C2213D37EA600D7FB55 /* UIImage+RoundedCorner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RoundedCorner.h"; sourceTree = "<group>"; };
+		B4A09C2313D37EA600D7FB55 /* UIImage+RoundedCorner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RoundedCorner.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -823,6 +832,12 @@
 				49A5260E13D1725E004EC7F6 /* SimplexNoise.c */,
 				49A5261113D1725E004EC7F6 /* WMMathUtil.h */,
 				49A5261013D1725E004EC7F6 /* WMMathUtil.c */,
+				B4A09C1E13D37EA600D7FB55 /* UIImage+Alpha.h */,
+				B4A09C1F13D37EA600D7FB55 /* UIImage+Alpha.m */,
+				B4A09C2013D37EA600D7FB55 /* UIImage+Resize.h */,
+				B4A09C2113D37EA600D7FB55 /* UIImage+Resize.m */,
+				B4A09C2213D37EA600D7FB55 /* UIImage+RoundedCorner.h */,
+				B4A09C2313D37EA600D7FB55 /* UIImage+RoundedCorner.m */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1401,6 +1416,9 @@
 				B43F38A313D323A0004A6A47 /* WMCompositionLibrary.m in Sources */,
 				B43F38B813D32B86004A6A47 /* WMCompositionLibraryViewController.m in Sources */,
 				49752E9313D3592D00F20447 /* WMConnectionPopover.m in Sources */,
+				B4A09C2413D37EA600D7FB55 /* UIImage+Alpha.m in Sources */,
+				B4A09C2513D37EA600D7FB55 /* UIImage+Resize.m in Sources */,
+				B4A09C2613D37EA600D7FB55 /* UIImage+RoundedCorner.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
