@@ -19,41 +19,45 @@
     NSMutableArray *patchViews;
     WMPatchConnectionsView *patchConnectionsView;
 	WMConnectionPopover *connectionPopover;
+	
+	UIImageView *lighting;
 }
 @synthesize rootPatch;
 
-- (id)initWithFrame:(CGRect)frame
+- (void)initShared;
 {
-    self = [super initWithFrame:frame];
-	
+	lighting = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"connection-lighting"]];
+	[self addSubview:lighting];
+	lighting.center = (CGPoint){CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds)};
+	lighting.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+	lighting.alpha = 0.0f;
+
 	patchViews = [[NSMutableArray alloc] init];
 	patchConnectionsView = [[WMPatchConnectionsView alloc] initWithFrame:self.bounds];	
 	patchConnectionsView.rootPatch = self.rootPatch;
 	patchConnectionsView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	patchConnectionsView.graphView = self;
 	[self addSubview:patchConnectionsView];
-
+	
 	connectionPopover = [[WMConnectionPopover alloc] initWithFrame:CGRectZero];
 	connectionPopover.hidden = YES;
 	[self addSubview:connectionPopover];
+
+}
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+	
+	[self initShared];
 	
 	return self;
 }
 
 - (void)awakeFromNib;
 {
-	patchViews = [[NSMutableArray alloc] init];
-	patchConnectionsView = [[WMPatchConnectionsView alloc] initWithFrame:self.bounds];	
-	patchConnectionsView.rootPatch = self.rootPatch;
-	patchConnectionsView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	patchConnectionsView.graphView = self;
-	[self addSubview:patchConnectionsView];
-	
-	connectionPopover = [[WMConnectionPopover alloc] initWithFrame:CGRectZero];
-	connectionPopover.hidden = YES;
-	[self addSubview:connectionPopover];
+	[self initShared];
 }
-
 
 - (void)dealloc
 {
@@ -142,6 +146,10 @@
 	NSLog(@"start dragging from port: %@ inView: %@ - %@", startPort, inView, inView.patch);
 	if (!startPort) return;
 	[patchConnectionsView addDraggingConnectionFromPatchView:inView port:startPort];
+	
+	[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionAllowUserInteraction animations:^{
+		lighting.alpha = 1.0f;
+	} completion: NULL];;
 }
 
 - (void)continueDraggingConnectionWithLocation:(CGPoint)inPoint inPatchView:(WMPatchView *)inView;
@@ -192,6 +200,10 @@
 	}
 	[patchConnectionsView removeDraggingConnectionFromPatchView:inView];
 	[patchConnectionsView reloadAllConnections];
+	
+	[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionAllowUserInteraction animations:^{
+		lighting.alpha = 0.0f;
+	} completion: NULL];
 	
 	connectionPopover.hidden = YES;
 }
