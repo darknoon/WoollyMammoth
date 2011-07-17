@@ -149,6 +149,7 @@
 		80250FB113D224480031B4E7 /* OscPrintReceivedElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80250F9913D224480031B4E7 /* OscPrintReceivedElements.cpp */; };
 		80250FB213D224480031B4E7 /* OscReceivedElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80250F9B13D224480031B4E7 /* OscReceivedElements.cpp */; };
 		80250FB313D224480031B4E7 /* OscTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80250F9D13D224480031B4E7 /* OscTypes.cpp */; };
+		8073975213D3336200917088 /* RainbowLight.pal in Resources */ = {isa = PBXBuildFile; fileRef = 8073975113D3336200917088 /* RainbowLight.pal */; };
 		80843C8713D26F71002C0693 /* WMImageFalseColor.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 80843C8413D26F71002C0693 /* WMImageFalseColor.glsl */; };
 		80843C8813D26F71002C0693 /* WMImageFalseColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 80843C8613D26F71002C0693 /* WMImageFalseColor.m */; };
 		80843CA213D28F5A002C0693 /* RainbowDark.pal in Resources */ = {isa = PBXBuildFile; fileRef = 80843CA113D28F5A002C0693 /* RainbowDark.pal */; };
@@ -451,6 +452,7 @@
 		80250F9D13D224480031B4E7 /* OscTypes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OscTypes.cpp; sourceTree = "<group>"; };
 		80250F9E13D224480031B4E7 /* OscTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OscTypes.h; sourceTree = "<group>"; };
 		80250FB613D2258C0031B4E7 /* DoubleBufferThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DoubleBufferThread.h; path = Osc/DoubleBufferThread.h; sourceTree = "<group>"; };
+		8073975113D3336200917088 /* RainbowLight.pal */ = {isa = PBXFileReference; lastKnownFileType = file; path = RainbowLight.pal; sourceTree = "<group>"; };
 		80843C8413D26F71002C0693 /* WMImageFalseColor.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WMImageFalseColor.glsl; sourceTree = "<group>"; };
 		80843C8513D26F71002C0693 /* WMImageFalseColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMImageFalseColor.h; sourceTree = "<group>"; };
 		80843C8613D26F71002C0693 /* WMImageFalseColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMImageFalseColor.m; sourceTree = "<group>"; };
@@ -1104,6 +1106,7 @@
 			isa = PBXGroup;
 			children = (
 				80843CA113D28F5A002C0693 /* RainbowDark.pal */,
+				8073975113D3336200917088 /* RainbowLight.pal */,
 				80843C8413D26F71002C0693 /* WMImageFalseColor.glsl */,
 				80843C8513D26F71002C0693 /* WMImageFalseColor.h */,
 				80843C8613D26F71002C0693 /* WMImageFalseColor.m */,
@@ -1208,6 +1211,7 @@
 				B43F389E13D3219E004A6A47 /* WMEdit-Todo in Resources */,
 				B43F38B913D32B86004A6A47 /* WMCompositionLibraryViewController.xib in Resources */,
 				B43F38BB13D330ED004A6A47 /* linen.png in Resources */,
+				8073975213D3336200917088 /* RainbowLight.pal in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

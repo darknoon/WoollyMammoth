@@ -91,12 +91,63 @@ typedef struct {
 	
 	[self loadQuadData];
 
-    NSData *palette = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RainbowDark" ofType:@"pal"]];
+    NSData *palette = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RainbowLight" ofType:@"pal"]];
+#if 1
+    unsigned char *pali = (unsigned char *) [palette bytes];
+    for (int i=0; i<32; i++) {
+        *pali++ = i*4;
+        *pali++ = 0;
+        *pali++ = 0;
+        *pali++ = 255;
+    }
+    for (int i=32; i>0; i--) {
+        *pali++ = i*4;
+        *pali++ = 0;
+        *pali++ = 0;
+        *pali++ = 255;
+    }
+    for (int i=0; i<32; i++) {
+        *pali++ = 0;
+        *pali++ = i*4;
+        *pali++ = 0;
+        *pali++ = 255;
+    }
+    for (int i=32; i>0; i--) {
+        *pali++ = 0;
+        *pali++ = i*4;
+        *pali++ = 0;
+        *pali++ = 255;
+    }
+    for (int i=0; i<32; i++) {
+        *pali++ = 0;
+        *pali++ = 0;
+        *pali++ = i*4;
+        *pali++ = 255;
+    }
+    for (int i=32; i>1; i--) {
+        *pali++ = 0;
+        *pali++ = 0;
+        *pali++ = i*4;
+        *pali++ = 255;
+    }
+    for (int i=0; i<32; i++) {
+        *pali++ = i*4;
+        *pali++ = i*4;
+        *pali++ = i*4;
+        *pali++ = 255;
+    }
+    for (int i=32; i>0; i--) {
+        *pali++ = i*4;
+        *pali++ = i*4;
+        *pali++ = i*4;
+        *pali++ = 255;
+    }
+#endif
     texPal = [[WMTexture2D alloc] initWithData:[palette bytes]
-                                       pixelFormat:kWMTexture2DPixelFormat_RGBA8888 
-                                        pixelsWide:256 
-                                        pixelsHigh:1 
-                                       contentSize:CGSizeMake(256, 1)];
+                                   pixelFormat:kWMTexture2DPixelFormat_RGBA8888 
+                                    pixelsWide:256 
+                                    pixelsHigh:1 
+                                   contentSize:CGSizeMake(256, 1)];
     
 	
 	return ok;
@@ -176,7 +227,7 @@ typedef struct {
 	
 	//TexCoord0
 	glVertexAttribPointer(texCoordLocation, 2, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMQuadVertex, tc));
-	
+
 	//Set uniform values
 	int offsetUniform = [shader uniformLocationForName:@"u_offset"];
 	if (offsetUniform != -1) {
@@ -259,7 +310,7 @@ typedef struct {
 		texMono = [[WMTexture2D alloc] initWithData:NULL pixelFormat:kWMTexture2DPixelFormat_RGBA8888 pixelsWide:64 pixelsHigh:64 contentSize:CGSizeZero];
 	}
 	if (!texPal) {
-		texPal = [[WMTexture2D alloc] initWithData:NULL pixelFormat:kWMTexture2DPixelFormat_RGBA8888 pixelsWide:256 pixelsHigh:1 contentSize:CGSizeZero];
+		texPal = [[WMTexture2D alloc] initWithData:NULL pixelFormat:kWMTexture2DPixelFormat_RGBA8888 pixelsWide:64 pixelsHigh:64 contentSize:CGSizeZero];
 	}
 	if (!fbo) {
 		fbo = [[WMFramebuffer alloc] initWithTexture:texMono depthBufferDepth:0];
