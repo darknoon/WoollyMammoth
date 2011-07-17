@@ -73,6 +73,7 @@
             for (NSMutableDictionary *d in tweets) {
                 PhotoTweet *t = [PhotoTweet photoTweetWithDictionary:d];
                 if (t){
+                    unsigned long long thisOne = [
                     [_allPhotoTweets addObject:t];
                     [myself getPhotoIn:t];
                 }

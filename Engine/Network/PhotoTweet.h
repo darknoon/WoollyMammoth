@@ -22,7 +22,7 @@
 - (NSString *)cleanText; // stripped of tags, urls, and maybe with user name prepended
 - (UIImage *)photoImage;
 - (BOOL)hasImage;
-
+- (unsigned long long)twitterId;
 @end
 
 // Keys we expect:

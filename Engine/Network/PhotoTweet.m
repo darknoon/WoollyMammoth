@@ -12,6 +12,9 @@
 @implementation PhotoTweet
 @synthesize tweet, image;
 
+- (unsigned long long)twitterId {
+    return [[tweet valueForKey:@"id"] unsignedLongLongValue];
+}
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
