@@ -30,6 +30,10 @@ typedef struct {
 	[self registerToRepresentClassNames:[NSSet setWithObject:NSStringFromClass(self)]];
 	[pool drain];
 }
++ (NSString *)category;
+{
+    return WMPatchCategoryRender;
+}
 
 - (BOOL)setPlistState:(id)inPlist;
 {

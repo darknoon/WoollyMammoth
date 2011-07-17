@@ -26,7 +26,7 @@
 }
 - (BOOL)setup:(WMEAGLContext *)context;
 {
-	inputPeriod.value    = 1;
+	inputPeriod.value    = 1.;
 	inputPhase.value     = 0.;
 	inputAmplitude.value = 1.;
 	inputOffset.value    = 0.;

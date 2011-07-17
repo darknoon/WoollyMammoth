@@ -15,7 +15,7 @@
 
 + (NSString *)category;
 {
-    return WMPatchCategoryRender;
+    return WMPatchCategoryInput;
 }
 
 + (void)load;
