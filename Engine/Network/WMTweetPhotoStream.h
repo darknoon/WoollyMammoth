@@ -19,8 +19,10 @@
     WMTexture2D *lastTexture;
     PhotoTweet *photoTweet;
     double lastTimeChanged;
+    BOOL _getNextOne;
 }
 
 @property (nonatomic, retain) PhotoTweet *photoTweet;
 @property (nonatomic, retain) WMTexture2D *lastTexture;
+@property (nonatomic, retain) NSTimer *timer;
 @end

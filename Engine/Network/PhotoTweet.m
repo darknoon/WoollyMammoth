@@ -14,7 +14,7 @@
 @synthesize tweet, image;
 
 - (unsigned long long)twitterId {
-    return [[tweet valueForKey:@"id"] unsignedLongLongValue];
+    return [[tweet valueForKey:@"msg_twid"] unsignedLongLongValue];
 }
 
 - (void)requestFinished:(ASIHTTPRequest *)request

@@ -16,6 +16,7 @@
     unsigned long long _lastIDNumber;
     NSTimer *_timer;
     NSOperationQueue *queue;
+    int currentTweetIndex;
 }
 
 @property (nonatomic, retain) NSOperationQueue *queue;

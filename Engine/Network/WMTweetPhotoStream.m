@@ -12,8 +12,9 @@
 #import "TweetServerCommunicator.h"
 #import "PhotoTweet.h"
 
+
 @implementation WMTweetPhotoStream
-@synthesize photoTweet, lastTexture;
+@synthesize photoTweet, lastTexture, timer = _timer;
 
 + (NSString *)humanReadableTitle {
     return @"Tweeted Photos";
@@ -26,17 +27,12 @@
 	[pool drain];
 }
 
-- (BOOL)setup:(WMEAGLContext *)context;
-{
-    [TweetServerCommunicator commmunicator];
-    return YES;
-}
 
 /* clamp 0 - 1 and return a decent time in seconds */
 
 - (double)timeForSpeed {
     double clampedSpeed = inputSpeed.value;
-    if (clampedSpeed == 0.0) clampedSpeed = 0.5;
+    if (clampedSpeed == 0.0) clampedSpeed = 0.3;
     return 10 * clampedSpeed; // 0 - 10 seconds
 }
 
@@ -52,17 +48,28 @@
 - (id)init {
     self = [super init];
     [TweetServerCommunicator commmunicator];
+    
     return self;
+}
+
+- (void)nextOne:(NSTimer *)t {
+    _getNextOne = YES;
+}
+
+
+- (BOOL)setup:(WMEAGLContext *)context {
+    [TweetServerCommunicator commmunicator];
+    _timer = [[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(nextOne:) userInfo:nil repeats:YES] retain];
+    return YES;
+    
 }
 
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
-    double secondsUntilNextPull = [self timeForSpeed];
+//    double secondsUntilNextPull = [self timeForSpeed];
     
-    if (time - lastTimeChanged > secondsUntilNextPull) {
-        [[TweetServerCommunicator commmunicator] advanceToNextTweet];
-    }
-    
+    if (_getNextOne) [[TweetServerCommunicator commmunicator] advanceToNextTweet];
+
     PhotoTweet *tweet = [[TweetServerCommunicator commmunicator] currentTweet];
     
     if (tweet != photoTweet) {
@@ -83,11 +90,15 @@
     
     if (!self.lastTexture) return NO;
         
+    _getNextOne = NO;
+
     outputImage.image = self.lastTexture;
     return YES;
 }
 
 - (void)cleanup:(WMEAGLContext *)context {
+    [_timer invalidate];
+    [_timer release];
     
 }
 

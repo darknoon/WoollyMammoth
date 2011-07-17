@@ -27,6 +27,9 @@
     return self;
 }
 
+- (CGSize)contentSizeForViewInPopover {
+    return CGSizeMake(320.0, patchList.count * kCellHeightPatches);
+}
 
 - (void)dealloc
 {

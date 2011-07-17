@@ -109,7 +109,7 @@
     }
     
 	cell.textLabel.text = [patchCategoryList objectAtIndex:indexPath.row];
-    
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
 }
 

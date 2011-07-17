@@ -16,19 +16,26 @@
 @synthesize queue;
 
 - (PhotoTweet *)currentTweet {
-    return _downloadedPhotoTweets.count ? [_downloadedPhotoTweets objectAtIndex:0] : nil;
+    if (currentTweetIndex > _downloadedPhotoTweets.count - 1) currentTweetIndex = 0;
+
+    return _downloadedPhotoTweets.count ? [_downloadedPhotoTweets objectAtIndex:currentTweetIndex] : nil;
 }
                                            
 - (void)advanceToNextTweet {
-    if (_downloadedPhotoTweets.count > 1) {
-        PhotoTweet * last = [_downloadedPhotoTweets lastObject];
-        [_downloadedPhotoTweets removeObject:last];
-        [_downloadedPhotoTweets insertObject:last atIndex:0];
-    }
+    currentTweetIndex++;
+//    NSLog(@"%d is new tweet index of %d",currentTweetIndex - 1, _downloadedPhotoTweets.count);
+    
+    if (currentTweetIndex > _downloadedPhotoTweets.count - 1) currentTweetIndex = 0;
+//    if (_downloadedPhotoTweets.count > 1) {
+//        PhotoTweet * last = [_downloadedPhotoTweets lastObject];
+//        [_downloadedPhotoTweets removeObject:last];
+//        [_downloadedPhotoTweets insertObject:last atIndex:0];
+//    }
 }
 
 - (void)photoTweetGotImage:(PhotoTweet *)photoTweet {
-    [_downloadedPhotoTweets insertObject:photoTweet atIndex:0];
+    [_downloadedPhotoTweets addObject:photoTweet];
+//    NSLog(@"got image: @%", [photoTweet.tweet valueForKey:@"image_url"]);
 }
 
 - (void)photoTweetFailedToGetImage:(PhotoTweet *)photoTweet {

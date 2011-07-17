@@ -13,7 +13,7 @@
 NSString *WMPatchCategoryNetwork = @"Network";
 NSString *WMPatchCategoryRender = @"Render";
 NSString *WMPatchCategoryInput = @"Input";
-NSString *WMPatchCategoryUnknown = @"Unknown";
+NSString *WMPatchCategoryUnknown = @"Photo Tweet Hive";
 
 NSArray *WMPatchCategoryNames;
 
