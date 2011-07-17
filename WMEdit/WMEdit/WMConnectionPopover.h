@@ -12,6 +12,7 @@
 
 @property (nonatomic) NSUInteger connectionIndex;
 @property (nonatomic, copy) NSArray *ports;
+@property (nonatomic) BOOL canConnect;
 
 - (void)setTargetPoint:(CGPoint)inPoint;
 

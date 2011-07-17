@@ -34,6 +34,7 @@
 	[self addSubview:patchConnectionsView];
 
 	connectionPopover = [[WMConnectionPopover alloc] initWithFrame:CGRectZero];
+	connectionPopover.hidden = YES;
 	[self addSubview:connectionPopover];
 	
 	return self;
@@ -49,6 +50,7 @@
 	[self addSubview:patchConnectionsView];
 	
 	connectionPopover = [[WMConnectionPopover alloc] initWithFrame:CGRectZero];
+	connectionPopover.hidden = YES;
 	[self addSubview:connectionPopover];
 }
 
@@ -161,6 +163,7 @@
 		connectionPopover.ports = hitPatch.inputPorts;
 		connectionPopover.connectionIndex = [hitPatch.inputPorts indexOfObject:hitPort];
 		[connectionPopover setTargetPoint: [hitPatchView pointForInputPort:hitPort]];
+		connectionPopover.canConnect = canConnect;
 		[connectionPopover refresh];
 		[self bringSubviewToFront:connectionPopover];
 		

@@ -18,9 +18,15 @@ const CGFloat backgroundHeight = 92;
 	UILabel *title;
 	UIImageView *backgroundView;
 	UIImageView *chevron;
+	
+	NSArray *portViews;
+	
+	UIImageView *highlight;
+
 }
 @synthesize connectionIndex;
 @synthesize ports;
+@synthesize canConnect;
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -41,6 +47,9 @@ const CGFloat backgroundHeight = 92;
 	title.font = [UIFont boldSystemFontOfSize:14];
 	[self addSubview:title];
 
+	highlight = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plug-popover-highlight"]];
+	[self addSubview:highlight];
+	
     return self;
 }
 - (void)dealloc {
@@ -58,7 +67,17 @@ const CGFloat backgroundHeight = 92;
 	CGFloat cwidth = 40;
 	chevron.frame = (CGRect){(bounds.size.width-cwidth)/2, 73, cwidth, 32};
 	
-	title.frame = (CGRect){23,19, bounds.size.width - 44, 30};
+	title.frame = (CGRect){23,19, bounds.size.width - 44, 20};
+	
+	[portViews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		UIView *pv = (UIView *)obj;
+		pv.frame = (CGRect){insetLeft + idx * spacing, 45,  18, 19};
+	}];
+	
+	CGSize hvs = highlight.frame.size;
+	highlight.frame = (CGRect) {insetLeft - 50 + connectionIndex * spacing, 45 - 50, hvs.width, hvs.height};
+	
+	highlight.alpha = canConnect ? 1.0f : 0.2f;
 }
 
 - (CGSize)sizeThatFits:(CGSize)size;
@@ -77,6 +96,20 @@ const CGFloat backgroundHeight = 92;
 	
 	title.text = [(WMPort *)[ports objectAtIndex:connectionIndex] name];
 	
+	for (UIView *cv in portViews) {
+		[cv removeFromSuperview];
+	}
+	NSMutableArray *pvm = [NSMutableArray array];
+	for (WMPort *p in ports) {
+		UIImageView *pv = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plug-popover-dot"]] autorelease];
+		[pvm addObject:pv];
+		[self addSubview:pv];
+	}
+	[portViews release];
+	portViews = [pvm retain];
+		
+	[self bringSubviewToFront:highlight];
+
 	[self setNeedsLayout];
 }
 
