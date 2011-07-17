@@ -92,12 +92,12 @@
 {
 	CGPoint point = [self convertPoint:inPoint fromView:inPatch];
 	
-	WMDraggingConnection *connection = [draggingConnectionsByPatchKey objectForKey:inPatch];
+	WMDraggingConnection *connection = [draggingConnectionsByPatchKey objectForKey:inPatch.patch.key];
 	connection.destinationPoint = point;
 	
 	WMConnectionView *view = [draggingConnectionViewsByPatchKey objectForKey:inPatch.patch.key];
+	view.startPoint = [inPatch pointForOutputPort:[inPatch.patch outputPortWithKey:connection.sourcePort]];
 	view.endPoint = point;
-	view.startPoint = inPatch.patch.editorPosition;
 
 	view.alpha = inCanConnect ? 1.0f : 0.5f;
 	
