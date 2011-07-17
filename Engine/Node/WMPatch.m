@@ -25,6 +25,9 @@ NSString *WMPatchStatePlistName = @"state";
 NSString *WMPatchConnectionsPlistName = @"connections";
 NSString *WMPatchChildrenPlistName = @"nodes";
 
+NSString *WMPatchEditorPositionPlistName = @"editorPosition";
+
+
 @interface WMPlaceholderPatch : WMPatch {
 @private
     NSString *originalClassName;
@@ -356,9 +359,48 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 	[self createPublishedInputPortsWithState:state];
 	[self createPublishedOutputPortsWithState:state];
 		
+	//Set position
+	NSString *posStr = [inPlist objectForKey:WMPatchEditorPositionPlistName];
+	if (posStr) {
+		self.editorPosition = CGPointFromString(posStr);
+	}
+	
 	[pool drain];
 	
 	return self;
+}
+
+- (id)plistRepresentation;
+{
+	NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+	
+	//Serialize plist state
+	[dict setObject:self.plistState forKey:WMPatchStatePlistName];
+	
+	//Serialize connections
+	NSMutableArray *cpl = [NSMutableArray array];
+	for (WMConnection *c in connections) {
+		NSMutableDictionary *d = [NSMutableDictionary dictionary];
+		
+		[d setObject:c.sourceNode forKey:@"sourceNode"];
+		[d setObject:c.sourcePort forKey:@"sourcePort"];
+		[d setObject:c.destinationNode forKey:@"destinationNode"];
+		[d setObject:c.destinationPort forKey:@"destinationPort"];
+				
+		[cpl addObject:d];
+	}
+	
+	//Serialize children
+	NSMutableArray *childrenRep = [NSMutableArray array];
+	for (WMPatch *p in self.children) {
+		[childrenRep addObject:[p plistRepresentation]];
+	}
+	[dict setObject:childrenRep forKey:WMPatchChildrenPlistName];
+	
+	//Serialize position
+	[dict setObject:NSStringFromCGPoint(self.editorPosition) forKey:WMPatchEditorPositionPlistName];
+	
+	return dict;
 }
 
 - (void)dealloc {
@@ -401,7 +443,22 @@ NSString *WMPatchChildrenPlistName = @"nodes";
 
 - (id)plistState;
 {
-	return nil;
+	
+	NSMutableDictionary *plistState = [NSMutableDictionary dictionary];
+	//TODO: serialize custom input ports
+	
+	NSMutableDictionary *inputPortStates = [NSMutableDictionary dictionary];
+	//Save values of input ports
+	for (WMPort *inputPort in [self inputPorts]) {
+		NSDictionary *value = [inputPort stateValue];
+		if (value) {
+			[inputPortStates setObject:value forKey:inputPort.key];
+		}
+	}
+	
+	[plistState setObject:inputPortStates forKey:@"ivarInputPortStates"];
+	
+	return plistState;
 }
 
 - (void)addInputPort:(WMPort *)inPort;

@@ -55,6 +55,7 @@ typedef enum {
 
 //Override to do your own setup
 - (id)initWithPlistRepresentation:(id)inPlist;
+- (id)plistRepresentation;
 
 //Call +registerToRepresentClassNames: in your subclass's +load if you want to be the decoder for a given class name
 + (void)registerToRepresentClassNames:(NSSet *)inClassNames;
