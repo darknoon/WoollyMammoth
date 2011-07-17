@@ -1,0 +1,24 @@
+Tasks:
+
+- Name it! Tame it!
+
+- Develop Demo Script for Eli
+    1. connect a patch - show Tweet Stream
+    2. circle gesture to bring up Library
+        - successively load next image
+
+
+-  PlugStripGrandeView
+    - show the title of the hit plug
+
+
+- WMCompositionLibraryViewController
+
+- rotate gesture recognizer to bring up!
+
+
+- Lipstick:
+    - linen canvas
+    - app icon @ 72
+    - Default.png
+    

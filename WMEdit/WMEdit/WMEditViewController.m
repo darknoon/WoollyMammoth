@@ -13,6 +13,9 @@
 #import "WMGraphEditView.h"
 #import "WMPatch.h"
 #import "WMViewController.h"
+#import "WMCompositionLibrary.h"
+#import "WMCompositionLibraryViewController.h"
+
 
 @implementation WMEditViewController {
 	int keycnt; //TODO: better unique key system
@@ -71,9 +74,11 @@
 {
     [super viewDidLoad];
 	
-	UILongPressGestureRecognizer *longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+	UILongPressGestureRecognizer *longPressRecognizer = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]autorelease];
 	[self.view addGestureRecognizer:longPressRecognizer];
 	
+    UIRotationGestureRecognizer *rotator = [[[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotatingGesture:)]autorelease];
+    [self.view addGestureRecognizer:rotator];
 	graphView.rootPatch = rootPatch;
 	
 	CGSize previewSize = (CGSize){.width = 300, .height = 200};
@@ -123,6 +128,19 @@
     [self popupMenu:CGPointMake(self.view.bounds.size.width/3.0, self.view.bounds.size.height/2.0)];
 }
 
+- (void)checkPopover:(BOOL)animage {
+    [addNodePopover dismissPopoverAnimated:animage];
+    [addNodePopover release];
+    addNodePopover = nil;
+}
+
+- (void)rotatingGesture:(UIRotationGestureRecognizer *)gesture {
+    WMCompositionLibraryViewController *wm = [[[WMCompositionLibraryViewController alloc] init] autorelease];
+    [self checkPopover:NO];
+    addNodePopover = [[UIPopoverController alloc] initWithContentViewController:wm];
+    CGPoint addLocation = [gesture locationInView:self.view];
+    [addNodePopover presentPopoverFromRect:(CGRect){.origin = addLocation} inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+}
 
 - (void)longPress:(UILongPressGestureRecognizer *)inR;
 {
@@ -136,6 +154,7 @@
         [self popupMenu];
 	}
 }
+         
 
 - (void)patchList:(WMPatchListTableViewController *)inPatchList selectedPatchClassName:(NSString *)inClassName;
 {

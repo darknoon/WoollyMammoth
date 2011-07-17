@@ -14,7 +14,7 @@
 
 @interface WMTweetPhotoStream : WMPatch {
     WMImagePort *outputImage;
-    WMStringPort *outputText;
+//    WMStringPort *outputText;
     WMNumberPort *inputSpeed; // 0.1
     WMTexture2D *lastTexture;
     PhotoTweet *photoTweet;
