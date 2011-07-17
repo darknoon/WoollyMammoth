@@ -23,6 +23,7 @@
 	 
 	self.window.rootViewController = self.viewController;
 	[self.window makeKeyAndVisible];
+    [self.viewController performSelector:@selector(popupMenu) withObject:nil afterDelay:0.0];
     return YES;
 }
 

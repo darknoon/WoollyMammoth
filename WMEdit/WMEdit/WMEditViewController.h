@@ -9,9 +9,11 @@
 
 #import <UIKit/UIKit.h>
 
-@class WMGraphEditView;
+#import "WMGraphEditView.h"
+
 @interface WMEditViewController : UIViewController
 
 @property (nonatomic, retain) IBOutlet WMGraphEditView *graphView;
 
+- (void)popupMenu;
 @end

@@ -1,0 +1,54 @@
+Bugs
+- openGl doesn't zoom
+- 
+
+
+Tasks:
+
+- saving them  (STONE)
+    - screenshot reduced to thumbsize
+    - name along side of plist for obvious easy identification
+    - UI SAVE THEM 
+
+- default values architecture 
+
+
+- tap & hold of port could bring up a textual help and explanation of patch and inputs (POULIOT)
+
+- tap gesture on OPENGL will toggle large and small (POULIOT)
+
+
+- dotpal files (WARREN)
+
+
+- share with friends
+
+
+- WMCompositionLibraryViewController
+
+
+- Name it! Tame it!
+- Website (WES)
+
+- Lipstick:
+    - linen canvas
+    - app icon @ 72
+    - Default.png
+    
+
+- Testing and saving of patches (CLIFF, ANTHONY, ELI, MICHAEL)
+
+
+
+
+Problem Statement: Programming the iPHone is hard. Where are the tools for people like me to program with?
+
+Solution: ____________________
+
+
+
+
+
+BAIL LIST:
+- tap & hold of port could bring up a textual help and explanation of patch and inputs (POULIOT)
+
