@@ -16,6 +16,8 @@
 #import "WMCompositionLibrary.h"
 #import "WMCompositionLibraryViewController.h"
 
+const CGSize previewSize = (CGSize){.width = 300, .height = 200};
+
 
 @implementation WMEditViewController {
 	int keycnt; //TODO: better unique key system
@@ -24,6 +26,7 @@
 	CGPoint addLocation;
 	UIPopoverController *addNodePopover;
 	
+	BOOL previewFullScreen;
 	WMViewController *previewController;
 	
 	WMPatch *rootPatch; 
@@ -91,12 +94,28 @@
 
 	graphView.rootPatch = rootPatch;
 	
-	CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	CGRect bounds = self.view.bounds;
 	previewController.view.frame = (CGRect){.origin.x = bounds.size.width - previewSize.width, .origin.y = bounds.size.height - previewSize.height, .size = previewSize};
-	previewController.view.backgroundColor = [UIColor cyanColor];
+	previewController.view.backgroundColor = [UIColor blackColor];
 	previewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
 	[self.view addSubview:previewController.view];
+	
+	UITapGestureRecognizer *enlargeRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(togglePreviewFullscreen:)] autorelease];
+	[previewController.view addGestureRecognizer:enlargeRecognizer];
+	
+}
+
+- (void)togglePreviewFullscreen:(UITapGestureRecognizer *)inR;
+{
+	CGRect bounds = self.view.bounds;
+	previewFullScreen = !previewFullScreen;
+	[UIView animateWithDuration:0.2 animations:^(void) {
+		if (previewFullScreen) {
+			previewController.view.frame = bounds;
+		} else {
+			previewController.view.frame = (CGRect){.origin.x = bounds.size.width - previewSize.width, .origin.y = bounds.size.height - previewSize.height, .size = previewSize};
+		}
+	}];
 }
 
 - (void)addNodeAtLocation:(CGPoint)inPoint class:(NSString *)inClass;
