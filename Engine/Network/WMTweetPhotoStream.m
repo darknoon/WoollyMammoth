@@ -40,13 +40,12 @@
 }
 
 
-- (void)setDefaultValues {
-    inputSpeed.value = 0.3; // 3 seconds
-}
-- (BOOL)setPlistState:(id)inPlist {
-    BOOL value = [super setPlistState:inPlist];
-    if (!inPlist) [self setDefaultValues];
-    return value;
++ (id)defaultValueForInputPortKey:(NSString *)inKey;
+{
+	if ([inKey isEqualToString:@"inputSpeed"]) {
+		return [NSNumber numberWithFloat:0.3f];
+	}
+	return nil;
 }
 
 - (id)init {
