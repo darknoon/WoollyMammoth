@@ -49,7 +49,7 @@ WMStructureField WMQuadVertex_fields[] = {
 + (id)defaultValueForInputPortKey:(NSString *)inKey;
 {
 	if ([inKey isEqualToString:@"inputScale"]) {
-		return [NSNumber numberWithFloat:1.0f];
+		return [NSNumber numberWithFloat:2.0f];
 	} else if ([inKey isEqualToString:@"inputColor"]) {
 		return [NSDictionary dictionaryWithObjectsAndKeys:
 				[NSNumber numberWithFloat:1.0f], @"red",
@@ -129,6 +129,7 @@ WMStructureField WMQuadVertex_fields[] = {
 				.p = {((float)x - 0.5f) * 2.0f * scale, ((float)y - 0.5f) * 2.0f * scale, 0.0f},
 				.tc = {(char)x * 255, (char)y * 255}
 			};
+			
 			//Append to vertex buffer
 			[vertexData appendData:&v withStructure:quadDef count:1];
 		}
