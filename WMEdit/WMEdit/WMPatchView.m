@@ -12,6 +12,10 @@
 #import "WMPatch.h"
 #import "WMGraphEditView.h"
 
+static const CGFloat bodyRadius = 9.f;
+static const CGFloat plugStripRadius = 11.f;
+static const UIEdgeInsets insets = {.top = 11.f, .left = 10.f, .right = 10.f, .bottom = 11.f};
+
 @implementation WMPatchView {
 	WMPatchPlugStripView *inputPlugStrip;
 	WMPatchPlugStripView *outputPlugStrip;
@@ -61,6 +65,10 @@
     label.textAlignment = UITextAlignmentCenter;
 	[self addSubview:label];
 	
+	self.contentMode = UIViewContentModeRedraw;
+	
+	[self sizeToFit];
+	
     return self;
 }
 
@@ -78,12 +86,17 @@
 
 - (void)layoutSubviews;
 {
+	const CGSize topPlugsSize = [inputPlugStrip sizeThatFits:CGSizeZero];
+	const CGSize bottomPlugsSize = [outputPlugStrip sizeThatFits:CGSizeZero];
+	
+	CGRect bounds = self.bounds;
+
 	inputPlugStrip.inputCount = patch.inputPorts.count;
-	inputPlugStrip.frame = (CGRect){.origin.x = 20.f, .origin.y = 0};
+	inputPlugStrip.frame = (CGRect){.origin.x = CGRectGetMidX(bounds) - topPlugsSize.width/2, .origin.y = 0, .size = topPlugsSize};
 	[inputPlugStrip sizeToFit];
 
 	outputPlugStrip.inputCount = patch.outputPorts.count;
-	outputPlugStrip.frame = (CGRect){.origin.x = 20.f, .origin.y = self.bounds.size.height - 20.f};
+	outputPlugStrip.frame = (CGRect){.origin.x = CGRectGetMidX(bounds) - bottomPlugsSize.width/2, .origin.y = self.bounds.size.height - plugstripHeight, .size = bottomPlugsSize};
 	[outputPlugStrip sizeToFit];
 	
 	CGRect labelFrame = UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){.top = 28.f, .bottom = 28.f});
@@ -92,21 +105,150 @@
 
 - (CGSize)sizeThatFits:(CGSize)size;
 {
-	size.width = [inputPlugStrip sizeThatFits:CGSizeZero].width + 40.f;
-	size.height = 68.f;
+	const CGFloat topPlugsWidth = [inputPlugStrip sizeThatFits:CGSizeZero].width;
+	const CGFloat bottomPlugsWidth = [outputPlugStrip sizeThatFits:CGSizeZero].width;
+
+	size.width = MAX(topPlugsWidth, bottomPlugsWidth) + bodyRadius * 2.f + insets.left + insets.right + plugStripRadius * 2;
+	size.height = 46.f + plugStripRadius * 2 + insets.top + insets.bottom;
 	return size;
+}
+
+- (UIBezierPath *)pathForPatchBodyInRect:(CGRect)insetRect withTopPlugsWidth:(CGFloat)topPlugsWidth bottomPlugsWidth:(CGFloat)bottomPlugsWidth;
+{
+	/*
+	 
+	 y0_  __          __
+	 y1_ /  \________/  \
+	 |              |
+	 y2_ |     ___      |
+	 y3_ \____/   \_____/
+	 xb1 xb3 xb4    xb7
+	 xb0  xb2    xb5 xb6
+	 */
+		
+	const CGFloat y0 = CGRectGetMinY(insetRect);
+	const CGFloat y1 = y0 + plugStripRadius;
+	
+	const CGFloat y3 = CGRectGetMaxY(insetRect);
+	const CGFloat y2 = y3 - plugStripRadius;
+	
+	const CGFloat xt0 = CGRectGetMinX(insetRect);
+	const CGFloat xt1 = xt0 + bodyRadius;
+	const CGFloat xt2 = CGRectGetMidX(insetRect) - topPlugsWidth/2;
+	const CGFloat xt3 = xt2 + plugStripRadius;
+	
+	const CGFloat xt7 = CGRectGetMaxX(insetRect);
+	const CGFloat xt6 = xt7 - bodyRadius;
+	const CGFloat xt5 = CGRectGetMidX(insetRect) + topPlugsWidth/2;
+	const CGFloat xt4 = xt5 - plugStripRadius;
+	
+	const CGFloat xb0 = CGRectGetMinX(insetRect);
+	const CGFloat xb1 = xt0 + bodyRadius;
+	const CGFloat xb2 = CGRectGetMidX(insetRect) - bottomPlugsWidth/2;
+	const CGFloat xb3 = xt2 + plugStripRadius;
+	
+	const CGFloat xb7 = CGRectGetMaxX(insetRect);
+	const CGFloat xb6 = xt7 - bodyRadius;
+	const CGFloat xb5 = CGRectGetMidX(insetRect) + bottomPlugsWidth/2;
+	const CGFloat xb4 = xt5 - plugStripRadius;
+	
+	
+	CGMutablePathRef path = CGPathCreateMutable();
+	const CGAffineTransform *t = NULL;
+	
+	CGPathMoveToPoint(path, t, xt0, y1);
+	CGPathAddArcToPoint(path, t, xt0,y0, xt1,y0, bodyRadius);
+	CGPathAddLineToPoint(path, t, xt2, y0);
+	
+	//Arc down to baseline
+	CGPathAddArcToPoint(path, t, xt2,y1, xt3,y1, plugStripRadius);
+	//Go across bottom of plug strip
+	CGPathAddLineToPoint(path, t, xt4, y1);
+	//Arc up to top
+	CGPathAddArcToPoint(path, t, xt5,y1, xt5,y0, plugStripRadius);
+	
+	//Move to right
+	CGPathAddLineToPoint(path, t, xt6, y0);
+	//Arc down
+	CGPathAddArcToPoint(path, t, xt7, y0, xt7, y1, bodyRadius);
+	
+	//Line down
+	CGPathAddLineToPoint(path, t, xb7, y2);
+	//Arc over
+	CGPathAddArcToPoint(path, t, xb7,y3, xb6,y3, bodyRadius);
+	//Line across
+	CGPathAddLineToPoint(path, t, xb5, y3);
+	//Arc up
+	CGPathAddArcToPoint(path, t, xb5,y2, xb4,y2, plugStripRadius);
+	
+	//line across top of plug strip
+	CGPathAddLineToPoint(path, t, xb3, y2);
+	//Arc to bottom
+	CGPathAddArcToPoint(path, t, xb2,y2, xb2, y3, plugStripRadius);
+	//line over
+	CGPathAddLineToPoint(path, t, xb1,y3);
+	//Arc up
+	CGPathAddArcToPoint(path, t, xb0,y3, xb0,y2, bodyRadius);
+	
+	CGPathCloseSubpath(path);
+	
+	UIBezierPath *p = [UIBezierPath bezierPathWithCGPath:path];
+	
+	CGPathRelease(path);
+
+	return p;
 }
 
 - (void)drawRect:(CGRect)rect
 {
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
+	
+	[[UIColor colorWithWhite:0.0f alpha:0.3f] setFill];
+	
+	CGRect bounds = self.bounds;	
+	const CGRect insetRect = UIEdgeInsetsInsetRect(bounds, insets);
+	
+	NSLog(@"drawing in bounds: %@", NSStringFromCGRect(bounds));
+	
+	const CGFloat topPlugsWidth = [inputPlugStrip sizeThatFits:CGSizeZero].width;
+	const CGFloat bottomPlugsWidth = [outputPlugStrip sizeThatFits:CGSizeZero].width;
 
-	[[UIColor colorWithWhite:0.0f alpha:0.5f] setFill];
-	CGContextAddRoundRect(ctx, self.bounds, 9.0f);
-	CGContextFillPath(ctx);
+	UIBezierPath *p = [self pathForPatchBodyInRect:insetRect withTopPlugsWidth:topPlugsWidth bottomPlugsWidth:bottomPlugsWidth];
+	
 
-	CGContextAddRoundRect(ctx, CGRectInset(self.bounds, 0.5f, 0.5f), 9.0f);
-	CGContextStrokePath(ctx);
+	CGContextSetShadowWithColor(ctx, (CGSize){.height = 2.f}, 3.f, [[UIColor blackColor] CGColor]);
+	
+	[p fill];
+
+	[p addClip];
+
+	CGContextSetShadowWithColor(ctx, CGSizeZero, 0.0f, NULL);
+	
+	CGContextClip(ctx);
+		
+	CGColorSpaceRef space = CGColorSpaceCreateDeviceRGB();
+	CGGradientRef gradient = CGGradientCreateWithColorComponents(space, (const CGFloat []){
+		1.0f,1.0f,1.0f,1.0f,
+		1.0f,1.0f,1.0f,0.35f,
+		1.0f,1.0f,1.0f,0.0f,
+		1.0f,1.0f,1.0f,0.0f,
+		1.0f,1.0f,1.0f,0.35f,
+	}, (const CGFloat []){
+		0.0f,
+		0.5f,
+		0.51f,
+		0.75f,
+		1.0f,
+	}, 5);
+	
+	CFRelease(space);
+	
+	CGContextSetAlpha(ctx, 0.5f);
+	CGContextDrawLinearGradient(ctx, gradient,
+								(CGPoint){.y = CGRectGetMinY(insetRect)},
+								(CGPoint){.y = CGRectGetMaxY(insetRect)},
+								kCGGradientDrawsBeforeStartLocation | kCGGradientDrawsAfterEndLocation);
+	CGGradientRelease(gradient);
 	
 }
 
@@ -120,6 +262,7 @@
 	}
 	if (draggable) {
 		dragging = YES;
+		[self sizeToFit];
 	}
 }
 
@@ -135,7 +278,9 @@
 		center.y += location.y - previous.y;
 		
 		self.center = center;
+		[self sizeToFit];
 		self.patch.editorPosition = center;
+		self.frame = CGRectIntegral(self.frame);
 	}
 }
 
@@ -146,6 +291,7 @@
 	} if (draggable && dragging) {
 		CGPoint center = self.center;
 		self.center = center;
+		self.frame = CGRectIntegral(self.frame);
 		dragging = NO;
 	}
 }

@@ -20,6 +20,11 @@
     self = [super initWithFrame:frame];
 	if (!self) return nil;
 	
+	UIImageView *background = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"plugstrip-stretchable"] stretchableImageWithLeftCapWidth:11.f topCapHeight:0.f]] autorelease];
+	background.frame = self.bounds;
+	background.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	[self addSubview:background];
+	
 	self.opaque = NO;
 	
     return self;
@@ -35,7 +40,11 @@
 
 - (CGSize)sizeThatFits:(CGSize)inSize;
 {
-	return (CGSize) {.width = leftOffset + leftOffset + offsetBetweenDots * inputCount, .height = plugstripHeight};
+	if (inputCount > 0) {
+		return (CGSize) {.width = leftOffset * 2.f + offsetBetweenDots * (inputCount - 1), .height = plugstripHeight};
+	} else {
+		return CGSizeZero;
+	}
 }
 
 - (void)drawRect:(CGRect)rect
@@ -44,14 +53,10 @@
 	CGRect bounds = self.bounds;
 	const CGFloat dotSize = 9.f;
 	
-	[[UIColor colorWithWhite:1.0f alpha:0.7f] setFill];
-	CGContextAddRoundRect(ctx, bounds, bounds.size.height / 2);
-	CGContextFillPath(ctx);
-	
 	[[UIColor blackColor] setFill];
 	for (int i=0; i<inputCount; i++) {
 		CGContextBeginPath(ctx);
-		CGContextAddEllipseInRect(ctx, (CGRect){.origin.x = leftOffset + offsetBetweenDots * i, .origin.y = bounds.size.height / 2.f, .size.width = dotSize, .size.height = dotSize});
+		CGContextAddEllipseInRect(ctx, (CGRect){.origin.x = leftOffset + offsetBetweenDots * i - dotSize/2, .origin.y = bounds.size.height / 2.f - dotSize / 2.f, .size.width = dotSize, .size.height = dotSize});
 		CGContextFillPath(ctx);
 	}
 }
