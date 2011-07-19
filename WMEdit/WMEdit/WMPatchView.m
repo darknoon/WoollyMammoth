@@ -67,7 +67,10 @@ static const UIEdgeInsets insets = {.top = 11.f, .left = 10.f, .right = 10.f, .b
 	
 	self.contentMode = UIViewContentModeRedraw;
 	
+	inputPlugStrip.inputCount = patch.inputPorts.count;
+	outputPlugStrip.inputCount = patch.outputPorts.count;
 	[self sizeToFit];
+	[self setNeedsDisplay];
 	
     return self;
 }
