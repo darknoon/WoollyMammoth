@@ -29,8 +29,9 @@ typedef enum {
 	
 } WMStructureType;
 
+// to compile on 4.2, llvm 3.0 lion, 'const' had to be removed - acs
 typedef struct {
-	const char name[256]; //Name must be less than 256 bytes ASCII
+	/* const */ char name[256]; //Name must be less than 256 bytes ASCII
 	WMStructureType type;
 	BOOL normalized;
 	int count;
