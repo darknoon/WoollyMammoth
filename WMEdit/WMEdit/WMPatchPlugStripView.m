@@ -66,6 +66,11 @@
     [super dealloc];
 }
 
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event;
+{
+	return CGRectContainsPoint(CGRectInset(self.bounds, -20, -10), point);
+}
+
 #pragma mark -
 
 - (NSUInteger)portIndexAtPoint:(CGPoint)inPoint;

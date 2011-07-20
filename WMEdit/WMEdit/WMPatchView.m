@@ -13,6 +13,7 @@
 #import "WMGraphEditView.h"
 
 static const CGFloat bodyRadius = 9.f;
+static const CGFloat bodyHeight = 45.f;
 static const CGFloat plugStripRadius = 11.f;
 static const UIEdgeInsets insets = {.top = 11.f, .left = 10.f, .right = 10.f, .bottom = 11.f};
 
@@ -110,25 +111,26 @@ static const UIEdgeInsets insets = {.top = 11.f, .left = 10.f, .right = 10.f, .b
 {
 	const CGFloat topPlugsWidth = [inputPlugStrip sizeThatFits:CGSizeZero].width;
 	const CGFloat bottomPlugsWidth = [outputPlugStrip sizeThatFits:CGSizeZero].width;
+	const CGFloat textWidth = [label sizeThatFits:CGSizeZero].width;
 
-	size.width = MAX(topPlugsWidth, bottomPlugsWidth) + bodyRadius * 2.f + insets.left + insets.right + plugStripRadius * 2;
-	size.height = 46.f + plugStripRadius * 2 + insets.top + insets.bottom;
+	size.width = MAX(MAX(topPlugsWidth, bottomPlugsWidth) + bodyRadius * 2.f, textWidth) + insets.left + insets.right + plugStripRadius * 2;
+	size.height = bodyHeight + plugStripRadius * 2 + insets.top + insets.bottom;
 	return size;
 }
 
 - (UIBezierPath *)pathForPatchBodyInRect:(CGRect)insetRect withTopPlugsWidth:(CGFloat)topPlugsWidth bottomPlugsWidth:(CGFloat)bottomPlugsWidth;
 {
 	/*
-	 
-	 y0_  __          __
-	 y1_ /  \________/  \
-	 |              |
-	 y2_ |     ___      |
-	 y3_ \____/   \_____/
-	 xb1 xb3 xb4    xb7
-	 xb0  xb2    xb5 xb6
+	 * 
+	 *   y0_  __          __
+	 *   y1_ /  \________/  \
+	 *       |              |
+	 *   y2_ |     ___      |
+	 *   y3_ \____/   \_____/
+	 *     xb0    xb3 xb4    xb7
+	 *       xb1 xb2   xb5 xb6
 	 */
-		
+	
 	const CGFloat y0 = CGRectGetMinY(insetRect);
 	const CGFloat y1 = y0 + plugStripRadius;
 	
@@ -287,6 +289,19 @@ static const UIEdgeInsets insets = {.top = 11.f, .left = 10.f, .right = 10.f, .b
 	}
 }
 
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event;
+{
+	if (draggingOutputConnection) {
+		[graphView endDraggingConnectionWithLocation:[[touches anyObject] locationInView:self] inPatchView:self];
+		draggingOutputConnection = NO;
+	} if (draggable && dragging) {
+		CGPoint center = self.center;
+		self.center = center;
+		self.frame = CGRectIntegral(self.frame);
+		dragging = NO;
+	}
+}
+
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
 	if (draggingOutputConnection) {
 		[graphView endDraggingConnectionWithLocation:[[touches anyObject] locationInView:self] inPatchView:self];
@@ -301,6 +316,11 @@ static const UIEdgeInsets insets = {.top = 11.f, .left = 10.f, .right = 10.f, .b
 
 
 #pragma mark -
+
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event;
+{
+	return [super pointInside:point withEvent:event] || [inputPlugStrip pointInside:[self convertPoint:point toView:inputPlugStrip] withEvent:event] || [outputPlugStrip pointInside:[self convertPoint:point toView:outputPlugStrip] withEvent:event];
+}
 
 - (WMPort *)inputPortAtPoint:(CGPoint)inPoint inView:(UIView *)inView;
 {
@@ -371,7 +391,7 @@ static const UIEdgeInsets insets = {.top = 11.f, .left = 10.f, .right = 10.f, .b
 
 - (void)tapped:(UITapGestureRecognizer *)inR;
 {
-	[[UIMenuController sharedMenuController] setTargetRect:self.bounds inView:self];
+	[[UIMenuController sharedMenuController] setTargetRect:label.frame inView:self];
 	[[UIMenuController sharedMenuController] setMenuVisible:YES animated:YES];
 	
 	[self becomeFirstResponder];
