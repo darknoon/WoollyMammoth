@@ -325,4 +325,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 	return YES;
 }
 
+- (UIColor *)editorColor;
+{
+	return [UIColor colorWithRed:0.798f green:0.349f blue:0.061f alpha:0.8f];
+}
+
 @end

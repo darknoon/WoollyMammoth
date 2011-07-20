@@ -59,8 +59,6 @@ typedef enum {
 - (id)initWithPlistRepresentation:(id)inPlist;
 - (id)plistRepresentation;
 
-+ (NSString *)category;
-
 //Call +registerToRepresentClassNames: in your subclass's +load if you want to be the decoder for a given class name
 + (void)registerToRepresentClassNames:(NSSet *)inClassNames;
 + (void)registerToRepresentPluginClassNames:(NSSet *)inClassNames;
@@ -101,6 +99,10 @@ typedef enum {
 - (void)cleanup:(WMEAGLContext *)context;
 
 //Editor
+
++ (NSString *)category;
+@property (nonatomic, readonly) UIColor *editorColor;
+
 @property (nonatomic) CGPoint editorPosition;
 - (void)addChild:(WMPatch *)inPatch;
 - (void)removeChild:(WMPatch *)inPatch;

@@ -632,6 +632,12 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
     return [s uncamelcase];
 }
 
+
+- (UIColor *)editorColor;
+{
+	return [UIColor colorWithWhite:0.0f alpha:0.3f];
+}
+
 @end
 
 @implementation WMPlaceholderPatch

@@ -208,7 +208,9 @@ static const UIEdgeInsets insets = {.top = 11.f, .left = 10.f, .right = 10.f, .b
 {
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
 	
-	[[UIColor colorWithWhite:0.0f alpha:0.3f] setFill];
+	[self.patch.editorColor setFill];
+	
+	CGContextSaveGState(ctx);
 	
 	CGRect bounds = self.bounds;	
 	const CGRect insetRect = UIEdgeInsetsInsetRect(bounds, insets);
@@ -220,17 +222,18 @@ static const UIEdgeInsets insets = {.top = 11.f, .left = 10.f, .right = 10.f, .b
 
 	UIBezierPath *p = [self pathForPatchBodyInRect:insetRect withTopPlugsWidth:topPlugsWidth bottomPlugsWidth:bottomPlugsWidth];
 	
-
 	CGContextSetShadowWithColor(ctx, (CGSize){.height = 2.f}, 3.f, [[UIColor blackColor] CGColor]);
 	
+	//Draw body color and shadow
 	[p fill];
-
-	[p addClip];
-
-	CGContextSetShadowWithColor(ctx, CGSizeZero, 0.0f, NULL);
 	
-	CGContextClip(ctx);
-		
+	//Clip to inside body
+	[p addClip];
+	
+	//Unset shadow
+	CGContextSetShadowWithColor(ctx, CGSizeZero, 0.f, NULL);
+	
+	//Draw overlay
 	CGColorSpaceRef space = CGColorSpaceCreateDeviceRGB();
 	CGGradientRef gradient = CGGradientCreateWithColorComponents(space, (const CGFloat []){
 		1.0f,1.0f,1.0f,1.0f,
@@ -254,6 +257,30 @@ static const UIEdgeInsets insets = {.top = 11.f, .left = 10.f, .right = 10.f, .b
 								(CGPoint){.y = CGRectGetMaxY(insetRect)},
 								kCGGradientDrawsBeforeStartLocation | kCGGradientDrawsAfterEndLocation);
 	CGGradientRelease(gradient);
+
+	
+	//Draw outside body clipped to inside body with shadow
+	UIBezierPath *backwardsHugeSquare = [UIBezierPath bezierPathWithRect:bounds];
+	[p appendPath:backwardsHugeSquare];	
+	p.usesEvenOddFillRule = YES;
+	
+	CGContextSetShadowWithColor(ctx, CGSizeZero, 4.f, [[UIColor colorWithWhite:1.0f alpha:0.35f] CGColor]);
+	[[UIColor whiteColor] setFill];
+	[p fill];
+			
+	CGContextRestoreGState(ctx);
+
+	//Clip to outside body
+	[p addClip];
+
+	//Draw second shadow
+	p = [self pathForPatchBodyInRect:insetRect withTopPlugsWidth:topPlugsWidth bottomPlugsWidth:bottomPlugsWidth];
+
+	[[UIColor colorWithWhite:0.0f alpha:0.8f] setStroke];
+	
+	CGContextSetLineWidth(ctx, 2.f);
+	[p stroke];
+	
 	
 }
 

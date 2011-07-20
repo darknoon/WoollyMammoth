@@ -95,6 +95,7 @@
 
 	newNodeView.center = inPatch.editorPosition;
 	[newNodeView sizeToFit];
+	newNodeView.frame = CGRectIntegral(newNodeView.frame);
 
 	[self updateConnectionPositions];
 }
