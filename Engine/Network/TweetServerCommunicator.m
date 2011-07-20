@@ -56,7 +56,7 @@
 
 
 - (NSString *)requestString {
-    NSMutableString *s = [NSMutableString stringWithString:@"http://freezing-flower-668.herokuapp.com/tweets.json?tag=iosdevcamp"];
+    NSMutableString *s = [NSMutableString stringWithString:@"http://eyecode.herokuapp.com/tweets.json?tag=iosdevcamp"];
     
     if (_lastIDNumber) {
         [s appendFormat:@"&since_id=%llu",_lastIDNumber];
