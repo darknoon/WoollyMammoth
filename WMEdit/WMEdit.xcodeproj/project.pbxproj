@@ -61,6 +61,7 @@
 		49752E9813D35C2000F20447 /* plug-popover-highlight~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49752E9613D35C2000F20447 /* plug-popover-highlight~ipad.png */; };
 		49752EA213D3709D00F20447 /* connection-lighting~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49752EA113D3709D00F20447 /* connection-lighting~ipad.png */; };
 		49752EA513D374D100F20447 /* background~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49752EA413D374D100F20447 /* background~ipad.png */; };
+		49752EAF13D3807800F20447 /* compositions-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49752EAE13D3807800F20447 /* compositions-button~ipad.png */; };
 		49A5253113D169C9004EC7F6 /* WMPatchPlugStripView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A5253013D169C9004EC7F6 /* WMPatchPlugStripView.m */; };
 		49A5253513D170BD004EC7F6 /* WMPatchConnectionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A5253413D170BD004EC7F6 /* WMPatchConnectionsView.m */; };
 		49A5261413D1725E004EC7F6 /* WMStructuredBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A525C013D1725E004EC7F6 /* WMStructuredBuffer.m */; };
@@ -286,6 +287,7 @@
 		49752E9613D35C2000F20447 /* plug-popover-highlight~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plug-popover-highlight~ipad.png"; sourceTree = "<group>"; };
 		49752EA113D3709D00F20447 /* connection-lighting~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "connection-lighting~ipad.png"; sourceTree = "<group>"; };
 		49752EA413D374D100F20447 /* background~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background~ipad.png"; sourceTree = "<group>"; };
+		49752EAE13D3807800F20447 /* compositions-button~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "compositions-button~ipad.png"; sourceTree = "<group>"; };
 		49A5252F13D169C9004EC7F6 /* WMPatchPlugStripView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchPlugStripView.h; sourceTree = "<group>"; };
 		49A5253013D169C9004EC7F6 /* WMPatchPlugStripView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPatchPlugStripView.m; sourceTree = "<group>"; };
 		49A5253313D170BD004EC7F6 /* WMPatchConnectionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchConnectionsView.h; sourceTree = "<group>"; };
@@ -929,6 +931,7 @@
 			isa = PBXGroup;
 			children = (
 				491D665413D630BD003C609B /* plugstrip-stretchable~ipad.png */,
+				49752EAE13D3807800F20447 /* compositions-button~ipad.png */,
 				49752EA413D374D100F20447 /* background~ipad.png */,
 				07C99A9013D38E8B00712EFA /* 72icon.png */,
 				49752EA113D3709D00F20447 /* connection-lighting~ipad.png */,
@@ -1270,6 +1273,7 @@
 				B42F911713D376D800DFD983 /* eli.jpg in Resources */,
 				07C99A9113D38E8B00712EFA /* 72icon.png in Resources */,
 				491D665513D630BD003C609B /* plugstrip-stretchable~ipad.png in Resources */,
+				49752EAF13D3807800F20447 /* compositions-button~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

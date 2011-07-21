@@ -15,15 +15,20 @@
 #import "WMGraphEditView.h"
 #import "WMPatch.h"
 #import "WMViewController.h"
+
 #import "WMCompositionLibrary.h"
-#import "WMCompositionLibraryViewController.h"
 
 const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 
 
+@interface WMEditViewController ()
+- (void)addPatchViews;
+@end
+
 @implementation WMEditViewController {
-	int keycnt; //TODO: better unique key system
 	NSMutableDictionary *patchViewsByKey;
+	
+	NSURL *fileURL;
 	
 	CGPoint addLocation;
 	UIPopoverController *addNodePopover;
@@ -36,32 +41,30 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
     
 }
 
-
 @synthesize graphView;
-@synthesize libraryButton, patchesButton;
+@synthesize libraryButton;
+@synthesize patchesButton;
+@synthesize fileURL;
 
-@synthesize compositionLibrary;
-
-- (void)sharedInit;
+- (id)initWithPatch:(WMPatch *)inPatch fileURL:(NSURL *)inURL
 {
-	patchViewsByKey = [[NSMutableDictionary alloc] init];
-	rootPatch = [[WMPatch alloc] initWithPlistRepresentation:nil];
-	previewController = [[WMViewController alloc] initWithRootPatch:rootPatch];
-}
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil;
-{
-	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+	self = [super initWithNibName:@"WMEditViewController" bundle:nil];
 	if (!self) return nil;
 	
-	[self sharedInit];
+	fileURL = [inURL retain];
+	
+	patchViewsByKey = [[NSMutableDictionary alloc] init];
+	
+	if (inPatch) {
+		rootPatch = [inPatch retain];
+	} else {
+		rootPatch = [[WMPatch alloc] initWithPlistRepresentation:nil];
+	}
+	rootPatch.key = @"root";
+	
+	previewController = [[WMViewController alloc] initWithRootPatch:rootPatch];
 	
 	return self;
-}
-
-- (void)awakeFromNib;
-{
-	[self sharedInit];
 }
 
 - (void)dealloc
@@ -84,7 +87,6 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 {
     [super viewDidLoad];
 	
-    libraryButton.hidden = [[[WMCompositionLibrary compositionLibrary] compositions]count] == 0;
 	UILongPressGestureRecognizer *longPressRecognizer = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]autorelease];
 	[self.view addGestureRecognizer:longPressRecognizer];
 	
@@ -106,6 +108,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	UITapGestureRecognizer *enlargeRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(togglePreviewFullscreen:)] autorelease];
 	[previewController.view addGestureRecognizer:enlargeRecognizer];
 	
+	[self addPatchViews];
 }
 
 - (void)togglePreviewFullscreen:(UITapGestureRecognizer *)inR;
@@ -121,38 +124,25 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	}];
 }
 
-- (void)addNodeAtLocation:(CGPoint)inPoint class:(NSString *)inClass;
+
+- (void)addPatchViews;
 {
-	keycnt++;
-	
-	NSString *key = [NSString stringWithFormat:@"node-%d", keycnt];
-	
+	for (WMPatch *child in rootPatch.children) {
+		[graphView addPatch:child];
+	}
+}
+
+- (void)addNodeAtLocation:(CGPoint)inPoint class:(NSString *)inClass;
+{	
 	Class patchClass = NSClassFromString(inClass);
 	if (patchClass) {
 		WMPatch *patch = [[[patchClass alloc] initWithPlistRepresentation:nil] autorelease];
-		patch.key = key;
 		patch.editorPosition = inPoint;
 		
 		[graphView addPatch:patch];
 	} else {
 		NSLog(@"invalid class: %@", inClass);
-	}
-	
-}
-
-- (IBAction)bringUpLibraryAction:(id)sender {
-    if (self.compositionLibrary) {
-        [self.compositionLibrary.view removeFromSuperview];
-        self.compositionLibrary = nil;
-    } else {
-        self.compositionLibrary = [[[WMCompositionLibraryViewController alloc] init] autorelease];
-        CGRect r = self.view.bounds;
-        UIView *v = [self.compositionLibrary view];
-        CGRect vr = v.frame;
-        vr.origin.y = r.size.height - vr.size.height;
-        v.frame = vr;
-        [self.view addSubview:v];
-    }
+	}	
 }
 
 - (void)checkPopover:(BOOL)animage {
@@ -191,6 +181,18 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	addNodePopover = nil;
 }
 
+- (void)save;
+{
+	//Save
+	[[WMCompositionLibrary compositionLibrary] saveComposition:rootPatch image:[previewController screenshotImage] toURL:self.fileURL];
+}
+
+- (IBAction)close:(id)sender;
+{
+	[self save];
+	[self.navigationController popViewControllerAnimated:YES];
+}
+
 - (void)viewWillAppear:(BOOL)inAnimated;
 {
 	[super viewWillAppear:inAnimated];
@@ -201,6 +203,12 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 {
 	[super viewDidAppear:inAnimated];
 	[previewController viewDidAppear:inAnimated];
+}
+
+- (void)viewWillDisappear:(BOOL)inAnimated;
+{
+	[super viewWillDisappear:inAnimated];
+	[previewController viewWillDisappear:inAnimated];
 }
 
 - (void)viewDidDisappear:(BOOL)inAnimated;

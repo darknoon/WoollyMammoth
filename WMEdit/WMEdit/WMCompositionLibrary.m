@@ -9,23 +9,24 @@
 #import "WMCompositionLibrary.h"
 #import "WMPatch.h"
 
+NSString *WM_PATH_EXTENSION = @"wmpatch";
 
 @interface WMCompositionLibrary(myPascalLikeStuff)
 - (void)findResources;
 @end
 
-@implementation WMCompositionLibrary
-@synthesize compositions;
+@implementation WMCompositionLibrary {
+	NSMutableArray *compositions;
+}
 
 - (id)init {
     self = [super init];
     if (self) {
-        self.compositions = [NSMutableArray array];
+        compositions = [[NSMutableArray alloc] init];
         [self findResources];
     }
     return self;
 }
-
 
 + (WMCompositionLibrary *)compositionLibrary {
     static WMCompositionLibrary *_singleton = nil;
@@ -95,7 +96,6 @@ NSArray *directoriesToAdd(NSString *path, NSString *existing) {
 	}
 }
 
-
 - (NSString *)saveFolder {
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	return [paths objectAtIndex:0];
@@ -103,15 +103,19 @@ NSArray *directoriesToAdd(NSString *path, NSString *existing) {
 
 - (NSString *)pathForResource:(NSString *)shortName
 {
-	return [[self saveFolder] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.plist",shortName]];
+	return [[[self saveFolder] stringByAppendingPathComponent:shortName] stringByAppendingPathExtension:WM_PATH_EXTENSION];
 }
 
+- (NSArray *)compositions;
+{
+	return [[compositions copy] autorelease];
+}
 
-- (BOOL)savePropertyList:(id)d toFile:(NSString *)path {
+- (BOOL)savePropertyList:(id)d toURL:(NSURL *)inURL {
 	NSString *errorString = nil;
 	NSData *data = [NSPropertyListSerialization dataFromPropertyList:d format:kCFPropertyListBinaryFormat_v1_0 errorDescription:&errorString];
 	
-	return [data writeToFile:path atomically:YES];
+	return [data writeToURL:inURL atomically:YES];
 }
 
 - (NSMutableDictionary *)propertyListWithData:(NSData *)data {
@@ -123,22 +127,19 @@ NSArray *directoriesToAdd(NSString *path, NSString *existing) {
 	return dict;
 }
 
-- (id)thingFromPropertyList:(NSMutableDictionary *)d {
-    
-#warning NOT DONE  in thingFrromProper
-    return nil;
-}
 
-- (id)compositionWithPath:(NSString *)path {
-    NSData *d = [NSData dataWithContentsOfFile:path];
+- (WMPatch *)compositionWithURL:(NSURL *)inURL;
+{
+    NSData *d = [NSData dataWithContentsOfURL:inURL];
     if (d) {
         id propertyList = [self propertyListWithData:d];
-        id thingy = [self thingFromPropertyList:propertyList];
-        if (thingy) [self.compositions addObject:thingy];
+        if (propertyList) {
+			WMPatch *patch = [[WMPatch alloc] initWithPlistRepresentation:propertyList];
+			return patch;
+		}
     }
+	return nil;
 }
-
-NSString *WM_PATH_EXTENSION = @"plist";
 
 - (void)findResources {
     NSString *saveFolder = [self saveFolder];
@@ -147,7 +148,7 @@ NSString *WM_PATH_EXTENSION = @"plist";
     for (NSString *file in files) {
         NSString *path = [saveFolder stringByAppendingPathComponent:file];
         if ([[path pathExtension] isEqualToString:WM_PATH_EXTENSION]) 
-            [self.compositions addObject:path];
+            [compositions addObject:[NSURL fileURLWithPath:path]];
     }
 }
 
@@ -176,25 +177,33 @@ NSString *base62FromBase10(int num)
 	return base62FromBase10(num);
 }
 
-- (NSString *)pathForThumbOfComposition:(NSString *)fullCompositionPath {
-    return [[fullCompositionPath stringByDeletingPathExtension] stringByAppendingPathExtension:@"jpg"];
+- (NSString *)pathForThumbOfComposition:(NSURL *)inFileURL {
+    return [[[inFileURL path] stringByDeletingPathExtension] stringByAppendingPathExtension:@"png"];
 }
 
-- (UIImage *)imageForCompositionPath:(NSString *)fullCompositionPath {
-    NSString *path = [self pathForThumbOfComposition:fullCompositionPath];
+- (UIImage *)imageForCompositionPath:(NSURL *)fullComposition {
+    NSString *path = [self pathForThumbOfComposition:fullComposition];
     NSData *d = [NSData dataWithContentsOfFile:path];
     if (d) return [UIImage imageWithData:d];
     return [UIImage imageNamed:@"missing_effect_thumb.jpg"];
 }
 
 
-- (BOOL)saveComposition:(WMRootPatch *)root image:(UIImage *)image {
-    NSString *path = [self pathForResource:[self timeAsCompactString]];
-    NSDictionary *d = [root propertyListRepresentation];
-    if ( [self savePropertyList:d toFile:path]) {
-        path = [self pathForThumbOfComposition:path];
-        NSData *data = UIImageJPEGRepresentation(image, 0.95);
-        if (data) [data writeToFile:path atomically:YES];
+- (BOOL)saveComposition:(WMPatch *)root image:(UIImage *)image toURL:(NSURL *)inFileURL;
+{
+	if (!inFileURL) {
+		NSString *path = [self pathForResource:[self timeAsCompactString]];
+		inFileURL = [NSURL fileURLWithPath:path];
+	}
+	
+    NSDictionary *d = [root plistRepresentation];
+    if ([self savePropertyList:d toURL:inFileURL]) {
+        NSString *thumbPath = [self pathForThumbOfComposition:inFileURL];
+        NSData *data = UIImagePNGRepresentation(image);
+        if (data) [data writeToFile:thumbPath atomically:YES];
+		if (![compositions containsObject:inFileURL]) {
+			[compositions addObject:inFileURL];
+		}
         return YES;
     }
     return NO;

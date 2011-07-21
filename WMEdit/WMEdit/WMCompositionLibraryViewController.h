@@ -9,9 +9,6 @@
 #import <UIKit/UIKit.h>
 
 
-@interface WMCompositionLibraryViewController : UIViewController 
-@property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
-@property (nonatomic, retain) NSMutableArray        *compositions;
-
+@interface WMCompositionLibraryViewController : UITableViewController 
 
 @end

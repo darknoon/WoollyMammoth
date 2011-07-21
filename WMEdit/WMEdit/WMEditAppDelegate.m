@@ -10,19 +10,24 @@
 
 #import "WMEditViewController.h"
 
+#import "WMCompositionLibrary.h"
+
 @implementation WMEditAppDelegate
 
 
 @synthesize window=_window;
 
 @synthesize viewController=_viewController;
+@synthesize navController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-	// Override point for customization after application launch.
-	 
-	self.window.rootViewController = self.viewController;
-	[self.window makeKeyAndVisible];
+	//Create new document if none existing
+	if ([WMCompositionLibrary compositionLibrary].compositions.count == 0) {
+		WMEditViewController *e = [[[WMEditViewController alloc] initWithPatch:nil fileURL:nil] autorelease];
+		[self.navController pushViewController:e animated:NO];
+	}
+	
     return YES;
 }
 

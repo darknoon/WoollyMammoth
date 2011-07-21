@@ -363,17 +363,7 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 			}
 		}
 	}
-	
-	//Create children
-	[self createChildrenWithState:state];
 			
-	//Create connections among children
-	[self createConnectionsWithState:state];
-	
-	//Create published input and output ports (use the type of child's port to make our port type)
-	[self createPublishedInputPortsWithState:state];
-	[self createPublishedOutputPortsWithState:state];
-		
 	//Set position
 	NSString *posStr = [inPlist objectForKey:WMPatchEditorPositionPlistName];
 	if (posStr) {
@@ -389,29 +379,15 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 {
 	NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 	
+	//Serialize class
+	[dict setObject:NSStringFromClass([self class]) forKey:WMPatchClassPlistName];
+	
+	//Serialize key
+	[dict setObject:self.key forKey:WMPatchKeyPlistName];
+	
 	//Serialize plist state
 	[dict setObject:self.plistState forKey:WMPatchStatePlistName];
-	
-	//Serialize connections
-	NSMutableArray *cpl = [NSMutableArray array];
-	for (WMConnection *c in connections) {
-		NSMutableDictionary *d = [NSMutableDictionary dictionary];
 		
-		[d setObject:c.sourceNode forKey:@"sourceNode"];
-		[d setObject:c.sourcePort forKey:@"sourcePort"];
-		[d setObject:c.destinationNode forKey:@"destinationNode"];
-		[d setObject:c.destinationPort forKey:@"destinationPort"];
-				
-		[cpl addObject:d];
-	}
-	
-	//Serialize children
-	NSMutableArray *childrenRep = [NSMutableArray array];
-	for (WMPatch *p in self.children) {
-		[childrenRep addObject:[p plistRepresentation]];
-	}
-	[dict setObject:childrenRep forKey:WMPatchChildrenPlistName];
-	
 	//Serialize position
 	[dict setObject:NSStringFromCGPoint(self.editorPosition) forKey:WMPatchEditorPositionPlistName];
 	
@@ -428,7 +404,15 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 
 - (BOOL)setPlistState:(id)inPlist;
 {
-	//set values of input ports!
+	//Create children
+	[self createChildrenWithState:inPlist];
+	
+	//Create connections among children
+	[self createConnectionsWithState:inPlist];
+	
+	//Create published input and output ports (use the type of child's port to make our port type)
+	[self createPublishedInputPortsWithState:inPlist];
+	[self createPublishedOutputPortsWithState:inPlist];
 
 	//Combine "customInputPortStates" and "ivarInputPortStates"
 	NSDictionary *ivarInputPortStates = [inPlist objectForKey:@"ivarInputPortStates"];
@@ -465,14 +449,37 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	NSMutableDictionary *inputPortStates = [NSMutableDictionary dictionary];
 	//Save values of input ports
 	for (WMPort *inputPort in [self inputPorts]) {
-		NSDictionary *value = [inputPort stateValue];
-		if (value) {
-			[inputPortStates setObject:value forKey:inputPort.key];
+		if ([inputPort stateValue]) {
+			NSDictionary *valueDict = [NSDictionary dictionaryWithObject:[inputPort stateValue] forKey:@"value"];
+			
+			[inputPortStates setObject:valueDict forKey:inputPort.key];
 		}
 	}
-	
 	[plistState setObject:inputPortStates forKey:@"ivarInputPortStates"];
 	
+	//Serialize connections
+	NSMutableDictionary *cpl = [NSMutableDictionary dictionary];
+	int cnum = 1;
+	for (WMConnection *c in connections) {
+		NSMutableDictionary *d = [NSMutableDictionary dictionary];
+		
+		[d setObject:c.sourceNode forKey:@"sourceNode"];
+		[d setObject:c.sourcePort forKey:@"sourcePort"];
+		[d setObject:c.destinationNode forKey:@"destinationNode"];
+		[d setObject:c.destinationPort forKey:@"destinationPort"];
+		
+		[cpl setObject:d forKey:[NSString stringWithFormat:@"connection-%d", cnum]];
+		cnum++;
+	}
+	[plistState setObject:cpl forKey:WMPatchConnectionsPlistName];
+	
+	//Serialize children
+	NSMutableArray *childrenRep = [NSMutableArray array];
+	for (WMPatch *p in self.children) {
+		[childrenRep addObject:[p plistRepresentation]];
+	}
+	[plistState setObject:childrenRep forKey:WMPatchChildrenPlistName];
+
 	return plistState;
 }
 
@@ -585,11 +592,31 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	return descriptionRecursive;
 }
 
+- (NSString *)availableKeyForSubPatch:(WMPatch *)inPatch;
+{
+	NSString *defaultKey = NSStringFromClass([inPatch class]);
+	int i = 0;
+	if ([childrenByKey objectForKey:defaultKey]) {
+		NSString *tryKey = nil;
+		do {
+			tryKey = [defaultKey stringByAppendingFormat:@"-%d", i];
+			i++;
+		} while ([childrenByKey objectForKey:tryKey]);
+		return tryKey;
+	}
+	return defaultKey;
+}
 
 - (void)addChild:(WMPatch *)inPatch;
 {
-	[children addObject:inPatch];
-	[childrenByKey setObject:inPatch forKey:inPatch.key];
+	//Generate a key if necessary
+	inPatch.key = [self availableKeyForSubPatch:inPatch];
+	
+	if (![children containsObject:inPatch])
+		[children addObject:inPatch];
+	if ([childrenByKey objectForKey:inPatch.key] != inPatch) {
+		[childrenByKey setObject:inPatch forKey:inPatch.key];
+	}
 }
 
 - (void)removeChild:(WMPatch *)inPatch;
