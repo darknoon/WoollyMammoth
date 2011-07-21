@@ -121,8 +121,8 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	NSMutableDictionary *classMap = [self _classMap];
 	for (NSString *className in inClassNames) {
 		[classMap setObject:self forKey:className];
-        [[WMPatchCategories sharedInstance] addClassWithName:self key:className];
 	}
+	[[WMPatchCategories sharedInstance] addClassWithName:self key:NSStringFromClass(self)];
 }
 
 + (void)registerToRepresentPluginClassNames:(NSSet *)inClassNames;
