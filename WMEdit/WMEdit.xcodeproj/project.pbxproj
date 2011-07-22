@@ -165,7 +165,6 @@
 		80843CA213D28F5A002C0693 /* RainbowDark.pal in Resources */ = {isa = PBXBuildFile; fileRef = 80843CA113D28F5A002C0693 /* RainbowDark.pal */; };
 		80BB75D613D20AD2009B5542 /* WMOsc.mm in Sources */ = {isa = PBXBuildFile; fileRef = 80BB75D513D20AD2009B5542 /* WMOsc.mm */; };
 		B42F911713D376D800DFD983 /* eli.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B42F911613D376D800DFD983 /* eli.jpg */; };
-		B43F389E13D3219E004A6A47 /* WMEdit-Todo in Resources */ = {isa = PBXBuildFile; fileRef = B43F389D13D3219E004A6A47 /* WMEdit-Todo */; };
 		B43F38A313D323A0004A6A47 /* WMCompositionLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = B43F38A113D3239F004A6A47 /* WMCompositionLibrary.m */; };
 		B43F38B813D32B86004A6A47 /* WMCompositionLibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B43F38B613D32B86004A6A47 /* WMCompositionLibraryViewController.m */; };
 		B43F38B913D32B86004A6A47 /* WMCompositionLibraryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B43F38B713D32B86004A6A47 /* WMCompositionLibraryViewController.xib */; };
@@ -487,7 +486,6 @@
 		80BB75D413D20AD2009B5542 /* WMOsc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WMOsc.h; path = Osc/WMOsc.h; sourceTree = "<group>"; };
 		80BB75D513D20AD2009B5542 /* WMOsc.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = WMOsc.mm; path = Osc/WMOsc.mm; sourceTree = "<group>"; };
 		B42F911613D376D800DFD983 /* eli.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = eli.jpg; sourceTree = "<group>"; };
-		B43F389D13D3219E004A6A47 /* WMEdit-Todo */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "WMEdit-Todo"; path = "WMEdit/WMEdit-Todo"; sourceTree = "<group>"; };
 		B43F38A013D3239F004A6A47 /* WMCompositionLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMCompositionLibrary.h; sourceTree = "<group>"; };
 		B43F38A113D3239F004A6A47 /* WMCompositionLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMCompositionLibrary.m; sourceTree = "<group>"; };
 		B43F38B513D32B85004A6A47 /* WMCompositionLibraryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMCompositionLibraryViewController.h; sourceTree = "<group>"; };
@@ -963,7 +961,6 @@
 		49F0594113D15F640056C506 = {
 			isa = PBXGroup;
 			children = (
-				B43F389D13D3219E004A6A47 /* WMEdit-Todo */,
 				49F0595613D15F640056C506 /* WMEdit */,
 				49A5286113D174C6004EC7F6 /* Resources */,
 				49174AA213D235BD008B5B8D /* Application */,
@@ -1262,7 +1259,6 @@
 				80843CA213D28F5A002C0693 /* RainbowDark.pal in Resources */,
 				496150C013D2D807006C8B57 /* plug-popover-arrow~ipad.png in Resources */,
 				496150C113D2D807006C8B57 /* plug-popover~ipad.png in Resources */,
-				B43F389E13D3219E004A6A47 /* WMEdit-Todo in Resources */,
 				B43F38B913D32B86004A6A47 /* WMCompositionLibraryViewController.xib in Resources */,
 				8073975213D3336200917088 /* RainbowLight.pal in Resources */,
 				49752E9713D35C2000F20447 /* plug-popover-dot~ipad.png in Resources */,
