@@ -81,8 +81,8 @@
  }
 
 - (BOOL)setup:(WMEAGLContext *)context {
-    
     _receiver.setup(3333);
+	return YES;
 }
 
 - (BOOL)execute:(WMEAGLContext *)inContext time:(CFTimeInterval)time arguments:(NSDictionary *)args {

@@ -24,13 +24,21 @@
 	[self registerToRepresentClassNames:[NSSet setWithObject:@"QCLFO"]];
 	[pool drain];
 }
-- (BOOL)setup:(WMEAGLContext *)context;
+
++ (id)defaultValueForInputPortKey:(NSString *)inKey;
 {
-	inputPeriod.value    = 1.;
-	inputPhase.value     = 0.;
-	inputAmplitude.value = 1.;
-	inputOffset.value    = 0.;
+	if ([inKey isEqualToString:@"inputPeriod"]) {
+		return [NSNumber numberWithFloat:1.0f];
+	} else if ([inKey isEqualToString:@"inputPhase"]) {
+		return [NSNumber numberWithFloat:0.0f];
+	} else if ([inKey isEqualToString:@"inputAmplitude"]) {
+		return [NSNumber numberWithFloat:1.0f];
+	} else if ([inKey isEqualToString:@"inputOffset"]) {
+		return [NSNumber numberWithFloat:0.0f];
+	}
+	return nil;
 }
+
 - (BOOL)execute:(WMEAGLContext *)inContext time:(CFTimeInterval)time arguments:(NSDictionary *)args;
 {
 	//Calculate the output value;
