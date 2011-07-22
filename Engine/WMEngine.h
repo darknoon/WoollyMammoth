@@ -8,9 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+#import <GLKit/GLKMath.h>
+
 @class WMPatch;
 @class WMEAGLContext;
 @class DNQCComposition;
+
+extern NSString *const WMEngineInterfaceOrientationArgument;
 
 @interface WMEngine : NSObject {
 	WMEAGLContext *renderContext;
@@ -19,12 +23,14 @@
 	CFAbsoluteTime t;
 		
 	WMPatch *rootObject;
-	NSDictionary *compositionUserData;
+	NSMutableDictionary *compositionUserData;
 }
 
 - (id)initWithRootObject:(WMPatch *)inNode userData:(NSDictionary *)inUserData;
 
 - (id)initWithComposition:(DNQCComposition *)inComposition;
+
++ (GLKMatrix4)cameraMatrixWithRect:(CGRect)inBounds;
 
 @property (nonatomic, retain, readonly) WMEAGLContext *renderContext;
 @property (nonatomic, retain, readonly) WMPatch *rootObject;
@@ -33,7 +39,7 @@
 
 - (void)start;
 
-- (void)drawFrameInRect:(CGRect)inBounds;
+- (void)drawFrameInRect:(CGRect)inBounds interfaceOrientation:(UIInterfaceOrientation)inInterfaceOrientation;
 
 
 @end

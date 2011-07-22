@@ -18,7 +18,7 @@
 
 #import "WMStructuredBuffer.h"
 
-#import "Matrix.h"
+#import <GLKit/GLKit.h>
 
 WMStructureField WMQuadVertex_fields[] = {
 	{.name = "position",  .type = WMStructureTypeFloat, .count = 3, .normalized = NO},
@@ -79,6 +79,35 @@ WMStructureField WMQuadVertex_fields[] = {
 	return kWMPatchExecutionModeConsumer;
 }
 
+- (WMStructuredBuffer *)vertexBufferForImage:(WMTexture2D *)inImage;
+{
+//	if (!inImage) return nil;
+	
+	WMStructuredBuffer *vertexData = [[[WMStructuredBuffer alloc] initWithDefinition:quadDef] autorelease];
+	
+	const float scale = 0.5;
+
+	struct WMVertex_v3f_tc2f {
+		float p[3];
+		char tc[2];
+	};
+	
+	//Add vertices
+	for (int y=0, i=0; y<2; y++) {
+		for (int x=0; x<2; x++, i++) {
+			
+			const struct WMVertex_v3f_tc2f v = {
+				.p = {((float)x - 0.5f) * 2.0f * scale, ((float)y - 0.5f) * 2.0f * scale, 0.0f},
+				.tc = {(char)x * 255, (char)y * 255}
+			};
+			
+			//Append to vertex buffer
+			[vertexData appendData:&v withStructure:quadDef count:1];
+		}
+	}
+	return vertexData;
+}
+
 
 - (BOOL)setup:(WMEAGLContext *)context;
 {
@@ -109,31 +138,10 @@ WMStructureField WMQuadVertex_fields[] = {
 	shader = [[WMShader alloc] initWithVertexShader:vertexShader pixelShader:fragmentShader];
 	
 	
-
-	const float scale = 0.5;
-	
 	quadDef = [[WMStructureDefinition alloc] initWithFields:WMQuadVertex_fields count:sizeof(WMQuadVertex_fields) / sizeof(WMStructureField)];
 	quadDef.shouldAlignTo4ByteBoundary = YES;
-	WMStructuredBuffer *vertexData = [[[WMStructuredBuffer alloc] initWithDefinition:quadDef] autorelease];
-	
-	struct WMVertex_v3f_tc2f {
-		float p[3];
-		char tc[2];
-	};
 
-	//Add vertices
-	for (int y=0, i=0; y<2; y++) {
-		for (int x=0; x<2; x++, i++) {
-
-			const struct WMVertex_v3f_tc2f v = {
-				.p = {((float)x - 0.5f) * 2.0f * scale, ((float)y - 0.5f) * 2.0f * scale, 0.0f},
-				.tc = {(char)x * 255, (char)y * 255}
-			};
-			
-			//Append to vertex buffer
-			[vertexData appendData:&v withStructure:quadDef count:1];
-		}
-	}
+	WMStructuredBuffer *vertexData = [self vertexBufferForImage:inputImage.image];
 	
 	//Upload to vbo
 	glGenBuffers(1, &vbo);
@@ -243,31 +251,14 @@ WMStructureField WMQuadVertex_fields[] = {
 	
 	int matrixUniform = [shader uniformLocationForName:@"modelViewProjectionMatrix"];
 	if (matrixUniform != -1) {
-		//TODO: support transformation!
-		MATRIX transform;
-		MatrixIdentity(transform);
-		
-		MATRIX inputMatrix;
-		[inContext getModelViewMatrix:inputMatrix.f];
-		
-		MATRIX scale;
-		MatrixScaling(scale, inputScale.value, inputScale.value, 1.0f);
+		GLKMatrix4 transform = GLKMatrix4Identity;
 
-		MATRIX translation;
-		MatrixTranslation(translation, inputX.value, inputY.value, 0.0f);
-
-		//Translate, rotate, and scale
-		MATRIX rotation;
-		MatrixRotationZ(rotation, inputRotation.value * M_PI / 180.f);
-		
-		//Compose matrices
-		MatrixMultiply(transform, transform, scale);
-		MatrixMultiply(transform, transform, rotation);
-		MatrixMultiply(transform, transform, translation);
-		MatrixMultiply(transform, transform, inputMatrix);
-		
-		//TODO: support rotation
-		glUniformMatrix4fv(matrixUniform, 1, NO, transform.f);
+		transform = GLKMatrix4Scale(transform, inputScale.value, inputScale.value, 1.0f);
+		transform = GLKMatrix4Translate(transform, inputX.value, inputY.value, 0.0f);
+		transform = GLKMatrix4RotateZ(transform, inputRotation.value * M_PI / 180.f);
+		transform = GLKMatrix4Multiply(transform, inContext.modelViewMatrix);
+				
+		glUniformMatrix4fv(matrixUniform, 1, NO, transform.m);
 	}
 	
 	int colorUniform = [shader uniformLocationForName:@"color"];

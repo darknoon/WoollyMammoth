@@ -232,9 +232,7 @@ typedef struct {
 
 	int matrixUniform = [shader uniformLocationForName:@"modelViewProjectionMatrix"];
 	if (matrixUniform != -1) {
-		float transform[4];
-		[context getModelViewMatrix:transform];
-		glUniformMatrix4fv(matrixUniform, 1, NO, transform);
+		glUniformMatrix4fv(matrixUniform, 1, NO, context.modelViewMatrix.m);
 	}
 	GL_CHECK_ERROR;
 

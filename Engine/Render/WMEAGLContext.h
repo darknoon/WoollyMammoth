@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "WMShader.h"
+#import <GLKit/GLKit.h>
 
 enum {
 	DNGLStateBlendEnabled = 1 << 0,
@@ -31,9 +32,7 @@ typedef int DNGLStateDepthMask;
 	DNGLStateDepthMask depthState;
 	WMFramebuffer *boundFramebuffer;
 	
-	int maxVertexAttributes;
-	
-	float modelViewMatrix[16];
+	int maxVertexAttributes;	
 }
 
 - (void)setVertexAttributeEnableState:(int)vertexAttributeEnableState;
@@ -44,7 +43,6 @@ typedef int DNGLStateDepthMask;
 
 //This is not GL state in GLES 2.0
 //Move to another part of the render engine?
-- (void)setModelViewMatrix:(float[16])inModelViewMatrix;
-- (void)getModelViewMatrix:(float[16])outModelViewMatrix;
+@property (nonatomic) GLKMatrix4 modelViewMatrix;
 
 @end

@@ -10,6 +10,7 @@
 		07C99A9113D38E8B00712EFA /* 72icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 07C99A9013D38E8B00712EFA /* 72icon.png */; };
 		20001FB613D257BE00D9686C /* WMPatchCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 20001FB513D257BE00D9686C /* WMPatchCategories.m */; };
 		2004A75813D29299009EC292 /* WMPatchCategoryListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2004A75713D29299009EC292 /* WMPatchCategoryListTableViewController.m */; };
+		490AC1E713D8F10F005E61CD /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 490AC1E613D8F10F005E61CD /* GLKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		49174A8913D1FA0F008B5B8D /* WMDraggingConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174A8813D1FA0F008B5B8D /* WMDraggingConnection.m */; };
 		49174A9113D22D9B008B5B8D /* WMPatchListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174A9013D22D9B008B5B8D /* WMPatchListTableViewController.m */; };
 		49174AAC13D235BD008B5B8D /* DNAssertionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174AA413D235BD008B5B8D /* DNAssertionHandler.m */; };
@@ -190,6 +191,7 @@
 		20001FB513D257BE00D9686C /* WMPatchCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WMPatchCategories.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		2004A75613D29299009EC292 /* WMPatchCategoryListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchCategoryListTableViewController.h; sourceTree = "<group>"; };
 		2004A75713D29299009EC292 /* WMPatchCategoryListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPatchCategoryListTableViewController.m; sourceTree = "<group>"; };
+		490AC1E613D8F10F005E61CD /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		49174A8713D1FA0F008B5B8D /* WMDraggingConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMDraggingConnection.h; sourceTree = "<group>"; };
 		49174A8813D1FA0F008B5B8D /* WMDraggingConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMDraggingConnection.m; sourceTree = "<group>"; };
 		49174A8F13D22D9B008B5B8D /* WMPatchListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchListTableViewController.h; sourceTree = "<group>"; };
@@ -505,6 +507,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				490AC1E713D8F10F005E61CD /* GLKit.framework in Frameworks */,
 				494E4EF213D25D2B00402784 /* CoreMedia.framework in Frameworks */,
 				494E4EF013D25D1C00402784 /* AVFoundation.framework in Frameworks */,
 				494E4ED913D24ADD00402784 /* libz.dylib in Frameworks */,
@@ -984,6 +987,7 @@
 		49F0594F13D15F640056C506 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				490AC1E613D8F10F005E61CD /* GLKit.framework */,
 				494E4EF113D25D2B00402784 /* CoreMedia.framework */,
 				494E4EEF13D25D1C00402784 /* AVFoundation.framework */,
 				494E4ED813D24ADD00402784 /* libz.dylib */,
@@ -1530,6 +1534,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMEdit/WMEdit-Prefix.pch";
 				INFOPLIST_FILE = "WMEdit/WMEdit-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1543,6 +1548,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMEdit/WMEdit-Prefix.pch";
 				INFOPLIST_FILE = "WMEdit/WMEdit-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;

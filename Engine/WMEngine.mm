@@ -40,7 +40,7 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 	
 	renderContext = [[WMEAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
 	self.rootObject = inNode;
-	compositionUserData = [inUserData retain];
+	compositionUserData = [inUserData mutableCopy];
 	
 	return self;
 }
@@ -219,13 +219,12 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 
 #pragma -
 
-- (MATRIX)cameraMatrixWithRect:(CGRect)inBounds;
++ (GLKMatrix4)cameraMatrixWithRect:(CGRect)inBounds;
 {
-	MATRIX cameraMatrix;
+	GLKMatrix4 cameraMatrix;
 	//TODO: move this state setting to WMEAGLContext
 	//glCullFace(GL_BACK);
 	
-	MATRIX projectionMatrix;
 	GLfloat viewAngle = 35.f * M_PI / 180.0f;
 	
 	const float near = 0.1;
@@ -233,40 +232,37 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 	
 	const float aspectRatio = inBounds.size.width / inBounds.size.height;
 	
-	MatrixPerspectiveFovRH(projectionMatrix, viewAngle, aspectRatio, near, far, NO);
+	GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(viewAngle, aspectRatio, near, far);
 	
 	//glDepthRangef(near, far);
 	
-	MATRIX viewMatrix;
-	Vec3 cameraPosition(0, 0, 3.0f);
-	Vec3 cameraTarget(0, 0, 0);
-	Vec3 upVec(0, 1, 0);
-	MatrixLookAtRH(viewMatrix, cameraPosition, cameraTarget, upVec);
+	const GLKVector3 cameraPosition = {0, 0, 3.0f};
+	const GLKVector3 cameraTarget = {0, 0, 0};
+	const GLKVector3 upVec = {0, 1, 0};
 	
-	MatrixMultiply(cameraMatrix, viewMatrix, projectionMatrix);
+	GLKMatrix4 viewMatrix = GLKMatrix4MakeLookAt(cameraPosition.x, cameraPosition.y, cameraPosition.z,
+												   cameraTarget.x,   cameraTarget.y,   cameraTarget.z,
+												          upVec.x,          upVec.y,          upVec.z);
+	
+	cameraMatrix = GLKMatrix4Multiply(projectionMatrix, viewMatrix);
 	
 #if DEBUG_LOG_RENDER_MATRICES
 	
-	NSLog(@"Perspective: ");
-	MatrixPrint(projectionMatrix);
+	NSLog(@"Perspective: %@", NSStringFromGLKMatrix4(projectionMatrix));
 	
-	NSLog(@"Look At: ");
-	MatrixPrint(viewMatrix);
+	NSLog(@"Look At: %@", NSStringFromGLKMatrix4(viewMatrix));
 	
-	NSLog(@"Final: ");
-	MatrixPrint(cameraMatrix);
+	NSLog(@"Final: %@", NSStringFromGLKMatrix4(cameraMatrix));
 	
-	Vec3 position(0,0,0);
-	MatrixVec3Multiply(position, position, cameraMatrix);
-	NSLog(@"Position of 0,0,0 in screen space: %f %f %f", position.x, position.y, position.z);
+	NSLog(@"Position of 0,0,0 in screen space: %@", NSStringFromGLKVector3(GLKMatrix4MultiplyVector3(cameraMatrix, (GLKVector3){0,0,0})));
+
+	NSLog(@"Position of 1,1,0 in screen space: %@", NSStringFromGLKVector3(GLKMatrix4MultiplyVector3(cameraMatrix, (GLKVector3){1,1,0})));
 	
-	position = Vec3(1,1,0);
-	MatrixVec3Multiply(position, position, cameraMatrix);
-	NSLog(@"Position of 1,1,0 in screen space: %f %f %f", position.x, position.y, position.z);
 #endif
 	
 	return cameraMatrix;
 }
+
 
 - (WMConnection *)connectionToInputPort:(WMPort *)inPort ofNode:(WMPatch *)inPatch inParent:(WMPatch *)inParent;
 {
@@ -309,10 +305,10 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 
 		
 		WMFramebuffer *framebufferBefore;
-		MATRIX cameraMatrixBefore;
+		GLKMatrix4 cameraMatrixBefore = GLKMatrix4Identity;
 		if (patch.executionMode == kWMPatchExecutionModeRII) {
 			framebufferBefore = [renderContext.boundFramebuffer retain];
-			[renderContext getModelViewMatrix:cameraMatrixBefore.f];
+			cameraMatrixBefore = renderContext.modelViewMatrix;
 		}	
 
 //		NSLog(@"executing patch: %@", patch.key);
@@ -335,7 +331,7 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 			//Restore viewport
 			glViewport(0, 0, renderContext.boundFramebuffer.framebufferWidth, renderContext.boundFramebuffer.framebufferHeight);
 			//Restore camera matrix
-			[renderContext setModelViewMatrix:cameraMatrixBefore.f];
+			renderContext.modelViewMatrix = cameraMatrixBefore;
 		}			
 	}
 	
@@ -355,15 +351,14 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 	//Pass along the device orientation. This is necessary for patches whose semantics are dependent on which direction is "up" for the user.
 	//Examples: accelerometer, camera input.
 	[compositionUserData setObject:[NSNumber numberWithInt:inInterfaceOrientation] forKey:WMEngineInterfaceOrientationArgument];
+	
 	//Make sure we have set up all new node
 	[self _setupRecursive:self.rootObject];
 	
 	//TODO: abstract this state out
 	glViewport(0, 0, renderContext.boundFramebuffer.framebufferWidth, renderContext.boundFramebuffer.framebufferHeight);
 
-	MATRIX modelViewMatrix = [self cameraMatrixWithRect:inBounds];
-	
-	[renderContext setModelViewMatrix:modelViewMatrix.f];
+	renderContext.modelViewMatrix = [WMEngine cameraMatrixWithRect:inBounds];
 	
 	//// Time         ////
 	//TODO: support pause / resume

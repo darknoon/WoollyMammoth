@@ -12,6 +12,9 @@
 #import "WMTexture2D.h"
 #import "WMEAGLContext.h"
 
+//use for +cameraMatrixWithRect:
+#import "WMEngine.h"
+
 #import "Matrix.h"
 
 @implementation WMRenderInImage
@@ -43,56 +46,6 @@
 	return kWMPatchExecutionModeRII;
 }
 
-- (MATRIX)cameraMatrixWithRect:(CGRect)inBounds;
-{
-	MATRIX cameraMatrix;
-	//TODO: move this state setting to WMEAGLContext
-	//glCullFace(GL_BACK);
-	
-	MATRIX projectionMatrix;
-	GLfloat viewAngle = 35.f * M_PI / 180.0f;
-	
-	const float near = 0.1;
-	const float far = 1000.0;
-	
-	const float aspectRatio = inBounds.size.width / inBounds.size.height;
-	
-	MatrixPerspectiveFovRH(projectionMatrix, viewAngle, aspectRatio, near, far, NO);
-	
-	//glDepthRangef(near, far);
-	
-	MATRIX viewMatrix;
-	Vec3 cameraPosition(0, 0, 3.0f);
-	Vec3 cameraTarget(0, 0, 0);
-	Vec3 upVec(0, 1, 0);
-	MatrixLookAtRH(viewMatrix, cameraPosition, cameraTarget, upVec);
-	
-	MatrixMultiply(cameraMatrix, viewMatrix, projectionMatrix);
-	
-#if DEBUG_LOG_RENDER_MATRICES
-	
-	NSLog(@"Perspective: ");
-	MatrixPrint(projectionMatrix);
-	
-	NSLog(@"Look At: ");
-	MatrixPrint(viewMatrix);
-	
-	NSLog(@"Final: ");
-	MatrixPrint(cameraMatrix);
-	
-	Vec3 position(0,0,0);
-	MatrixVec3Multiply(position, position, cameraMatrix);
-	NSLog(@"Position of 0,0,0 in screen space: %f %f %f", position.x, position.y, position.z);
-	
-	position = Vec3(1,1,0);
-	MatrixVec3Multiply(position, position, cameraMatrix);
-	NSLog(@"Position of 1,1,0 in screen space: %f %f %f", position.x, position.y, position.z);
-#endif
-	
-	return cameraMatrix;
-}
-
-
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
 	NSUInteger renderWidth = inputWidth.index;
@@ -113,7 +66,8 @@
 									  pixelFormat:kWMTexture2DPixelFormat_RGBA8888
 									   pixelsWide:renderWidth
 									   pixelsHigh:renderHeight
-									  contentSize:(CGSize){renderWidth, renderHeight}];
+									  contentSize:(CGSize){renderWidth, renderHeight}
+										orientation:UIImageOrientationUp];
 		framebuffer = [[WMFramebuffer alloc] initWithTexture:texture depthBufferDepth:useDepthBuffer ? GL_DEPTH_COMPONENT16 : 0];
 		
 		if (!texture || !framebuffer) {
@@ -122,8 +76,7 @@
 		NSLog(@"Created framebuffer: %@", framebuffer);
 	}
 	
-	MATRIX m = [self cameraMatrixWithRect:(CGRect){0, 0, renderWidth, renderHeight}];
-	[context setModelViewMatrix:m.f];
+	context.modelViewMatrix = [WMEngine cameraMatrixWithRect:(CGRect){0, 0, renderWidth, renderHeight}];
 	context.boundFramebuffer = framebuffer;
 	glViewport(0, 0, renderWidth, renderHeight);
 	outputImage.image = texture;

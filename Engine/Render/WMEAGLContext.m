@@ -14,6 +14,7 @@
 @synthesize blendState;
 @synthesize depthState;
 @synthesize boundFramebuffer;
+@synthesize modelViewMatrix;
 
 - (id)initWithAPI:(EAGLRenderingAPI)api;
 {
@@ -36,11 +37,8 @@
 		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 		
 		//Set matrix to identity
-		modelViewMatrix[0] = 1;
-		modelViewMatrix[5] = 1;
-		modelViewMatrix[10] = 1;
-		modelViewMatrix[15] = 1;
-		
+		modelViewMatrix = GLKMatrix4Identity;
+
 		glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &maxVertexAttributes);
 		
 	} else {
@@ -150,13 +148,4 @@
 	}
 }
 
-- (void)setModelViewMatrix:(float[16])inModelViewMatrix;
-{
-	memcpy(modelViewMatrix, inModelViewMatrix, 16 * sizeof(float));
-}
-
-- (void)getModelViewMatrix:(float[16])outModelViewMatrix;
-{
-	memcpy(outModelViewMatrix, modelViewMatrix, 16 * sizeof(float));
-}
 @end
