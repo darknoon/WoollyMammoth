@@ -244,7 +244,7 @@
 	
 	NSTimeInterval frameStartTime = CFAbsoluteTimeGetCurrent();
 	
-	[engine drawFrameInRect:self.view.bounds];
+	[engine drawFrameInRect:self.view.bounds interfaceOrientation:self.interfaceOrientation];
 	
 	NSTimeInterval frameEndTime = CFAbsoluteTimeGetCurrent();
 	

@@ -68,35 +68,42 @@ Be aware that the content of the generated textures will be upside-down!
 */
 @interface WMTexture2D : NSObject
 {
+	//For subclassers
 @protected
 	GLuint						_name;
 	CGSize						_size;
 	NSUInteger					_width,
 								_height;
-	WMTexture2DPixelFormat		_format;
-	GLfloat						_maxS,
-								_maxT;
 }
-- (id) initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
+
+//Designated initializer
+- (id)initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;
+
+- (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;
+
+
+//These methods assume UIImageOrientationUp
+- (id)initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
 
 - (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
 
-//TODO: does not fill in maxS, maxT, pixelsWide, pixelsHigh!
-//You MUST take care not to call glDeleteTextures outside of this texture's dealloc method when using this initializer
 
-//- (id)initWithTextureName:(GLuint)inTextureName;
+//TODO: 
 
+//Equivalent to binding the texture and glTexImage2D with NULL data
 - (void)discardData;
 
-@property(readonly) WMTexture2DPixelFormat pixelFormat;
-@property(readonly) NSUInteger pixelsWide;
-@property(readonly) NSUInteger pixelsHigh;
+@property (nonatomic, readonly) UIImageOrientation orientation;
 
-@property(readonly) GLuint name;
+@property (nonatomic, readonly) WMTexture2DPixelFormat pixelFormat;
+@property (nonatomic, readonly) NSUInteger pixelsWide;
+@property (nonatomic, readonly) NSUInteger pixelsHigh;
 
-@property(readonly, nonatomic) CGSize contentSize;
-@property(readonly) GLfloat maxS;
-@property(readonly) GLfloat maxT;
+@property (nonatomic, readonly) GLuint name;
+
+@property (nonatomic, readonly) CGSize contentSize;
+@property (nonatomic, readonly) GLfloat maxS;
+@property (nonatomic, readonly) GLfloat maxT;
 @end
 
 @interface WMTexture2D (File)

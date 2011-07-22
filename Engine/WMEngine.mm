@@ -18,6 +18,9 @@
 #import "WMFramebuffer.h"
 #import "DNQCComposition.h"
 
+#define DEBUG_LOG_RENDER_MATRICES 1
+
+NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 
 @interface WMEngine ()
 @property (nonatomic, retain, readwrite) WMPatch *rootObject;
@@ -347,8 +350,11 @@
 
 }
 
-- (void)drawFrameInRect:(CGRect)inBounds;
+- (void)drawFrameInRect:(CGRect)inBounds interfaceOrientation:(UIInterfaceOrientation)inInterfaceOrientation;
 {
+	//Pass along the device orientation. This is necessary for patches whose semantics are dependent on which direction is "up" for the user.
+	//Examples: accelerometer, camera input.
+	[compositionUserData setObject:[NSNumber numberWithInt:inInterfaceOrientation] forKey:WMEngineInterfaceOrientationArgument];
 	//Make sure we have set up all new node
 	[self _setupRecursive:self.rootObject];
 	

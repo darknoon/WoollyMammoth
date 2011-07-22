@@ -52,7 +52,30 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #endif
 
 #import "WMTexture2D.h"
-#import "UIImage+resize.h"
+
+NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation);
+
+NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
+	switch (orientation) {
+		default:
+		case UIImageOrientationUp:
+			return @"default orientation";
+		case UIImageOrientationDown:
+			return @"180 deg rotation";
+		case UIImageOrientationLeft:
+			return @"90 deg CCW";
+		case UIImageOrientationRight:
+			return @"90 deg CW";
+		case UIImageOrientationUpMirrored:
+			return @"as above but image mirrored along other axis. horizontal flip";
+		case UIImageOrientationDownMirrored:
+			return @"horizontal flip";
+		case UIImageOrientationLeftMirrored:
+			return @"vertical flip";
+		case UIImageOrientationRightMirrored:
+			return @"vertical flip";
+	}
+}
 
 @interface WMTexture2D ()
 - (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
@@ -66,9 +89,16 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 @implementation WMTexture2D
 
-@synthesize contentSize=_size, pixelFormat=_format, pixelsWide=_width, pixelsHigh=_height, name=_name, maxS=_maxS, maxT=_maxT;
+@synthesize orientation;
+@synthesize contentSize=_size;
+@synthesize pixelFormat=_format;
+@synthesize pixelsWide=_width;
+@synthesize pixelsHigh=_height;
+@synthesize name=_name;
+@synthesize maxS=_maxS;
+@synthesize maxT=_maxT;
 
-- (id) initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size
+- (id)initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;
 {
 	if((self = [super init])) {
 		glGenTextures(1, &_name);
@@ -78,12 +108,17 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-		[self setData:data pixelFormat:pixelFormat pixelsWide:width pixelsHigh:height contentSize:size];
+		[self setData:data pixelFormat:pixelFormat pixelsWide:width pixelsHigh:height contentSize:size orientation:inOrientation];
 	}					
 	return self;
 }
 
-- (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
+- (id)initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
+{
+	return [self initWithData:data pixelFormat:pixelFormat pixelsWide:width pixelsHigh:height contentSize:size orientation:UIImageOrientationUp];
+}
+
+- (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;
 {
 	glBindTexture(GL_TEXTURE_2D, _name);
 	switch(pixelFormat) {
@@ -111,7 +146,13 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 	_format = pixelFormat;
 	_maxS = size.width / (float)width;
 	_maxT = size.height / (float)height;
+	orientation = inOrientation;
 
+}
+
+- (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
+{
+	[self setData:data pixelFormat:pixelFormat pixelsWide:width pixelsHigh:height contentSize:size orientation:UIImageOrientationUp];
 }
 
 - (void)discardData;
@@ -129,7 +170,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 - (NSString*) description
 {
-	return [NSString stringWithFormat:@"<%@ = %08X | Name = %i | Dimensions = %ix%i | Coordinates = (%.2f, %.2f)>", [self class], self, _name, _width, _height, _maxS, _maxT];
+	return [NSString stringWithFormat:@"<%@ = %08X | Name = %i | Dimensions = %ix%i | Coordinates = (%.2f, %.2f) | orientation = %@>", [self class], self, _name, _width, _height, _maxS, _maxT, NSStringFromUIImageOrientation(orientation)];
 }
 
 @end
@@ -172,12 +213,10 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 	CGSize					imageSize;
 	WMTexture2DPixelFormat    pixelFormat;
 	CGImageRef				image;
-	UIImageOrientation		orientation;
 	BOOL					sizeToFit = NO;
 	
 	
 	image = [uiImage CGImage];
-	orientation = [uiImage imageOrientation]; 
 	
 	if(image == NULL) {
 		[self release];
@@ -268,7 +307,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 		data = tempData;
 	}
 	
-	self = [self initWithData:data pixelFormat:pixelFormat pixelsWide:width pixelsHigh:height contentSize:imageSize];
+	self = [self initWithData:data pixelFormat:pixelFormat pixelsWide:width pixelsHigh:height contentSize:imageSize orientation:uiImage.imageOrientation];
 	
 	CGContextRelease(context);
 	free(data);
@@ -321,7 +360,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 		[string drawInRect:CGRectMake(0, 0, dimensions.width, dimensions.height) withFont:font lineBreakMode:UILineBreakModeWordWrap alignment:alignment];
 	UIGraphicsPopContext();
 	
-	self = [self initWithData:data pixelFormat:kWMTexture2DPixelFormat_A8 pixelsWide:width pixelsHigh:height contentSize:dimensions];
+	self = [self initWithData:data pixelFormat:kWMTexture2DPixelFormat_A8 pixelsWide:width pixelsHigh:height contentSize:dimensions orientation:UIImageOrientationUp];
 	
 	CGContextRelease(context);
 	free(data);

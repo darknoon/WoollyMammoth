@@ -16,6 +16,9 @@
 #import "WMBooleanPort.h"
 #import "WMImagePort.h"
 
+//For the interfaceOrientation argument
+#import "WMEngine.h"
+
 @implementation WMVideoCapture
 
 @synthesize capturing;
@@ -93,8 +96,11 @@
 
 	//glTexParameterf(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_FALSE);
 
+	//TODO: test different orientations, get interface orientation and indicate mismatch
+	UIImageOrientation orientation = UIImageOrientationUp;
+	
 	for (int i=0; i<VideoCapture_NumTextures; i++) {
-		textures[i] = [[WMTexture2D alloc] initWithData:buffer pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:0 pixelsHigh:0 contentSize:CGSizeZero];
+		textures[i] = [[WMTexture2D alloc] initWithData:buffer pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:0 pixelsHigh:0 contentSize:CGSizeZero orientation:orientation];
 		glBindTexture(GL_TEXTURE_2D, [textures[i] name]);
 		
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -312,6 +318,25 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
 	useFrontCamera = [[args objectForKey:@"com.darknoon.WMVideoCapture.useFront"] boolValue];
+	
+	UIInterfaceOrientation interfaceOrientation = [[args objectForKey:WMEngineInterfaceOrientationArgument] intValue];
+	//TODO: determine the correct values here
+	switch (interfaceOrientation) {
+		case UIInterfaceOrientationPortrait:
+			currentVideoOrientation = UIImageOrientationUp;
+			break;
+		case UIInterfaceOrientationPortraitUpsideDown:
+			currentVideoOrientation = UIImageOrientationDown;
+			break;
+		case UIInterfaceOrientationLandscapeLeft:
+			currentVideoOrientation = UIImageOrientationLeft;
+			break;
+		case UIInterfaceOrientationLandscapeRight:
+			currentVideoOrientation = UIImageOrientationRight;
+			break;
+		default:
+			break;
+	}
 	
 	if (!capturing && inputCapture.value) {
 		[self startCapture];

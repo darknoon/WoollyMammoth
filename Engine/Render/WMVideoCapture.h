@@ -41,6 +41,8 @@
 	
 	BOOL useFrontCamera;
 	
+	UIImageOrientation currentVideoOrientation;
+	
 	WMBooleanPort *inputCapture;
 	
 	WMImagePort *outputImage;
