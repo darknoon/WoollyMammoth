@@ -18,7 +18,7 @@
 #import "WMFramebuffer.h"
 #import "DNQCComposition.h"
 
-#define DEBUG_LOG_RENDER_MATRICES 1
+#define DEBUG_LOG_RENDER_MATRICES 0
 
 NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 
