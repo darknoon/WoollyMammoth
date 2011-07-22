@@ -99,7 +99,7 @@
 	NSURL *bundleURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@:%d%@", addr, [netService port], path]];
 	
 	NSLog(@"Will try to load bundle from url: %@", bundleURL);
-	[parent reloadGameFromURL:bundleURL];
+	//[parent reloadGameFromURL:bundleURL];
 }
 
 - (IBAction)loadRemote;

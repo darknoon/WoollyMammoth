@@ -13,6 +13,8 @@
 
 @interface WMPatchListTableViewController : UITableViewController
 
+- (id)initWithPatchesAndCategory:(NSArray *)array category:(NSString*)categoryIn;
+
 @property (nonatomic, assign) id<WMPatchListTableViewControllerDelegate> delegate;
 @property (nonatomic, assign) NSArray *patchList;
 @property (nonatomic, assign) NSString *category;
@@ -20,8 +22,6 @@
 
 
 @protocol WMPatchListTableViewControllerDelegate <NSObject>
-
-- (id)initWithPatchesAndCategory:(NSArray *)array category:(NSString*)categoryIn;
 
 - (void)patchList:(WMPatchListTableViewController *)inPatchList selectedPatchClassName:(NSString *)inClassName;
 

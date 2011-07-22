@@ -21,12 +21,6 @@
 {
     NSData *data = [request responseData];
     UIImage *photoImage = [UIImage imageWithData:data];
-    UIImageOrientation orient = [photoImage imageOrientation];
-    // now fix it first!
-//    if (orient != UIImageOrientationUp)
-//        
-//        photoImage = [photoImage resizedImage:photoImage.size interpolationQuality:kCGInterpolationNone];
-    
     self.image = photoImage;
 
     [[TweetServerCommunicator commmunicator] photoTweetGotImage:self];
@@ -35,7 +29,7 @@
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
     NSError *error = [request error];
-    NSLog([error localizedDescription]);
+    DLog([error localizedDescription]);
     [[TweetServerCommunicator commmunicator] photoTweetFailedToGetImage:self];
 }
 
