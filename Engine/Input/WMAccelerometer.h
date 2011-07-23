@@ -8,8 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "Vector.h"
-#import "Matrix.h"
+#import "WMRenderCommon.h"
 
 #import <CoreMotion/CoreMotion.h>
 
@@ -19,8 +18,8 @@
 	
 	//If gyro not available, we have to calculate this ourselves
 	//Low pass filter on acceleration
-	Vec3 gravity;
-	Vec3 acceleration;
+	GLKVector3 gravity;
+	GLKVector3 acceleration;
 
 	float lowPassFactor;
 	NSTimeInterval lastLogTime;
@@ -32,8 +31,8 @@
 + (WMAccelerometer *)sharedAccelerometer;
 
 //Low pass filtered (~ gravity)
-@property (readonly) Vec3 gravity;
+@property (readonly) GLKVector3 gravity;
 //TTT ork!
-@property (readonly) Vec3 rotationRate;
+@property (readonly) GLKVector3 rotationRate;
 
 @end

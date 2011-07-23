@@ -15,8 +15,6 @@
 //use for +cameraMatrixWithRect:
 #import "WMEngine.h"
 
-#import "Matrix.h"
-
 @implementation WMRenderInImage
 
 + (NSString *)category;

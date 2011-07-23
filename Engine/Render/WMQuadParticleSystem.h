@@ -12,7 +12,6 @@
 #import "WMPatch.h"
 
 #import "WMRenderCommon.h"
-#import "Vector.h"
 
 struct WMQuadParticle;
 
@@ -40,10 +39,10 @@ struct WMQuadParticleVertex;
 	//Holds indices. always the same, as each particle is a quad! ie boring (0,1,2, 1,2,3 … )
 	GLuint particleEBO;
 	
-	VECTOR4 startColor;
+	GLKVector4 startColor;
 	float deltaAlpha;
 	
-	Vec3 particleCentroid;
+	GLKVector3 particleCentroid;
 	
 	float turbulence;
 	

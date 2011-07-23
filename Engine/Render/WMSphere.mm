@@ -12,9 +12,9 @@
 
 //Position, Normal, Color, TexCoord0, TexCoord1, PointSize, Weight, MatrixIndex
 struct WMSphereVertex {
-	Vec3 v;
-	Vec3 n;
-	Vec2 tc;
+	GLKVector3 v;
+	GLKVector3 n;
+	GLKVector2 tc;
 	//TODO: Align to even 32-byte boundary?
 };
 
@@ -52,7 +52,7 @@ struct WMSphereVertex {
 		return nil;
 	}
 	
-	Vec3 spherePosition = Vec3(0.0f, 0.045f, 0.0f);
+	GLKVector3 spherePosition = GLKVector3Make(0.0f, 0.045f, 0.0f);
 	
 	//Add vertices
 	for (int u=0, i=0, indexDataIndex=0; u<unum; u++) {
@@ -60,11 +60,11 @@ struct WMSphereVertex {
 			float theta = u * 2.0f * M_PI / unum;
 			float phi = v * M_PI / vnum;
 			//Add the vertex
-			vertexData[i].n = Vec3(sinf(phi)*cosf(theta),
+			vertexData[i].n = GLKVector3Make(sinf(phi)*cosf(theta),
 								   sinf(phi)*sinf(theta), 
 								   cosf(phi));
 			vertexData[i].v = radius * vertexData[i].n + spherePosition;
-			vertexData[i].tc = Vec2(theta, phi);
+			vertexData[i].tc = GLKVector2Make(theta, phi);
 			
 			//Add the triangles in the quad {(u,v), (u+1,v), (u,v+1), (u+1,v+1)}
 			unsigned short nextU = (u+1) % unum;
@@ -140,12 +140,12 @@ struct WMSphereVertex {
 }
 - (int)texCoord0Offset;
 {
-	return 2 * sizeof(Vec3);
+	return 2 * sizeof(GLKVector3);
 }
 
 - (int)normalOffset;
 {
-	return sizeof(Vec3);
+	return sizeof(GLKVector3);
 }
 
 - (size_t)interleavedDataStride;

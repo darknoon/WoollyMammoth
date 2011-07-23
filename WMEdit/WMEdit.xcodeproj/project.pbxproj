@@ -113,13 +113,6 @@
 		49A5264A13D17302004EC7F6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5264913D17301004EC7F6 /* SystemConfiguration.framework */; };
 		49A5264C13D17308004EC7F6 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5264B13D17308004EC7F6 /* AudioToolbox.framework */; };
 		49A5279413D17331004EC7F6 /* BrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A5265013D17330004EC7F6 /* BrowserViewController.m */; };
-		49A527F413D17331004EC7F6 /* Matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49A526E413D17330004EC7F6 /* Matrix.cpp */; };
-		49A527F513D17331004EC7F6 /* neon_matrix_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49A526E713D17330004EC7F6 /* neon_matrix_impl.cpp */; settings = {COMPILER_FLAGS = "-marm"; }; };
-		49A527F613D17331004EC7F6 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49A526EA13D17330004EC7F6 /* Random.cpp */; };
-		49A527F713D17331004EC7F6 /* Transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49A526EC13D17330004EC7F6 /* Transform.cpp */; };
-		49A527F813D17331004EC7F6 /* Vector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49A526EF13D17330004EC7F6 /* Vector.cpp */; };
-		49A527F913D17331004EC7F6 /* matrix_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49A526F313D17330004EC7F6 /* matrix_impl.cpp */; };
-		49A527FA13D17331004EC7F6 /* utility_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49A526F513D17330004EC7F6 /* utility_impl.cpp */; };
 		49A5285B13D173B8004EC7F6 /* PGMidi.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49A5285613D173B8004EC7F6 /* PGMidi.mm */; };
 		49A5285C13D173B8004EC7F6 /* PGMidiAllSources.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49A5285813D173B8004EC7F6 /* PGMidiAllSources.mm */; };
 		49A5285D13D173B8004EC7F6 /* PGMidiFind.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49A5285A13D173B8004EC7F6 /* PGMidiFind.mm */; };
@@ -130,6 +123,8 @@
 		49B0E03913D24317009F5B32 /* PhotoTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B0E03413D24317009F5B32 /* PhotoTweet.m */; };
 		49B0E03A13D24317009F5B32 /* TweetServerCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B0E03613D24317009F5B32 /* TweetServerCommunicator.m */; };
 		49B0E03B13D24317009F5B32 /* WMTweetPhotoStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B0E03813D24317009F5B32 /* WMTweetPhotoStream.m */; };
+		49E3145913DA44F600813CE0 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49E3145613DA44F600813CE0 /* Random.cpp */; };
+		49E3145A13DA44F600813CE0 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49E3145613DA44F600813CE0 /* Random.cpp */; };
 		49F0595113D15F640056C506 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595013D15F640056C506 /* UIKit.framework */; };
 		49F0595313D15F640056C506 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595213D15F640056C506 /* Foundation.framework */; };
 		49F0595513D15F640056C506 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595413D15F640056C506 /* CoreGraphics.framework */; };
@@ -298,7 +293,7 @@
 		49A525C113D1725E004EC7F6 /* WMStructureDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMStructureDefinition.h; sourceTree = "<group>"; };
 		49A525C213D1725E004EC7F6 /* WMStructureDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMStructureDefinition.m; sourceTree = "<group>"; };
 		49A525C413D1725E004EC7F6 /* WMAccelerometer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMAccelerometer.h; sourceTree = "<group>"; };
-		49A525C513D1725E004EC7F6 /* WMAccelerometer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WMAccelerometer.mm; sourceTree = "<group>"; };
+		49A525C513D1725E004EC7F6 /* WMAccelerometer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = WMAccelerometer.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		49A525C713D1725E004EC7F6 /* DNQCComposition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNQCComposition.h; sourceTree = "<group>"; };
 		49A525C813D1725E004EC7F6 /* DNQCComposition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNQCComposition.m; sourceTree = "<group>"; };
 		49A525C913D1725E004EC7F6 /* WMBooleanPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMBooleanPort.h; sourceTree = "<group>"; };
@@ -311,7 +306,7 @@
 		49A525D013D1725E004EC7F6 /* WMColorPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMColorPort.m; sourceTree = "<group>"; };
 		49A525D113D1725E004EC7F6 /* WMConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMConnection.h; sourceTree = "<group>"; };
 		49A525D213D1725E004EC7F6 /* WMConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMConnection.m; sourceTree = "<group>"; };
-		49A525D313D1725E004EC7F6 /* WMGaussianBlur.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WMGaussianBlur.glsl; sourceTree = "<group>"; };
+		49A525D313D1725E004EC7F6 /* WMGaussianBlur.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = WMGaussianBlur.glsl; sourceTree = "<group>"; };
 		49A525D413D1725E004EC7F6 /* WMImageFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMImageFilter.h; sourceTree = "<group>"; };
 		49A525D513D1725E004EC7F6 /* WMImageFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMImageFilter.m; sourceTree = "<group>"; };
 		49A525D613D1725E004EC7F6 /* WMImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMImageLoader.h; sourceTree = "<group>"; };
@@ -350,7 +345,7 @@
 		49A525FA13D1725E004EC7F6 /* WMQuad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMQuad.h; sourceTree = "<group>"; };
 		49A525FB13D1725E004EC7F6 /* WMQuad.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WMQuad.mm; sourceTree = "<group>"; };
 		49A525FC13D1725E004EC7F6 /* WMQuadParticleSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMQuadParticleSystem.h; sourceTree = "<group>"; };
-		49A525FD13D1725E004EC7F6 /* WMQuadParticleSystem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WMQuadParticleSystem.mm; sourceTree = "<group>"; };
+		49A525FD13D1725E004EC7F6 /* WMQuadParticleSystem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = WMQuadParticleSystem.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		49A525FE13D1725E004EC7F6 /* WMRenderableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMRenderableDataSource.h; sourceTree = "<group>"; };
 		49A525FF13D1725E004EC7F6 /* WMRenderCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMRenderCommon.h; sourceTree = "<group>"; };
 		49A5260013D1725E004EC7F6 /* WMSphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSphere.h; sourceTree = "<group>"; };
@@ -366,7 +361,7 @@
 		49A5260C13D1725E004EC7F6 /* EAGLContext+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EAGLContext+Extensions.h"; sourceTree = "<group>"; };
 		49A5260D13D1725E004EC7F6 /* EAGLContext+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EAGLContext+Extensions.m"; sourceTree = "<group>"; };
 		49A5260E13D1725E004EC7F6 /* SimplexNoise.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SimplexNoise.c; sourceTree = "<group>"; };
-		49A5260F13D1725E004EC7F6 /* SimplexNoise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimplexNoise.h; sourceTree = "<group>"; };
+		49A5260F13D1725E004EC7F6 /* SimplexNoise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = SimplexNoise.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		49A5261013D1725E004EC7F6 /* WMMathUtil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = WMMathUtil.c; sourceTree = "<group>"; };
 		49A5261113D1725E004EC7F6 /* WMMathUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMMathUtil.h; sourceTree = "<group>"; };
 		49A5261213D1725E004EC7F6 /* WMEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMEngine.h; sourceTree = "<group>"; };
@@ -382,26 +377,6 @@
 		49A5264B13D17308004EC7F6 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		49A5264F13D17330004EC7F6 /* BrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowserViewController.h; sourceTree = "<group>"; };
 		49A5265013D17330004EC7F6 /* BrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowserViewController.m; sourceTree = "<group>"; };
-		49A526E213D17330004EC7F6 /* Macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Macros.h; sourceTree = "<group>"; };
-		49A526E313D17330004EC7F6 /* Mathematics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mathematics.h; sourceTree = "<group>"; };
-		49A526E413D17330004EC7F6 /* Matrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Matrix.cpp; sourceTree = "<group>"; };
-		49A526E513D17330004EC7F6 /* Matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Matrix.h; sourceTree = "<group>"; };
-		49A526E713D17330004EC7F6 /* neon_matrix_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = neon_matrix_impl.cpp; sourceTree = "<group>"; };
-		49A526E813D17330004EC7F6 /* neon_matrix_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = neon_matrix_impl.h; sourceTree = "<group>"; };
-		49A526E913D17330004EC7F6 /* Quaternion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quaternion.h; sourceTree = "<group>"; };
-		49A526EA13D17330004EC7F6 /* Random.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Random.cpp; sourceTree = "<group>"; };
-		49A526EB13D17330004EC7F6 /* Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Random.h; sourceTree = "<group>"; };
-		49A526EC13D17330004EC7F6 /* Transform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Transform.cpp; sourceTree = "<group>"; };
-		49A526ED13D17330004EC7F6 /* Transform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
-		49A526EE13D17330004EC7F6 /* Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Types.h; sourceTree = "<group>"; };
-		49A526EF13D17330004EC7F6 /* Vector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vector.cpp; sourceTree = "<group>"; };
-		49A526F013D17330004EC7F6 /* Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector.h; sourceTree = "<group>"; };
-		49A526F213D17330004EC7F6 /* common_macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common_macros.h; sourceTree = "<group>"; };
-		49A526F313D17330004EC7F6 /* matrix_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = matrix_impl.cpp; sourceTree = "<group>"; };
-		49A526F413D17330004EC7F6 /* matrix_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = matrix_impl.h; sourceTree = "<group>"; };
-		49A526F513D17330004EC7F6 /* utility_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utility_impl.cpp; sourceTree = "<group>"; };
-		49A526F613D17330004EC7F6 /* utility_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utility_impl.h; sourceTree = "<group>"; };
-		49A526F713D17330004EC7F6 /* vfp_clobbers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vfp_clobbers.h; sourceTree = "<group>"; };
 		49A5285413D173B8004EC7F6 /* iOSVersionDetection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iOSVersionDetection.h; sourceTree = "<group>"; };
 		49A5285513D173B8004EC7F6 /* PGMidi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGMidi.h; sourceTree = "<group>"; };
 		49A5285613D173B8004EC7F6 /* PGMidi.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PGMidi.mm; sourceTree = "<group>"; };
@@ -421,6 +396,16 @@
 		49B0E03613D24317009F5B32 /* TweetServerCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TweetServerCommunicator.m; sourceTree = "<group>"; };
 		49B0E03713D24317009F5B32 /* WMTweetPhotoStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMTweetPhotoStream.h; sourceTree = "<group>"; };
 		49B0E03813D24317009F5B32 /* WMTweetPhotoStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMTweetPhotoStream.m; sourceTree = "<group>"; };
+		49E3144E13DA3F7500813CE0 /* GLKQuaternion_cpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKQuaternion_cpp.h; sourceTree = "<group>"; };
+		49E3144F13DA3F7500813CE0 /* GLKVector3_cpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKVector3_cpp.h; sourceTree = "<group>"; };
+		49E3145013DA3F7500813CE0 /* GLKVector2_cpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKVector2_cpp.h; sourceTree = "<group>"; };
+		49E3145113DA3F7500813CE0 /* GLKVector4_cpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKVector4_cpp.h; sourceTree = "<group>"; };
+		49E3145213DA3F7500813CE0 /* GLKMatrix3_cpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKMatrix3_cpp.h; sourceTree = "<group>"; };
+		49E3145313DA3F7500813CE0 /* GLKMatrix4_cpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKMatrix4_cpp.h; sourceTree = "<group>"; };
+		49E3145413DA3F7500813CE0 /* GLKMath_cpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKMath_cpp.h; sourceTree = "<group>"; };
+		49E3145613DA44F600813CE0 /* Random.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Random.cpp; sourceTree = "<group>"; };
+		49E3145713DA44F600813CE0 /* Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Random.h; sourceTree = "<group>"; };
+		49E3145813DA44F600813CE0 /* Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Types.h; sourceTree = "<group>"; };
 		49F0594C13D15F640056C506 /* WMEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WMEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49F0595013D15F640056C506 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		49F0595213D15F640056C506 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -838,6 +823,13 @@
 				49A5260E13D1725E004EC7F6 /* SimplexNoise.c */,
 				49A5261113D1725E004EC7F6 /* WMMathUtil.h */,
 				49A5261013D1725E004EC7F6 /* WMMathUtil.c */,
+				49E3144E13DA3F7500813CE0 /* GLKQuaternion_cpp.h */,
+				49E3144F13DA3F7500813CE0 /* GLKVector3_cpp.h */,
+				49E3145013DA3F7500813CE0 /* GLKVector2_cpp.h */,
+				49E3145113DA3F7500813CE0 /* GLKVector4_cpp.h */,
+				49E3145213DA3F7500813CE0 /* GLKMatrix3_cpp.h */,
+				49E3145313DA3F7500813CE0 /* GLKMatrix4_cpp.h */,
+				49E3145413DA3F7500813CE0 /* GLKMath_cpp.h */,
 				B4A09C1E13D37EA600D7FB55 /* UIImage+Alpha.h */,
 				B4A09C1F13D37EA600D7FB55 /* UIImage+Alpha.m */,
 				B4A09C2013D37EA600D7FB55 /* UIImage+Resize.h */,
@@ -855,7 +847,7 @@
 				494E4D2313D24A4C00402784 /* ASIHTTPRequest */,
 				49A5285313D173B8004EC7F6 /* MIDI */,
 				49A5264E13D17330004EC7F6 /* Apple */,
-				49A526E113D17330004EC7F6 /* Math */,
+				49E3145513DA44F600813CE0 /* Math */,
 			);
 			name = Externals;
 			path = ../Externals;
@@ -868,49 +860,6 @@
 				49A5265013D17330004EC7F6 /* BrowserViewController.m */,
 			);
 			path = Apple;
-			sourceTree = "<group>";
-		};
-		49A526E113D17330004EC7F6 /* Math */ = {
-			isa = PBXGroup;
-			children = (
-				49A526E213D17330004EC7F6 /* Macros.h */,
-				49A526E313D17330004EC7F6 /* Mathematics.h */,
-				49A526E513D17330004EC7F6 /* Matrix.h */,
-				49A526E413D17330004EC7F6 /* Matrix.cpp */,
-				49A526E613D17330004EC7F6 /* neonmath */,
-				49A526E913D17330004EC7F6 /* Quaternion.h */,
-				49A526EA13D17330004EC7F6 /* Random.cpp */,
-				49A526EB13D17330004EC7F6 /* Random.h */,
-				49A526EC13D17330004EC7F6 /* Transform.cpp */,
-				49A526ED13D17330004EC7F6 /* Transform.h */,
-				49A526EE13D17330004EC7F6 /* Types.h */,
-				49A526EF13D17330004EC7F6 /* Vector.cpp */,
-				49A526F013D17330004EC7F6 /* Vector.h */,
-				49A526F113D17330004EC7F6 /* vfpmath */,
-			);
-			path = Math;
-			sourceTree = "<group>";
-		};
-		49A526E613D17330004EC7F6 /* neonmath */ = {
-			isa = PBXGroup;
-			children = (
-				49A526E713D17330004EC7F6 /* neon_matrix_impl.cpp */,
-				49A526E813D17330004EC7F6 /* neon_matrix_impl.h */,
-			);
-			path = neonmath;
-			sourceTree = "<group>";
-		};
-		49A526F113D17330004EC7F6 /* vfpmath */ = {
-			isa = PBXGroup;
-			children = (
-				49A526F213D17330004EC7F6 /* common_macros.h */,
-				49A526F313D17330004EC7F6 /* matrix_impl.cpp */,
-				49A526F413D17330004EC7F6 /* matrix_impl.h */,
-				49A526F513D17330004EC7F6 /* utility_impl.cpp */,
-				49A526F613D17330004EC7F6 /* utility_impl.h */,
-				49A526F713D17330004EC7F6 /* vfp_clobbers.h */,
-			);
-			path = vfpmath;
 			sourceTree = "<group>";
 		};
 		49A5285313D173B8004EC7F6 /* MIDI */ = {
@@ -959,6 +908,16 @@
 				49B0E03813D24317009F5B32 /* WMTweetPhotoStream.m */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		49E3145513DA44F600813CE0 /* Math */ = {
+			isa = PBXGroup;
+			children = (
+				49E3145613DA44F600813CE0 /* Random.cpp */,
+				49E3145713DA44F600813CE0 /* Random.h */,
+				49E3145813DA44F600813CE0 /* Types.h */,
+			);
+			path = Math;
 			sourceTree = "<group>";
 		};
 		49F0594113D15F640056C506 = {
@@ -1354,13 +1313,6 @@
 				49A5263913D1725E004EC7F6 /* WMMathUtil.c in Sources */,
 				49A5263A13D1725E004EC7F6 /* WMEngine.mm in Sources */,
 				49A5279413D17331004EC7F6 /* BrowserViewController.m in Sources */,
-				49A527F413D17331004EC7F6 /* Matrix.cpp in Sources */,
-				49A527F513D17331004EC7F6 /* neon_matrix_impl.cpp in Sources */,
-				49A527F613D17331004EC7F6 /* Random.cpp in Sources */,
-				49A527F713D17331004EC7F6 /* Transform.cpp in Sources */,
-				49A527F813D17331004EC7F6 /* Vector.cpp in Sources */,
-				49A527F913D17331004EC7F6 /* matrix_impl.cpp in Sources */,
-				49A527FA13D17331004EC7F6 /* utility_impl.cpp in Sources */,
 				49A5285B13D173B8004EC7F6 /* PGMidi.mm in Sources */,
 				49A5285C13D173B8004EC7F6 /* PGMidiAllSources.mm in Sources */,
 				49A5285D13D173B8004EC7F6 /* PGMidiFind.mm in Sources */,
@@ -1430,6 +1382,7 @@
 				B4A09C2413D37EA600D7FB55 /* UIImage+Alpha.m in Sources */,
 				B4A09C2513D37EA600D7FB55 /* UIImage+Resize.m in Sources */,
 				B4A09C2613D37EA600D7FB55 /* UIImage+RoundedCorner.m in Sources */,
+				49E3145913DA44F600813CE0 /* Random.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1438,6 +1391,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				49F0598013D15F640056C506 /* WMEditTests.m in Sources */,
+				49E3145A13DA44F600813CE0 /* Random.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

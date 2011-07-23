@@ -8,7 +8,7 @@
 
 #import "WMEngine.h"
 
-#import "Matrix.h"
+#import "GLKMatrix4_cpp.h"
 
 #import "WMPatch.h"
 #import "WMConnection.h"
@@ -244,7 +244,7 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 												   cameraTarget.x,   cameraTarget.y,   cameraTarget.z,
 												          upVec.x,          upVec.y,          upVec.z);
 	
-	cameraMatrix = GLKMatrix4Multiply(projectionMatrix, viewMatrix);
+	cameraMatrix = projectionMatrix * viewMatrix;
 	
 #if DEBUG_LOG_RENDER_MATRICES
 	

@@ -8,7 +8,7 @@
 
 #import "WMQuadParticleSystem.h"
 
-#import "Vector.h"
+#import "GLKMath_cpp.h"
 
 #import "WMShader.h"
 #import "WMAccelerometer.h"
@@ -27,20 +27,20 @@ CTrivialRandomGenerator rng;
 #define PARTICLES_USE_REAL_GRAVITY 1
 
 struct WMQuadParticle {
-	Vec3 position;
-	Vec3 velocity;
-	Vec3 noiseVec;
-	QUATERNION quaternion;
+	GLKVector3 position;
+	GLKVector3 velocity;
+	GLKVector3 noiseVec;
+	GLKQuaternion quaternion;
 	unsigned char color[4];
 	char atlasPosition[2]; //texture coord at origin 0-255 range
 	float opposition; //Random float, basically how much it gets pushed out from the centroid
-	void update(double dt, double t, int i, Vec3 gravity, WMQuadParticleSystem *sys);
+	void update(double dt, double t, int i, GLKVector3 gravity, WMQuadParticleSystem *sys);
 	void init();
 	void updateNoise(double t);
 };
 
 struct WMQuadParticleVertex {
-	VECTOR3 position;
+	GLKVector3 position;
 	unsigned char color[4];
 	unsigned char texCoord0[2];
 };
@@ -48,17 +48,17 @@ struct WMQuadParticleVertex {
 void WMQuadParticle::updateNoise(double t) {
 	const float noiseScale = 5.f;
 	//Disturb randomly
-	Vec3 noisePosX = noiseScale * position + Vec3(0.000000f, 12.252f, 1230.2685f) + t * Vec3(0.2f, 0.0f, 1.2f);
-	Vec3 noisePosY = noiseScale * position + Vec3(7833.632f, 10.002f, 1242.8365f) + t * Vec3(0.0f, 1.0f, 0.2f);
-	Vec3 noisePosZ = noiseScale * position + Vec3(2673.262f, 12.252f, 1582.1523f) + t * Vec3(-1.f, 0.0f, 0.0f);
+	GLKVector3 noisePosX = noiseScale * position + GLKVector3Make(0.000000f, 12.252f, 1230.2685f) + t * GLKVector3Make(0.2f, 0.0f, 1.2f);
+	GLKVector3 noisePosY = noiseScale * position + GLKVector3Make(7833.632f, 10.002f, 1242.8365f) + t * GLKVector3Make(0.0f, 1.0f, 0.2f);
+	GLKVector3 noisePosZ = noiseScale * position + GLKVector3Make(2673.262f, 12.252f, 1582.1523f) + t * GLKVector3Make(-1.f, 0.0f, 0.0f);
 	
-	noiseVec = Vec3(simplexNoise3(noisePosX.x, noisePosX.y, noisePosX.z),
+	noiseVec = GLKVector3Make(simplexNoise3(noisePosX.x, noisePosX.y, noisePosX.z),
 					simplexNoise3(noisePosY.x, noisePosY.y, noisePosY.z),
 					simplexNoise3(noisePosZ.x, noisePosZ.y, noisePosZ.z));
 	
 }
 
-void WMQuadParticle::update(double dt, double t, int i, Vec3 gravity, WMQuadParticleSystem *sys) {
+void WMQuadParticle::update(double dt, double t, int i, GLKVector3 gravity, WMQuadParticleSystem *sys) {
 	position += dt * velocity;
 	
 	const float mass = 0.01f;
@@ -66,58 +66,54 @@ void WMQuadParticle::update(double dt, double t, int i, Vec3 gravity, WMQuadPart
 	const float elasticity = 0.70f;
 	const float coefficientOfDrag = 0.07f;
 	
-	Vec3 force = Vec3(0.0f, 0.0f, 0.0f);
+	GLKVector3 force = GLKVector3Make(0.0f, 0.0f, 0.0f);
 	force += mass * 0.08 * gravity; // add gravitational force, cheat
 	
-	float v2 = velocity.dot(velocity);
+	float v2 = lengthSquared(velocity);
 	float vl = sqrtf(v2);
 	if (v2 > 10.f) {
 		v2 = 10.f;
 	}
-	Vec3 drag = -coefficientOfDrag * v2 * (1.0f/vl) * velocity;
+	GLKVector3 drag = -coefficientOfDrag * v2 * (1.0f/vl) * velocity;
 	force += drag;
 	
 	// TODO: do using force for v^2 drag
 	// velocity *= 0.99;
 	
-	MATRIX ts;
-	MatrixIdentity(ts);
-	
-	
 	float turbulenceForce = 0.1f;
 	
-	//	Vec3 randomVec = Vec3(rng.randF(-1.0f, 1.0f), rng.randF(-1.0f, 1.0f), rng.randF(-1.0f, 1.0f));
+	//	GLKVector3 randomVec = GLKVector3Make(rng.randF(-1.0f, 1.0f), rng.randF(-1.0f, 1.0f), rng.randF(-1.0f, 1.0f));
 	force += turbulenceForce * sys->turbulence * noiseVec;
 	
 	const float particleOppositionForce = 0.0001f;
 	//Push away from the centroid of other particles
 	const float coff = 0.1f;
 	//Force = opposition * 0.1 / (10.f * dist^2 + coff)
-	Vec3 displacementFromFromCentroid = position - sys->particleCentroid;
+	GLKVector3 displacementFromFromCentroid = position - sys->particleCentroid;
 	
 	//TODO: can we eliminate this sqrt?
-	float distanceFromFromCentroid2 = displacementFromFromCentroid.dot(displacementFromFromCentroid);
+	float distanceFromFromCentroid2 = lengthSquared(displacementFromFromCentroid);
 	force += opposition * (particleOppositionForce / (10.f * distanceFromFromCentroid2 + coff)) * (displacementFromFromCentroid / sqrtf(distanceFromFromCentroid2));
 	
 	const float sphereRadius = 0.53f;
 	
 	//Constrain to be inside sphere
-	float distanceFromOrigin2 = position.dot(position);
+	float distanceFromOrigin2 = lengthSquared(position);
 	if (distanceFromOrigin2 > sphereRadius * sphereRadius) {
 		//Normalize vector to constrain to unit sphere
-		position.normalize();
+		position = normalize(position);
 		
 		//Invert for normal
-		Vec3 normal = -position;
+		GLKVector3 normal = -position;
 		
 		//If velocity is heading out of bounds (should always be true)
-		if (velocity.dot(normal) < 0.0f) {
-			velocity = elasticity * (velocity - 2.0f * velocity.dot(normal) * normal);
+		if (dot(velocity, normal) < 0.0f) {
+			velocity = elasticity * (velocity - 2.0f * dot(velocity, normal) * normal);
 		}
 		
 		//Add in normal force
-		if (force.dot(normal) < 0.0f) {
-			force += force.dot(normal) * normal;
+		if (dot(force, normal) < 0.0f) {
+			force += dot(force, normal) * normal;
 		}
 		
 		//Scale back to sphere size
@@ -125,7 +121,7 @@ void WMQuadParticle::update(double dt, double t, int i, Vec3 gravity, WMQuadPart
 	} else {
 		//If we're not on the edge of the sphere
 		//Have the particle kind of randomly rotate, yay
-		QUATERNION rotation;
+		GLKQuaternion rotation;
 		
 		float fSin = sinf(2.0f * 2.0f * 1.0f / 30.0f);
 		float fCos = cosf(2.0f * 2.0f * 1.0f / 30.0f);
@@ -136,7 +132,7 @@ void WMQuadParticle::update(double dt, double t, int i, Vec3 gravity, WMQuadPart
 		rotation.z = noiseVec.z * fSin;
 		rotation.w = fCos;
 		//MatrixQuaternionRotationAxis(rotation, noiseVec, 2.0 * dt);
-		MatrixQuaternionMultiply(quaternion, quaternion, rotation);			
+		quaternion *= rotation;
 	}
 	
 	
@@ -153,18 +149,18 @@ void WMQuadParticle::update(double dt, double t, int i, Vec3 gravity, WMQuadPart
 
 void WMQuadParticle::init() {
 	const float vinitial = 1.0;
-	velocity = Vec3(rng.randF(-vinitial,vinitial), rng.randF(-vinitial,vinitial), rng.randF(-vinitial,vinitial));
+	velocity = GLKVector3Make(rng.randF(-vinitial,vinitial), rng.randF(-vinitial,vinitial), rng.randF(-vinitial,vinitial));
 	
-	noiseVec = Vec3(0.0f);
+	noiseVec = GLKVector3Make(0,0,0);
 
 	//Randomize position in sphere
 	const float pinitial = 0.6f;
 	int misses = 0;
-	position = Vec3(0,0,0);
+	position = GLKVector3Make(0,0,0);
 	do {
-		position = Vec3(rng.randF(-pinitial,pinitial), rng.randF(-pinitial,pinitial), rng.randF(-pinitial,pinitial));
+		position = GLKVector3Make(rng.randF(-pinitial,pinitial), rng.randF(-pinitial,pinitial), rng.randF(-pinitial,pinitial));
 		misses++;
-	} while (position.dot(position) > 0.4f * 0.4f);
+	} while (lengthSquared(position) > 0.4f * 0.4f);
 	
 	opposition = rng.randF();
 	
@@ -172,7 +168,7 @@ void WMQuadParticle::init() {
 	atlasPosition[0] = (rng.randI() % PARTICLES_ATLAS_WIDTH) * (255 / PARTICLES_ATLAS_WIDTH);
 	atlasPosition[1] = (rng.randI() % PARTICLES_ATLAS_WIDTH) * (255 / PARTICLES_ATLAS_WIDTH);
 	
-	MatrixQuaternionIdentity(quaternion);
+	quaternion = GLKQuaternionIdentity;
 	
 	color[0] = 255;
 	color[1] = 255;
@@ -264,11 +260,11 @@ int particleZCompare(const void *a, const void *b) {
 - (void)update;
 {
 #if PARTICLES_USE_REAL_GRAVITY
-	Vec3 gravity = [WMAccelerometer sharedAccelerometer].gravity;
+	GLKVector3 gravity = [WMAccelerometer sharedAccelerometer].gravity;
 #else
-	Vec3 gravity = Vec3(0.0f, -1.0f, 0.0f);
+	GLKVector3 gravity = GLKVector3Make(0.0f, -1.0f, 0.0f);
 #endif
-	Vec3 rotationRate = [WMAccelerometer sharedAccelerometer].rotationRate;
+	GLKVector3 rotationRate = [WMAccelerometer sharedAccelerometer].rotationRate;
 
 	//NSLog(@"g(%f, %f, %f) rot(%f, %f, %f)", gravity.x, gravity.y, gravity.z, rotationRate.x, rotationRate.y, rotationRate.z);
 	
@@ -287,7 +283,7 @@ int particleZCompare(const void *a, const void *b) {
 	
 	const float turbulenceDecay = 0.99f;
 	const float turbulenceStrength = 0.1f;
-	MATRIX rotation;
+	GLKMatrix4 rotation;
 	if (t > 0.5) {
 		turbulence = turbulence * turbulenceDecay + (1.0 - turbulenceDecay) * turbulenceStrength * (fabsf(rotationRate.x) + fabsf(rotationRate.y) + fabsf(rotationRate.z));
 		turbulence = fmaxf(0.0, fminf(turbulence, 1.0));
@@ -295,19 +291,15 @@ int particleZCompare(const void *a, const void *b) {
 #if TARGET_IPHONE_SIMULATOR
 		turbulence = 0.5;
 #endif
+		//TODO: this is probably not the best way to create a matrix based on rotation by euler angles. Quaternions ftw?
 
-		MATRIX rotX;
-		MATRIX rotY;
-		MATRIX rotZ;
-		MatrixRotationX(rotX, dt * rotationRate.x);
-		MatrixRotationY(rotY, dt * rotationRate.y);
-		MatrixRotationZ(rotZ, dt * rotationRate.z);
+		GLKMatrix4 rotX = GLKMatrix4MakeXRotation(dt * rotationRate.x);
+		GLKMatrix4 rotY = GLKMatrix4MakeYRotation(dt * rotationRate.y);
+		GLKMatrix4 rotZ = GLKMatrix4MakeYRotation(dt * rotationRate.z);
 		
-		MatrixMultiply(rotation, rotX, rotY);
-		MatrixMultiply(rotation, rotation, rotZ);
-		
+		rotation = rotZ * rotY * rotX;		
 	} else {
-		MatrixIdentity(rotation);
+		rotation = GLKMatrix4Identity;
 	}
 
 	for (int i=particleUpdateIndex; i<maxParticles; i+=particleUpdateSkip) {
@@ -322,10 +314,10 @@ int particleZCompare(const void *a, const void *b) {
 
 		
 		//Rotate with torque! (try to anyway!)
-		MatrixVec3Multiply(particles[i].position, particles[i].position, rotation);
+		particles[i].position = rotation * particles[i].position;
 	}
 	//Update centroid
-	particleCentroid = Vec3(0.0f);
+	particleCentroid = GLKVector3Make(0,0,0);
 	for (int i=0; i<maxParticles; i++) {
 		particleCentroid += particles[i].position;
 	}
@@ -339,14 +331,14 @@ int particleZCompare(const void *a, const void *b) {
 	currentParticleVBOIndex = !currentParticleVBOIndex;
 	glBindBuffer(GL_ARRAY_BUFFER, particleVBOs[currentParticleVBOIndex]);
 	
-	Vec3 spherePosition = Vec3(0.0f, 0.045f, 0.0f);
+	GLKVector3 spherePosition = GLKVector3Make(0.0f, 0.045f, 0.0f);
 	float sz = 0.010f;
 	
-	const Vec3 offsets[4] = {
-		Vec3(-sz,  sz, 0),
-		Vec3( sz,  sz, 0),
-		Vec3(-sz, -sz, 0),
-		Vec3( sz, -sz, 0),
+	const GLKVector3 offsets[4] = {
+		GLKVector3Make(-sz,  sz, 0),
+		GLKVector3Make( sz,  sz, 0),
+		GLKVector3Make(-sz, -sz, 0),
+		GLKVector3Make( sz, -sz, 0),
 	};
 	
 	const unsigned char an = (255 / PARTICLES_ATLAS_WIDTH);
@@ -358,13 +350,11 @@ int particleZCompare(const void *a, const void *b) {
 	};
 	
 	for (int i=0; i<maxParticles; i++) {
-		MATRIX mat;
-		MatrixRotationQuaternion(mat, particles[i].quaternion);
+		//TODO: just rotate the basis vectors instead of incurring an expensive matrix multiplication here!		
+		GLKMatrix4 mat = GLKMatrix4MakeWithQuaternion(particles[i].quaternion);
 		for (int v=0; v<4; v++) {
 			//Calculate the particle position
-			Vec3 outVec;
-			MatrixVec3Multiply(outVec, offsets[v], mat);
-			particleVertices[4 * i + v].position = particles[i].position + spherePosition + outVec;
+			particleVertices[4 * i + v].position = particles[i].position + spherePosition + (mat * offsets[v]);
 			
 			//copy color as int
 			*((int *)particleVertices[4 * i + v].color) = *((int *)particles[i].color);
@@ -382,7 +372,7 @@ int particleZCompare(const void *a, const void *b) {
 
 }
 
-- (void)drawWithTransform:(MATRIX)transform API:(EAGLRenderingAPI)API glState:(WMEAGLContext *)inGLState;
+- (void)drawWithTransform:(GLKMatrix4)transform API:(EAGLRenderingAPI)API glState:(WMEAGLContext *)inGLState;
 {	
 	if (particleDataAvailable < 2) return;
 	
@@ -425,7 +415,7 @@ int particleZCompare(const void *a, const void *b) {
 		
 	int matrixUniform = [shader uniformLocationForName:@"modelViewProjectionMatrix"];
 	if (matrixUniform != -1) {
-		glUniformMatrix4fv(matrixUniform, 1, NO, transform.f);
+		glUniformMatrix4fv(matrixUniform, 1, NO, transform.m);
 	}
 	GL_CHECK_ERROR;
 	

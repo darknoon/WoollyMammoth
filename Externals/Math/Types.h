@@ -31,47 +31,4 @@ typedef double          F64;
 typedef signed long long    S64;
 typedef unsigned long long  U64;
 
-
-// check that the types are the correct sizes via some template magic
-#if defined(DEBUG)
-namespace oolongengine_types_tests
-{
-
-typedef struct EmptyType { };
-
-template <bool Flag, typename IfTrue, typename IfFalse> struct if_c;
-
-template <typename IfTrue, typename IfFalse>
-struct if_c <true, IfTrue, IfFalse> { typedef typename IfTrue::type type; };
- 
-template <typename IfTrue, typename IfFalse>
-struct if_c <false, IfTrue, IfFalse> { typedef typename IfFalse::type type; };
-
-struct assert_pass { typedef bool type; };
-
-template<typename BadType, typename T, int goodsize, int badsize>
-struct assert_fail { typedef typename T::error_Assert_Failed type; };
-
-// assert type sizes
-#define ASSERT_SIZEOF( T, S ) \
-typedef if_c< sizeof( T ) == S / 8, assert_pass, assert_fail<T, EmptyType, sizeof( T ), S / 8 > >::type assert_sizeof_##T;
-
-ASSERT_SIZEOF( S8,   8 )
-ASSERT_SIZEOF( U8,   8 )
-
-ASSERT_SIZEOF( S16,  16 )
-ASSERT_SIZEOF( U16,  16 )
-
-ASSERT_SIZEOF( S32,  32 )
-ASSERT_SIZEOF( U32,  32 )
-
-ASSERT_SIZEOF( S64,  64 )
-ASSERT_SIZEOF( U64,  64 )
-
-ASSERT_SIZEOF( F32, 32 )
-ASSERT_SIZEOF( F64, 64 )
-
-}
-#endif // if defined(DEBUG)
-
 #endif // guard

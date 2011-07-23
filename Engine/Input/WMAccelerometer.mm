@@ -8,6 +8,7 @@
 
 #import "WMAccelerometer.h"
 
+
 @implementation WMAccelerometer
 
 + (WMAccelerometer *)sharedAccelerometer;
@@ -37,52 +38,55 @@
 		gyroAvailable = NO;
 	}
 	
-	gravity = Vec3(0.0f, 0.5f, 0.5f);
+	gravity = (GLKVector3){0.0f, 0.5f, 0.5f};
 	
 	//Device is being held straight up-down unless we hear otherwise
 	
 	return self;
 }
 
-- (Vec3)gravity;
+- (GLKVector3)gravity;
 {
 #if TARGET_IPHONE_SIMULATOR
-	return Vec3(0.0f, -10.0f, 0.0f);
+	return GLKVector3Make(0.0f, -10.0f, 0.0f);
 #endif
 	if (gyroAvailable) {
 		CMDeviceMotion *motion = [motionManager deviceMotion];
 		if (motion) {
 			CMAcceleration grav = [motion gravity];
-			return Vec3(grav.x, grav.y, grav.z);
+			return GLKVector3Make(grav.x, grav.y, grav.z);
 		} else {
-			return Vec3(0.0f, 0.0f, 0.0f);
+			return GLKVector3Make(0.0f, 0.0f, 0.0f);
 		}
 	} else {
 		const float lowPassRatio = 0.1f;
 		CMAcceleration accel = [motionManager accelerometerData].acceleration;
-		acceleration = Vec3(accel.x, accel.y, accel.z);
-		gravity = lowPassRatio * acceleration + (1.0f - lowPassRatio) * gravity;
+		acceleration = GLKVector3Make(accel.x, accel.y, accel.z);
+		//TODO: add c++ to GLKVector...
+		//gravity = lowPassRatio * acceleration + (1.0f - lowPassRatio) * gravity;
+		gravity = GLKVector3Add(GLKVector3MultiplyScalar(acceleration, lowPassRatio), GLKVector3MultiplyScalar(gravity, (1.0f - lowPassRatio)));
 		return gravity;
 	}
 }
 
 
-- (Vec3)rotationRate;
+- (GLKVector3)rotationRate;
 {
 	if (gyroAvailable) {
 		CMDeviceMotion *motion = [motionManager deviceMotion];
 		if (motion) {
 			CMRotationRate rotationRate = [motion rotationRate];
-			return Vec3(rotationRate.x, rotationRate.y, rotationRate.z);
+			return (GLKVector3){rotationRate.x, rotationRate.y, rotationRate.z};
 		} else {
-			return Vec3(0.0f, 0.0f, 0.0f);
+			return (GLKVector3){0.0f, 0.0f, 0.0f};
 		}
 	} else {
 		//TODO: return something based on something!
-		float gravityDifference = (acceleration - gravity).length();
-		return gravityDifference * 10.f * Vec3(-0.4f, -0.2f, -0.3f);
+		//This is total bs
+		
+		float gravityDifference = length(acceleration - gravity);
+		return gravityDifference * 10.f * GLKVector3Make(-0.4f, -0.2f, -0.3f);
 	}
-
 }
 
 

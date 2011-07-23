@@ -19,11 +19,11 @@ const unsigned int WMParticleSystemMaxParticles = 4096;
 
 //TODO: pad?
 typedef struct {
-	VECTOR3 p;
+	GLKVector3 p;
 	float size;
 	float c[4];
 	//Used only in update
-	VECTOR3 v;
+	GLKVector3 v;
 	float life;
 } WMParticle;
 
@@ -126,7 +126,7 @@ typedef struct {
 	const float spawnVelocityRangeY[2] = {inputVelocityMinY.value, inputVelocityMaxY.value};
 	const float spawnVelocityRangeZ[2] = {inputVelocityMinZ.value, inputVelocityMaxZ.value};
 	const float spawnLife = inputLifeTime.value;
-	const VECTOR3 spawnPosition = {inputPositionX.value, inputPositionY.value, inputPositionZ.value};
+	const GLKVector3 spawnPosition = {inputPositionX.value, inputPositionY.value, inputPositionZ.value};
 	
 	const float colorDelta[4] = {inputRedDelta.value, inputGreenDelta.value, inputBlueDelta.value, inputOpacityDelta.value};
 	const float sizeDelta = inputSizeDelta.value;
