@@ -10,7 +10,7 @@
 
 #import "WMPatch.h"
 #import "PhotoTweet.h"
-
+#import "TweetServerCommunicator.h"
 
 @interface WMTweetPhotoStream : WMPatch {
     WMImagePort *outputImage;
@@ -24,5 +24,6 @@
 
 @property (nonatomic, retain) PhotoTweet *photoTweet;
 @property (nonatomic, retain) WMTexture2D *lastTexture;
+@property (nonatomic, retain) TweetServerCommunicator *communicator;
 @property (nonatomic, retain) NSTimer *timer;
 @end

@@ -11,7 +11,7 @@
 #import "UIImage+Resize.h"
 
 @implementation PhotoTweet
-@synthesize tweet, image;
+@synthesize tweet, image, communicator;
 
 - (unsigned long long)twitterId {
     return [[tweet valueForKey:@"msg_twid"] unsignedLongLongValue];
@@ -23,14 +23,14 @@
     UIImage *photoImage = [UIImage imageWithData:data];
     self.image = photoImage;
 
-    [[TweetServerCommunicator commmunicator] photoTweetGotImage:self];
+    [communicator photoTweetGotImage:self];
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
     NSError *error = [request error];
     DLog([error localizedDescription]);
-    [[TweetServerCommunicator commmunicator] photoTweetFailedToGetImage:self];
+    [communicator photoTweetFailedToGetImage:self];
 }
 
 
