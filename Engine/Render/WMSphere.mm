@@ -8,8 +8,6 @@
 
 #import "WMSphere.h"
 
-#import "Vector.h"
-
 //Position, Normal, Color, TexCoord0, TexCoord1, PointSize, Weight, MatrixIndex
 struct WMSphereVertex {
 	GLKVector3 v;

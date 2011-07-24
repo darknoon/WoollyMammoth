@@ -10,7 +10,6 @@
 
 #import "WMEAGLContext.h"
 #import "WMShader.h"
-#import "Vector.h"
 
 #import "WMMathUtil.h"
 #import "WMTexture2D.h"
