@@ -20,8 +20,7 @@
 }
 
 @property (nonatomic, retain) NSOperationQueue *queue;
-
-+ (TweetServerCommunicator *)commmunicator;
+@property (nonatomic, copy) NSString *searchToken;
 
 - (PhotoTweet *)currentTweet;
 - (void)photoTweetGotImage:(PhotoTweet *)photoTweet;

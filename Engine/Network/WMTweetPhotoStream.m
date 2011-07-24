@@ -14,7 +14,7 @@
 
 
 @implementation WMTweetPhotoStream
-@synthesize photoTweet, lastTexture, timer = _timer;
+@synthesize photoTweet, lastTexture, timer = _timer, communicator;
 
 + (NSString *)humanReadableTitle {
     return @"Tweeted Photos";
@@ -47,7 +47,7 @@
 
 - (id)init {
     self = [super init];
-    [TweetServerCommunicator commmunicator];
+    
     
     return self;
 }
@@ -58,7 +58,10 @@
 
 
 - (BOOL)setup:(WMEAGLContext *)context {
-    [TweetServerCommunicator commmunicator];
+    self.communicator = [[TweetServerCommunicator alloc] init];  // this fires up the search engine and downloading photos
+    // we need a string input!
+    communicator.searchToken = @"iosdevcamp";
+
     _timer = [[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(nextOne:) userInfo:nil repeats:YES] retain];
     return YES;
     
@@ -68,9 +71,9 @@
 {
 //    double secondsUntilNextPull = [self timeForSpeed];
     
-    if (_getNextOne) [[TweetServerCommunicator commmunicator] advanceToNextTweet];
+    if (_getNextOne) [communicator advanceToNextTweet];
 
-    PhotoTweet *tweet = [[TweetServerCommunicator commmunicator] currentTweet];
+    PhotoTweet *tweet = [communicator currentTweet];
     
     if (tweet != photoTweet) {
         self.photoTweet = tweet;
@@ -97,6 +100,12 @@
 }
 
 - (void)cleanup:(WMEAGLContext *)context {
+    [communicator release];
+    communicator = nil;
+    [photoTweet release];
+    photoTweet = nil;
+    [lastTexture release];
+    lastTexture = nil;
     [_timer invalidate];
     [_timer release];
     

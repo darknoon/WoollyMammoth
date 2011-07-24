@@ -13,7 +13,7 @@
 #import "CJSONDeserializer.h"
 
 @implementation TweetServerCommunicator
-@synthesize queue;
+@synthesize queue, searchToken;
 
 - (PhotoTweet *)currentTweet {
     if (currentTweetIndex > _downloadedPhotoTweets.count - 1) currentTweetIndex = 0;
@@ -56,8 +56,10 @@
 
 
 - (NSString *)requestString {
-    NSMutableString *s = [NSMutableString stringWithString:@"http://eyecode.herokuapp.com/tweets.json?tag=iosdevcamp"];
-    
+    NSMutableString *s = [NSMutableString stringWithString:@"http://eyecode.herokuapp.com/tweets.json"];
+// this is the real code - but today, July 23 2011, the above url is returning tweets
+    if (self.searchToken.length == 0) self.searchToken = @"photo";
+    [s appendFormat:@"?tag=%@",self.searchToken];
     if (_lastIDNumber) {
         [s appendFormat:@"&since_id=%llu",_lastIDNumber];
     }
@@ -81,6 +83,7 @@
                 PhotoTweet *t = [PhotoTweet photoTweetWithDictionary:d];
                 if (t){
                     unsigned long long thisOne = t.twitterId;
+                    t.communicator = self;
                     if (thisOne > _lastIDNumber) _lastIDNumber = thisOne;
                     [_allPhotoTweets addObject:t];
                     [myself getPhotoIn:t];
@@ -109,11 +112,14 @@
     return self;
 }
 
-+ (TweetServerCommunicator *)commmunicator {
-    static TweetServerCommunicator *_myOneAndOnly;
-    if(!_myOneAndOnly) _myOneAndOnly = [[self alloc] init];
-    return _myOneAndOnly;
+- (void)dealloc {
+    [self.queue setSuspended:YES];
+    self.queue = nil;
+    [_downloadedPhotoTweets release];
+    [_allPhotoTweets release];
+    [_timer invalidate];
+    [_timer release];
+    [super dealloc];
 }
-
 
 @end

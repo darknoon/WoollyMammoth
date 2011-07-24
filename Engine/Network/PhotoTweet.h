@@ -8,9 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "ASIHTTPRequest.h"
+#import "TweetServerCommunicator.h"
 
 @interface PhotoTweet : NSObject <ASIHTTPRequestDelegate>
-
+@property (nonatomic, assign) TweetServerCommunicator *communicator;
 @property (nonatomic, retain) NSMutableDictionary *tweet;
 @property (nonatomic, retain) UIImage *image;
 
