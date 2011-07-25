@@ -11,6 +11,7 @@
 #import "WMEditViewController.h"
 
 #import "WMCompositionLibrary.h"
+#import "DNAssertionHandler.h"
 
 @implementation WMEditAppDelegate
 
@@ -22,6 +23,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+	//Set our assertion handler
+	[[[NSThread currentThread] threadDictionary] setObject:[[[DNAssertionHandler alloc] init] autorelease] forKey:NSAssertionHandlerKey];
+	
 	//Create new document if none existing
 	if ([WMCompositionLibrary compositionLibrary].compositions.count == 0) {
 		WMEditViewController *e = [[[WMEditViewController alloc] initWithPatch:nil fileURL:nil] autorelease];
