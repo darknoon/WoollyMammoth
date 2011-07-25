@@ -1,7 +1,4 @@
 //
-//  DNGLState.h
-//  WoollyMammoth
-//
 //  Created by Andrew Pouliot on 12/8/10.
 //  Copyright 2010 Darknoon. All rights reserved.
 //
@@ -24,9 +21,9 @@ enum {
 typedef int DNGLStateDepthMask;
 
 @class WMFramebuffer;
+@class WMRenderObject;
 
 @interface WMEAGLContext : EAGLContext {
-	//Uses constants from WMShader.h
 	int vertexAttributeEnableState;
 	DNGLStateBlendMask blendState;
 	DNGLStateDepthMask depthState;
@@ -41,8 +38,10 @@ typedef int DNGLStateDepthMask;
 @property (nonatomic) DNGLStateDepthMask depthState;
 @property (nonatomic, retain) WMFramebuffer *boundFramebuffer;
 
+- (void)renderObject:(WMRenderObject *)inObject;
+
 //This is not GL state in GLES 2.0
-//Move to another part of the render engine?
+//TODO: Move to another part of the render engine.
 @property (nonatomic) GLKMatrix4 modelViewMatrix;
 
 @end

@@ -15,6 +15,7 @@
 #import "WMColorPort.h"
 #import "WMTexture2D.h"
 #import "WMFramebuffer.h"
+#import "WMRenderObject.h"
 
 #import "WMStructuredBuffer.h"
 
@@ -28,6 +29,7 @@ WMStructureField WMQuadVertex_fields[] = {
 
 @implementation WMQuad {
 	WMStructureDefinition *quadDef;
+	WMRenderObject *renderObject;
 }
 
 + (NSString *)category;
@@ -134,156 +136,89 @@ WMStructureField WMQuadVertex_fields[] = {
 	}";
 	
 	
-	
+	renderObject = [[WMRenderObject alloc] init];
+
 	shader = [[WMShader alloc] initWithVertexShader:vertexShader pixelShader:fragmentShader];
-	
+	renderObject.shader = shader;	
 	
 	quadDef = [[WMStructureDefinition alloc] initWithFields:WMQuadVertex_fields count:sizeof(WMQuadVertex_fields) / sizeof(WMStructureField)];
 	quadDef.shouldAlignTo4ByteBoundary = YES;
-
-	WMStructuredBuffer *vertexData = [self vertexBufferForImage:inputImage.image];
 	
-	//Upload to vbo
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
-	ZAssert(vertexData.dataPointer, @"Unable to get data pointer");
-	glBufferData(GL_ARRAY_BUFFER, vertexData.dataSize, vertexData.dataPointer, GL_STATIC_DRAW);
+	renderObject.vertexBuffer = [self vertexBufferForImage:inputImage.image];
+	
 	GL_CHECK_ERROR;
-	
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	//Create index data
 	WMStructureDefinition *indexDef  = [[[WMStructureDefinition alloc] initWithAnonymousFieldOfType:WMStructureTypeUnsignedShort] autorelease];
 	WMStructuredBuffer *indexBuffer = [[[WMStructuredBuffer alloc] initWithDefinition:indexDef] autorelease];
 	[indexBuffer appendData:(unsigned short[]){0,1,2, 1,2,3} withStructure:indexDef count:6];
 	
-	NSLog(@"vb: %@", vertexData);
-	NSLog(@"ndixe: %@", indexBuffer);
+	renderObject.indexBuffer = indexBuffer;
 
-	//Upload to ebo
-	glGenBuffers(1, &ebo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexBuffer.dataSize, indexBuffer.dataPointer, GL_STATIC_DRAW);
+	NSLog(@"render object: %@", renderObject);
+
 	GL_CHECK_ERROR;
-	
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	
+
 	return YES;
 }
 
 - (void)cleanup:(WMEAGLContext *)context;
 {
-	if (vbo) glDeleteBuffers(1, &vbo);
-	if (ebo) glDeleteBuffers(1, &ebo);
-	vbo = ebo = 0;
+	[renderObject release];
+	renderObject = nil;
+	GL_CHECK_ERROR;
+
 }
 
 - (BOOL)execute:(WMEAGLContext *)inContext time:(CFTimeInterval)time arguments:(NSDictionary *)args;
 {
+	GL_CHECK_ERROR;
 	
 	ZAssert([shader.vertexAttributeNames containsObject:@"position"], @"Couldn't find position in shader");
 	ZAssert([shader.vertexAttributeNames containsObject:@"texCoord0"], @"Couldn't find texCoord0 in shader");
 
-	//Find each relevant thing in the shader, attempt to bind to a part of the buffer
-	unsigned int enableMask = 0;
-	for (NSString *attribute in shader.vertexAttributeNames) {
-		int location = [shader attributeLocationForName:attribute];
-		if (location != -1 && [quadDef getFieldNamed:attribute outField:NULL outOffset:NULL]) {
-			enableMask |= 1 << location;
-		}
-	}
-	[inContext setVertexAttributeEnableState:enableMask];
-
-	
-	[inContext setDepthState:0];
-
 	switch (inputBlending.index) {
 		default:
 		case QCBlendModeReplace:
-			[inContext setBlendState:0];
+			renderObject.renderBlendState = 0;
 			break;
 		case QCBlendModeOver:
-			[inContext setBlendState:DNGLStateBlendEnabled];
+			renderObject.renderBlendState = DNGLStateBlendEnabled;
 			break;
 		case QCBlendModeAdd:
-			[inContext setBlendState:DNGLStateBlendEnabled | DNGLStateBlendModeAdd];
+			renderObject.renderBlendState = DNGLStateBlendEnabled | DNGLStateBlendModeAdd;
 			break;
 	}
 	
 	glUseProgram(shader.program);
 	
-	//Bind VBO, EBO
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-
-
-	
 	GL_CHECK_ERROR;
-
-	for (NSString *attribute in shader.vertexAttributeNames) {
-		int location = [shader attributeLocationForName:attribute];
-		ZAssert(location != -1, @"Couldn't fined attribute: %@", attribute);
-		if (location != -1) {
-			WMStructureField f;
-			NSUInteger offset = 0;
-			if ([quadDef getFieldNamed:attribute outField:&f outOffset:&offset]) {
-				glVertexAttribPointer(location, f.count, f.type, f.normalized, quadDef.size, (void *)offset);
-			} else {
-				//Couldn't bind anything to this.
-				NSLog(@"Couldn't find data for attribute: %@", attribute);
-			}
-		}
+	
+	//TODO: manage current texture bound state in WMEAGLContext
+	if (inputImage.image) {
+		glBindTexture(GL_TEXTURE_2D, [inputImage.image name]);
+		[shader setIntValue:0 forUniform:@"texture"];
+	} else {
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	
 	GL_CHECK_ERROR;
 
-	int textureUniformLocation = [shader uniformLocationForName:@"texture"];
-	if (textureUniformLocation != -1) {
-		if (inputImage.image) {
-			glBindTexture(GL_TEXTURE_2D, [inputImage.image name]);
-		} else {
-			glBindTexture(GL_TEXTURE_2D, 0);
-		}
-		glUniform1i(textureUniformLocation, 0); //texture = texture 0
-	}
-	
-	int matrixUniform = [shader uniformLocationForName:@"modelViewProjectionMatrix"];
-	if (matrixUniform != -1) {
-		GLKMatrix4 transform = GLKMatrix4Identity;
-
-		transform = GLKMatrix4Scale(transform, inputScale.value, inputScale.value, 1.0f);
-		transform = GLKMatrix4Translate(transform, inputX.value, inputY.value, 0.0f);
-		transform = GLKMatrix4RotateZ(transform, inputRotation.value * M_PI / 180.f);
-		transform = GLKMatrix4Multiply(transform, inContext.modelViewMatrix);
-				
-		glUniformMatrix4fv(matrixUniform, 1, NO, transform.m);
-	}
-	
-	int colorUniform = [shader uniformLocationForName:@"color"];
-	if (colorUniform != -1) {
-		glUniform4f(colorUniform, inputColor.red, inputColor.green, inputColor.blue, inputColor.alpha);
-	}
-
-	// Validate program before drawing. This is a good check, but only really necessary in a debug build.
-#if DEBUG
-	if (![shader validateProgram])
-	{
-		NSLog(@"Failed to validate program in shader: %@", shader);
-		return NO;
-	}
-#endif
-	
+	GLKMatrix4 transform = GLKMatrix4Identity;
+	transform = GLKMatrix4Scale(transform, inputScale.value, inputScale.value, 1.0f);
+	transform = GLKMatrix4Translate(transform, inputX.value, inputY.value, 0.0f);
+	transform = GLKMatrix4RotateZ(transform, inputRotation.value * M_PI / 180.f);
+	transform = GLKMatrix4Multiply(transform, inContext.modelViewMatrix);
 	GL_CHECK_ERROR;
-	
-	glDrawElements(GL_TRIANGLES, 2 * 3, GL_UNSIGNED_SHORT, NULL);
-	
+	[shader setMatrix4Value:transform forUniform:@"modelViewProjectionMatrix"];
 	GL_CHECK_ERROR;
-	
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	
+
+	[shader setVector4Value:inputColor.rgba forUniform:@"color"];
+
+	GL_CHECK_ERROR;
+
+	[inContext renderObject:renderObject];
+
 	return YES;
 }
 

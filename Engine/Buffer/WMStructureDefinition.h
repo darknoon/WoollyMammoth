@@ -1,7 +1,4 @@
 //
-//  WMStructureDefinition.h
-//  WMViewer
-//
 //  Created by Andrew Pouliot on 7/10/11.
 //  Copyright 2011 Darknoon. All rights reserved.
 //
@@ -9,6 +6,7 @@
 #import <Foundation/Foundation.h>
 
 //Same enum values as their OpenGL ES equivalents
+//A vec4 is just 4 floats as far as the structured buffer is concerned
 typedef enum {
 	WMStructureTypeByte           = 0x1400,
 	WMStructureTypeUnsignedByte,
@@ -39,14 +37,14 @@ typedef struct {
 
 //Size of the data backing this field ie 4 x float = 4 x 4 bytes = 16
 extern size_t WMStructureFieldSize(WMStructureField inField);
+
+//Size of one element of this field ie float = 4 bytes
 extern size_t WMStructureTypeSize(WMStructureType inType);
 
 
 
 @interface WMStructureDefinition : NSObject
 
-//This must follow the same structure as @encode in objective C
-//TODO: allow specification of alignment (ie, how large it should pad out to)
 - (id)initWithFields:(const WMStructureField *)inFields count:(NSUInteger)inCount;
 
 - (id)initWithAnonymousFieldOfType:(WMStructureType)inType;

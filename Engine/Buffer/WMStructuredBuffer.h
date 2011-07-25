@@ -9,11 +9,15 @@
 #import <Foundation/Foundation.h>
 
 #import "WMStructureDefinition.h"
+#import "WMRenderCommon.h"
 
 //Represents a contiguous buffer with associated type information about its contents.
 //Generally, something like array{{float position[4], char color[4]}, {float position[4], char color[4]}, ... count - 1 }
 
-@interface WMStructuredBuffer : NSObject
+@interface WMStructuredBuffer : NSObject {
+	NSMutableData *data;
+	GLuint bufferObject;
+}
 
 - (id)initWithDefinition:(WMStructureDefinition *)inDefinition;
 
@@ -29,6 +33,10 @@
 - (void)replaceData:(const void *)inData withStructure:(WMStructureDefinition *)inStructure atIndex:(NSUInteger)inIndex;
 //Reads some data, writes into buffer
 - (void)replaceData:(const void *)inData withStructure:(WMStructureDefinition *)inStructure inRange:(NSRange)inRange;
+
+//TODO:
+//-(void)beginUpdates
+//-(void)endUpdates
 
 //Read-only
 - (NSUInteger)dataSize;

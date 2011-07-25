@@ -29,17 +29,31 @@
 @property (nonatomic, copy, readonly) NSArray *vertexAttributeNames;
 @property (nonatomic, copy, readonly) NSArray *uniformNames;
 
-//TODO: Should we support this? All it will be is 111.n.1000.. showing how many attributes are included...
-//@property (nonatomic, assign) unsigned int attributeMask;
-
-- (int)attributeLocationForName:(NSString *)inName;
-- (int)uniformLocationForName:(NSString *)inName;
 
 //Is this program configured correctly for drawing?
 - (BOOL)validateProgram;
 
-//Use this to draw
-//TODO: deprecate this in favor of the WMEAGLContext managing the currently bound program
+//TODO: 
+@property (nonatomic) BOOL vertexShaderCompatibleWithPointRendering;
+
+//TODO: make these more private
 @property (nonatomic, readonly) GLuint program;
+- (int)attributeLocationForName:(NSString *)inName;
+- (int)uniformLocationForName:(NSString *)inName;
+
+@end
+
+
+//TODO: where should this live?
+@interface WMShader (WMShader_Uniform_State)
+
+//TODO: support multiple-input, ie 3 vec3s instead of 1
+- (BOOL)setIntValue:(int)inValue forUniform:(NSString *)inUniform;
+- (BOOL)setFloatValue:(float)inValue forUniform:(NSString *)inUniform;
+- (BOOL)setVector2Value:(GLKVector2)inValue forUniform:(NSString *)inUniform;
+- (BOOL)setVector3Value:(GLKVector3)inValue forUniform:(NSString *)inUniform;
+- (BOOL)setVector4Value:(GLKVector4)inValue forUniform:(NSString *)inUniform;
+- (BOOL)setMatrix3Value:(GLKMatrix3)inValue forUniform:(NSString *)inUniform;
+- (BOOL)setMatrix4Value:(GLKMatrix4)inValue forUniform:(NSString *)inUniform;
 
 @end

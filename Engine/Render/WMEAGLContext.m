@@ -9,6 +9,10 @@
 #import "WMEAGLContext.h"
 #import "WMShader.h"
 #import "WMFramebuffer.h"
+#import "WMStructuredBuffer.h"
+#import "WMRenderObject.h"
+
+#import "WMStructuredBuffer_WMEAGLContext_Private.h"
 
 @implementation WMEAGLContext
 @synthesize blendState;
@@ -146,6 +150,176 @@
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		}
 	}
+}
+
+- (void)renderObject:(WMRenderObject *)inObject;
+{
+	GL_CHECK_ERROR;
+
+	//Can't render!
+	if (!inObject.vertexBuffer || !inObject.shader) {
+		NSLog(@"Can't render invalid render object: %@", inObject);
+		return;
+	}
+	
+	WMShader *shader = inObject.shader;
+	WMStructureDefinition *vertexDefinition = inObject.vertexBuffer.definition;
+	
+	//Find each relevant thing in the shader, attempt to bind to a part of the buffer
+	unsigned int enableMask = 0;
+	if (shader) {
+		for (NSString *attribute in inObject.shader.vertexAttributeNames) {
+			int location = [shader attributeLocationForName:attribute];
+			if (location != -1 && [vertexDefinition getFieldNamed:attribute outField:NULL outOffset:NULL]) {
+				enableMask |= 1 << location;
+			}
+		}
+		[self setVertexAttributeEnableState:enableMask];
+	} else {
+		NSLog(@"TODO: no shader defined");
+	}
+
+	//Make sure we have a VBO or EBO for the object
+	
+	//Make sure vertex buffer is uploaded to GPU
+	if (inObject.vertexBuffer.bufferObject == 0) {
+		[inObject.vertexBuffer uploadToBufferObjectOfType:GL_ARRAY_BUFFER inContext:self];
+	}
+	if (inObject.indexBuffer && inObject.indexBuffer.bufferObject == 0) {
+		[inObject.indexBuffer uploadToBufferObjectOfType:GL_ELEMENT_ARRAY_BUFFER inContext:self];
+	}
+	
+	GL_CHECK_ERROR;
+
+	//TODO: keep track of bound buffer state to eleminate redundant binds / unbinds here
+	glBindBuffer(GL_ARRAY_BUFFER, inObject.vertexBuffer.bufferObject);
+	
+	//Set up vertex state. 
+	//TODO: use vao
+	for (NSString *attribute in shader.vertexAttributeNames) {
+		int location = [shader attributeLocationForName:attribute];
+		ZAssert(location != -1, @"Couldn't fined attribute: %@", attribute);
+		if (location != -1) {
+			WMStructureField f;
+			NSUInteger offset = 0;
+			if ([vertexDefinition getFieldNamed:attribute outField:&f outOffset:&offset]) {
+				glVertexAttribPointer(location, f.count, f.type, f.normalized, vertexDefinition.size, (void *)offset);
+			} else {
+				//Couldn't bind anything to this.
+				NSLog(@"Couldn't find data for attribute: %@", attribute);
+			}
+		}
+	}
+	
+	GL_CHECK_ERROR;
+	
+	
+	// Validate program before drawing. This is a good check, but only really necessary in a debug build.
+#if DEBUG
+	if (![shader validateProgram])
+	{
+		NSLog(@"Failed to validate program in shader: %@", shader);
+	}
+#endif
+	
+	
+	self.blendState = inObject.renderBlendState;
+	self.depthState = inObject.renderDepthState;
+	
+	NSInteger first = inObject.renderRange.location;
+	NSInteger last = NSMaxRange(inObject.renderRange);
+	
+	GL_CHECK_ERROR;
+
+	
+	if (inObject.indexBuffer) {
+		last = MIN(last, inObject.indexBuffer.count - 1);
+		
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, inObject.indexBuffer.bufferObject);
+		
+		//Get element buffer type
+		WMStructureField f;
+		[inObject.indexBuffer.definition getFieldNamed:nil outField:&f outOffset:NULL];
+		GLenum elementBufferType = f.type;
+#warning read properly
+		elementBufferType = GL_UNSIGNED_SHORT;
+		
+		GL_CHECK_ERROR;
+		glDrawElements(inObject.renderType, last - first + 1, elementBufferType, 0x0 /*indicies from bound index buffer*/);
+		GL_CHECK_ERROR;
+		
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		
+		GL_CHECK_ERROR;
+		
+		
+	} else {
+		
+		//TODO: keep track of bound buffer state to eleminate redundant binds / unbinds here
+		glBindBuffer(GL_ARRAY_BUFFER, inObject.vertexBuffer.bufferObject);
+		
+		last = MIN(last, inObject.vertexBuffer.count - 1);
+		glDrawArrays(inObject.renderType, first, last - first + 1);
+		
+		
+	}
+	
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	
+}
+
+- (GLuint)genBuffer;
+{
+	GLuint obj = 0;
+	glGenBuffers(1, &obj);
+	return obj;
+}
+
+- (void)destroyBuffer:(GLuint)inBufferObject;
+{
+	glDeleteBuffers(1, &inBufferObject);
+}
+
+@end
+
+
+@implementation WMStructuredBuffer (WMStructuredBuffer_WMEAGLContext_Private)
+
+- (BOOL)uploadToBufferObjectOfType:(GLenum)inBufferType inContext:(WMEAGLContext *)inContext;
+{
+	if (bufferObject == 0) {
+		bufferObject = [inContext genBuffer];
+	}
+		
+	glBindBuffer(inBufferType, bufferObject);
+	
+	ZAssert(self.dataPointer, @"Unable to get data pointer");
+	
+#warning allow user specify static or stream
+	
+	glBufferData(inBufferType, self.dataSize, self.dataPointer, GL_STATIC_DRAW);
+	GL_CHECK_ERROR;
+	
+	glBindBuffer(inBufferType, 0);
+	
+	return YES;
+}
+
+- (void)releaseBufferObject;
+{
+	if (bufferObject != 0) {
+		[(WMEAGLContext *)[WMEAGLContext currentContext] destroyBuffer:bufferObject];
+	}
+}
+
+- (GLuint)bufferObject;
+{
+	return bufferObject;
+}
+
+- (void)setBufferObject:(GLuint)inBufferObject;
+{
+	bufferObject = inBufferObject;
 }
 
 @end

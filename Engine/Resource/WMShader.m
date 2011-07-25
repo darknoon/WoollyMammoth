@@ -270,7 +270,7 @@
 		GLint attributeSize = 0;
 		GLenum attributeType = 0;
 		glGetActiveAttrib(program, i, sizeof(nameBuf), &length, &attributeSize, &attributeType, nameBuf);
-		NSLog(@"gl attribute: %s type(%@) size:%d", nameBuf, [WMShader nameOfShaderType:attributeType], attributeSize);
+	//	NSLog(@"gl attribute: %s type(%@) size:%d", nameBuf, [WMShader nameOfShaderType:attributeType], attributeSize);
 		
 		NSString *attributeName = [NSString stringWithCString:nameBuf encoding:NSASCIIStringEncoding];
 		[attributeNamesMutable addObject:attributeName];
@@ -303,6 +303,93 @@
 		glDeleteShader(fragShader);
 	
 	return YES;
+}
+
+@end
+
+@implementation WMShader (WMShader_Uniform_State)
+
+//TODO: save type information so we can typecheck these
+//TODO: make this less verbose
+
+- (BOOL)setIntValue:(int)inValue forUniform:(NSString *)inUniform;
+{
+	int uniformLocation = [self uniformLocationForName:inUniform];
+	if (uniformLocation != -1) {
+		glUniform1i(uniformLocation, inValue);
+		return YES;
+	} else {
+		return NO;
+	}
+}
+
+- (BOOL)setFloatValue:(float)inValue forUniform:(NSString *)inUniform;
+{
+	int uniformLocation = [self uniformLocationForName:inUniform];
+	if (uniformLocation != -1) {
+		glUniform1f(uniformLocation, inValue);
+		return YES;
+	} else {
+		return NO;
+	}
+}
+
+- (BOOL)setVector2Value:(GLKVector2)inValue forUniform:(NSString *)inUniform;
+{
+	int uniformLocation = [self uniformLocationForName:inUniform];
+	if (uniformLocation != -1) {
+		glUniform2f(uniformLocation, inValue.x, inValue.y);
+		return YES;
+	} else {
+		return NO;
+	}
+}
+
+- (BOOL)setVector3Value:(GLKVector3)inValue forUniform:(NSString *)inUniform;
+{
+	int uniformLocation = [self uniformLocationForName:inUniform];
+	if (uniformLocation != -1) {
+		glUniform3f(uniformLocation, inValue.x, inValue.y, inValue.z);
+		return YES;
+	} else {
+		return NO;
+	}
+
+}
+
+- (BOOL)setVector4Value:(GLKVector4)inValue forUniform:(NSString *)inUniform;
+{
+	int uniformLocation = [self uniformLocationForName:inUniform];
+	if (uniformLocation != -1) {
+		glUniform4f(uniformLocation, inValue.x, inValue.y, inValue.z, inValue.w);
+		return YES;
+	} else {
+		return NO;
+	}
+	
+}
+
+- (BOOL)setMatrix3Value:(GLKMatrix3)inValue forUniform:(NSString *)inUniform;
+{
+	int uniformLocation = [self uniformLocationForName:inUniform];
+	if (uniformLocation != -1) {
+		glUniformMatrix3fv(uniformLocation, 1, NO, inValue.m);
+		return YES;
+	} else {
+		return NO;
+	}
+
+}
+
+- (BOOL)setMatrix4Value:(GLKMatrix4)inValue forUniform:(NSString *)inUniform;
+{
+	int uniformLocation = [self uniformLocationForName:inUniform];
+	if (uniformLocation != -1) {
+		glUniformMatrix4fv(uniformLocation, 1, NO, inValue.m);
+		return YES;
+	} else {
+		return NO;
+	}
 }
 
 @end

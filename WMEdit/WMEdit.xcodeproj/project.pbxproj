@@ -11,6 +11,7 @@
 		20001FB613D257BE00D9686C /* WMPatchCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 20001FB513D257BE00D9686C /* WMPatchCategories.m */; };
 		2004A75813D29299009EC292 /* WMPatchCategoryListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2004A75713D29299009EC292 /* WMPatchCategoryListTableViewController.m */; };
 		490AC1E713D8F10F005E61CD /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 490AC1E613D8F10F005E61CD /* GLKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		490C570A13DCA8D000E8ACFA /* WMRenderObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 490C570913DCA8D000E8ACFA /* WMRenderObject.m */; };
 		49174A8913D1FA0F008B5B8D /* WMDraggingConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174A8813D1FA0F008B5B8D /* WMDraggingConnection.m */; };
 		49174A9113D22D9B008B5B8D /* WMPatchListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174A9013D22D9B008B5B8D /* WMPatchListTableViewController.m */; };
 		49174AAC13D235BD008B5B8D /* DNAssertionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174AA413D235BD008B5B8D /* DNAssertionHandler.m */; };
@@ -187,6 +188,8 @@
 		2004A75613D29299009EC292 /* WMPatchCategoryListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchCategoryListTableViewController.h; sourceTree = "<group>"; };
 		2004A75713D29299009EC292 /* WMPatchCategoryListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPatchCategoryListTableViewController.m; sourceTree = "<group>"; };
 		490AC1E613D8F10F005E61CD /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		490C570813DCA8D000E8ACFA /* WMRenderObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMRenderObject.h; sourceTree = "<group>"; };
+		490C570913DCA8D000E8ACFA /* WMRenderObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMRenderObject.m; sourceTree = "<group>"; };
 		49174A8713D1FA0F008B5B8D /* WMDraggingConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMDraggingConnection.h; sourceTree = "<group>"; };
 		49174A8813D1FA0F008B5B8D /* WMDraggingConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMDraggingConnection.m; sourceTree = "<group>"; };
 		49174A8F13D22D9B008B5B8D /* WMPatchListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchListTableViewController.h; sourceTree = "<group>"; };
@@ -284,6 +287,7 @@
 		49752EA113D3709D00F20447 /* connection-lighting~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "connection-lighting~ipad.png"; sourceTree = "<group>"; };
 		49752EA413D374D100F20447 /* background~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background~ipad.png"; sourceTree = "<group>"; };
 		49752EAE13D3807800F20447 /* compositions-button~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "compositions-button~ipad.png"; sourceTree = "<group>"; };
+		49858DB813DE260E0061A1A8 /* WMStructuredBuffer_WMEAGLContext_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMStructuredBuffer_WMEAGLContext_Private.h; sourceTree = "<group>"; };
 		49A5252F13D169C9004EC7F6 /* WMPatchPlugStripView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchPlugStripView.h; sourceTree = "<group>"; };
 		49A5253013D169C9004EC7F6 /* WMPatchPlugStripView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPatchPlugStripView.m; sourceTree = "<group>"; };
 		49A5253313D170BD004EC7F6 /* WMPatchConnectionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchConnectionsView.h; sourceTree = "<group>"; };
@@ -785,6 +789,7 @@
 				49A525F513D1725E004EC7F6 /* GLDefines.m */,
 				49A525F613D1725E004EC7F6 /* WMEAGLContext.h */,
 				49A525F713D1725E004EC7F6 /* WMEAGLContext.m */,
+				49858DB813DE260E0061A1A8 /* WMStructuredBuffer_WMEAGLContext_Private.h */,
 				49A525F813D1725E004EC7F6 /* WMFramebuffer.h */,
 				49A525F913D1725E004EC7F6 /* WMFramebuffer.m */,
 				49A525FA13D1725E004EC7F6 /* WMQuad.h */,
@@ -797,6 +802,8 @@
 				49A5260113D1725E004EC7F6 /* WMSphere.mm */,
 				49A5260213D1725E004EC7F6 /* WMVideoCapture.h */,
 				49A5260313D1725E004EC7F6 /* WMVideoCapture.m */,
+				490C570813DCA8D000E8ACFA /* WMRenderObject.h */,
+				490C570913DCA8D000E8ACFA /* WMRenderObject.m */,
 			);
 			path = Render;
 			sourceTree = "<group>";
@@ -1185,6 +1192,7 @@
 		49F0594313D15F640056C506 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastUpgradeCheck = 0420;
 				ORGANIZATIONNAME = Darknoon;
 			};
 			buildConfigurationList = 49F0594613D15F640056C506 /* Build configuration list for PBXProject "WMEdit" */;
@@ -1383,6 +1391,7 @@
 				B4A09C2513D37EA600D7FB55 /* UIImage+Resize.m in Sources */,
 				B4A09C2613D37EA600D7FB55 /* UIImage+RoundedCorner.m in Sources */,
 				49E3145913DA44F600813CE0 /* Random.cpp in Sources */,
+				490C570A13DCA8D000E8ACFA /* WMRenderObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

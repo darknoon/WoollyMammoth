@@ -8,11 +8,9 @@
 
 #import "WMStructuredBuffer.h"
 
+#import "WMEAGLContext.h"
 
-
-@implementation WMStructuredBuffer {
-	NSMutableData *data;
-}
+@implementation WMStructuredBuffer
 
 @synthesize definition;
 @synthesize count;
@@ -34,6 +32,7 @@
 }
 
 - (void)dealloc {
+	[self releaseBufferObject];
     [definition release];
     [super dealloc];
 }
@@ -104,8 +103,12 @@
 	return self.dataPointer + inIndex * definition.size;
 }
 
-
 - (NSString *)description;
+{
+	return [NSString stringWithFormat:@"<%@ : %p = %d @ %d bytes = %d>", [self class], self, count, definition.size, self.dataSize];
+}
+
+- (NSString *)debugDescription;
 {
 	NSMutableString *dataDesc = [NSMutableString stringWithFormat:@"<%@ : %p = %d @ %d bytes = %d [", [self class], self, count, definition.size, self.dataSize];
 	
