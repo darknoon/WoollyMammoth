@@ -10,10 +10,9 @@
 
 #import "WMPort.h"
 
-//TODO: offer a port with double or float values for performance?
 @interface WMNumberPort : WMPort {
 }
-@property (nonatomic) double value;
+@property (nonatomic) float value;
 
 
 @end
