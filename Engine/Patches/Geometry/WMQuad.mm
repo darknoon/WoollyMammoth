@@ -51,7 +51,7 @@ WMStructureField WMQuadVertex_fields[] = {
 + (id)defaultValueForInputPortKey:(NSString *)inKey;
 {
 	if ([inKey isEqualToString:@"inputScale"]) {
-		return [NSNumber numberWithFloat:2.0f];
+		return [NSNumber numberWithFloat:1.0f];
 	}
 	return nil;
 }
@@ -76,28 +76,55 @@ WMStructureField WMQuadVertex_fields[] = {
 
 - (WMStructuredBuffer *)vertexBufferForImage:(WMTexture2D *)inImage;
 {
-//	if (!inImage) return nil;
+	if (!inImage) return nil;
 	
 	WMStructuredBuffer *vertexData = [[[WMStructuredBuffer alloc] initWithDefinition:quadDef] autorelease];
 	
-	const float scale = 0.5;
-
+	//Scale width to 1
+	
+	const CGFloat aspectRatio = inImage.contentSize.height / inImage.contentSize.width;
+	
+	GLKVector3 basisU;
+	GLKVector3 basisV;
+	
+	switch (inImage.orientation) {
+		default:
+		case UIImageOrientationUp:
+			basisU = (GLKVector3){1.0f, 0.0f, 0.0f};
+			basisV = (GLKVector3){0.0f, 1.0f, 0.0f};
+			break;
+		case UIImageOrientationDown:
+			basisU = (GLKVector3){-1.0f, 0.0f, 0.0f};
+			basisV = (GLKVector3){0.0f, -1.0f, 0.0f};
+			break;
+		case UIImageOrientationLeft:
+			basisU = (GLKVector3){0.0f, -1.0f, 0.0f};
+			basisV = (GLKVector3){1.0f, 0.0f, 0.0f};
+			break;
+		case UIImageOrientationRight:
+			basisU = (GLKVector3){0.0f, 1.0f, 0.0f};
+			basisV = (GLKVector3){-1.0f, 0.0f, 0.0f};
+			break;
+	}
+	
 	struct WMVertex_v3f_tc2f {
-		float p[3];
+		GLKVector3 p;
 		char tc[2];
 	};
 	
 	//Add vertices
-	for (int y=0, i=0; y<2; y++) {
-		for (int x=0; x<2; x++, i++) {
+	for (int v=0, i=0; v<2; v++) {
+		for (int u=0; u<2; u++, i++) {
 			
-			const struct WMVertex_v3f_tc2f v = {
-				.p = {((float)x - 0.5f) * 2.0f * scale, ((float)y - 0.5f) * 2.0f * scale, 0.0f},
-				.tc = {(char)x * 255, (char)y * 255}
+			GLKVector3 point = ((float)u - 0.5f) * 2.0f * basisU + ((float)v - 0.5f) * 2.0f * basisV / aspectRatio;
+			
+			const struct WMVertex_v3f_tc2f vertex = {
+				.p = point,
+				.tc = {(char)u * 255, (char)v * 255}
 			};
 			
 			//Append to vertex buffer
-			[vertexData appendData:&v withStructure:quadDef count:1];
+			[vertexData appendData:&vertex withStructure:quadDef count:1];
 		}
 	}
 	return vertexData;
@@ -137,9 +164,7 @@ WMStructureField WMQuadVertex_fields[] = {
 	
 	quadDef = [[WMStructureDefinition alloc] initWithFields:WMQuadVertex_fields count:sizeof(WMQuadVertex_fields) / sizeof(WMStructureField)];
 	quadDef.shouldAlignTo4ByteBoundary = YES;
-	
-	renderObject.vertexBuffer = [self vertexBufferForImage:inputImage.image];
-	
+		
 	GL_CHECK_ERROR;
 
 	//Create index data
@@ -171,47 +196,51 @@ WMStructureField WMQuadVertex_fields[] = {
 	ZAssert([shader.vertexAttributeNames containsObject:@"position"], @"Couldn't find position in shader");
 	ZAssert([shader.vertexAttributeNames containsObject:@"texCoord0"], @"Couldn't find texCoord0 in shader");
 
-	switch (inputBlending.index) {
-		default:
-		case QCBlendModeReplace:
-			renderObject.renderBlendState = 0;
-			break;
-		case QCBlendModeOver:
-			renderObject.renderBlendState = DNGLStateBlendEnabled;
-			break;
-		case QCBlendModeAdd:
-			renderObject.renderBlendState = DNGLStateBlendEnabled | DNGLStateBlendModeAdd;
-			break;
-	}
-	
-	glUseProgram(shader.program);
-	
-	GL_CHECK_ERROR;
-	
-	//TODO: manage current texture bound state in WMEAGLContext
 	if (inputImage.image) {
-		glBindTexture(GL_TEXTURE_2D, [inputImage.image name]);
-		[shader setIntValue:0 forUniform:@"texture"];
-	} else {
-		glBindTexture(GL_TEXTURE_2D, 0);
+		renderObject.vertexBuffer = [self vertexBufferForImage:inputImage.image];
+		
+		switch (inputBlending.index) {
+			default:
+			case QCBlendModeReplace:
+				renderObject.renderBlendState = 0;
+				break;
+			case QCBlendModeOver:
+				renderObject.renderBlendState = DNGLStateBlendEnabled;
+				break;
+			case QCBlendModeAdd:
+				renderObject.renderBlendState = DNGLStateBlendEnabled | DNGLStateBlendModeAdd;
+				break;
+		}
+		
+		glUseProgram(shader.program);
+		
+		GL_CHECK_ERROR;
+		
+		//TODO: manage current texture bound state in WMEAGLContext
+		if (inputImage.image) {
+			glBindTexture(GL_TEXTURE_2D, [inputImage.image name]);
+			[shader setIntValue:0 forUniform:@"texture"];
+		} else {
+			glBindTexture(GL_TEXTURE_2D, 0);
+		}
+		
+		GL_CHECK_ERROR;
+		
+		GLKMatrix4 transform = GLKMatrix4Identity;
+		transform = GLKMatrix4Scale(transform, inputScale.value, inputScale.value, 1.0f);
+		transform = GLKMatrix4TranslateWithVector3(transform, inputPosition.v);
+		transform = GLKMatrix4RotateZ(transform, inputRotation.value * M_PI / 180.f);
+		transform = GLKMatrix4Multiply(transform, inContext.modelViewMatrix);
+		GL_CHECK_ERROR;
+		[shader setMatrix4Value:transform forUniform:@"modelViewProjectionMatrix"];
+		GL_CHECK_ERROR;
+		
+		[shader setVector4Value:inputColor.v forUniform:@"color"];
+		
+		GL_CHECK_ERROR;
+		
+		[inContext renderObject:renderObject];
 	}
-	
-	GL_CHECK_ERROR;
-
-	GLKMatrix4 transform = GLKMatrix4Identity;
-	transform = GLKMatrix4Scale(transform, inputScale.value, inputScale.value, 1.0f);
-	transform = GLKMatrix4TranslateWithVector3(transform, inputPosition.v);
-	transform = GLKMatrix4RotateZ(transform, inputRotation.value * M_PI / 180.f);
-	transform = GLKMatrix4Multiply(transform, inContext.modelViewMatrix);
-	GL_CHECK_ERROR;
-	[shader setMatrix4Value:transform forUniform:@"modelViewProjectionMatrix"];
-	GL_CHECK_ERROR;
-
-	[shader setVector4Value:inputColor.v forUniform:@"color"];
-
-	GL_CHECK_ERROR;
-
-	[inContext renderObject:renderObject];
 
 	return YES;
 }

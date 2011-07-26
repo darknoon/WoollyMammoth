@@ -66,6 +66,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	rootPatch.key = @"root";
 	
 	previewController = [[WMViewController alloc] initWithRootPatch:rootPatch];
+	[self addChildViewController:previewController];
 	
 	return self;
 }

@@ -40,7 +40,7 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 	
 	renderContext = [[WMEAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
 	self.rootObject = inNode;
-	compositionUserData = [inUserData mutableCopy];
+	compositionUserData = inUserData ? [inUserData mutableCopy] : [[NSMutableDictionary alloc] init];
 	
 	return self;
 }

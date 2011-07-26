@@ -238,7 +238,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 	//Copy buffer contents into vram
 	GL_CHECK_ERROR;
 	//glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, baseAddress);
-	[textures[currentTexture] setData:baseAddress pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height}];
+	[textures[currentTexture] setData:baseAddress pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height} orientation:currentVideoOrientation];
 	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, baseAddress);
 	GL_CHECK_ERROR;
 	
