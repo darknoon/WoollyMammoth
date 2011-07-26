@@ -11,6 +11,17 @@
 
 @implementation WMColorPort
 
+- (id)init;
+{
+    self = [super init];
+    if (!self) return nil;
+	
+	self.v = (GLKVector4){1,1,1,1};
+    
+    return self;
+}
+
+
 - (NSString *)description;
 {
 	GLKVector4 rgba = self.v;

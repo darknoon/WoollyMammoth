@@ -52,13 +52,6 @@ WMStructureField WMQuadVertex_fields[] = {
 {
 	if ([inKey isEqualToString:@"inputScale"]) {
 		return [NSNumber numberWithFloat:2.0f];
-	} else if ([inKey isEqualToString:@"inputColor"]) {
-		return [NSDictionary dictionaryWithObjectsAndKeys:
-				[NSNumber numberWithFloat:1.0f], @"red",
-				[NSNumber numberWithFloat:1.0f], @"green",
-				[NSNumber numberWithFloat:1.0f], @"blue",
-				[NSNumber numberWithFloat:1.0f], @"alpha",
-				nil];
 	}
 	return nil;
 }
