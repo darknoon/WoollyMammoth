@@ -96,6 +96,12 @@ COLOUR HSL2RGB(HSL c1)
 {
 	if ([inKey isEqualToString:@"inputAlpha"]) {
 		return [NSNumber numberWithFloat:1.0f];
+	} else if ([inKey isEqualToString:@"input1"]) {
+		return [NSNumber numberWithFloat:1.0f];
+	} else if ([inKey isEqualToString:@"input2"]) {
+		return [NSNumber numberWithFloat:1.0f];
+	} else if ([inKey isEqualToString:@"input3"]) {
+		return [NSNumber numberWithFloat:1.0f];
 	}
 	return nil;
 }
