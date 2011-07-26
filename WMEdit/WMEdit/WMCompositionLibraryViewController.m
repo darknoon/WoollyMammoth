@@ -32,13 +32,21 @@
     return [[[WMCompositionLibrary compositionLibrary] compositions] valueForKey:@"path"];
 }
 
+
+- (void)compositionsChanged:(NSNotification *)note {
+    [self.tableView reloadData];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(compositionsChanged:) name:CompositionsChangedNotification object:nil];
 }
 
 - (void)viewDidUnload
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;

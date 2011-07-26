@@ -13,7 +13,7 @@
 
 @class WMCompositionLibraryViewController;
 
-@interface WMEditViewController : UIViewController
+@interface WMEditViewController : UIViewController <UITextFieldDelegate>
 
 //nil == new document
 - (id)initWithPatch:(WMPatch *)inPatch fileURL:(NSURL *)inURL;
@@ -23,7 +23,9 @@
 @property (nonatomic, retain) IBOutlet WMGraphEditView *graphView;
 @property (nonatomic, retain) IBOutlet UIButton *libraryButton;
 @property (nonatomic, retain) IBOutlet UIButton *patchesButton;
+@property (nonatomic, retain) IBOutlet UILabel *titleLabel;
 
 - (IBAction)close:(id)sender;
+- (IBAction)editCompositionNameAction:(id)sender;
 
 @end

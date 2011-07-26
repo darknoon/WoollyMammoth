@@ -24,9 +24,14 @@
 
 - (NSString *)saveFolder;
 - (NSString *)pathForResource:(NSString *)shortName;
+- (NSURL *)URLForResourceShortName:(NSString *)shortName;
+- (NSString *)shortNameFromURL:(NSURL *)url;
+
+- (BOOL)renameComposition:(NSURL *)oldFileURL to:(NSString *)newName;
 
 - (UIImage *)imageForCompositionPath:(NSString *)fullCompositionPath;
 
 @end
 
 extern NSString *WM_PATH_EXTENSION;
+extern NSString *CompositionsChangedNotification;
