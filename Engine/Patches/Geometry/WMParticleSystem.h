@@ -17,9 +17,8 @@
 @class WMShader;
 @interface WMParticleSystem : WMPatch {
 	WMIndexPort *inputCount;
-	WMNumberPort *inputPositionX;
-	WMNumberPort *inputPositionY;
-	WMNumberPort *inputPositionZ;
+	WMVector3Port *inputPosition;
+	
 	WMColorPort *inputColor;
 	WMNumberPort *inputVelocityMinX;
 	WMNumberPort *inputVelocityMaxX;

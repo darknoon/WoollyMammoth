@@ -12,14 +12,9 @@
 
 #import "WMRenderCommon.h"
 
-@interface WMColorPort : WMPort {
-}
+#import "WMVectorPort.h"
 
-@property (nonatomic) CGFloat red;
-@property (nonatomic) CGFloat green;
-@property (nonatomic) CGFloat blue;
-@property (nonatomic) CGFloat alpha;
-
-@property (nonatomic) GLKVector4 rgba;
+//This port just indicates that its contents represent a color
+@interface WMColorPort : WMVector4Port {}
 
 @end

@@ -110,16 +110,10 @@ COLOUR HSL2RGB(HSL c1)
 		case WMColorFromComponentsHSL:
 			hsl = (HSL){.h = input1.value * 360.0, .s = input2.value, .l = input3.value};
 			color = HSL2RGB(hsl);
-			outputColor.red = color.r;
-			outputColor.green = color.g;
-			outputColor.blue = color.b;
-			outputColor.alpha = inputAlpha.value;
+			outputColor.v = (GLKVector4){color.r, color.g, color.b, inputAlpha.value};
 			return YES;
 		case WMColorFromComponentsRGB:
-			outputColor.red = input1.value;
-			outputColor.green = input2.value;
-			outputColor.blue = input3.value;
-			outputColor.alpha = inputAlpha.value;
+			outputColor.v = (GLKVector4){input1.value, input2.value, input2.value, inputAlpha.value};
 			return YES;
 		default:
 			return NO;

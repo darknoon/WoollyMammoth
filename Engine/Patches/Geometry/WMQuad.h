@@ -18,8 +18,7 @@
 @class WMColorPort;
 @interface WMQuad : WMPatch {
 	WMImagePort *inputImage;
-	WMNumberPort *inputX;
-	WMNumberPort *inputY;
+	WMVector3Port *inputPosition;
 	WMNumberPort *inputScale;
 	WMNumberPort *inputRotation;
 	WMColorPort *inputColor;

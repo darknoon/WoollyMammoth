@@ -135,6 +135,7 @@ WMStructureField WMQuadVertex_fields[] = {
 	gl_FragColor = color * texture2D(texture, v_textureCoordinate);\
 	}";
 	
+	NSLog(@"blah vector 3: %@", NSStringFromGLKVector3((GLKVector3){0.12345, 20.123456789123456789f, 12345667890}));
 	
 	renderObject = [[WMRenderObject alloc] init];
 
@@ -206,14 +207,14 @@ WMStructureField WMQuadVertex_fields[] = {
 
 	GLKMatrix4 transform = GLKMatrix4Identity;
 	transform = GLKMatrix4Scale(transform, inputScale.value, inputScale.value, 1.0f);
-	transform = GLKMatrix4Translate(transform, inputX.value, inputY.value, 0.0f);
+	transform = GLKMatrix4TranslateWithVector3(transform, inputPosition.v);
 	transform = GLKMatrix4RotateZ(transform, inputRotation.value * M_PI / 180.f);
 	transform = GLKMatrix4Multiply(transform, inContext.modelViewMatrix);
 	GL_CHECK_ERROR;
 	[shader setMatrix4Value:transform forUniform:@"modelViewProjectionMatrix"];
 	GL_CHECK_ERROR;
 
-	[shader setVector4Value:inputColor.rgba forUniform:@"color"];
+	[shader setVector4Value:inputColor.v forUniform:@"color"];
 
 	GL_CHECK_ERROR;
 

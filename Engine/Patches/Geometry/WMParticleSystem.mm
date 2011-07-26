@@ -119,13 +119,13 @@ typedef struct {
 - (void)update:(float)dt;
 {	
 	
-	const float spawnColor[4] = {inputColor.red, inputColor.green, inputColor.blue, inputColor.alpha};
+	const float spawnColor[4] = {inputColor.v.r};
 	const float spawnSizeRange[2] = {inputMinSize.value, inputMaxSize.value};
 	const float spawnVelocityRangeX[2] = {inputVelocityMinX.value, inputVelocityMaxX.value};
 	const float spawnVelocityRangeY[2] = {inputVelocityMinY.value, inputVelocityMaxY.value};
 	const float spawnVelocityRangeZ[2] = {inputVelocityMinZ.value, inputVelocityMaxZ.value};
 	const float spawnLife = inputLifeTime.value;
-	const GLKVector3 spawnPosition = {inputPositionX.value, inputPositionY.value, inputPositionZ.value};
+	const GLKVector3 spawnPosition = inputPosition.v;
 	
 	const float colorDelta[4] = {inputRedDelta.value, inputGreenDelta.value, inputBlueDelta.value, inputOpacityDelta.value};
 	const float sizeDelta = inputSizeDelta.value;

@@ -19,12 +19,12 @@ enum WMColorFromComponentsMode {
 };
 
 @interface WMColorFromComponents : WMPatch {
-	WMNumberPort *input1;	// 156 = 0x9c
-	WMNumberPort *input2;	// 160 = 0xa0
-	WMNumberPort *input3;	// 164 = 0xa4
-	WMNumberPort *inputAlpha;	// 168 = 0xa8
-	WMColorPort *outputColor;	// 172 = 0xac
-	int mode;	// 176 = 0xb0
+	WMNumberPort *input1;
+	WMNumberPort *input2;
+	WMNumberPort *input3;
+	WMNumberPort *inputAlpha;
+	WMColorPort *outputColor;
+	int mode;
 }
 
 @end
