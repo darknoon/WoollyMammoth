@@ -192,7 +192,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 {
 	if (inR == addNodeRecognizer) {
 		//Don't recognize taps in the top of the window, as these should hit the top bar
-		return [inTouch locationInView:self.view].y > 44.f;
+		return ![UIMenuController sharedMenuController].isMenuVisible && [inTouch locationInView:self.view].y > 44.f;
 	}
 	return YES;
 }
