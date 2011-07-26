@@ -8,8 +8,31 @@
 
 #import "WMAccelerometer.h"
 
+#import <CoreMotion/CoreMotion.h>
 
-@implementation WMAccelerometer
+static int WMAccelerometerDelegateCount;
+
+@implementation WMAccelerometer {
+	BOOL gyroAvailable;
+	
+	//If gyro not available, we have to calculate this ourselves
+	//Low pass filter on acceleration
+	GLKVector3 gravity;
+	//This is used to do a low pass to separate gravity and user acceleration
+	GLKVector3 acceleration;
+	
+	GLKVector3 rotationRate;
+	
+	float lowPassFactor;
+	NSTimeInterval lastLogTime;
+}
+
++ (void)load;
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	[self registerToRepresentClassNames:nil];
+	[pool drain];
+}
 
 + (WMAccelerometer *)sharedAccelerometer;
 {
@@ -20,24 +43,52 @@
 	return sharedAccelerometer;
 }
 
+//This queue synchronizes acces to the shared CMMotionManager
++ (NSOperationQueue *)motionUpdateQueue;
+{
+	return [NSOperationQueue mainQueue];
+}
+
++ (CMMotionManager *)sharedMotionManager;
+{
+	static CMMotionManager *sharedMotionManager = nil;
+	
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		sharedMotionManager = [[CMMotionManager alloc] init];		
+	});
+	
+	return sharedMotionManager;
+}
+
+
++ (void)incrementDelegateCount;
+{
+	[[self motionUpdateQueue] addOperationWithBlock:^(void) {
+		WMAccelerometerDelegateCount++;
+		
+		if (WMAccelerometerDelegateCount > 0) {
+			[[self sharedMotionManager] startDeviceMotionUpdates];
+		}
+	}];
+}
+
++ (void)decrementDelegateCount;
+{
+	[[self motionUpdateQueue] addOperationWithBlock:^(void) {
+		WMAccelerometerDelegateCount--;
+		if (WMAccelerometerDelegateCount < 1) {
+			[[self sharedMotionManager] stopDeviceMotionUpdates];
+		}
+	}];	
+}
+
 - (id) init {
 	[super init];
 	if (self == nil) return self; 
 	
 	lowPassFactor = 0.95f;
-	
-	motionManager = [[CMMotionManager alloc] init];
-	
-	
-	//TODO: handle non-iPhone 4 case
-	if ([motionManager isDeviceMotionAvailable]) {
-		[motionManager startDeviceMotionUpdates];
-		gyroAvailable = YES;
-	} else {
-		[motionManager startAccelerometerUpdates];
-		gyroAvailable = NO;
-	}
-	
+		
 	gravity = (GLKVector3){0.0f, 0.5f, 0.5f};
 	
 	//Device is being held straight up-down unless we hear otherwise
@@ -45,54 +96,63 @@
 	return self;
 }
 
-- (GLKVector3)gravity;
+- (BOOL)setup:(WMEAGLContext *)context;
+{
+	[[self class] incrementDelegateCount];
+	return YES;
+}
+
+- (void)cleanup:(WMEAGLContext *)context;
+{
+	[[self class] decrementDelegateCount];
+}
+
+- (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
 #if TARGET_IPHONE_SIMULATOR
-	return GLKVector3Make(0.0f, -10.0f, 0.0f);
+	gravity = GLKVector3Make(0.0f, -10.0f, 0.0f);
 #endif
+	
 	if (gyroAvailable) {
-		CMDeviceMotion *motion = [motionManager deviceMotion];
+		CMDeviceMotion *motion = [[WMAccelerometer sharedMotionManager] deviceMotion];
 		if (motion) {
 			CMAcceleration grav = [motion gravity];
-			return GLKVector3Make(grav.x, grav.y, grav.z);
+			gravity = (GLKVector3){grav.x, grav.y, grav.z};
+
+			CMRotationRate cmRotationRate = [motion rotationRate];
+			rotationRate = (GLKVector3){cmRotationRate.x, cmRotationRate.y, cmRotationRate.z};
 		} else {
-			return GLKVector3Make(0.0f, 0.0f, 0.0f);
+			gravity = GLKVector3Make(0.0f, 0.0f, 0.0f);
 		}
 	} else {
 		const float lowPassRatio = 0.1f;
-		CMAcceleration accel = [motionManager accelerometerData].acceleration;
-		acceleration = GLKVector3Make(accel.x, accel.y, accel.z);
-		//TODO: add c++ to GLKVector...
-		//gravity = lowPassRatio * acceleration + (1.0f - lowPassRatio) * gravity;
-		gravity = GLKVector3Add(GLKVector3MultiplyScalar(acceleration, lowPassRatio), GLKVector3MultiplyScalar(gravity, (1.0f - lowPassRatio)));
-		return gravity;
-	}
-}
-
-
-- (GLKVector3)rotationRate;
-{
-	if (gyroAvailable) {
-		CMDeviceMotion *motion = [motionManager deviceMotion];
-		if (motion) {
-			CMRotationRate rotationRate = [motion rotationRate];
-			return (GLKVector3){rotationRate.x, rotationRate.y, rotationRate.z};
-		} else {
-			return (GLKVector3){0.0f, 0.0f, 0.0f};
-		}
-	} else {
+		CMAcceleration accel = [[WMAccelerometer sharedMotionManager] accelerometerData].acceleration;
+		acceleration = (GLKVector3){accel.x, accel.y, accel.z};
+		gravity = lowPassRatio * acceleration + (1.0f - lowPassRatio) * gravity;
+		
 		//TODO: return something based on something!
 		//This is total bs
 		
 		float gravityDifference = length(acceleration - gravity);
-		return gravityDifference * 10.f * GLKVector3Make(-0.4f, -0.2f, -0.3f);
+		rotationRate = gravityDifference * 10.f * GLKVector3Make(-0.4f, -0.2f, -0.3f);
+	}
+	
+	//Write to output ports
+	
+	return YES;
+}
+
+- (void)writeVector:(GLKVector3)inVector toOutputPortName:(NSString *)inOutputName;
+{
+	NSString *names[3] = {@"X", @"Y", @"Z"};
+	for (int i=0; i<3; i++) {
+		WMNumberPort *outputPort = (WMNumberPort *)[self outputPortWithKey:[inOutputName stringByAppendingString:names[i]]];
+		outputPort.value = inVector.v[i];
 	}
 }
 
-
 - (void) dealloc;
 {
-	[motionManager release];
 	[super dealloc];
 }
 

@@ -11,27 +11,11 @@
 #import "WMRenderCommon.h"
 #import "WMEAGLContext.h"
 
+#import "WMStructuredBuffer.h"
+
 //TODO: redefine this protocol in light of arbitrary data passing
 @protocol WMRenderableDataSource
 
-- (unsigned int)dataMask;
-
-- (GLuint)vbo;
-
-//-1 == not applicable
-
-
-//- (int)positionOffset;
-//- (int)colorOffset;
-//- (int)texCoord0Offset;
-//- (int)normalOffset;
-
-- (size_t)interleavedDataStride;
-- (size_t)numberOfVertices;
-
-- (GLenum)ebo; //element buffer object
-- (size_t)numberOfTriangles;
-- (GLenum)triangleIndexType;
-
+- (BOOL)renderInContext:(WMEAGLContext *)inContext;
 
 @end

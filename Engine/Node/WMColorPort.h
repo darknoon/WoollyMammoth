@@ -10,6 +10,8 @@
 
 #import "WMPort.h"
 
+#import "WMRenderCommon.h"
+
 @interface WMColorPort : WMPort {
 }
 
@@ -18,5 +20,6 @@
 @property (nonatomic) CGFloat blue;
 @property (nonatomic) CGFloat alpha;
 
+@property (nonatomic) GLKVector4 rgba;
 
 @end

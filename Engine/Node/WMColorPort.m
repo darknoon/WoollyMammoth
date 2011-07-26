@@ -57,6 +57,19 @@
 	}
 }
 
+- (GLKVector4)rgba;
+{
+	return (GLKVector4){red, green, blue, alpha};
+}
+
+- (void)setRgba:(GLKVector4)inRgba;
+{
+	red   = inRgba.r;
+	green = inRgba.g;
+	blue  = inRgba.b;
+	alpha = inRgba.a;
+}
+
 - (NSString *)description;
 {
 	return [NSString stringWithFormat:@"<%@ : %p>{r:%f g:%f b:%f, a:%f}", NSStringFromClass([self class]), self, red, green, blue, alpha];

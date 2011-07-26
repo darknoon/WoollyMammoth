@@ -10,29 +10,24 @@
 
 #import "WMRenderCommon.h"
 
-#import <CoreMotion/CoreMotion.h>
+#import "WMPatch.h"
+#import "WMPort.h"
 
-@interface WMAccelerometer : NSObject {
-
-	BOOL gyroAvailable;
+@interface WMAccelerometer : WMPatch {
 	
-	//If gyro not available, we have to calculate this ourselves
-	//Low pass filter on acceleration
-	GLKVector3 gravity;
-	GLKVector3 acceleration;
+	//TODO: replace with vector output ports
+	
+	WMNumberPort *outputUserX;
+	WMNumberPort *outputUserY;
+	WMNumberPort *outputUserZ;
 
-	float lowPassFactor;
-	NSTimeInterval lastLogTime;
-	CMMotionManager *motionManager;
+	WMNumberPort *outputGravityX;
+	WMNumberPort *outputGravityY;
+	WMNumberPort *outputGravityZ;
+	
+	WMNumberPort *outputRotationX;
+	WMNumberPort *outputRotationY;
+	WMNumberPort *outputRotationZ;
 }
-
-//TODO: remove this. Instead, provide instances that can have their own low pass factors that get events from a class-level object.
-//This should keep to the design goal that there should be separate WM instances loaded at once (no globals/singletons)
-+ (WMAccelerometer *)sharedAccelerometer;
-
-//Low pass filtered (~ gravity)
-@property (readonly) GLKVector3 gravity;
-//TTT ork!
-@property (readonly) GLKVector3 rotationRate;
 
 @end

@@ -13,6 +13,8 @@
 
 #import "WMRenderCommon.h"
 
+#import "WMPorts.h"
+
 struct WMQuadParticle;
 
 struct WMQuadParticleVertex;
@@ -21,7 +23,20 @@ struct WMQuadParticleVertex;
 @class WMShader;
 
 @interface WMQuadParticleSystem : WMPatch {
+	
+	//Take data from accelerometer
+	
+	WMNumberPort *inputRotationX;
+	WMNumberPort *inputRotationY;
+	WMNumberPort *inputRotationZ;
+
+	WMNumberPort *inputGravityX;
+	WMNumberPort *inputGravityY;
+	WMNumberPort *inputGravityZ;
+
+	//Internal
 @public
+	
 	NSUInteger maxParticles;
 	//Evaluates the noise function for every nth particle
 	NSUInteger particleUpdateSkip;

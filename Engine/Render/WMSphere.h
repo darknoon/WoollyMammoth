@@ -10,10 +10,12 @@
 
 #import "WMRenderableDataSource.h"
 
+#import "WMPatch.h"
+
 struct WMSphereVertex;
 
 //Should render a nice sphere. Right now does a janky one :P
-@interface WMSphere : NSObject <WMRenderableDataSource> {
+@interface WMSphere : WMPatch {
 	GLuint vbo;
 	GLuint ebo;
 	

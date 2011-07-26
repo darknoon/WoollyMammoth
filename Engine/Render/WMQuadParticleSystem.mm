@@ -11,7 +11,6 @@
 #import "GLKMath_cpp.h"
 
 #import "WMShader.h"
-#import "WMAccelerometer.h"
 #import "WMEngine.h"
 #import "WMTexture2D.h"
 
@@ -180,7 +179,7 @@ int particleZCompare(const void *a, const void *b) {
 	return (((WMQuadParticle *)a)->position.z >  ((WMQuadParticle *)b)->position.z) ? 1 : - 1;
 }
 
-@implementation WMQuadParticleSystem
+@implementation WMQuadParticleSystem 
 
 + (NSString *)category;
 {
@@ -259,12 +258,9 @@ int particleZCompare(const void *a, const void *b) {
 
 - (void)update;
 {
-#if PARTICLES_USE_REAL_GRAVITY
-	GLKVector3 gravity = [WMAccelerometer sharedAccelerometer].gravity;
-#else
-	GLKVector3 gravity = GLKVector3Make(0.0f, -1.0f, 0.0f);
-#endif
-	GLKVector3 rotationRate = [WMAccelerometer sharedAccelerometer].rotationRate;
+	GLKVector3 gravity = (GLKVector3){inputGravityX.value, inputGravityY.value, inputGravityZ.value};
+
+	GLKVector3 rotationRate = (GLKVector3){inputRotationX.value, inputRotationY.value, inputRotationZ.value};
 
 	//NSLog(@"g(%f, %f, %f) rot(%f, %f, %f)", gravity.x, gravity.y, gravity.z, rotationRate.x, rotationRate.y, rotationRate.z);
 	

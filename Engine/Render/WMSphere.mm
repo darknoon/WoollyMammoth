@@ -32,6 +32,8 @@ struct WMSphereVertex {
 	unum = 50;
 	vnum = 50;
 	
+	int numberOfTriangles = unum * (vnum - 1) * 2;
+	
 	radius = 0.535f;
 	
 	glGenBuffers(1, &vbo);
@@ -82,7 +84,7 @@ struct WMSphereVertex {
 	
 #if DEBUG
 	int maxRefI = 0;
-	for (int i=0; i<[self numberOfTriangles]*3; i++) {
+	for (int i=0; i<numberOfTriangles*3; i++) {
 		maxRefI = MAX(maxRefI, indexData[i]);
 	}
 	ZAssert(maxRefI < unum * vnum, @"Bad tri index!");
