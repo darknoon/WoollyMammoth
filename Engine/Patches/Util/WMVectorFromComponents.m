@@ -10,6 +10,18 @@
 
 @implementation WMVectorFromComponents
 
++ (void)load;
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	[self registerToRepresentClassNames:[NSSet setWithObject:NSStringFromClass(self)]];
+	[pool drain];
+}
+
++ (NSString *)category;
+{
+	return WMPatchCategoryUtil;
+}
+
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
 	outputPort.v = (GLKVector4){inputX.value, inputY.value, inputZ.value, inputW.value};
