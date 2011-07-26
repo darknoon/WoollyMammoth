@@ -30,8 +30,13 @@ static int WMAccelerometerDelegateCount;
 + (void)load;
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[self registerToRepresentClassNames:nil];
+	[self registerToRepresentClassNames:[NSSet setWithObject:NSStringFromClass(self)]];
 	[pool drain];
+}
+
++ (NSString *)category;
+{
+	return WMPatchCategoryDevice;
 }
 
 + (WMAccelerometer *)sharedAccelerometer;
@@ -67,7 +72,7 @@ static int WMAccelerometerDelegateCount;
 	[[self motionUpdateQueue] addOperationWithBlock:^(void) {
 		WMAccelerometerDelegateCount++;
 		
-		if (WMAccelerometerDelegateCount > 0) {
+		if (WMAccelerometerDelegateCount == 1) {
 			[[self sharedMotionManager] startDeviceMotionUpdates];
 		}
 	}];
@@ -77,7 +82,7 @@ static int WMAccelerometerDelegateCount;
 {
 	[[self motionUpdateQueue] addOperationWithBlock:^(void) {
 		WMAccelerometerDelegateCount--;
-		if (WMAccelerometerDelegateCount < 1) {
+		if (WMAccelerometerDelegateCount == 0) {
 			[[self sharedMotionManager] stopDeviceMotionUpdates];
 		}
 	}];	
@@ -98,6 +103,7 @@ static int WMAccelerometerDelegateCount;
 
 - (BOOL)setup:(WMEAGLContext *)context;
 {
+	gyroAvailable = [[[self class] sharedMotionManager] isDeviceMotionAvailable];
 	[[self class] incrementDelegateCount];
 	return YES;
 }
@@ -119,6 +125,9 @@ static int WMAccelerometerDelegateCount;
 			CMAcceleration grav = [motion gravity];
 			gravity = (GLKVector3){grav.x, grav.y, grav.z};
 
+			CMAcceleration accel = [motion userAcceleration];
+			acceleration = (GLKVector3){accel.x, accel.y, accel.z};
+
 			CMRotationRate cmRotationRate = [motion rotationRate];
 			rotationRate = (GLKVector3){cmRotationRate.x, cmRotationRate.y, cmRotationRate.z};
 		} else {
@@ -139,17 +148,13 @@ static int WMAccelerometerDelegateCount;
 	
 	//Write to output ports
 	
+	outputAcceleration.v = acceleration;
+	outputGravity.v = gravity;
+	outputRotationRate.v = rotationRate;
+	
 	return YES;
 }
 
-- (void)writeVector:(GLKVector3)inVector toOutputPortName:(NSString *)inOutputName;
-{
-	NSString *names[3] = {@"X", @"Y", @"Z"};
-	for (int i=0; i<3; i++) {
-		WMNumberPort *outputPort = (WMNumberPort *)[self outputPortWithKey:[inOutputName stringByAppendingString:names[i]]];
-		outputPort.value = inVector.v[i];
-	}
-}
 
 - (void) dealloc;
 {

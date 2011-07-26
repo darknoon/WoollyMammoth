@@ -17,17 +17,9 @@
 	
 	//TODO: replace with vector output ports
 	
-	WMNumberPort *outputUserX;
-	WMNumberPort *outputUserY;
-	WMNumberPort *outputUserZ;
-
-	WMNumberPort *outputGravityX;
-	WMNumberPort *outputGravityY;
-	WMNumberPort *outputGravityZ;
-	
-	WMNumberPort *outputRotationX;
-	WMNumberPort *outputRotationY;
-	WMNumberPort *outputRotationZ;
+	WMVector3Port *outputAcceleration;
+	WMVector3Port *outputGravity;
+	WMVector3Port *outputRotationRate;	
 }
 
 @end
