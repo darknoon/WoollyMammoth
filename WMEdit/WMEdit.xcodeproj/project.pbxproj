@@ -151,6 +151,7 @@
 		49A5286513D17A03004EC7F6 /* connection-shadow~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49A5286413D17A03004EC7F6 /* connection-shadow~ipad.png */; };
 		49A5286813D181E3004EC7F6 /* WMGraphEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A5286713D181E2004EC7F6 /* WMGraphEditView.m */; };
 		49AD650C13DE8FF600A2CC66 /* WMVectorPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD650B13DE8FF600A2CC66 /* WMVectorPort.m */; };
+		49AD651713DE9E1200A2CC66 /* WMVectorFromComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD651613DE9E1200A2CC66 /* WMVectorFromComponents.m */; };
 		49E3145913DA44F600813CE0 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49E3145613DA44F600813CE0 /* Random.cpp */; };
 		49E3145A13DA44F600813CE0 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49E3145613DA44F600813CE0 /* Random.cpp */; };
 		49F0595113D15F640056C506 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595013D15F640056C506 /* UIKit.framework */; };
@@ -467,6 +468,8 @@
 		49A5286713D181E2004EC7F6 /* WMGraphEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMGraphEditView.m; sourceTree = "<group>"; };
 		49AD650A13DE8FF600A2CC66 /* WMVectorPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMVectorPort.h; sourceTree = "<group>"; };
 		49AD650B13DE8FF600A2CC66 /* WMVectorPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMVectorPort.m; sourceTree = "<group>"; };
+		49AD651513DE9E1200A2CC66 /* WMVectorFromComponents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMVectorFromComponents.h; sourceTree = "<group>"; };
+		49AD651613DE9E1200A2CC66 /* WMVectorFromComponents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMVectorFromComponents.m; sourceTree = "<group>"; };
 		49E3145613DA44F600813CE0 /* Random.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Random.cpp; sourceTree = "<group>"; };
 		49E3145713DA44F600813CE0 /* Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Random.h; sourceTree = "<group>"; };
 		49E3145813DA44F600813CE0 /* Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Types.h; sourceTree = "<group>"; };
@@ -807,6 +810,8 @@
 				49858DED13DE4C1F0061A1A8 /* WMMathOp.m */,
 				49858DEE13DE4C1F0061A1A8 /* WMSplitter.h */,
 				49858DEF13DE4C1F0061A1A8 /* WMSplitter.m */,
+				49AD651513DE9E1200A2CC66 /* WMVectorFromComponents.h */,
+				49AD651613DE9E1200A2CC66 /* WMVectorFromComponents.m */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1469,6 +1474,7 @@
 				49858EB113DE4C800061A1A8 /* TweetServerCommunicator.m in Sources */,
 				49858EB213DE4C800061A1A8 /* WMTweetPhotoStream.m in Sources */,
 				49AD650C13DE8FF600A2CC66 /* WMVectorPort.m in Sources */,
+				49AD651713DE9E1200A2CC66 /* WMVectorFromComponents.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
