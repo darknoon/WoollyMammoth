@@ -168,19 +168,27 @@
 		
 		canConnect = [hitPort canTakeValueFromPort:sourcePort];
 		
+		NSMutableSet *connectablePorts = [NSMutableSet set];
+		for (WMPort *p in hitPatchView.patch.inputPorts) {
+			if ([p canTakeValueFromPort:sourcePort]) {
+				[connectablePorts addObject:p];
+			}
+		}
+		
 		//Show connection popover
 		connectionPopover.hidden = NO;
 		connectionPopover.ports = hitPatch.inputPorts;
+		connectionPopover.connectablePorts = connectablePorts;
 		connectionPopover.connectionIndex = [hitPatch.inputPorts indexOfObject:hitPort];
 		[connectionPopover setTargetPoint: [hitPatchView pointForInputPort:hitPort]];
 		connectionPopover.canConnect = canConnect;
 		[connectionPopover refresh];
 		[self bringSubviewToFront:connectionPopover];
 		
-		NSLog(@"%@ touching port: %@", canConnect ? @"Y" : @"N", hitPort);
+		// DLog(@"%@ touching port: %@", canConnect ? @"Y" : @"N", hitPort);
 	} else {
 		connectionPopover.hidden = YES;
-		NSLog(@"not touching port");
+		// DLog(@"not touching port");
 	}
 
 	[patchConnectionsView setConnectionEndpoint:inPoint fromPatchView:inView canConnect:canConnect];

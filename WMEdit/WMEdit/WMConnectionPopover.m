@@ -26,6 +26,7 @@ const CGFloat backgroundHeight = 92;
 }
 @synthesize connectionIndex;
 @synthesize ports;
+@synthesize connectablePorts;
 @synthesize canConnect;
 
 - (id)initWithFrame:(CGRect)frame {
@@ -102,6 +103,7 @@ const CGFloat backgroundHeight = 92;
 	NSMutableArray *pvm = [NSMutableArray array];
 	for (WMPort *p in ports) {
 		UIImageView *pv = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plug-popover-dot"]] autorelease];
+		pv.alpha = [connectablePorts containsObject:p] ? 1.0f : 0.4f;
 		[pvm addObject:pv];
 		[self addSubview:pv];
 	}
