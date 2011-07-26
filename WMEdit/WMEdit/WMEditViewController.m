@@ -90,17 +90,11 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+		
+	UITapGestureRecognizer *addNodeRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(addNode:)] autorelease];
+	[self.view addGestureRecognizer:addNodeRecognizer];
 	
-	UILongPressGestureRecognizer *longPressRecognizer = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]autorelease];
-	[self.view addGestureRecognizer:longPressRecognizer];
 	
-//    UISwipeGestureRecognizer *swipe = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swiperAction:)]autorelease];
-//    [swipe setDirection:UISwipeGestureRecognizerDirectionRight];
-//    [self.view addGestureRecognizer:swipe];
-//    swipe = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swiperAction:)]autorelease];
-//    [swipe setDirection:UISwipeGestureRecognizerDirectionLeft];
-//    [self.view addGestureRecognizer:swipe];
-
 	graphView.rootPatch = rootPatch;
 	
 	CGRect bounds = self.view.bounds;
@@ -202,23 +196,21 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 - (void)swiperAction:(UISwipeGestureRecognizer *)gesture {
 }
 
-- (void)longPress:(UILongPressGestureRecognizer *)inR;
+- (void)addNode:(UITapGestureRecognizer *)inR;
 {
-	if (inR.state == UIGestureRecognizerStateBegan) {
-		if (addNodePopover) {
-			[addNodePopover dismissPopoverAnimated:NO];
-			[addNodePopover release];
-		}
-		
-		WMPatchCategoryListTableViewController *patchCategoryList = [[WMPatchCategoryListTableViewController alloc] initWithStyle:UITableViewStylePlain];
-		patchCategoryList.delegate = (id<WMPatchCategoryListTableViewControllerDelegate>)self;
-		UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:patchCategoryList];
-		addNodePopover = [[UIPopoverController alloc] initWithContentViewController:nav];
-		addLocation = [inR locationInView:self.view];
-		[addNodePopover presentPopoverFromRect:(CGRect){.origin = addLocation} inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	if (addNodePopover) {
+		[addNodePopover dismissPopoverAnimated:NO];
+		[addNodePopover release];
 	}
+	
+	WMPatchCategoryListTableViewController *patchCategoryList = [[WMPatchCategoryListTableViewController alloc] initWithStyle:UITableViewStylePlain];
+	patchCategoryList.delegate = (id<WMPatchCategoryListTableViewControllerDelegate>)self;
+	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:patchCategoryList];
+	addNodePopover = [[UIPopoverController alloc] initWithContentViewController:nav];
+	addLocation = [inR locationInView:self.view];
+	[addNodePopover presentPopoverFromRect:(CGRect){.origin = addLocation} inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
-         
+
 
 - (void)patchList:(WMPatchListTableViewController *)inPatchList selectedPatchClassName:(NSString *)inClassName;
 {
