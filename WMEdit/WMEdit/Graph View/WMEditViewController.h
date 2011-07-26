@@ -25,7 +25,11 @@
 @property (nonatomic, retain) IBOutlet UIButton *patchesButton;
 @property (nonatomic, retain) IBOutlet UILabel *titleLabel;
 
+@property (nonatomic, retain) IBOutlet UIGestureRecognizer *addNodeRecognizer;
+
+
 - (IBAction)close:(id)sender;
+- (IBAction)addNode:(UITapGestureRecognizer *)inR;
 - (IBAction)editCompositionNameAction:(id)sender;
 
 @end

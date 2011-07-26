@@ -40,7 +40,6 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	
 	WMPatch *rootPatch; 
     WMGraphEditView *graphicView;
-    
 }
 
 @synthesize graphView;
@@ -48,6 +47,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 @synthesize patchesButton;
 @synthesize fileURL;
 @synthesize titleLabel;
+@synthesize addNodeRecognizer;
 
 - (id)initWithPatch:(WMPatch *)inPatch fileURL:(NSURL *)inURL
 {
@@ -90,10 +90,6 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-		
-	UITapGestureRecognizer *addNodeRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(addNode:)] autorelease];
-	[self.view addGestureRecognizer:addNodeRecognizer];
-	
 	
 	graphView.rootPatch = rootPatch;
 	
@@ -192,8 +188,13 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
     addNodePopover = nil;
 }
 
-
-- (void)swiperAction:(UISwipeGestureRecognizer *)gesture {
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)inR shouldReceiveTouch:(UITouch *)inTouch;
+{
+	if (inR == addNodeRecognizer) {
+		//Don't recognize taps in the top of the window, as these should hit the top bar
+		return [inTouch locationInView:self.view].y > 44.f;
+	}
+	return YES;
 }
 
 - (void)addNode:(UITapGestureRecognizer *)inR;
@@ -261,6 +262,9 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 	self.graphView = nil;
+	self.addNodeRecognizer = nil;
+	self.patchesButton = nil;
+	self.libraryButton = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
