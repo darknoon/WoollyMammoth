@@ -23,6 +23,8 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 
 @interface WMEditViewController ()
 - (void)addPatchViews;
+- (BOOL)saveComposition;
+
 @end
 
 @implementation WMEditViewController {
@@ -45,6 +47,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 @synthesize libraryButton;
 @synthesize patchesButton;
 @synthesize fileURL;
+@synthesize titleLabel;
 
 - (id)initWithPatch:(WMPatch *)inPatch fileURL:(NSURL *)inURL
 {
@@ -108,8 +111,51 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	UITapGestureRecognizer *enlargeRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(togglePreviewFullscreen:)] autorelease];
 	[previewController.view addGestureRecognizer:enlargeRecognizer];
 	
+    self.navigationItem.titleView = titleLabel;
+    UITapGestureRecognizer *editRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(editCompositionNameAction:)] autorelease];
+	[titleLabel addGestureRecognizer:editRecognizer];
+    titleLabel.text = fileURL ? [[WMCompositionLibrary compositionLibrary] shortNameFromURL:fileURL] : NSLocalizedString(@"Tap to name Composition", nil);
 	[self addPatchViews];
 }
+
+- (void)textFieldDidEndEditing:(UITextField *)textField;             // may be called if forced even if shouldEndEditing returns NO (e.g. view removed from window) or endEditing:YES called
+{
+    NSString *shortName = textField.text;
+    if (shortName.length > 0) {
+        if (!fileURL) {
+            fileURL = [[[WMCompositionLibrary compositionLibrary] URLForResourceShortName:shortName] retain];
+            if ([self saveComposition]) self.titleLabel.text = shortName;
+        } else {
+            if (![shortName isEqualToString:[[[fileURL absoluteString] lastPathComponent] stringByDeletingPathExtension]]) {
+                if ([[WMCompositionLibrary compositionLibrary] renameComposition:fileURL to:shortName]) {
+                    self.titleLabel.text = shortName;
+                    fileURL = [[[WMCompositionLibrary compositionLibrary] URLForResourceShortName:shortName] retain];
+                }
+            }
+        }
+    }
+    [textField removeFromSuperview];
+}
+    
+    
+- (BOOL)textFieldShouldReturn:(UITextField *)textField;              // called when 'return' key pressed. return NO to ignore.
+{
+    [textField endEditing:YES];
+    return NO;
+}
+
+- (IBAction)editCompositionNameAction:(id)sender {
+    UITextField *tf = [[UITextField alloc] initWithFrame:titleLabel.frame];
+    tf.backgroundColor = [UIColor whiteColor];
+    tf.textAlignment = UITextAlignmentCenter;
+    tf.textColor = [UIColor blackColor];
+    tf.font = [UIFont boldSystemFontOfSize:18.0];
+    tf.delegate = self;
+    [[titleLabel superview] addSubview:tf];
+    [tf becomeFirstResponder];
+    [tf release]; // give me ARC - I love it so much now and can't stand this bs anymore!
+}
+
 
 - (void)togglePreviewFullscreen:(UITapGestureRecognizer *)inR;
 {
@@ -181,15 +227,15 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	addNodePopover = nil;
 }
 
-- (void)save;
+- (BOOL)saveComposition;
 {
 	//Save
-	[[WMCompositionLibrary compositionLibrary] saveComposition:rootPatch image:[previewController screenshotImage] toURL:self.fileURL];
+	return [[WMCompositionLibrary compositionLibrary] saveComposition:rootPatch image:[previewController screenshotImage] toURL:self.fileURL];
 }
 
 - (IBAction)close:(id)sender;
 {
-	[self save];
+	[self saveComposition];
 	[self.navigationController popViewControllerAnimated:YES];
 }
 

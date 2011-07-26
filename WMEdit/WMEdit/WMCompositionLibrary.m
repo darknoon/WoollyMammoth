@@ -10,6 +10,7 @@
 #import "WMPatch.h"
 
 NSString *WM_PATH_EXTENSION = @"wmpatch";
+NSString *CompositionsChangedNotification = @"CompositionsChangedNotification";
 
 @interface WMCompositionLibrary(myPascalLikeStuff)
 - (void)findResources;
@@ -106,6 +107,15 @@ NSArray *directoriesToAdd(NSString *path, NSString *existing) {
 	return [[[self saveFolder] stringByAppendingPathComponent:shortName] stringByAppendingPathExtension:WM_PATH_EXTENSION];
 }
 
+- (NSURL *)URLForResourceShortName:(NSString *)shortName {
+    return [NSURL fileURLWithPath:[self pathForResource:shortName]];
+}
+
+- (NSString *)shortNameFromURL:(NSURL *)url;
+{
+    return [[[url absoluteString] lastPathComponent] stringByDeletingPathExtension];
+}
+
 - (NSArray *)compositions;
 {
 	return [[compositions copy] autorelease];
@@ -191,10 +201,7 @@ NSString *base62FromBase10(int num)
 
 - (BOOL)saveComposition:(WMPatch *)root image:(UIImage *)image toURL:(NSURL *)inFileURL;
 {
-	if (!inFileURL) {
-		NSString *path = [self pathForResource:[self timeAsCompactString]];
-		inFileURL = [NSURL fileURLWithPath:path];
-	}
+	if (!inFileURL) inFileURL = [self URLForResourceShortName:[self timeAsCompactString]];
 	
     NSDictionary *d = [root plistRepresentation];
     if ([self savePropertyList:d toURL:inFileURL]) {
@@ -209,6 +216,19 @@ NSString *base62FromBase10(int num)
     return NO;
 }
 
+- (BOOL)renameComposition:(NSURL *)oldFileURL to:(NSString *)newName {
+    NSString *oldThumbPath = [self pathForThumbOfComposition:oldFileURL];
+    NSURL *newURL = [self URLForResourceShortName:newName];
+    NSString *newThumbPath = [self pathForThumbOfComposition:newURL];
+    NSError *error = nil;
+    if ([[NSFileManager defaultManager] moveItemAtURL:oldFileURL toURL:newURL error:&error] &&
+        [[NSFileManager defaultManager] moveItemAtPath:oldThumbPath toPath:newThumbPath error:&error]) {
+        [compositions replaceObjectAtIndex:[compositions indexOfObject:oldFileURL] withObject:newURL];
+        [[NSNotificationCenter defaultCenter] postNotificationName:CompositionsChangedNotification object:oldFileURL];
+        return  YES;
+    }
+    return  NO;
+}
 
 - (void)dealloc
 {
