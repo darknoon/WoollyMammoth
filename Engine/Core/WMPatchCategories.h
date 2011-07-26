@@ -8,9 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString *WMPatchCategoryDevice;
 extern NSString *WMPatchCategoryNetwork;
-extern NSString *WMPatchCategoryRender;
-extern NSString *WMPatchCategoryInput;
+extern NSString *WMPatchCategoryGeometry;
+extern NSString *WMPatchCategoryImage;
+extern NSString *WMPatchCategoryUtil;
 extern NSString *WMPatchCategoryUnknown;
 
 @interface WMPatchCategories : NSObject

@@ -34,7 +34,7 @@ WMStructureField WMQuadVertex_fields[] = {
 
 + (NSString *)category;
 {
-    return WMPatchCategoryRender;
+    return WMPatchCategoryGeometry;
 }
 
 + (NSString *)humanReadableTitle {

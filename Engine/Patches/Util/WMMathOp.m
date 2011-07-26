@@ -13,7 +13,7 @@
 
 + (NSString *)category;
 {
-    return WMPatchCategoryRender;
+    return WMPatchCategoryUtil;
 }
 
 + (void)load;

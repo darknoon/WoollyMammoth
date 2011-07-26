@@ -58,7 +58,7 @@
 
 + (NSString *)category;
 {
-    return WMPatchCategoryInput;
+    return WMPatchCategoryDevice;
 }
 
 - (BOOL)setup:(WMEAGLContext *)context;

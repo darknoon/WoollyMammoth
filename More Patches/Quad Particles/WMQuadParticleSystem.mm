@@ -183,7 +183,7 @@ int particleZCompare(const void *a, const void *b) {
 
 + (NSString *)category;
 {
-    return WMPatchCategoryRender;
+    return WMPatchCategoryGeometry;
 }
 
 - (id)initWithPlistRepresentation:(id)inPlist;

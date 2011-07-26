@@ -10,10 +10,12 @@
 
 #import "WMPatch.h"
 
+NSString *WMPatchCategoryDevice = @"Device";
 NSString *WMPatchCategoryNetwork = @"Network";
-NSString *WMPatchCategoryRender = @"Render";
-NSString *WMPatchCategoryInput = @"Input";
-NSString *WMPatchCategoryUnknown = @"Photo Tweet Hive";
+NSString *WMPatchCategoryGeometry = @"Geometry";
+NSString *WMPatchCategoryImage = @"Image";
+NSString *WMPatchCategoryUtil = @"Utility";
+NSString *WMPatchCategoryUnknown = @"Other";
 
 NSArray *WMPatchCategoryNames;
 

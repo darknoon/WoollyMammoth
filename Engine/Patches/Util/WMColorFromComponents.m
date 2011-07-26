@@ -67,7 +67,7 @@ COLOUR HSL2RGB(HSL c1)
 
 + (NSString *)category;
 {
-    return WMPatchCategoryRender;
+    return WMPatchCategoryUtil;
 }
 
 + (void)load;
@@ -92,14 +92,12 @@ COLOUR HSL2RGB(HSL c1)
 	return self;
 }
 
-- (BOOL)setPlistState:(id)inPlist;
++ (id)defaultValueForInputPortKey:(NSString *)inKey;
 {
-	return [super setPlistState:inPlist];
-}
-
-- (id)plistState;
-{
-	return [super plistState];
+	if ([inKey isEqualToString:@"inputAlpha"]) {
+		return [NSNumber numberWithFloat:1.0f];
+	}
+	return nil;
 }
 
 - (BOOL)execute:(WMEAGLContext *)inContext time:(CFTimeInterval)time arguments:(NSDictionary *)args;

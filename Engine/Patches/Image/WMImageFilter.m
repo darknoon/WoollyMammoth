@@ -25,7 +25,7 @@ typedef struct {
 
 + (NSString *)category;
 {
-    return WMPatchCategoryRender;
+    return WMPatchCategoryImage;
 }
 
 + (void)load;

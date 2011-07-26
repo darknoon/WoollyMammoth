@@ -15,7 +15,7 @@
 
 + (NSString *)category;
 {
-    return WMPatchCategoryInput;
+    return WMPatchCategoryDevice;
 }
 
 + (NSString *)humanReadableTitle {

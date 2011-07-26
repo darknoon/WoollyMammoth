@@ -30,7 +30,7 @@ typedef struct {
 
 + (NSString *)category;
 {
-    return WMPatchCategoryRender;
+    return WMPatchCategoryGeometry;
 }
 
 + (void)load;
