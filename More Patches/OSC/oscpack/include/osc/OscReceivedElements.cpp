@@ -92,7 +92,7 @@ static inline int32 ToInt32( const char *p )
 #ifdef OSC_HOST_LITTLE_ENDIAN
     union{
         osc::int32 i;
-        char c[4];
+        char c[sizeof(int32)];
     } u;
 
     u.c[0] = p[3];
@@ -112,7 +112,7 @@ static inline uint32 ToUInt32( const char *p )
 #ifdef OSC_HOST_LITTLE_ENDIAN
     union{
         osc::uint32 i;
-        char c[4];
+        char c[sizeof(uint32)];
     } u;
 
     u.c[0] = p[3];
@@ -132,7 +132,7 @@ int64 ToInt64( const char *p )
 #ifdef OSC_HOST_LITTLE_ENDIAN
     union{
         osc::int64 i;
-        char c[4];
+        char c[sizeof(int64)];
     } u;
 
     u.c[0] = p[7];
@@ -156,7 +156,7 @@ uint64 ToUInt64( const char *p )
 #ifdef OSC_HOST_LITTLE_ENDIAN
     union{
         osc::uint64 i;
-        char c[4];
+        char c[sizeof(uint64)];
     } u;
 
     u.c[0] = p[7];
