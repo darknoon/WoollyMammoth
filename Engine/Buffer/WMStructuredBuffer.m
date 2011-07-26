@@ -105,7 +105,8 @@
 
 - (NSString *)description;
 {
-	return [NSString stringWithFormat:@"<%@ : %p = %d @ %d bytes = %d>", [self class], self, count, definition.size, self.dataSize];
+	NSString *bufferObjectString = bufferObject ? [NSString stringWithFormat:@" bufferObject: %d", bufferObject] : @"";
+	return [NSString stringWithFormat:@"<%@ : %p = %d @ %d bytes = %d%@>", [self class], self, count, definition.size, self.dataSize, bufferObjectString];
 }
 
 - (NSString *)debugDescription;
