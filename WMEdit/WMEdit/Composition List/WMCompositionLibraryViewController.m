@@ -100,7 +100,13 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
-    cell.textLabel.text = inIndexPath.row < [self compositionsAsPaths].count ? [[(NSString *)[[self compositionsAsPaths] objectAtIndex:inIndexPath.row] lastPathComponent] stringByDeletingPathExtension] : NSLocalizedString(@"New Composition", nil);
+    BOOL notNewCompostion = inIndexPath.row < [self compositionsAsPaths].count;
+    
+    NSString *path =  notNewCompostion ? (NSString *)[[self compositionsAsPaths] objectAtIndex:inIndexPath.row]: nil;
+    UIImage *image = path ? [[WMCompositionLibrary compositionLibrary] imageForCompositionPath:[NSURL fileURLWithPath:path]] : nil;
+    
+    cell.textLabel.text = notNewCompostion ? [[path lastPathComponent] stringByDeletingPathExtension] : NSLocalizedString(@"New Composition", nil);
+    cell.imageView.image = image;
     
     return cell;
 }
