@@ -117,7 +117,7 @@ COLOUR HSL2RGB(HSL c1)
 			outputColor.v = (GLKVector4){color.r, color.g, color.b, inputAlpha.value};
 			return YES;
 		case WMColorFromComponentsRGB:
-			outputColor.v = (GLKVector4){input1.value, input2.value, input2.value, inputAlpha.value};
+			outputColor.v = (GLKVector4){input1.value, input2.value, input3.value, inputAlpha.value};
 			return YES;
 		default:
 			return NO;
