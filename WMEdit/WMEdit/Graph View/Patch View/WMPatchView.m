@@ -400,7 +400,7 @@ static const UIEdgeInsets insets = {.top = 11.f, .left = 10.f, .right = 10.f, .b
 
 - (void)inputsTapped:(UITapGestureRecognizer *)inR;
 {
-	NSLog(@"tapped inputs. bring up the top");
+	[graphView inputPortStripTappedWithRect:inputPlugStrip.frame patchView:self];
 }
 
 #pragma mark - Menu

@@ -14,7 +14,11 @@ static const CGFloat offsetBetweenDots = 15.f;
 static const CGFloat leftOffset = 15.f;
 static const CGFloat plugstripHeight = 22.f;
 
+@class WMEditViewController;
+
 @interface WMGraphEditView : UIView
+
+@property (nonatomic, assign) WMEditViewController *viewController;
 
 @property (nonatomic, retain) WMPatch *rootPatch;
 
@@ -27,7 +31,8 @@ static const CGFloat plugstripHeight = 22.f;
 - (void)continueDraggingConnectionWithLocation:(CGPoint)inPoint inPatchView:(WMPatchView *)inView;
 - (void)endDraggingConnectionWithLocation:(CGPoint)inPoint inPatchView:(WMPatchView *)inView;
 
-- (BOOL)patchHit:(CGPoint)pt;
+- (void)inputPortStripTappedWithRect:(CGRect)inInputPortsRect patchView:(WMPatchView *)inPatchView;
 
+- (BOOL)patchHit:(CGPoint)pt;
 
 @end

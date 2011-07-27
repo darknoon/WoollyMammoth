@@ -144,6 +144,19 @@
 		498DDEE713DF469F00D10642 /* WMGraphEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 498DDEDD13DF469F00D10642 /* WMGraphEditView.m */; };
 		498DDEE913DF491D00D10642 /* WMEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498DDEE813DF491D00D10642 /* WMEditViewController.xib */; };
 		498DDEEC13DF496000D10642 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498DDEEA13DF496000D10642 /* MainWindow.xib */; };
+		498DDEF013DF584000D10642 /* WMCustomPopover.m in Sources */ = {isa = PBXBuildFile; fileRef = 498DDEEF13DF584000D10642 /* WMCustomPopover.m */; };
+		498DDEF613DF5BCC00D10642 /* WMCustomPopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 498DDEF513DF5BCC00D10642 /* WMCustomPopoverView.m */; };
+		498DDEFC13DF600700D10642 /* black-popover-arrow-left~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 498DDEF713DF600700D10642 /* black-popover-arrow-left~ipad.png */; };
+		498DDEFD13DF600700D10642 /* black-popover-arrow-right~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 498DDEF813DF600700D10642 /* black-popover-arrow-right~ipad.png */; };
+		498DDEFE13DF600700D10642 /* black-popover-bottom~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 498DDEF913DF600700D10642 /* black-popover-bottom~ipad.png */; };
+		498DDEFF13DF600700D10642 /* black-popover-middle~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 498DDEFA13DF600700D10642 /* black-popover-middle~ipad.png */; };
+		498DDF0013DF600700D10642 /* black-popover-top~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 498DDEFB13DF600700D10642 /* black-popover-top~ipad.png */; };
+		498DDF0413DF8F1900D10642 /* WMInputPortsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498DDF0213DF8F1900D10642 /* WMInputPortsController.m */; };
+		498DDF0513DF8F1900D10642 /* WMInputPortsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498DDF0313DF8F1900D10642 /* WMInputPortsController.xib */; };
+		498DDF0813DF905500D10642 /* WMInputPortCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 498DDF0713DF905400D10642 /* WMInputPortCell.m */; };
+		498DDF0A13DF907600D10642 /* WMNumberInputPortCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498DDF0913DF907600D10642 /* WMNumberInputPortCell.xib */; };
+		498DDF0D13DF921B00D10642 /* WMNumberInputPortCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 498DDF0C13DF921B00D10642 /* WMNumberInputPortCell.m */; };
+		498DDF0F13DF952400D10642 /* WMInputPortCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498DDF0E13DF952400D10642 /* WMInputPortCell.xib */; };
 		49A5263C13D172BC004EC7F6 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5263B13D172BC004EC7F6 /* CoreMIDI.framework */; };
 		49A5263E13D172C6004EC7F6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5263D13D172C6004EC7F6 /* QuartzCore.framework */; };
 		49A5264013D172CF004EC7F6 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5263F13D172CF004EC7F6 /* CFNetwork.framework */; };
@@ -461,6 +474,24 @@
 		498DDEDD13DF469F00D10642 /* WMGraphEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMGraphEditView.m; sourceTree = "<group>"; };
 		498DDEE813DF491D00D10642 /* WMEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMEditViewController.xib; sourceTree = "<group>"; };
 		498DDEEB13DF496000D10642 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainWindow.xib; sourceTree = "<group>"; };
+		498DDEEE13DF584000D10642 /* WMCustomPopover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMCustomPopover.h; sourceTree = "<group>"; };
+		498DDEEF13DF584000D10642 /* WMCustomPopover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMCustomPopover.m; sourceTree = "<group>"; };
+		498DDEF413DF5BCB00D10642 /* WMCustomPopoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMCustomPopoverView.h; sourceTree = "<group>"; };
+		498DDEF513DF5BCC00D10642 /* WMCustomPopoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMCustomPopoverView.m; sourceTree = "<group>"; };
+		498DDEF713DF600700D10642 /* black-popover-arrow-left~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "black-popover-arrow-left~ipad.png"; sourceTree = "<group>"; };
+		498DDEF813DF600700D10642 /* black-popover-arrow-right~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "black-popover-arrow-right~ipad.png"; sourceTree = "<group>"; };
+		498DDEF913DF600700D10642 /* black-popover-bottom~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "black-popover-bottom~ipad.png"; sourceTree = "<group>"; };
+		498DDEFA13DF600700D10642 /* black-popover-middle~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "black-popover-middle~ipad.png"; sourceTree = "<group>"; };
+		498DDEFB13DF600700D10642 /* black-popover-top~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "black-popover-top~ipad.png"; sourceTree = "<group>"; };
+		498DDF0113DF8F1900D10642 /* WMInputPortsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMInputPortsController.h; sourceTree = "<group>"; };
+		498DDF0213DF8F1900D10642 /* WMInputPortsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMInputPortsController.m; sourceTree = "<group>"; };
+		498DDF0313DF8F1900D10642 /* WMInputPortsController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMInputPortsController.xib; sourceTree = "<group>"; };
+		498DDF0613DF905400D10642 /* WMInputPortCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMInputPortCell.h; sourceTree = "<group>"; };
+		498DDF0713DF905400D10642 /* WMInputPortCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMInputPortCell.m; sourceTree = "<group>"; };
+		498DDF0913DF907600D10642 /* WMNumberInputPortCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMNumberInputPortCell.xib; sourceTree = "<group>"; };
+		498DDF0B13DF921A00D10642 /* WMNumberInputPortCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMNumberInputPortCell.h; sourceTree = "<group>"; };
+		498DDF0C13DF921B00D10642 /* WMNumberInputPortCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMNumberInputPortCell.m; sourceTree = "<group>"; };
+		498DDF0E13DF952400D10642 /* WMInputPortCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMInputPortCell.xib; sourceTree = "<group>"; };
 		49A5263B13D172BC004EC7F6 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
 		49A5263D13D172C6004EC7F6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		49A5263F13D172CF004EC7F6 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -1056,6 +1087,7 @@
 				498DDEC713DF469F00D10642 /* Add Node */,
 				498DDECC13DF469F00D10642 /* Connections */,
 				498DDED513DF469F00D10642 /* Patch View */,
+				498DDEED13DF57FD00D10642 /* Ports Popover */,
 				498DDEDA13DF469F00D10642 /* WMEditViewController.h */,
 				498DDEDB13DF469F00D10642 /* WMEditViewController.m */,
 				498DDEE813DF491D00D10642 /* WMEditViewController.xib */,
@@ -1100,6 +1132,26 @@
 				498DDED913DF469F00D10642 /* WMPatchView.m */,
 			);
 			path = "Patch View";
+			sourceTree = "<group>";
+		};
+		498DDEED13DF57FD00D10642 /* Ports Popover */ = {
+			isa = PBXGroup;
+			children = (
+				498DDEEE13DF584000D10642 /* WMCustomPopover.h */,
+				498DDEEF13DF584000D10642 /* WMCustomPopover.m */,
+				498DDEF413DF5BCB00D10642 /* WMCustomPopoverView.h */,
+				498DDEF513DF5BCC00D10642 /* WMCustomPopoverView.m */,
+				498DDF0113DF8F1900D10642 /* WMInputPortsController.h */,
+				498DDF0213DF8F1900D10642 /* WMInputPortsController.m */,
+				498DDF0313DF8F1900D10642 /* WMInputPortsController.xib */,
+				498DDF0613DF905400D10642 /* WMInputPortCell.h */,
+				498DDF0713DF905400D10642 /* WMInputPortCell.m */,
+				498DDF0E13DF952400D10642 /* WMInputPortCell.xib */,
+				498DDF0B13DF921A00D10642 /* WMNumberInputPortCell.h */,
+				498DDF0C13DF921B00D10642 /* WMNumberInputPortCell.m */,
+				498DDF0913DF907600D10642 /* WMNumberInputPortCell.xib */,
+			);
+			path = "Ports Popover";
 			sourceTree = "<group>";
 		};
 		49A5264D13D17330004EC7F6 /* Externals */ = {
@@ -1157,6 +1209,11 @@
 				496150BF13D2D807006C8B57 /* plug-popover~ipad.png */,
 				49A5286413D17A03004EC7F6 /* connection-shadow~ipad.png */,
 				49A5286213D174C6004EC7F6 /* connection-white~ipad.png */,
+				498DDEF713DF600700D10642 /* black-popover-arrow-left~ipad.png */,
+				498DDEF813DF600700D10642 /* black-popover-arrow-right~ipad.png */,
+				498DDEF913DF600700D10642 /* black-popover-bottom~ipad.png */,
+				498DDEFA13DF600700D10642 /* black-popover-middle~ipad.png */,
+				498DDEFB13DF600700D10642 /* black-popover-top~ipad.png */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1362,6 +1419,14 @@
 				498DDEBB13DF465400D10642 /* WMCompositionLibraryViewController.xib in Resources */,
 				498DDEE913DF491D00D10642 /* WMEditViewController.xib in Resources */,
 				498DDEEC13DF496000D10642 /* MainWindow.xib in Resources */,
+				498DDEFC13DF600700D10642 /* black-popover-arrow-left~ipad.png in Resources */,
+				498DDEFD13DF600700D10642 /* black-popover-arrow-right~ipad.png in Resources */,
+				498DDEFE13DF600700D10642 /* black-popover-bottom~ipad.png in Resources */,
+				498DDEFF13DF600700D10642 /* black-popover-middle~ipad.png in Resources */,
+				498DDF0013DF600700D10642 /* black-popover-top~ipad.png in Resources */,
+				498DDF0513DF8F1900D10642 /* WMInputPortsController.xib in Resources */,
+				498DDF0A13DF907600D10642 /* WMNumberInputPortCell.xib in Resources */,
+				498DDF0F13DF952400D10642 /* WMInputPortCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1515,6 +1580,11 @@
 				498DDEE513DF469F00D10642 /* WMPatchView.m in Sources */,
 				498DDEE613DF469F00D10642 /* WMEditViewController.m in Sources */,
 				498DDEE713DF469F00D10642 /* WMGraphEditView.m in Sources */,
+				498DDEF013DF584000D10642 /* WMCustomPopover.m in Sources */,
+				498DDEF613DF5BCC00D10642 /* WMCustomPopoverView.m in Sources */,
+				498DDF0413DF8F1900D10642 /* WMInputPortsController.m in Sources */,
+				498DDF0813DF905500D10642 /* WMInputPortCell.m in Sources */,
+				498DDF0D13DF921B00D10642 /* WMNumberInputPortCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

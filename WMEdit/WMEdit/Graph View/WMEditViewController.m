@@ -15,6 +15,8 @@
 #import "WMGraphEditView.h"
 #import "WMPatch.h"
 #import "WMViewController.h"
+#import "WMCustomPopover.h"
+#import "WMInputPortsController.h"
 
 #import "WMCompositionLibrary.h"
 
@@ -34,6 +36,8 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	
 	CGPoint addLocation;
 	UIPopoverController *addNodePopover;
+	
+	WMCustomPopover *inputPortsPopover;
 	
 	BOOL previewFullScreen;
 	WMViewController *previewController;
@@ -91,6 +95,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 {
     [super viewDidLoad];
 	
+	graphView.viewController = self;
 	graphView.rootPatch = rootPatch;
 	
 	CGRect bounds = self.view.bounds;
@@ -192,7 +197,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 {
 	if (inR == addNodeRecognizer) {
 		//Don't recognize taps in the top of the window, as these should hit the top bar
-		return ![UIMenuController sharedMenuController].isMenuVisible && [inTouch locationInView:self.view].y > 44.f;
+		return !inputPortsPopover && ![UIMenuController sharedMenuController].isMenuVisible && [inTouch locationInView:self.view].y > 44.f;
 	}
 	return YES;
 }
@@ -219,6 +224,31 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	[addNodePopover dismissPopoverAnimated:YES];
 	[addNodePopover release];
 	addNodePopover = nil;
+}
+
+
+
+- (void)inputPortStripTappedWithRect:(CGRect)inInputPortsRect patchView:(WMPatchView *)inPatchView;
+{	
+	if (inputPortsPopover) {
+		[inputPortsPopover dismissPopoverAnimated:NO];
+		[inputPortsPopover release];
+	}
+	WMInputPortsController *content = [[[WMInputPortsController alloc] initWithNibName:@"WMInputPortsController" bundle:nil] autorelease];
+	content.ports = inPatchView.patch.inputPorts;
+
+	inputPortsPopover = [[WMCustomPopover alloc] initWithContentViewController:content];
+	inputPortsPopover.delegate = (id<WMCustomPopoverDelegate>)self;
+	[inputPortsPopover presentPopoverFromRect:[self.view convertRect:inInputPortsRect fromView:inPatchView] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+}
+
+- (void)customPopoverControllerDidDismissPopover:(WMCustomPopover *)inPopoverController;
+{
+	ZAssert(inputPortsPopover == inPopoverController, @"Wrong popover dismissed!");
+	if (inputPortsPopover == inPopoverController) {
+		[inputPortsPopover release];
+		inputPortsPopover = nil;
+	}
 }
 
 - (BOOL)saveComposition;
@@ -249,6 +279,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 {
 	[super viewWillDisappear:inAnimated];
 	[previewController viewWillDisappear:inAnimated];
+	[[UIMenuController sharedMenuController] setMenuVisible:NO];
 }
 
 - (void)viewDidDisappear:(BOOL)inAnimated;

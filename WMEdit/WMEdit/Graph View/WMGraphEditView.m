@@ -11,6 +11,8 @@
 #import "WMPatchConnectionsView.h"
 #import "WMPatchView.h"
 #import "WMConnectionPopover.h"
+#import "WMCustomPopover.h"
+#import "WMEditViewController.h"
 
 #import "WMPatch.h"
 #import "WMConnection.h"
@@ -23,6 +25,7 @@
 	UIImageView *lighting;
 }
 @synthesize rootPatch;
+@synthesize viewController;
 
 - (void)initShared;
 {
@@ -216,5 +219,10 @@
 	} completion: NULL];
 	
 	connectionPopover.hidden = YES;
+}
+
+- (void)inputPortStripTappedWithRect:(CGRect)inInputPortsRect patchView:(WMPatchView *)inPatchView;
+{
+	[self.viewController inputPortStripTappedWithRect:inInputPortsRect patchView:inPatchView];
 }
 @end

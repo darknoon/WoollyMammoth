@@ -32,4 +32,6 @@
 - (IBAction)addNode:(UITapGestureRecognizer *)inR;
 - (IBAction)editCompositionNameAction:(id)sender;
 
+- (void)inputPortStripTappedWithRect:(CGRect)inInputPortsRect patchView:(WMPatchView *)inPatchView;
+
 @end
