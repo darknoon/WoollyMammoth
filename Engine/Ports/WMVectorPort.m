@@ -28,16 +28,26 @@
 
 - (id)stateValue;
 {
-	return [NSValue valueWithBytes:&_v objCType:@encode(GLKVector4)];
+	//TODO: serialize as string instead of array
+	NSMutableArray *arrayRep = [NSMutableArray array];
+	for (int i=0; i<_size; i++) {
+		[arrayRep addObject:[NSNumber numberWithFloat:_v.v[i]]];
+	}
+	return arrayRep;
 }
 
 - (BOOL)setStateValue:(id)inStateValue;
 {
-	if ([inStateValue isKindOfClass:[NSValue class]]) {
-		if (strcmp([inStateValue objCType], @encode(GLKVector4)) == 0) {
-			_v = *(GLKVector4 *)[inStateValue bytes];
-			return YES;
+	if ([inStateValue isKindOfClass:[NSArray class]]) {
+		NSArray *arrayRep = (NSArray *)inStateValue;
+		for (int i=0; i<_size && i< arrayRep.count; i++) {
+			id obj = [arrayRep objectAtIndex:i];
+			if ([obj isKindOfClass:[NSNumber class]]) {
+				NSNumber *n = (NSNumber *)obj;
+				_v.v[i] = [n floatValue];
+			}
 		}
+		return YES;
 	}
 	return NO;
 }
