@@ -224,7 +224,6 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 				} else if ([ivarName hasPrefix:@"_"]) {
 					ivarName = [ivarName substringFromIndex:1];
 				}
-				NSLog(@"Create ivar input: %@", ivarName);
 				WMPort *inputPort = [self portForIvar:ivars[i] key:ivarName];
 				if (inputPort) {
 					object_setIvar(self, ivars[i], inputPort);
@@ -237,7 +236,6 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 				if ([ivarName hasPrefix:@"_"]) {
 					ivarName = [ivarName substringFromIndex:1];
 				}
-				//			NSLog(@"Create ivar output: %@", ivarName);
 				WMPort *outputPort = [self portForIvar:ivars[i] key:ivarName];
 				if (outputPort) {
 					object_setIvar(self, ivars[i], outputPort);
