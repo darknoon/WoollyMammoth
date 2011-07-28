@@ -8,5 +8,5 @@ varying highp vec2 v_textureCoordinate;
 void main()
 {
     gl_Position = modelViewProjectionMatrix * position;
-	v_textureCoordinate = vec2(1.0) - texCoord0.yx;
+	v_textureCoordinate = texCoord0;
 }

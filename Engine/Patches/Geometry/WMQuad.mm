@@ -120,7 +120,7 @@ WMStructureField WMQuadVertex_fields[] = {
 			
 			const struct WMVertex_v3f_tc2f vertex = {
 				.p = point,
-				.tc = {(char)u * 255, (char)v * 255}
+				.tc = {255 - (char)v * 255, 255 - (char)u * 255}
 			};
 			
 			//Append to vertex buffer
