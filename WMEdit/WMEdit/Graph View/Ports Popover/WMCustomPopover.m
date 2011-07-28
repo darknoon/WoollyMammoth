@@ -90,7 +90,6 @@
 - (void)loadView;
 {
 	WMCustomPopoverView *customPopoverView = [[WMCustomPopoverView alloc] initWithFrame:CGRectZero];
-	customPopoverView.backgroundColor = [UIColor greenColor];
 	customPopoverView.contentView = contentViewController.view;
 	self.view = customPopoverView;
 }
