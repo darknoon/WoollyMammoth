@@ -14,11 +14,17 @@
 @synthesize name;
 @synthesize originalPort;
 
++ (WMPort *)portWithKey:(NSString *)inKey;
+{
+	WMPort *p = [[[[self class] alloc] init] autorelease];
+	p.key = inKey;
+	return p;
+}
+
 - (NSString *)name;
 {
 	return [[name ? name : key retain] autorelease];
 }
-
 
 - (id)stateValue;
 {

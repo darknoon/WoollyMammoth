@@ -101,7 +101,7 @@ typedef struct {
 		gl_FragColor = texture2D(texture, gl_PointCoord) * v_color * v_color.a;\
 	}";
 	
-	shader = [[WMShader alloc] initWithVertexShader:vertexShader pixelShader:fragmentShader];
+	shader = [[WMShader alloc] initWithVertexShader:vertexShader fragmentShader:fragmentShader error:NULL];
 	GL_CHECK_ERROR;
 
 	return YES;

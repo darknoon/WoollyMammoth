@@ -29,7 +29,8 @@ typedef int DNGLStateDepthMask;
 	DNGLStateDepthMask depthState;
 	WMFramebuffer *boundFramebuffer;
 	
-	int maxVertexAttributes;	
+	int maxVertexAttributes;
+	int maxTextureUnits;
 }
 
 - (void)setVertexAttributeEnableState:(int)vertexAttributeEnableState;

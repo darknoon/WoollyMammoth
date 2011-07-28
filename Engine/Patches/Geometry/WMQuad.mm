@@ -38,13 +38,13 @@ WMStructureField WMQuadVertex_fields[] = {
 }
 
 + (NSString *)humanReadableTitle {
-    return @"Billboard";
+    return @"Rectangle with Image";
 }
 
 + (void)load;
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[self registerToRepresentClassNames:[NSSet setWithObject:@"QCBillboard"]];
+	[self registerToRepresentClassNames:[NSSet setWithObject:@"WMBillboard"]];
 	[pool drain];
 }
 
@@ -135,31 +135,27 @@ WMStructureField WMQuadVertex_fields[] = {
 {
 	//TODO: replace this with a user-specifiable shader
 	
-	NSString *vertexShader = @"\
-	attribute vec4 position;\
-	attribute vec2 texCoord0;\
-	uniform mat4 modelViewProjectionMatrix;\
-	varying highp vec2 v_textureCoordinate;\
-	void main()\
-	{\
-    gl_Position = modelViewProjectionMatrix * position;\
-	v_textureCoordinate = vec2(1.0) - texCoord0.yx;\
-	}";
-	
-	NSString *fragmentShader = @"\
-	uniform sampler2D texture;\
-	uniform lowp vec4 color;\
-	varying highp vec2 v_textureCoordinate;\
-	void main()\
-	{\
-	gl_FragColor = color * texture2D(texture, v_textureCoordinate);\
-	}";
-	
-	NSLog(@"blah vector 3: %@", NSStringFromGLKVector3((GLKVector3){0.12345, 20.123456789123456789f, 12345667890}));
-	
 	renderObject = [[WMRenderObject alloc] init];
+	
+	NSError *defaultShaderError = nil;
+	NSString *vertexShader = [NSString stringWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"WMDefaultShader" withExtension:@"vsh"] encoding:NSASCIIStringEncoding error:&defaultShaderError];
+	if (defaultShaderError) {
+		NSLog(@"Error loading default vertex shader: %@", defaultShaderError);
+		return NO;
+	}
+	
+	NSString *fragmentShader = [NSString stringWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"WMDefaultShader" withExtension:@"fsh"] encoding:NSASCIIStringEncoding error:&defaultShaderError];
+	if (defaultShaderError) {
+		NSLog(@"Error loading default fragment shader: %@", defaultShaderError);
+		return NO;
+	}
+	
+	shader = [[WMShader alloc] initWithVertexShader:vertexShader fragmentShader:fragmentShader error:&defaultShaderError];
+	if (defaultShaderError) {
+		NSLog(@"Error loading default shader: %@", defaultShaderError);
+		return NO;
+	}
 
-	shader = [[WMShader alloc] initWithVertexShader:vertexShader pixelShader:fragmentShader];
 	renderObject.shader = shader;	
 	
 	quadDef = [[WMStructureDefinition alloc] initWithFields:WMQuadVertex_fields count:sizeof(WMQuadVertex_fields) / sizeof(WMStructureField)];
@@ -211,35 +207,22 @@ WMStructureField WMQuadVertex_fields[] = {
 				renderObject.renderBlendState = DNGLStateBlendEnabled | DNGLStateBlendModeAdd;
 				break;
 		}
-		
-		glUseProgram(shader.program);
-		
-		GL_CHECK_ERROR;
-		
-		//TODO: manage current texture bound state in WMEAGLContext
+						
 		if (inputImage.image) {
-			glBindTexture(GL_TEXTURE_2D, [inputImage.image name]);
-			[shader setIntValue:0 forUniform:@"texture"];
-		} else {
-			glBindTexture(GL_TEXTURE_2D, 0);
+			[renderObject setValue:inputImage.image forUniformWithName:@"texture"];
 		}
-		
-		GL_CHECK_ERROR;
 		
 		GLKMatrix4 transform = GLKMatrix4Identity;
 		transform = GLKMatrix4Scale(transform, inputScale.value, inputScale.value, 1.0f);
 		transform = GLKMatrix4TranslateWithVector3(transform, inputPosition.v);
 		transform = GLKMatrix4RotateZ(transform, inputRotation.value * M_PI / 180.f);
 		transform = GLKMatrix4Multiply(transform, inContext.modelViewMatrix);
-		GL_CHECK_ERROR;
-		[shader setMatrix4Value:transform forUniform:@"modelViewProjectionMatrix"];
-		GL_CHECK_ERROR;
+		[renderObject setValue:[NSValue valueWithBytes:&transform objCType:@encode(GLKMatrix4)] forUniformWithName:@"modelViewProjectionMatrix"];
+
+		[renderObject setValue:inputColor.objectValue forUniformWithName:@"color"];
 		
-		[shader setVector4Value:inputColor.v forUniform:@"color"];
 		
-		GL_CHECK_ERROR;
-		
-		[inContext renderObject:renderObject];
+		outputObject.object = renderObject;
 	}
 
 	return YES;

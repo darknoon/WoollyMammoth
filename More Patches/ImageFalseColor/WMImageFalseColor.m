@@ -92,10 +92,11 @@ typedef struct {
 	}
 	
 	shader = [[WMShader alloc] initWithVertexShader:combindedShader
-										pixelShader:combindedShader];
+									 fragmentShader:combindedShader
+											  error:NULL];
 	
 	[self loadQuadData];
-
+	
     NSData *palette = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RainbowLight" ofType:@"pal"]];
 #if 1
     unsigned char *pali = (unsigned char *) [palette bytes];

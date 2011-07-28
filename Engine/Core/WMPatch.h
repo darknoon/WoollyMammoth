@@ -79,6 +79,9 @@ typedef enum {
 - (void)addInputPort:(WMPort *)inPort;
 - (void)addOutputPort:(WMPort *)inPort;
 
+- (void)removeInputPort:(WMPort *)inPort;
+- (void)removeOutputPort:(WMPort *)inPort;
+
 @property (nonatomic, copy) NSString *key;
 @property (nonatomic, readonly) NSArray *children;
 @property (nonatomic, readonly) NSArray *connections;

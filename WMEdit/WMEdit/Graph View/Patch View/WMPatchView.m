@@ -11,6 +11,7 @@
 #import "CGRoundRect.h"
 #import "WMPatch.h"
 #import "WMGraphEditView.h"
+#import "WMPatch+SettingsControllerClass.h"
 
 static const CGFloat bodyRadius = 9.f;
 static const CGFloat bodyHeight = 45.f;
@@ -413,11 +414,14 @@ static const UIEdgeInsets insets = {.top = 11.f, .left = 10.f, .right = 10.f, .b
 
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-	return action == @selector(delete:);
+	return action == @selector(delete:) || (action == @selector(showSettings:) && [patch settingsControllerClass] != Nil);
 }
 
 - (void)tapped:(UITapGestureRecognizer *)inR;
 {
+	UIMenuItem *settingsItem = [[[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Settings…", nil) action:@selector(showSettings:)] autorelease];
+	
+	[UIMenuController sharedMenuController].menuItems = [NSArray arrayWithObject:settingsItem];
 	[[UIMenuController sharedMenuController] setTargetRect:label.frame inView:self];
 	[[UIMenuController sharedMenuController] setMenuVisible:YES animated:YES];
 	
@@ -428,6 +432,11 @@ static const UIEdgeInsets insets = {.top = 11.f, .left = 10.f, .right = 10.f, .b
 - (void)delete:(id)sender;
 {
 	[graphView removePatch:self.patch];
+}
+
+- (void)showSettings:(id)sender;
+{
+	[graphView showSettingsForPatchView:self];
 }
 
 @end

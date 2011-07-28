@@ -11,8 +11,23 @@
 #import "WMFramebuffer.h"
 #import "WMStructuredBuffer.h"
 #import "WMRenderObject.h"
+#import "WMTexture2D.h"
 
 #import "WMStructuredBuffer_WMEAGLContext_Private.h"
+
+//TODO: where should this live?
+@interface WMShader (WMShader_Uniform_State)
+
+//TODO: support multiple-input, ie 3 vec3s instead of 1
+- (BOOL)setIntValue:(int)inValue forUniform:(NSString *)inUniform;
+- (BOOL)setFloatValue:(float)inValue forUniform:(NSString *)inUniform;
+- (BOOL)setVector2Value:(GLKVector2)inValue forUniform:(NSString *)inUniform;
+- (BOOL)setVector3Value:(GLKVector3)inValue forUniform:(NSString *)inUniform;
+- (BOOL)setVector4Value:(GLKVector4)inValue forUniform:(NSString *)inUniform;
+- (BOOL)setMatrix3Value:(GLKMatrix3)inValue forUniform:(NSString *)inUniform;
+- (BOOL)setMatrix4Value:(GLKMatrix4)inValue forUniform:(NSString *)inUniform;
+
+@end
 
 @implementation WMEAGLContext
 @synthesize blendState;
@@ -28,7 +43,7 @@
 - (id) initWithAPI:(EAGLRenderingAPI)api sharegroup:(EAGLSharegroup *)sharegroup {
 	self = [super initWithAPI:api sharegroup:sharegroup];
 	if (self == nil) return self; 
-
+	
 	BOOL success = [EAGLContext setCurrentContext:self];
 	
 	if (success) {
@@ -42,8 +57,10 @@
 		
 		//Set matrix to identity
 		modelViewMatrix = GLKMatrix4Identity;
-
+		
 		glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &maxVertexAttributes);
+		
+		glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
 		
 	} else {
 		NSLog(@"Couldn't set current EAGLContext to self in WMEAGLContext initWithAPI:sharegroup:");
@@ -213,7 +230,57 @@
 	
 	GL_CHECK_ERROR;
 	
+	glUseProgram(shader.program);
 	
+	NSMutableOrderedSet *textures = [[[NSMutableOrderedSet alloc] init] autorelease];
+	
+	//Set uniform values
+	for (NSString *uniformName in shader.uniformNames) {
+		id value = [inObject valueForUniformWithName:uniformName];
+		
+		if ([value isKindOfClass:[NSNumber class]]) {
+			[shader setFloatValue:[value floatValue] forUniform:uniformName];
+		} else if ([value isKindOfClass:[NSValue class]]) {
+			//TODO: use perfect hashing here!
+			const char *valueType = [(NSValue *)value objCType];
+			if (strcmp(valueType, @encode(GLKVector4)) == 0) {
+				GLKVector4 vector;
+				[(NSValue *)value getValue:&vector];
+				[shader setVector4Value:vector forUniform:uniformName];
+			} else if (strcmp(valueType, @encode(GLKVector3)) == 0) {
+				GLKVector3 vector;
+				[(NSValue *)value getValue:&vector];
+				[shader setVector3Value:vector forUniform:uniformName];
+			} else if (strcmp(valueType, @encode(GLKVector2)) == 0) {
+				GLKVector2 vector;
+				[(NSValue *)value getValue:&vector];
+				[shader setVector2Value:vector forUniform:uniformName];
+			} else if (strcmp(valueType, @encode(GLKMatrix4)) == 0) {
+				GLKMatrix4 matrix;
+				[(NSValue *)value getValue:&matrix];
+				[shader setMatrix4Value:matrix forUniform:uniformName];
+			} else if (strcmp(valueType, @encode(GLKMatrix3)) == 0) {
+				GLKMatrix3 matrix;
+				[(NSValue *)value getValue:&matrix];
+				[shader setMatrix3Value:matrix forUniform:uniformName];
+			} else {
+				NSLog(@"bad nsvalue type for uniform %@: %s", uniformName, valueType);
+			}
+		} else if ([value isKindOfClass:[WMTexture2D class]]) {
+			//We unique the textures (one texture unit per texture) here by adding to a mutable ordered set then getting the index back out
+			[textures addObject:value];
+			int textureUnit = [textures indexOfObject:value];
+			[shader setIntValue:textureUnit forUniform:uniformName];
+		}
+	}
+	
+	//Bind textures as a separate pass
+	for (int i=0; i<textures.count && i<maxTextureUnits; i++) {
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, [(WMTexture2D *)[textures objectAtIndex:i] name]);
+	}
+	GL_CHECK_ERROR;
+
 	// Validate program before drawing. This is a good check, but only really necessary in a debug build.
 #if DEBUG
 	if (![shader validateProgram])
@@ -221,6 +288,7 @@
 		NSLog(@"Failed to validate program in shader: %@", shader);
 	}
 #endif
+	GL_CHECK_ERROR;
 	
 	
 	self.blendState = inObject.renderBlendState;
@@ -263,8 +331,13 @@
 		
 		
 	}
-	
+
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//Unbind textures
+	for (int i=0; i<textures.count && i<maxTextureUnits; i++) {
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
 	
 }
 
@@ -323,3 +396,91 @@
 }
 
 @end
+
+@implementation WMShader (WMShader_Uniform_State)
+
+//TODO: save type information so we can typecheck these
+//TODO: make this less verbose
+
+- (BOOL)setIntValue:(int)inValue forUniform:(NSString *)inUniform;
+{
+	int uniformLocation = [self uniformLocationForName:inUniform];
+	if (uniformLocation != -1) {
+		glUniform1i(uniformLocation, inValue);
+		return YES;
+	} else {
+		return NO;
+	}
+}
+
+- (BOOL)setFloatValue:(float)inValue forUniform:(NSString *)inUniform;
+{
+	int uniformLocation = [self uniformLocationForName:inUniform];
+	if (uniformLocation != -1) {
+		glUniform1f(uniformLocation, inValue);
+		return YES;
+	} else {
+		return NO;
+	}
+}
+
+- (BOOL)setVector2Value:(GLKVector2)inValue forUniform:(NSString *)inUniform;
+{
+	int uniformLocation = [self uniformLocationForName:inUniform];
+	if (uniformLocation != -1) {
+		glUniform2f(uniformLocation, inValue.x, inValue.y);
+		return YES;
+	} else {
+		return NO;
+	}
+}
+
+- (BOOL)setVector3Value:(GLKVector3)inValue forUniform:(NSString *)inUniform;
+{
+	int uniformLocation = [self uniformLocationForName:inUniform];
+	if (uniformLocation != -1) {
+		glUniform3f(uniformLocation, inValue.x, inValue.y, inValue.z);
+		return YES;
+	} else {
+		return NO;
+	}
+	
+}
+
+- (BOOL)setVector4Value:(GLKVector4)inValue forUniform:(NSString *)inUniform;
+{
+	int uniformLocation = [self uniformLocationForName:inUniform];
+	if (uniformLocation != -1) {
+		glUniform4f(uniformLocation, inValue.x, inValue.y, inValue.z, inValue.w);
+		return YES;
+	} else {
+		return NO;
+	}
+	
+}
+
+- (BOOL)setMatrix3Value:(GLKMatrix3)inValue forUniform:(NSString *)inUniform;
+{
+	int uniformLocation = [self uniformLocationForName:inUniform];
+	if (uniformLocation != -1) {
+		glUniformMatrix3fv(uniformLocation, 1, NO, inValue.m);
+		return YES;
+	} else {
+		return NO;
+	}
+	
+}
+
+- (BOOL)setMatrix4Value:(GLKMatrix4)inValue forUniform:(NSString *)inUniform;
+{
+	int uniformLocation = [self uniformLocationForName:inUniform];
+	if (uniformLocation != -1) {
+		glUniformMatrix4fv(uniformLocation, 1, NO, inValue.m);
+		return YES;
+	} else {
+		return NO;
+	}
+}
+
+@end
+

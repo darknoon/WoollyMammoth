@@ -33,6 +33,8 @@ static const CGFloat plugstripHeight = 22.f;
 
 - (void)inputPortStripTappedWithRect:(CGRect)inInputPortsRect patchView:(WMPatchView *)inPatchView;
 
+- (void)showSettingsForPatchView:(WMPatchView *)inPatchView;
+
 - (BOOL)patchHit:(CGPoint)pt;
 
 @end

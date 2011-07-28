@@ -495,13 +495,27 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	[self didChangeValueForKey:@"outputPorts"];
 }
 
+- (void)removeInputPort:(WMPort *)inPort;
+{
+	[self willChangeValueForKey:@"inputPorts"];
+	[inputPorts removeObject:inPort];
+	[self didChangeValueForKey:@"inputPorts"];
+}
+
+- (void)removeOutputPort:(WMPort *)inPort;
+{
+	[self willChangeValueForKey:@"inputPorts"];
+	[outputPorts removeObject:inPort];
+	[self didChangeValueForKey:@"inputPorts"];
+}
+
 - (NSArray *)inputPorts;
 {
-	return [[inputPorts retain] autorelease];
+	return [[inputPorts copy] autorelease];
 }
 - (NSArray *)outputPorts;
 {
-	return [[outputPorts retain] autorelease];
+	return [[outputPorts copy] autorelease];
 }
 
 - (NSArray *)systemInputPorts;
@@ -607,11 +621,11 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 
 - (void)addChild:(WMPatch *)inPatch;
 {
-	//Generate a key if necessary
-	inPatch.key = [self availableKeyForSubPatch:inPatch];
-	
-	if (![children containsObject:inPatch])
+	if (![children containsObject:inPatch]) {
+		//Generate a key if necessary
+		inPatch.key = [self availableKeyForSubPatch:inPatch];
 		[children addObject:inPatch];
+	} 
 	if ([childrenByKey objectForKey:inPatch.key] != inPatch) {
 		[childrenByKey setObject:inPatch forKey:inPatch.key];
 	}

@@ -42,6 +42,9 @@
 @property (nonatomic) DNGLStateBlendMask renderBlendState;
 @property (nonatomic) DNGLStateDepthMask renderDepthState;
 
+- (void)setValue:(id)inValue forUniformWithName:(NSString *)inUniformName;
+- (id)valueForUniformWithName:(NSString *)inUniformName;
+
 @end
 
 

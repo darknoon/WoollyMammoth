@@ -13,6 +13,8 @@
     
 }
 
++ (WMPort *)portWithKey:(NSString *)inKey;
+
 - (id)stateValue;
 - (BOOL)setStateValue:(id)inStateValue;
 

@@ -11,7 +11,10 @@
 #import "WMRenderCommon.h"
 
 //Abstract superclass. Use the ports below in your patches, which indicate the size of the vector.
+//TODO: standardize on "value" instead of "v" for all ports
 @interface WMVectorPort : WMPort
+//TODO: this is a stopgap because -valueForKey:@"v" is throwing an exception for some reason!
+- (id)objectValue;
 @end
 
 @interface WMVector2Port : WMVectorPort

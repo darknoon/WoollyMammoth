@@ -32,6 +32,8 @@
 - (IBAction)addNode:(UITapGestureRecognizer *)inR;
 - (IBAction)editCompositionNameAction:(id)sender;
 
+//TODO: can we improve the api for communication between WMPatchView and WMEditViewController to remove glue code in WMGraphEditView
 - (void)inputPortStripTappedWithRect:(CGRect)inInputPortsRect patchView:(WMPatchView *)inPatchView;
+- (void)showSettingsForPatchView:(WMPatchView *)inPatchView;
 
 @end

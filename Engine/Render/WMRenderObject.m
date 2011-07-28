@@ -8,7 +8,9 @@
 
 #import "WMRenderObject.h"
 
-@implementation WMRenderObject
+@implementation WMRenderObject {
+	NSMutableDictionary *uniformValues;
+}
 
 @synthesize vertexBuffer;
 @synthesize indexBuffer;
@@ -31,6 +33,8 @@
     
 	renderBlendState = 0;
 	renderDepthState = 0;
+	
+	uniformValues = [[NSMutableDictionary alloc] init];
 	
     return self;
 }
@@ -57,6 +61,16 @@
 {
 	return [NSString stringWithFormat:@"<%@ %p vb:%@ ib:%@ shader:%@ renderType:%@ range:%@ renderBlendState:%d renderDepthState:%d>",
 			[self class], self, vertexBuffer, indexBuffer, shader, [WMRenderObject stringFromGLRenderType:renderType], NSStringFromRange(renderRange), renderBlendState, renderDepthState];
+}
+
+- (void)setValue:(id)inValue forUniformWithName:(NSString *)inUniformName;
+{
+	[uniformValues setObject:inValue forKey:inUniformName];
+}
+
+- (id)valueForUniformWithName:(NSString *)inUniformName;
+{
+	return [uniformValues objectForKey:inUniformName];
 }
 
 @end

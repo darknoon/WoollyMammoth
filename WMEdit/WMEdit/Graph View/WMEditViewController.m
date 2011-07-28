@@ -17,6 +17,7 @@
 #import "WMViewController.h"
 #import "WMCustomPopover.h"
 #import "WMInputPortsController.h"
+#import "WMPatch+SettingsControllerClass.h"
 
 #import "WMCompositionLibrary.h"
 
@@ -35,9 +36,10 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	NSURL *fileURL;
 	
 	CGPoint addLocation;
-	UIPopoverController *addNodePopover;
-	
+	UIPopoverController *addNodePopover;	
 	WMCustomPopover *inputPortsPopover;
+	UIPopoverController *patchSettingsPopover;
+
 	
 	BOOL previewFullScreen;
 	WMViewController *previewController;
@@ -187,12 +189,6 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	}	
 }
 
-- (void)checkPopover:(BOOL)animage {
-    [addNodePopover dismissPopoverAnimated:animage];
-    [addNodePopover release];
-    addNodePopover = nil;
-}
-
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)inR shouldReceiveTouch:(UITouch *)inTouch;
 {
 	if (inR == addNodeRecognizer) {
@@ -240,6 +236,18 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	inputPortsPopover = [[WMCustomPopover alloc] initWithContentViewController:content];
 	inputPortsPopover.delegate = (id<WMCustomPopoverDelegate>)self;
 	[inputPortsPopover presentPopoverFromRect:[self.view convertRect:inInputPortsRect fromView:inPatchView] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+}
+
+- (void)showSettingsForPatchView:(WMPatchView *)inPatchView;
+{
+	Class settingsViewControllerClass = [inPatchView.patch settingsControllerClass];
+	if (settingsViewControllerClass) {
+		UIViewController *vc = [[settingsViewControllerClass alloc] initWithPatch:inPatchView.patch];
+		
+		patchSettingsPopover = [[UIPopoverController alloc] initWithContentViewController:vc];
+		[patchSettingsPopover presentPopoverFromRect:inPatchView.frame inView:inPatchView.superview permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		
+	}
 }
 
 - (void)customPopoverControllerDidDismissPopover:(WMCustomPopover *)inPopoverController;

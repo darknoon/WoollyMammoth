@@ -14,3 +14,4 @@
 #import "WMBooleanPort.h"
 #import "WMStringPort.h"
 #import "WMVectorPort.h"
+#import "WMRenderObjectPort.h"

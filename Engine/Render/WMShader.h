@@ -13,22 +13,15 @@
 //ASSUME: Shader must be used in only one GL context.
 
 @interface WMShader : NSObject {
-	GLuint program;
-
-	NSString *vertexShader;
-	NSString *pixelShader;
-
-	NSArray *uniformNames;
 	NSMutableDictionary *uniformLocations;
 }
 
 //TODO: - (id)initWithDualShaderText:(NSString *)inString;
 
-- (id)initWithVertexShader:(NSString *)inVertexShader pixelShader:(NSString *)inPixelShader;
+- (id)initWithVertexShader:(NSString *)inVertexShader fragmentShader:(NSString *)inPixelShader error:(NSError **)outError;
 
 @property (nonatomic, copy, readonly) NSArray *vertexAttributeNames;
 @property (nonatomic, copy, readonly) NSArray *uniformNames;
-
 
 //Is this program configured correctly for drawing?
 - (BOOL)validateProgram;
@@ -41,19 +34,19 @@
 - (int)attributeLocationForName:(NSString *)inName;
 - (int)uniformLocationForName:(NSString *)inName;
 
++ (NSString *)nameOfShaderType:(GLenum)inType;
+
+- (GLenum)attributeTypeForName:(NSString *)inAttributeName;
+- (GLenum)uniformTypeForName:(NSString *)inUniformName;
+
+- (int)attributeCountForName:(NSString *)inAttributeName;
+- (int)uniformForName:(NSString *)inUniformName;
+
+
 @end
 
-
-//TODO: where should this live?
-@interface WMShader (WMShader_Uniform_State)
-
-//TODO: support multiple-input, ie 3 vec3s instead of 1
-- (BOOL)setIntValue:(int)inValue forUniform:(NSString *)inUniform;
-- (BOOL)setFloatValue:(float)inValue forUniform:(NSString *)inUniform;
-- (BOOL)setVector2Value:(GLKVector2)inValue forUniform:(NSString *)inUniform;
-- (BOOL)setVector3Value:(GLKVector3)inValue forUniform:(NSString *)inUniform;
-- (BOOL)setVector4Value:(GLKVector4)inValue forUniform:(NSString *)inUniform;
-- (BOOL)setMatrix3Value:(GLKMatrix3)inValue forUniform:(NSString *)inUniform;
-- (BOOL)setMatrix4Value:(GLKMatrix4)inValue forUniform:(NSString *)inUniform;
-
-@end
+extern NSString *WMShaderErrorDomain;
+typedef enum {
+	WMShaderErrorCompileError = 1,
+	WMShaderErrorLinkError,
+} WMShaderError;

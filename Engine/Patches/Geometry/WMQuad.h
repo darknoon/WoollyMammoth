@@ -23,11 +23,10 @@
 	WMNumberPort *inputRotation;
 	WMColorPort *inputColor;
 	
-	//TODO: add quad features
-//	QCOpenGLPort_Image *inputMask;	// 180 = 0xb4
 	WMIndexPort *inputBlending;
-//	QCBooleanPort *inputPixelAligned;	// 204 = 0xcc	
 	WMShader *shader;
+	
+	WMRenderObjectPort *outputObject;
 }
 
 @end

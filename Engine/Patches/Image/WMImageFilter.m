@@ -94,7 +94,8 @@ typedef struct {
 	}
 	
 	shader = [[WMShader alloc] initWithVertexShader:combindedShader
-										pixelShader:combindedShader];
+									 fragmentShader:combindedShader
+											  error:NULL];
 	
 	[self loadQuadData];
 	

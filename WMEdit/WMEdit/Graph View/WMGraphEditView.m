@@ -225,4 +225,10 @@
 {
 	[self.viewController inputPortStripTappedWithRect:inInputPortsRect patchView:inPatchView];
 }
+
+- (void)showSettingsForPatchView:(WMPatchView *)inPatchView;
+{
+	[self.viewController showSettingsForPatchView:inPatchView];
+}
+
 @end

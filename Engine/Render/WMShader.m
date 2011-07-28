@@ -8,53 +8,53 @@
 
 #import "WMShader.h"
 
+NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
+
 @interface WMShader()
 //Then load the shaders, compile and link into a program in the current context
-- (BOOL)loadShaders;
+- (BOOL)loadShadersWithError:(NSError **)outError;
 
 @property (nonatomic, copy) NSArray *uniformNames;
 @property (nonatomic, copy) NSArray *vertexAttributeNames;
 
+@property (nonatomic, copy) NSArray *uniformTypes;
+@property (nonatomic, copy) NSArray *vertexAttributeTypes;
+
 @property (nonatomic, copy) NSString *vertexShader;
-@property (nonatomic, copy) NSString *pixelShader;
+@property (nonatomic, copy) NSString *fragmentShader;
 
 @end
 
 @implementation WMShader
 
 @synthesize uniformNames;
+@synthesize uniformTypes;
 @synthesize vertexAttributeNames;
+@synthesize vertexAttributeTypes;
 
 @synthesize vertexShader;
-@synthesize pixelShader;
+@synthesize fragmentShader;
 @synthesize program;
 
 
-- (id)initWithVertexShader:(NSString *)inVertexShader pixelShader:(NSString *)inPixelShader;
+- (id)initWithVertexShader:(NSString *)inVertexShader fragmentShader:(NSString *)inPixelShader error:(NSError **)outError;
 {
 	self = [super init];
 	if (self == nil) return self; 
 	
 	uniformLocations = [[NSMutableDictionary alloc] init];
 	
-	if ([EAGLContext currentContext].API == kEAGLRenderingAPIOpenGLES2) {		
-				
-		self.vertexShader = inVertexShader;
-		self.pixelShader = inPixelShader;
-		
-		if (![self loadShaders]) {
-			[self release];
-			return nil;
-		}
-		
-		GL_CHECK_ERROR;		
-	} else {
-		//TODO: OpenGL ES 1.0 support?
-		NSLog(@"Can't create a shader in an ES1 context");
+	self.vertexShader = inVertexShader;
+	self.fragmentShader = inPixelShader;
+	
+	if (![self loadShadersWithError:outError]) {
 		[self release];
 		return nil;
 	}
-
+	
+	//TODO: roll this check into the out error!
+	GL_CHECK_ERROR;		
+	
 	
 	return self;
 }
@@ -63,7 +63,7 @@
 - (void)dealloc
 {
 	[vertexShader release];
-	[pixelShader release];
+	[fragmentShader release];
 	[uniformNames release];
 	[uniformLocations release];
 
@@ -121,8 +121,22 @@
 	}
 }
 
-- (BOOL)compileShaderSource:(NSString *)inSourceString toShader:(GLuint *)shader type:(GLenum)type;
+
+- (GLenum)uniformTypeForName:(NSString *)inUniformName;
 {
+	NSNumber *uniformTypeNumber = [uniformTypes objectAtIndex:[uniformNames indexOfObject:inUniformName]];
+	return uniformTypeNumber ? [uniformTypeNumber unsignedIntValue] : 0;
+}
+
+- (GLenum)vertexTypeForName:(NSString *)inAttributeName;
+{
+	NSNumber *vertexTypeNumber = [vertexAttributeTypes objectAtIndex:[vertexAttributeNames indexOfObject:inAttributeName]];
+	return vertexTypeNumber ? [vertexTypeNumber unsignedIntValue] : 0;
+}
+
+- (BOOL)compileShaderSource:(NSString *)inSourceString toShader:(GLuint *)shader type:(GLenum)type error:(NSError **)outError;
+{
+	if (!inSourceString) inSourceString = @"";
 	NSMutableString *defsString = [NSMutableString stringWithCapacity:inSourceString.length + 100];
 
 	NSDictionary *defs = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -139,22 +153,30 @@
     *shader = glCreateShader(type);
     glShaderSource(*shader, 2, glstrs, NULL);
     glCompileShader(*shader);
-    
-#if defined(DEBUG)
-    GLint logLength;
-    glGetShaderiv(*shader, GL_INFO_LOG_LENGTH, &logLength);
-    if (logLength > 0)
-    {
-        GLchar *log = (GLchar *)malloc(logLength);
-        glGetShaderInfoLog(*shader, logLength, &logLength, log);
-        NSLog(@"Shader compile log:\n%s", log);
-        free(log);
-    }
-#endif
-    
+        
     glGetShaderiv(*shader, GL_COMPILE_STATUS, &status);
     if (status == 0)
     {
+		//ERROR
+		GLint logLength;
+		glGetShaderiv(*shader, GL_INFO_LOG_LENGTH, &logLength);
+		if (logLength > 0)
+		{
+			GLchar *log = (GLchar *)malloc(logLength);
+			glGetShaderInfoLog(*shader, logLength, &logLength, log);
+			
+			if (outError) {
+				NSString *shaderErrorString = [NSString stringWithFormat:NSLocalizedString(@"Error compiling shader: %@", nil), [NSString stringWithCString:log encoding:NSASCIIStringEncoding]];
+				NSError *error = [NSError errorWithDomain:WMShaderErrorDomain
+													 code:WMShaderErrorCompileError
+												 userInfo:[NSDictionary dictionaryWithObject:shaderErrorString forKey:NSLocalizedDescriptionKey]];
+				*outError = error;
+			}
+			NSLog(@"Shader compile log:\n%s", log);
+			
+			free(log);
+		}
+
         glDeleteShader(*shader);
         return FALSE;
     }
@@ -163,35 +185,42 @@
 }
 
 
-- (BOOL)linkProgram:(GLuint)prog
+- (BOOL)linkProgram:(GLuint)prog error:(NSError **)outError
 {
     GLint status;
     
     glLinkProgram(prog);
-
-    //TODO: use unified DEBUG macro
-#if defined(DEBUG)
-    GLint logLength;
-    glGetProgramiv(prog, GL_INFO_LOG_LENGTH, &logLength);
-    if (logLength > 0)
-    {
-        GLchar *log = (GLchar *)malloc(logLength);
-        glGetProgramInfoLog(prog, logLength, &logLength, log);
-        NSLog(@"Program link log:\n%s", log);
-        free(log);
-    }
-#endif
-    
+	
     glGetProgramiv(prog, GL_LINK_STATUS, &status);
-    if (status == 0)
+	if (status == 0) {
+		//If there is an error, get the status
+		
+		GLint logLength;
+		glGetProgramiv(prog, GL_INFO_LOG_LENGTH, &logLength);
+		if (logLength > 0)
+		{
+			GLchar *log = (GLchar *)malloc(logLength);
+			glGetProgramInfoLog(prog, logLength, &logLength, log);
+			if (outError) {
+				NSString *shaderLinkErrorString = [NSString stringWithFormat:NSLocalizedString(@"Error linking shader: %@", nil), [NSString stringWithCString:log encoding:NSASCIIStringEncoding]];
+				*outError = [NSError errorWithDomain:WMShaderErrorDomain
+												code:WMShaderErrorLinkError
+											userInfo:[NSDictionary dictionaryWithObject:shaderLinkErrorString forKey:NSLocalizedDescriptionKey]];
+
+			}
+			NSLog(@"Program link log:\n%s", log);
+			free(log);
+		}
+		
         return FALSE;
+	}
     
     return TRUE;
 }
 
 - (BOOL)validateProgram;
 {
-	if (!vertexShader || !pixelShader) {
+	if (!vertexShader || !fragmentShader) {
 		NSLog(@"Trying to render with missing shader!");
 	}
 	
@@ -214,22 +243,26 @@
     return TRUE;
 }
 
-- (BOOL)loadShaders;
+- (BOOL)loadShadersWithError:(NSError **)outError;
 {
 	GLuint vertShader, fragShader;
 	
 	// Create shader program.
 	program = glCreateProgram();
 	
+	NSError *error = nil;
+	
 	// Create and compile vertex shader.
-	if (![self compileShaderSource:vertexShader toShader:&vertShader type:GL_VERTEX_SHADER])
+	if (![self compileShaderSource:vertexShader toShader:&vertShader type:GL_VERTEX_SHADER error:&error])
 	{
 		NSLog(@"Failed to compile vertex shader");
+		if (*outError) *outError = error;
 		return NO;
 	}	
 	// Create and compile fragment shader.
-	if (![self compileShaderSource:pixelShader toShader:&fragShader type:GL_FRAGMENT_SHADER]) {
+	if (![self compileShaderSource:fragmentShader toShader:&fragShader type:GL_FRAGMENT_SHADER error:&error]) {
 		NSLog(@"Failed to compile fragment shader");
+		if (*outError) *outError = error;
 		return NO;
 	}
 	
@@ -240,10 +273,11 @@
 	glAttachShader(program, fragShader);
 	
 	// Link program.
-	if (![self linkProgram:program])
+	if (![self linkProgram:program error:&error])
 	{
 		NSLog(@"Failed to link program: %d", program);
-		
+		if (*outError) *outError = error;
+
 		if (vertShader) {
 			glDeleteShader(vertShader);
 			vertShader = 0;
@@ -260,41 +294,48 @@
 		return NO;
 	}
 	
+	//TODO: can we have an error in these methods?
+	
 	//Get attributes
 	GLint activeAttributes = 0;
 	glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &activeAttributes);
 	NSMutableArray *attributeNamesMutable = [NSMutableArray arrayWithCapacity:activeAttributes];
+	NSMutableArray *attributeTypesMutable = [NSMutableArray arrayWithCapacity:activeAttributes];
 	for (int i=0; i<activeAttributes; i++) {
 		char nameBuf[1024];
-		GLsizei length = 0;
+		GLsizei nameLength = 0;
 		GLint attributeSize = 0;
 		GLenum attributeType = 0;
-		glGetActiveAttrib(program, i, sizeof(nameBuf), &length, &attributeSize, &attributeType, nameBuf);
+		glGetActiveAttrib(program, i, sizeof(nameBuf), &nameLength, &attributeSize, &attributeType, nameBuf);
 	//	NSLog(@"gl attribute: %s type(%@) size:%d", nameBuf, [WMShader nameOfShaderType:attributeType], attributeSize);
 		
 		NSString *attributeName = [NSString stringWithCString:nameBuf encoding:NSASCIIStringEncoding];
 		[attributeNamesMutable addObject:attributeName];
+		[attributeTypesMutable addObject:[NSNumber numberWithUnsignedInt:attributeType]];
 	}
 	self.vertexAttributeNames = attributeNamesMutable;
+	self.vertexAttributeTypes = attributeTypesMutable;
 	
 	//Get uniform locations
-	//TODO: switch to glGetActiveUniform to simplify manifest.plist
 	GLint uniformCount = 0;
 	glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &uniformCount);
 	NSMutableArray *uniformNamesMutable = [NSMutableArray arrayWithCapacity:uniformCount];
+	NSMutableArray *uniformTypesMutable = [NSMutableArray arrayWithCapacity:uniformCount];
 	for (int i=0; i<uniformCount; i++) {
 		char nameBuf[1024];
-		GLsizei length = 0;
+		GLsizei nameLength = 0;
 		GLint uniformSize = 0;
 		GLenum uniformType = 0;
-		glGetActiveUniform(program, i, sizeof(nameBuf), &length, &uniformSize, &uniformType, nameBuf);
+		glGetActiveUniform(program, i, sizeof(nameBuf), &nameLength, &uniformSize, &uniformType, nameBuf);
 		NSString *uniformName = [NSString stringWithCString:nameBuf encoding:NSASCIIStringEncoding];
 		[uniformNamesMutable addObject:uniformName];
 		
 		int uniformLocation = glGetUniformLocation(program, nameBuf);
 		[uniformLocations setObject:[NSNumber numberWithInt:uniformLocation] forKey:uniformName];
+		[uniformTypesMutable addObject:[NSNumber numberWithUnsignedInt:uniformType]];
 	}
 	self.uniformNames = uniformNamesMutable;
+	self.uniformTypes = uniformTypesMutable;
 	
 	// Release vertex and fragment shaders.
 	if (vertShader)
@@ -303,93 +344,6 @@
 		glDeleteShader(fragShader);
 	
 	return YES;
-}
-
-@end
-
-@implementation WMShader (WMShader_Uniform_State)
-
-//TODO: save type information so we can typecheck these
-//TODO: make this less verbose
-
-- (BOOL)setIntValue:(int)inValue forUniform:(NSString *)inUniform;
-{
-	int uniformLocation = [self uniformLocationForName:inUniform];
-	if (uniformLocation != -1) {
-		glUniform1i(uniformLocation, inValue);
-		return YES;
-	} else {
-		return NO;
-	}
-}
-
-- (BOOL)setFloatValue:(float)inValue forUniform:(NSString *)inUniform;
-{
-	int uniformLocation = [self uniformLocationForName:inUniform];
-	if (uniformLocation != -1) {
-		glUniform1f(uniformLocation, inValue);
-		return YES;
-	} else {
-		return NO;
-	}
-}
-
-- (BOOL)setVector2Value:(GLKVector2)inValue forUniform:(NSString *)inUniform;
-{
-	int uniformLocation = [self uniformLocationForName:inUniform];
-	if (uniformLocation != -1) {
-		glUniform2f(uniformLocation, inValue.x, inValue.y);
-		return YES;
-	} else {
-		return NO;
-	}
-}
-
-- (BOOL)setVector3Value:(GLKVector3)inValue forUniform:(NSString *)inUniform;
-{
-	int uniformLocation = [self uniformLocationForName:inUniform];
-	if (uniformLocation != -1) {
-		glUniform3f(uniformLocation, inValue.x, inValue.y, inValue.z);
-		return YES;
-	} else {
-		return NO;
-	}
-
-}
-
-- (BOOL)setVector4Value:(GLKVector4)inValue forUniform:(NSString *)inUniform;
-{
-	int uniformLocation = [self uniformLocationForName:inUniform];
-	if (uniformLocation != -1) {
-		glUniform4f(uniformLocation, inValue.x, inValue.y, inValue.z, inValue.w);
-		return YES;
-	} else {
-		return NO;
-	}
-	
-}
-
-- (BOOL)setMatrix3Value:(GLKMatrix3)inValue forUniform:(NSString *)inUniform;
-{
-	int uniformLocation = [self uniformLocationForName:inUniform];
-	if (uniformLocation != -1) {
-		glUniformMatrix3fv(uniformLocation, 1, NO, inValue.m);
-		return YES;
-	} else {
-		return NO;
-	}
-
-}
-
-- (BOOL)setMatrix4Value:(GLKMatrix4)inValue forUniform:(NSString *)inUniform;
-{
-	int uniformLocation = [self uniformLocationForName:inUniform];
-	if (uniformLocation != -1) {
-		glUniformMatrix4fv(uniformLocation, 1, NO, inValue.m);
-		return YES;
-	} else {
-		return NO;
-	}
 }
 
 @end

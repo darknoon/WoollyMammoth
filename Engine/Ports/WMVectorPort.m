@@ -92,6 +92,11 @@
 	_v = (GLKVector4){inV.x, inV.y, 0.0f, 0.0f};
 }
 
+- (id)objectValue;
+{
+	return [NSValue valueWithBytes:&_v objCType:@encode(GLKVector2)];
+}
+
 - (NSString *)description;
 {
 	return [NSString stringWithFormat:@"<%@ : %p>{key: %@, v:%@}", NSStringFromClass([self class]), self, self.key, NSStringFromGLKVector2(self.v)];
@@ -119,6 +124,11 @@
 	_v = (GLKVector4){inV.x, inV.y, inV.z, 0.0f};
 }
 
+- (id)objectValue;
+{
+	return [NSValue valueWithBytes:&_v objCType:@encode(GLKVector3)];
+}
+
 - (NSString *)description;
 {
 	return [NSString stringWithFormat:@"<%@ : %p>{key: %@, v:%@}", NSStringFromClass([self class]), self, self.key, NSStringFromGLKVector3(self.v)];
@@ -144,6 +154,11 @@
 - (void)setV:(GLKVector4)inV;
 {
 	_v = inV;
+}
+
+- (id)objectValue;
+{
+	return [NSValue valueWithBytes:&_v objCType:@encode(GLKVector4)];
 }
 
 - (NSString *)description;
