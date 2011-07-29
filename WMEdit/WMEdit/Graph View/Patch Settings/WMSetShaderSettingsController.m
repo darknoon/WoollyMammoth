@@ -20,10 +20,14 @@
 
 @end
 
+@interface WMSetShaderSettingsController ()
+@property (nonatomic) int segmentIndex;
+@end
+
 @implementation WMSetShaderSettingsController
 @synthesize textView;
 @synthesize patch;
-@synthesize editingFragmentShader;
+@synthesize segmentIndex;
 
 - (id)initWithPatch:(WMSetShader *)inPatch;
 {
@@ -31,7 +35,6 @@
 	if (!self) return nil;
 
     patch = [inPatch retain];
-	editingFragmentShader = NO;
 	
 	return self;
 }
@@ -45,17 +48,31 @@
 
 #pragma mark - View lifecycle
 
+- (void)updateText;
+{
+	if (segmentIndex == 0) {
+		self.textView.text = patch.vertexShader;
+		self.textView.editable = YES;
+	} else if (segmentIndex == 1) {
+		self.textView.text = patch.fragmentShader;
+		self.textView.editable = YES;
+	} else {
+		self.textView.text = patch.shaderCompileLog.length > 0 ? patch.shaderCompileLog : @"Success";
+		self.textView.editable = NO;
+	}
+}
+
 - (IBAction)toggleEditingVertexOrFragmentShader:(UISegmentedControl *)sender;
 {
-	self.editingFragmentShader = [(UISegmentedControl *)sender selectedSegmentIndex] == 1;
-	self.textView.text = editingFragmentShader ? self.patch.fragmentShader : self.patch.vertexShader;
+	self.segmentIndex = [(UISegmentedControl *)sender selectedSegmentIndex];
+	[self updateText];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	
-	self.textView.text = editingFragmentShader ? self.patch.fragmentShader : self.patch.vertexShader;
+	[self updateText];
 }
 
 - (void)viewDidUnload
@@ -74,10 +91,10 @@
 
 - (void)textViewDidChange:(UITextView *)inTextView;
 {
-	if (editingFragmentShader) {
-		self.patch.fragmentShader = self.textView.text;
-	} else {
+	if (segmentIndex == 0) {
 		self.patch.vertexShader = self.textView.text;
+	} else if (segmentIndex == 1) {
+		self.patch.fragmentShader = self.textView.text;
 	}
 }
 

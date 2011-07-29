@@ -14,8 +14,6 @@
 
 @property (nonatomic, retain) WMSetShader *patch;
 
-@property (nonatomic) BOOL editingFragmentShader;
-
 - (IBAction)toggleEditingVertexOrFragmentShader:(UISegmentedControl *)sender;
 @property (retain, nonatomic) IBOutlet UITextView *textView;
 
