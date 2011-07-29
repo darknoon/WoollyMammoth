@@ -256,13 +256,13 @@ NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
 	if (![self compileShaderSource:vertexShader toShader:&vertShader type:GL_VERTEX_SHADER error:&error])
 	{
 		NSLog(@"Failed to compile vertex shader");
-		if (*outError) *outError = error;
+		if (outError) *outError = error;
 		return NO;
 	}	
 	// Create and compile fragment shader.
 	if (![self compileShaderSource:fragmentShader toShader:&fragShader type:GL_FRAGMENT_SHADER error:&error]) {
 		NSLog(@"Failed to compile fragment shader");
-		if (*outError) *outError = error;
+		if (outError) *outError = error;
 		return NO;
 	}
 	
@@ -276,7 +276,7 @@ NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
 	if (![self linkProgram:program error:&error])
 	{
 		NSLog(@"Failed to link program: %d", program);
-		if (*outError) *outError = error;
+		if (outError) *outError = error;
 
 		if (vertShader) {
 			glDeleteShader(vertShader);
