@@ -9,6 +9,7 @@
 #import "WMStructuredBuffer.h"
 
 #import "WMEAGLContext.h"
+#import "WMStructuredBuffer_WMEAGLContext_Private.h"
 
 @implementation WMStructuredBuffer
 
@@ -28,11 +29,14 @@
 	
 	definition = [inDefinition retain];
     
+	dirtySet = [[NSMutableIndexSet alloc] init];
+	
     return self;
 }
 
 - (void)dealloc {
 	[self releaseBufferObject];
+	[dirtySet release];
     [definition release];
     [super dealloc];
 }
@@ -54,6 +58,7 @@
 {
 	count += inCount;
 	[data appendBytes:inData length:inStructure.size * inCount];
+	[dirtySet addIndexesInRange:(NSRange){count - inCount, inCount}];
 }
 
 - (void)replaceData:(const void *)inData withStructure:(WMStructureDefinition *)inStructure atIndex:(NSUInteger)inIndex;
@@ -64,6 +69,7 @@
 	}
 	NSRange replacementRange = NSMakeRange(inIndex * definition.size, 1 * definition.size);
 	[data replaceBytesInRange:replacementRange withBytes:inData];
+	[dirtySet addIndex:inIndex];
 }
 
 - (void)replaceData:(const void *)inData withStructure:(WMStructureDefinition *)inStructure inRange:(NSRange)inRange;
@@ -74,6 +80,7 @@
 	}
 	NSRange replacementRange = NSMakeRange(inRange.location * definition.size, inRange.length * definition.size);
 	[data replaceBytesInRange:replacementRange withBytes:inData];
+	[dirtySet addIndexesInRange:inRange];
 }
 
 - (NSUInteger)dataSize;

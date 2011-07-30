@@ -44,10 +44,10 @@ size_t WMStructureTypeSize(WMStructureType inType) {
 - (id)initWithAnonymousFieldOfType:(WMStructureType)inType;
 {
 	const WMStructureField field = {.name = "", .type = inType, .count = 1};
-	return [self initWithFields:&field count:1];
+	return [self initWithFields:&field count:1 totalSize:WMStructureTypeSize(inType)];
 }
 
-- (id)initWithFields:(const WMStructureField *)inFields count:(NSUInteger)inCount;
+- (id)initWithFields:(const WMStructureField *)inFields count:(NSUInteger)inCount totalSize:(size_t)totalSize;
 {
 	if (!inFields || inCount < 1) {
 		[self release];
@@ -65,9 +65,14 @@ size_t WMStructureTypeSize(WMStructureType inType) {
 	memcpy(fields, inFields, inCount * sizeof(WMStructureField));
 	fieldCount = inCount;
 	
+	NSUInteger sizeMinBound = 0.0;
+	
 	for (int i=0; i<fieldCount; i++) {
-		size += WMStructureFieldSize(fields[i]);
+		sizeMinBound += WMStructureFieldSize(fields[i]);
 	}
+	ZAssert(totalSize >= sizeMinBound, @"Size given is too small to possibly contain all the fields!");
+	size = MAX(sizeMinBound, totalSize);
+	
 	if (fieldCount > 100 || size > 1000 ) {
 		NSLog(@"Huge structure size: %d fieldCount: %d", size, fieldCount);
 	}
@@ -91,19 +96,13 @@ size_t WMStructureTypeSize(WMStructureType inType) {
 	char inName[256];
 	BOOL ok = [inField getCString:inName maxLength:255 encoding:NSASCIIStringEncoding];
 	if (ok) {
-		NSInteger byteOffset = 0;
 		for (int i=0; i<fieldCount; i++) {
 			if (strncmp(inName, fields[i].name, 255) != 0) {
-				byteOffset += WMStructureFieldSize(fields[i]);
-			} else {
-				//Found the field. Done.
-				break;
+				return fields[i].offset;
 			}
 		}
-		return byteOffset;
-	} else {
-		return -1;
 	}
+	return -1;
 }
 
 - (NSInteger)sizeOfField:(NSString *)inField;
@@ -131,9 +130,10 @@ size_t WMStructureTypeSize(WMStructureType inType) {
 {
 	NSMutableString *str = [NSMutableString stringWithString:@"{"];
 	
-	NSUInteger offset = 0;
 	for (int i=0; i<fieldCount; i++) {
 		[str appendFormat:@"%s = {", fields[i].name];
+
+		NSUInteger offset = fields[i].offset;
 		
 		for (int j=0; j<fields[i].count; j++) {
 			const void *ptr = inData + offset;
@@ -168,15 +168,19 @@ size_t WMStructureTypeSize(WMStructureType inType) {
 					break;
 			}
 			[str appendString:@", "];
+			offset += WMStructureTypeSize(fields[i].type);
 		}
-		offset += WMStructureFieldSize(fields[i]);
 		[str appendString:@"}, "];
 	}
+	//TODO: show where unused bytes appear in structure
+	//They won't just appear at the end!
+#if 0
 	while (offset < self.size) {
 		//Append X (ie unused byte)
 		[str appendString:@"X"];
 		offset++;
 	}
+#endif
 
 	[str appendString:@"}"];
 	return str;
@@ -190,26 +194,19 @@ size_t WMStructureTypeSize(WMStructureType inType) {
 - (void)enumerateFieldsWithBlock:(void( (^)(NSUInteger idx, const WMStructureField *field, NSUInteger offset)))inBlock;
 {
 	if (!inBlock) return;
-	
-	NSUInteger byteOffset = 0;
 	for (int i=0; i<fieldCount; i++) {
-		inBlock(i, &fields[i], byteOffset);
-		byteOffset += WMStructureFieldSize(fields[i]);
+		inBlock(i, &fields[i], fields[i].offset);
 	}
 }
 
-- (BOOL)getFieldNamed:(NSString *)inField outField:(WMStructureField *)outField outOffset:(NSUInteger *)outOffset;
+- (BOOL)getFieldNamed:(NSString *)inField outField:(WMStructureField *)outField;
 {
 	char inName[256];
 	BOOL ok = [inField getCString:inName maxLength:255 encoding:NSASCIIStringEncoding];
 	if (ok) {
-		NSInteger byteOffset = 0;
 		for (int i=0; i<fieldCount; i++) {
-			if (strncmp(inName, fields[i].name, 255) != 0) {
-				byteOffset += WMStructureFieldSize(fields[i]);
-			} else {
+			if (strncmp(inName, fields[i].name, 255) == 0) {
 				if (outField)  *outField = fields[i];
-				if (outOffset) *outOffset = byteOffset;
 				return YES;
 			}
 		}

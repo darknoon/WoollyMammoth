@@ -16,6 +16,10 @@
 
 @interface WMStructuredBuffer : NSObject {
 	NSMutableData *data;
+	
+	//For the WMEAGLContext's use
+	//TODO: expose this in a nicer safer way :)
+	NSMutableIndexSet *dirtySet;
 	GLuint bufferObject;
 }
 

@@ -21,9 +21,14 @@
 
 #import <GLKit/GLKit.h>
 
+struct WMQuadVertex {
+	GLKVector3 p;
+	char tc[2];
+};
+
 WMStructureField WMQuadVertex_fields[] = {
-	{.name = "position",  .type = WMStructureTypeFloat, .count = 3, .normalized = NO},
-	{.name = "texCoord0", .type = WMStructureTypeUnsignedByte,  .count = 2, .normalized = YES},
+	{.name = "position",  .type = WMStructureTypeFloat,        .count = 3, .normalized = NO,  .offset = offsetof(WMQuadVertex, p)},
+	{.name = "texCoord0", .type = WMStructureTypeUnsignedByte, .count = 2, .normalized = YES, .offset = offsetof(WMQuadVertex, tc)},
 };
 
 
@@ -106,19 +111,14 @@ WMStructureField WMQuadVertex_fields[] = {
 			basisV = (GLKVector3){-1.0f, 0.0f, 0.0f};
 			break;
 	}
-	
-	struct WMVertex_v3f_tc2f {
-		GLKVector3 p;
-		char tc[2];
-	};
-	
+		
 	//Add vertices
 	for (int v=0, i=0; v<2; v++) {
 		for (int u=0; u<2; u++, i++) {
 			
 			GLKVector3 point = ((float)u - 0.5f) * 2.0f * basisU + ((float)v - 0.5f) * 2.0f * basisV / aspectRatio;
 			
-			const struct WMVertex_v3f_tc2f vertex = {
+			const struct WMQuadVertex vertex = {
 				.p = point,
 				.tc = {255 - (char)v * 255, 255 - (char)u * 255}
 			};
@@ -158,7 +158,7 @@ WMStructureField WMQuadVertex_fields[] = {
 
 	renderObject.shader = shader;	
 	
-	quadDef = [[WMStructureDefinition alloc] initWithFields:WMQuadVertex_fields count:sizeof(WMQuadVertex_fields) / sizeof(WMStructureField)];
+	quadDef = [[WMStructureDefinition alloc] initWithFields:WMQuadVertex_fields count:sizeof(WMQuadVertex_fields) / sizeof(WMStructureField) totalSize:sizeof(WMQuadVertex)];
 	quadDef.shouldAlignTo4ByteBoundary = YES;
 		
 	GL_CHECK_ERROR;
