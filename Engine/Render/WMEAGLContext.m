@@ -163,6 +163,11 @@
 		
 		if (boundFramebuffer) {
 			[boundFramebuffer bind];
+			CGRect desiredViewport = (CGRect){.size.width = boundFramebuffer.framebufferWidth, .size.height = boundFramebuffer.framebufferHeight};
+			//Set viewport as necessary
+			if (!CGRectEqualToRect(desiredViewport, viewport)) {
+				glViewport(desiredViewport.origin.x, desiredViewport.origin.y, desiredViewport.size.height, desiredViewport.size.height);
+			}
 		} else {
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		}
@@ -187,7 +192,7 @@
 	if (shader) {
 		for (NSString *attribute in inObject.shader.vertexAttributeNames) {
 			int location = [shader attributeLocationForName:attribute];
-			if (location != -1 && [vertexDefinition getFieldNamed:attribute outField:NULL outOffset:NULL]) {
+			if (location != -1 && [vertexDefinition getFieldNamed:attribute outField:NULL]) {
 				enableMask |= 1 << location;
 			}
 		}
@@ -199,12 +204,8 @@
 	//Make sure we have a VBO or EBO for the object
 	
 	//Make sure vertex buffer is uploaded to GPU
-	if (inObject.vertexBuffer.bufferObject == 0) {
-		[inObject.vertexBuffer uploadToBufferObjectOfType:GL_ARRAY_BUFFER inContext:self];
-	}
-	if (inObject.indexBuffer && inObject.indexBuffer.bufferObject == 0) {
-		[inObject.indexBuffer uploadToBufferObjectOfType:GL_ELEMENT_ARRAY_BUFFER inContext:self];
-	}
+	[inObject.vertexBuffer uploadToBufferObjectIfNecessaryOfType:GL_ARRAY_BUFFER inContext:self];
+	[inObject.indexBuffer uploadToBufferObjectIfNecessaryOfType:GL_ELEMENT_ARRAY_BUFFER inContext:self];
 	
 	GL_CHECK_ERROR;
 
@@ -218,9 +219,8 @@
 		ZAssert(location != -1, @"Couldn't fined attribute: %@", attribute);
 		if (location != -1) {
 			WMStructureField f;
-			NSUInteger offset = 0;
-			if ([vertexDefinition getFieldNamed:attribute outField:&f outOffset:&offset]) {
-				glVertexAttribPointer(location, f.count, f.type, f.normalized, vertexDefinition.size, (void *)offset);
+			if ([vertexDefinition getFieldNamed:attribute outField:&f]) {
+				glVertexAttribPointer(location, f.count, f.type, f.normalized, vertexDefinition.size, (void *)f.offset);
 			} else {
 				//Couldn't bind anything to this.
 				NSLog(@"Couldn't find data for attribute: %@", attribute);
@@ -307,7 +307,7 @@
 		
 		//Get element buffer type
 		WMStructureField f;
-		[inObject.indexBuffer.definition getFieldNamed:nil outField:&f outOffset:NULL];
+		[inObject.indexBuffer.definition getFieldNamed:nil outField:&f];
 		GLenum elementBufferType = f.type;
 #warning read properly
 		elementBufferType = GL_UNSIGNED_SHORT;
@@ -358,22 +358,25 @@
 
 @implementation WMStructuredBuffer (WMStructuredBuffer_WMEAGLContext_Private)
 
-- (BOOL)uploadToBufferObjectOfType:(GLenum)inBufferType inContext:(WMEAGLContext *)inContext;
+- (BOOL)uploadToBufferObjectIfNecessaryOfType:(GLenum)inBufferType inContext:(WMEAGLContext *)inContext;
 {
 	if (bufferObject == 0) {
 		bufferObject = [inContext genBuffer];
 	}
+	
+	//TODO: use glBufferSubData() only on the dirty indices
+	//TODO: allow user specify static or stream
+	//TODO: also support glMapBuffer()
+	if (dirtySet.count > 0) {
+		glBindBuffer(inBufferType, bufferObject);
 		
-	glBindBuffer(inBufferType, bufferObject);
-	
-	ZAssert(self.dataPointer, @"Unable to get data pointer");
-	
-#warning allow user specify static or stream
-	
-	glBufferData(inBufferType, self.dataSize, self.dataPointer, GL_STATIC_DRAW);
-	GL_CHECK_ERROR;
-	
-	glBindBuffer(inBufferType, 0);
+		ZAssert(self.dataPointer, @"Unable to get data pointer");
+		
+		glBufferData(inBufferType, self.dataSize, self.dataPointer, GL_STATIC_DRAW);
+		GL_CHECK_ERROR;
+		
+		glBindBuffer(inBufferType, 0);
+	}
 	
 	return YES;
 }
@@ -393,6 +396,17 @@
 - (void)setBufferObject:(GLuint)inBufferObject;
 {
 	bufferObject = inBufferObject;
+}
+
+
+- (NSIndexSet *)dirtyIndexSet;
+{
+	return [[dirtySet copy] autorelease];
+}
+
+- (void)resetDirtyIndexSet;
+{
+	[dirtySet removeAllIndexes];
 }
 
 @end

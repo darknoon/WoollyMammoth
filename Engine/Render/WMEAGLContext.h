@@ -28,6 +28,7 @@ typedef int DNGLStateDepthMask;
 	DNGLStateBlendMask blendState;
 	DNGLStateDepthMask depthState;
 	WMFramebuffer *boundFramebuffer;
+	CGRect viewport;
 	
 	int maxVertexAttributes;
 	int maxTextureUnits;
@@ -37,6 +38,8 @@ typedef int DNGLStateDepthMask;
 
 @property (nonatomic) DNGLStateBlendMask blendState;
 @property (nonatomic) DNGLStateDepthMask depthState;
+
+//This also controls glViewport at the moment. Perhaps this will change in the future.
 @property (nonatomic, retain) WMFramebuffer *boundFramebuffer;
 
 - (void)renderObject:(WMRenderObject *)inObject;

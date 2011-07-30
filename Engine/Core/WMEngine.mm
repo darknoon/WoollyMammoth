@@ -303,14 +303,6 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 			[inputPort takeValueFromPort:sourcePort];
 		}
 
-		
-		WMFramebuffer *framebufferBefore;
-		GLKMatrix4 cameraMatrixBefore = GLKMatrix4Identity;
-		if (patch.executionMode == kWMPatchExecutionModeRII) {
-			framebufferBefore = [renderContext.boundFramebuffer retain];
-			cameraMatrixBefore = renderContext.modelViewMatrix;
-		}	
-
 //		NSLog(@"executing patch: %@", patch.key);
 		success = [patch execute:renderContext time:t arguments:compositionUserData];
 		if (!success) {
@@ -321,18 +313,7 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 		//Now execute any children
 		if ([patch children].count > 0) {
 			[self drawPatchRecursive:patch];
-		}
-		
-		if (patch.executionMode == kWMPatchExecutionModeRII) {
-			//Restore framebuffer
-			renderContext.boundFramebuffer = framebufferBefore;
-			[framebufferBefore release];
-			
-			//Restore viewport
-			glViewport(0, 0, renderContext.boundFramebuffer.framebufferWidth, renderContext.boundFramebuffer.framebufferHeight);
-			//Restore camera matrix
-			renderContext.modelViewMatrix = cameraMatrixBefore;
-		}			
+		}		
 	}
 	
 

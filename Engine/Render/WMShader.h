@@ -26,8 +26,7 @@
 //Is this program configured correctly for drawing?
 - (BOOL)validateProgram;
 
-//TODO: 
-@property (nonatomic) BOOL vertexShaderCompatibleWithPointRendering;
+//TODO: @property (nonatomic) BOOL vertexShaderCompatibleWithPointRendering;
 
 //TODO: make these more private
 @property (nonatomic, readonly) GLuint program;

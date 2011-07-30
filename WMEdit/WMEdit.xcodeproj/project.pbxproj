@@ -61,6 +61,9 @@
 		49752EA213D3709D00F20447 /* connection-lighting~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49752EA113D3709D00F20447 /* connection-lighting~ipad.png */; };
 		49752EA513D374D100F20447 /* background~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49752EA413D374D100F20447 /* background~ipad.png */; };
 		49752EAF13D3807800F20447 /* compositions-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49752EAE13D3807800F20447 /* compositions-button~ipad.png */; };
+		497928A913E2AA6800DDBD2A /* SnowChunk.png in Resources */ = {isa = PBXBuildFile; fileRef = 497928A613E2AA6700DDBD2A /* SnowChunk.png */; };
+		497928AA13E2AA6800DDBD2A /* SnowParticle.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 497928A713E2AA6700DDBD2A /* SnowParticle.fsh */; };
+		497928AB13E2AA6800DDBD2A /* SnowParticle.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 497928A813E2AA6700DDBD2A /* SnowParticle.vsh */; };
 		49858E2613DE4C1F0061A1A8 /* WMStructuredBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC213DE4C1F0061A1A8 /* WMStructuredBuffer.m */; };
 		49858E2713DE4C1F0061A1A8 /* WMStructureDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC413DE4C1F0061A1A8 /* WMStructureDefinition.m */; };
 		49858E2813DE4C1F0061A1A8 /* DNQCComposition.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC713DE4C1F0061A1A8 /* DNQCComposition.m */; };
@@ -307,6 +310,9 @@
 		49752EA113D3709D00F20447 /* connection-lighting~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "connection-lighting~ipad.png"; sourceTree = "<group>"; };
 		49752EA413D374D100F20447 /* background~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background~ipad.png"; sourceTree = "<group>"; };
 		49752EAE13D3807800F20447 /* compositions-button~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "compositions-button~ipad.png"; sourceTree = "<group>"; };
+		497928A613E2AA6700DDBD2A /* SnowChunk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SnowChunk.png; sourceTree = "<group>"; };
+		497928A713E2AA6700DDBD2A /* SnowParticle.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SnowParticle.fsh; sourceTree = "<group>"; };
+		497928A813E2AA6700DDBD2A /* SnowParticle.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SnowParticle.vsh; sourceTree = "<group>"; };
 		49858DC113DE4C1F0061A1A8 /* WMStructuredBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMStructuredBuffer.h; sourceTree = "<group>"; };
 		49858DC213DE4C1F0061A1A8 /* WMStructuredBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMStructuredBuffer.m; sourceTree = "<group>"; };
 		49858DC313DE4C1F0061A1A8 /* WMStructureDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMStructureDefinition.h; sourceTree = "<group>"; };
@@ -1066,6 +1072,9 @@
 		49858E8D13DE4C800061A1A8 /* Quad Particles */ = {
 			isa = PBXGroup;
 			children = (
+				497928A613E2AA6700DDBD2A /* SnowChunk.png */,
+				497928A713E2AA6700DDBD2A /* SnowParticle.fsh */,
+				497928A813E2AA6700DDBD2A /* SnowParticle.vsh */,
 				49858E8E13DE4C800061A1A8 /* WMQuadParticleSystem.h */,
 				49858E8F13DE4C800061A1A8 /* WMQuadParticleSystem.mm */,
 			);
@@ -1443,6 +1452,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				497928AA13E2AA6800DDBD2A /* SnowParticle.fsh in Resources */,
+				497928AB13E2AA6800DDBD2A /* SnowParticle.vsh in Resources */,
 				498E4E9813E13628003BB056 /* WMDefaultShader.vsh in Resources */,
 				498E4E9913E13628003BB056 /* WMDefaultShader.fsh in Resources */,
 				49F0595B13D15F640056C506 /* InfoPlist.strings in Resources */,
@@ -1480,6 +1491,7 @@
 				498DDF0A13DF907600D10642 /* WMNumberInputPortCell.xib in Resources */,
 				498DDF0F13DF952400D10642 /* WMInputPortCell.xib in Resources */,
 				496F554313E128A30065BB67 /* WMSetShaderSettingsController.xib in Resources */,
+				497928A913E2AA6800DDBD2A /* SnowChunk.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

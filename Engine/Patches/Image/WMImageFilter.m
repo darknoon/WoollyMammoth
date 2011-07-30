@@ -134,7 +134,6 @@ typedef struct {
 	[fbo setColorAttachmentWithTexture:inDestinationTexture];
 
 	//Render blur quad into dest
-	glViewport(0, 0, inSize.width, inSize.height);
 	
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -307,7 +306,6 @@ typedef struct {
 	
 	//Restore previous settings
 	context.boundFramebuffer = prevFramebuffer;
-	glViewport(0, 0, context.boundFramebuffer.framebufferWidth, context.boundFramebuffer.framebufferHeight);
 
 	outputImage.image = texture1;
 	

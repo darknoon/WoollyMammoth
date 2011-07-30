@@ -46,13 +46,27 @@
 
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
+	if (!inputObject.object) {
+		outputImage.image = nil;
+		return YES;
+	}
+	
+	//If no size is specified use the width / height of the current framebuffer (presumably the size of main output)
+	//TODO: more strictly define this behavior and pass through
+	WMFramebuffer *oldFramebuffer = context.boundFramebuffer;
 	NSUInteger renderWidth = inputWidth.index;
 	NSUInteger renderHeight = inputHeight.index;
 	if (renderWidth == 0) {
-		renderWidth = context.boundFramebuffer.framebufferWidth;
+		renderWidth = oldFramebuffer.framebufferWidth;
 	}
 	if (renderHeight == 0) {
-		renderHeight = context.boundFramebuffer.framebufferHeight;
+		renderHeight = oldFramebuffer.framebufferHeight;
+	}
+	
+	if (renderWidth == 0 || renderHeight == 0) {
+		//Can't render because we have no idea about output size
+		NSLog(@"unable to render because we couldn't infer RII size from bound framebuffer.");
+		return YES;
 	}
 	
 	if (!framebuffer || framebuffer.framebufferWidth != renderWidth || framebuffer.framebufferHeight != renderHeight) {
@@ -61,11 +75,11 @@
 		[framebuffer release];
 		
 		texture = [[WMTexture2D alloc] initWithData:NULL
-									  pixelFormat:kWMTexture2DPixelFormat_RGBA8888
-									   pixelsWide:renderWidth
-									   pixelsHigh:renderHeight
-									  contentSize:(CGSize){renderWidth, renderHeight}
-										orientation:UIImageOrientationUp];
+										pixelFormat:kWMTexture2DPixelFormat_RGBA8888
+										 pixelsWide:renderWidth
+										 pixelsHigh:renderHeight
+										contentSize:(CGSize){renderWidth, renderHeight}
+										orientation:UIImageOrientationLeft];
 		framebuffer = [[WMFramebuffer alloc] initWithTexture:texture depthBufferDepth:useDepthBuffer ? GL_DEPTH_COMPONENT16 : 0];
 		
 		if (!texture || !framebuffer) {
@@ -76,8 +90,17 @@
 	
 	context.modelViewMatrix = [WMEngine cameraMatrixWithRect:(CGRect){0, 0, renderWidth, renderHeight}];
 	context.boundFramebuffer = framebuffer;
-	glViewport(0, 0, renderWidth, renderHeight);
+	
+	GLKVector4 clearColor = inputClearColor.v;
+	
+	glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	[context renderObject:inputObject.object];
+	
 	outputImage.image = texture;
+	
+	context.boundFramebuffer = oldFramebuffer;
 	
 	return YES;
 }

@@ -13,6 +13,7 @@
 #import "WMShader.h"
 #import "WMEngine.h"
 #import "WMTexture2D.h"
+#import "WMRenderObject.h"
 
 #import "WMEAGLContext.h"
 
@@ -39,9 +40,15 @@ struct WMQuadParticle {
 };
 
 struct WMQuadParticleVertex {
-	GLKVector3 position;
+	GLKVector4 position;
 	unsigned char color[4];
 	unsigned char texCoord0[2];
+};
+
+WMStructureField WMQuadParticleVertex_fields[] = {
+	{.name = "position",  .type = WMStructureTypeFloat,        .count = 4, .normalized = NO,  .offset = offsetof(WMQuadParticleVertex, position)},
+	{.name = "color",     .type = WMStructureTypeUnsignedByte, .count = 4, .normalized = YES, .offset = offsetof(WMQuadParticleVertex, color)},
+	{.name = "texCoord0", .type = WMStructureTypeUnsignedByte, .count = 2, .normalized = YES, .offset = offsetof(WMQuadParticleVertex, texCoord0)},
 };
 
 void WMQuadParticle::updateNoise(double t) {
@@ -120,18 +127,8 @@ void WMQuadParticle::update(double dt, double t, int i, GLKVector3 gravity, WMQu
 	} else {
 		//If we're not on the edge of the sphere
 		//Have the particle kind of randomly rotate, yay
-		GLKQuaternion rotation;
-		
-		float fSin = sinf(2.0f * 2.0f * 1.0f / 30.0f);
-		float fCos = cosf(2.0f * 2.0f * 1.0f / 30.0f);
-		
-		/* Create quaternion */
-		rotation.x = noiseVec.x * fSin;
-		rotation.y = noiseVec.y * fSin;
-		rotation.z = noiseVec.z * fSin;
-		rotation.w = fCos;
-		//MatrixQuaternionRotationAxis(rotation, noiseVec, 2.0 * dt);
-		quaternion *= rotation;
+
+		quaternion *= GLKQuaternionMakeWithAngleAndVector3Axis(2.0f * 2.0f / dt, noiseVec);
 	}
 	
 	
@@ -179,6 +176,8 @@ int particleZCompare(const void *a, const void *b) {
 	return (((WMQuadParticle *)a)->position.z >  ((WMQuadParticle *)b)->position.z) ? 1 : - 1;
 }
 
+
+
 @implementation WMQuadParticleSystem 
 
 + (NSString *)category;
@@ -186,9 +185,20 @@ int particleZCompare(const void *a, const void *b) {
     return WMPatchCategoryGeometry;
 }
 
++ (NSString *)humanReadableTitle {
+    return @"Snow Globe";
+}
+
++ (void)load;
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	[self registerToRepresentClassNames:[NSSet setWithObject:NSStringFromClass(self)]];
+	[pool drain];
+}
+
 - (id)initWithPlistRepresentation:(id)inPlist;
 {
-	[super initWithPlistRepresentation:inPlist];
+	self = [super initWithPlistRepresentation:inPlist];
 	if (self == nil) return self; 
 	
 	maxParticles = 2000;
@@ -205,14 +215,34 @@ int particleZCompare(const void *a, const void *b) {
 {
 	//TODO: error handling
 	particles = new WMQuadParticle[maxParticles];
-
+	
 	particleVertices = new WMQuadParticleVertex[maxParticles * 4];
 	for (int i=0; i<maxParticles; i++) {
 		particles[i].init();
 	}
 	
-	glGenBuffers(2, particleVBOs);
-	glGenBuffers(1, &particleEBO);
+	renderObject = [[WMRenderObject alloc] init];
+	
+	renderObject.renderBlendState = DNGLStateBlendEnabled;
+	renderObject.renderDepthState = 0;
+	
+	NSError *defaultShaderError = nil;
+	
+	NSString *vsh = [[NSString alloc] initWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"SnowParticle" withExtension:@"vsh"] encoding:NSASCIIStringEncoding error:NULL];
+	NSString *fsh = [[NSString alloc] initWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"SnowParticle" withExtension:@"fsh"] encoding:NSASCIIStringEncoding error:NULL];
+	
+	shader = [[WMShader alloc] initWithVertexShader:vsh
+									 fragmentShader:fsh
+											  error:&defaultShaderError];
+	
+	WMStructureDefinition *vboDef = [[[WMStructureDefinition alloc] initWithFields:WMQuadParticleVertex_fields count:3 totalSize:sizeof(struct WMQuadParticleVertex)] autorelease];
+	vboDef.shouldAlignTo4ByteBoundary = YES;
+	particleVertexBuffers[0] = [[WMStructuredBuffer alloc] initWithDefinition:vboDef];
+	particleVertexBuffers[1] = [[WMStructuredBuffer alloc] initWithDefinition:vboDef];
+	
+	WMStructureDefinition *indexStructure = [[[WMStructureDefinition alloc] initWithAnonymousFieldOfType:WMStructureTypeUnsignedShort] autorelease];
+	
+	particleIndexBuffer = [[WMStructuredBuffer alloc] initWithDefinition:indexStructure];
 	
 	//Create our index buffer. 2 triangles = 6 indices per particle
 	size_t indexBufferLength = maxParticles * 6;
@@ -230,37 +260,36 @@ int particleZCompare(const void *a, const void *b) {
 		indexBuffer[6 * i + 5] = 4 * i + 3;
 	}
 	
-	GL_CHECK_ERROR;
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, particleEBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexBufferLength * sizeof(unsigned short), indexBuffer, GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	GL_CHECK_ERROR;
-	
+	[particleIndexBuffer appendData:indexBuffer withStructure:indexStructure count:indexBufferLength];
+		
 	delete indexBuffer;
-
+	
+	
 	return YES;
+}
+
+- (void)cleanup:(WMEAGLContext *)context;
+{
+	[renderObject release];
+	renderObject = nil;
+	
+	[particleVertexBuffers[0] release];
+	particleVertexBuffers[0] = nil;
+	[particleVertexBuffers[1] release];
+	particleVertexBuffers[1] = nil;
+	delete particles;
+	delete particleVertices;
 }
 
 - (void) dealloc
 {
-	glDeleteBuffers(2, particleVBOs);
-	delete particles;
-	delete particleVertices;
-
 	[super dealloc];
-}
-
-
-- (WMPatchExecutionMode)executionMode;
-{
-	return kWMPatchExecutionModeConsumer;
 }
 
 - (void)update;
 {
-	GLKVector3 gravity = (GLKVector3){inputGravityX.value, inputGravityY.value, inputGravityZ.value};
-
-	GLKVector3 rotationRate = (GLKVector3){inputRotationX.value, inputRotationY.value, inputRotationZ.value};
+	GLKVector3 gravity = inputGravity.v;
+	GLKVector3 rotationRate = inputRotation.v;
 
 	//NSLog(@"g(%f, %f, %f) rot(%f, %f, %f)", gravity.x, gravity.y, gravity.z, rotationRate.x, rotationRate.y, rotationRate.z);
 	
@@ -275,8 +304,6 @@ int particleZCompare(const void *a, const void *b) {
 	t += dt;
 #endif
 
-	
-	
 	const float turbulenceDecay = 0.99f;
 	const float turbulenceStrength = 0.1f;
 	GLKMatrix4 rotation;
@@ -325,16 +352,16 @@ int particleZCompare(const void *a, const void *b) {
 	
 	//Swap buffers and write particles to VBO
 	currentParticleVBOIndex = !currentParticleVBOIndex;
-	glBindBuffer(GL_ARRAY_BUFFER, particleVBOs[currentParticleVBOIndex]);
+	WMStructuredBuffer *currentBuffer = particleVertexBuffers[currentParticleVBOIndex];
 	
 	GLKVector3 spherePosition = GLKVector3Make(0.0f, 0.045f, 0.0f);
 	float sz = 0.010f;
 	
 	const GLKVector3 offsets[4] = {
-		GLKVector3Make(-sz,  sz, 0),
-		GLKVector3Make( sz,  sz, 0),
-		GLKVector3Make(-sz, -sz, 0),
-		GLKVector3Make( sz, -sz, 0),
+		{-sz,  sz, 0},
+		{ sz,  sz, 0},
+		{-sz, -sz, 0},
+		{ sz, -sz, 0},
 	};
 	
 	const unsigned char an = (255 / PARTICLES_ATLAS_WIDTH);
@@ -350,7 +377,7 @@ int particleZCompare(const void *a, const void *b) {
 		GLKMatrix4 mat = GLKMatrix4MakeWithQuaternion(particles[i].quaternion);
 		for (int v=0; v<4; v++) {
 			//Calculate the particle position
-			particleVertices[4 * i + v].position = particles[i].position + spherePosition + (mat * offsets[v]);
+			particleVertices[4 * i + v].position = GLKVector4MakeWithVector3(particles[i].position + spherePosition + (mat * offsets[v]), 1.0f);
 			
 			//copy color as int
 			*((int *)particleVertices[4 * i + v].color) = *((int *)particles[i].color);
@@ -360,77 +387,52 @@ int particleZCompare(const void *a, const void *b) {
 			particleVertices[4 * i + v].texCoord0[1] = particles[i].atlasPosition[1] + textureCoords[v][1];
 		}
 	}
-	glBufferData(GL_ARRAY_BUFFER, maxParticles * 4 * sizeof(WMQuadParticleVertex), particleVertices, GL_STREAM_DRAW);
-	GL_CHECK_ERROR;
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	
+	//Replace all data with new data
+	//TODO: what about a wrapper around glBindBuffer() here?
+	[currentBuffer replaceData:particleVertices withStructure:currentBuffer.definition inRange:(NSRange){0, maxParticles * 4}];
+	
+	//NSLog(@"particle vertex size: %ld position @ %ld, color @ %ld, texCoord0 @ %ld", sizeof(WMQuadParticleVertex), offsetof(WMQuadParticleVertex, position), offsetof(WMQuadParticleVertex, color), offsetof(WMQuadParticleVertex, texCoord0));
+		
+	//NSLog(@"curb; %@", [currentBuffer debugDescription]);
+	
 	particleDataAvailable++;
-
 }
 
-- (void)drawWithTransform:(GLKMatrix4)transform API:(EAGLRenderingAPI)API glState:(WMEAGLContext *)inGLState;
+- (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {	
-	if (particleDataAvailable < 2) return;
+	[self update];
 	
+	if (particleDataAvailable < 2) {
+		//Still warming data cache
+		return YES;
+	}
+	
+	if (inputTexture.image) {
+		[renderObject setValue:inputTexture.image forUniformWithName:@"texture"];
+		if (defaultTexture) {
+			[defaultTexture release];
+			defaultTexture = nil;
+		}
+	} else {
+		if (!defaultTexture) {
+			defaultTexture = [[WMTexture2D alloc] initWithImage:[UIImage imageNamed:@"SnowChunk.png"]];
+		}
+		[renderObject setValue:defaultTexture forUniformWithName:@"texture"];
+	}
 	GL_CHECK_ERROR;
-	int positionLocation = [shader attributeLocationForName:@"position"];
-	int texCoordLocation = [shader attributeLocationForName:@"texCoord0"];
-	int colorLocation = [shader attributeLocationForName:@"color"];
 
-	ZAssert(positionLocation != -1, @"Couldn't find position in shader!");
-	ZAssert(texCoordLocation != -1, @"Couldn't find texCoord0 in shader!");
-	ZAssert(colorLocation != -1, @"Couldn't find color in shader!");
+	GLKMatrix4 m = context.modelViewMatrix;
+	[renderObject setValue:[NSValue valueWithBytes:&m objCType:@encode(GLKMatrix4)] forUniformWithName:@"modelViewProjectionMatrix"];
 	
-	unsigned int enableMask = 1<<positionLocation | 1 << texCoordLocation | 1 << colorLocation;
-	[inGLState setVertexAttributeEnableState:enableMask];
+	renderObject.shader = shader;
 	
-	[inGLState setDepthState:0];
-
-	[inGLState setBlendState:DNGLStateBlendEnabled];
+	renderObject.vertexBuffer = particleVertexBuffers[currentParticleVBOIndex];
+	renderObject.indexBuffer = particleIndexBuffer;
 	
-	// Use shader program.
-	glUseProgram(shader.program);
+	outputObject.object = renderObject;
 	
-	NSUInteger stride = sizeof(WMQuadParticleVertex);
-	
-	glBindBuffer(GL_ARRAY_BUFFER, particleVBOs[currentParticleVBOIndex]);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, particleEBO);
-	GL_CHECK_ERROR;
-	
-	// Update attribute values.
-	glVertexAttribPointer(positionLocation, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMQuadParticleVertex, position));
-	glVertexAttribPointer(colorLocation, 4, GL_UNSIGNED_BYTE, GL_TRUE, stride, (GLvoid *)offsetof(WMQuadParticleVertex, color[0]));	
-	glVertexAttribPointer(texCoordLocation, 2, GL_UNSIGNED_BYTE, GL_TRUE, stride, (GLvoid *)offsetof(WMQuadParticleVertex, texCoord0[0]) );
-	
-	int textureUniformLocation = [shader uniformLocationForName:@"texture"];
-	if (inputTexture && textureUniformLocation != -1) {
-		glBindTexture(GL_TEXTURE_2D, [inputTexture name]);			
-		glUniform1i(textureUniformLocation, 0); //texture = texture 0
-	}
-	GL_CHECK_ERROR;
-		
-	int matrixUniform = [shader uniformLocationForName:@"modelViewProjectionMatrix"];
-	if (matrixUniform != -1) {
-		glUniformMatrix4fv(matrixUniform, 1, NO, transform.m);
-	}
-	GL_CHECK_ERROR;
-	
-#if DEBUG
-	if (![shader validateProgram])
-	{
-		NSLog(@"Failed to validate program in shader: %@", shader);
-		return;
-	}
-	
-#endif
-	
-	//glDrawArrays(GL_POINTS, 0, maxParticles);
-	GL_CHECK_ERROR;
-	glDrawElements(GL_TRIANGLES, maxParticles * 6, GL_UNSIGNED_SHORT, 0); //use element array buffer ebo
-	GL_CHECK_ERROR;
-	
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	return YES;
 }
 
 @end

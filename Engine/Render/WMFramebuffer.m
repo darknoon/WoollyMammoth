@@ -61,9 +61,13 @@
 	
 	WMEAGLContext *context = (WMEAGLContext *)[EAGLContext currentContext];
 	
+	WMFramebuffer *oldFrameBuffer = context.boundFramebuffer;
+	
 	// Create default framebuffer object.
 	glGenFramebuffers(1, &framebufferObject);
-	context.boundFramebuffer = self;
+	
+	//WARNING: we're modifying state outside of WMEAGLContext. This method should therefore be moved to WMEAGLContext!
+	[self bind];
 	
 	//ASSUMPTION: we don't care about stomping on currently bound renderbuffer state
 	
@@ -85,9 +89,14 @@
 	
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
 		NSLog(@"Failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
+
+		[oldFrameBuffer bind];
+		
 		[self release];
 		return nil;
 	}
+	
+	[oldFrameBuffer bind];
 	
 	return self;
 }

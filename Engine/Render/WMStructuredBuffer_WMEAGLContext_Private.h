@@ -10,7 +10,10 @@
 @property (nonatomic) GLuint bufferObject;
 
 //Type is GL_ARRAY_BUFFER or GL_ELEMENT_ARRAY_BUFFER
-- (BOOL)uploadToBufferObjectOfType:(GLenum)inBufferType inContext:(WMEAGLContext *)inContext;
+- (BOOL)uploadToBufferObjectIfNecessaryOfType:(GLenum)inBufferType inContext:(WMEAGLContext *)inContext;
 - (void)releaseBufferObject;
+
+- (NSIndexSet *)dirtyIndexSet;
+- (void)resetDirtyIndexSet;
 
 @end

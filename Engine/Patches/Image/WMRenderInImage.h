@@ -14,11 +14,16 @@
 @class WMTexture2D;
 
 @interface WMRenderInImage : WMPatch {
+	WMRenderObjectPort *inputObject;
+	
+	WMColorPort *inputClearColor;
+	
 	WMBooleanPort *inputRender;
 	WMIndexPort *inputTarget;
 	WMBooleanPort *inputMipmaps;
 	WMIndexPort *inputWidth;
 	WMIndexPort *inputHeight;
+	
 	WMImagePort *outputImage;
 
 	BOOL useDepthBuffer;
