@@ -208,7 +208,7 @@
 
 		BOOL canConnect = [hitPort canTakeValueFromPort:sourcePort];
 		if (hitPatch && hitPort && canConnect) {
-			[rootPatch addConnectionFromPort:[(WMPort *)[inView.patch.outputPorts objectAtIndex:0] key] ofPatch:inView.patch.key toPort:hitPort.key ofPatch:hitPatch.key];
+			[rootPatch addConnectionFromPort:sourcePort.key ofPatch:inView.patch.key toPort:hitPort.key ofPatch:hitPatch.key];
 		}
 	}
 	[patchConnectionsView removeDraggingConnectionFromPatchView:inView];
