@@ -25,15 +25,15 @@ __inline__ GLKQuaternion operator * (const GLKQuaternion& left, const GLKQuatern
 
 //Assigning operators
 
-__inline__ GLKQuaternion operator += (const GLKQuaternion& left, const GLKQuaternion& right) {
-	return GLKQuaternionAdd(left, right);	
+__inline__ GLKQuaternion operator += (GLKQuaternion& left, const GLKQuaternion& right) {
+	return (left = GLKQuaternionAdd(left, right));
 }
-__inline__ GLKQuaternion operator -= (const GLKQuaternion& left, const GLKQuaternion& right) {
-	return GLKQuaternionSubtract(left, right);
+__inline__ GLKQuaternion operator -= (GLKQuaternion& left, const GLKQuaternion& right) {
+	return (left = GLKQuaternionSubtract(left, right));
 }
 
-__inline__ GLKQuaternion operator *= (const GLKQuaternion& left, const GLKQuaternion& right) {
-	return GLKQuaternionMultiply(left, right);
+__inline__ GLKQuaternion operator *= (GLKQuaternion& left, const GLKQuaternion& right) {
+	return (left = GLKQuaternionMultiply(left, right));
 }
 
 

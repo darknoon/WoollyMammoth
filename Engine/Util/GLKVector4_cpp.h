@@ -77,36 +77,36 @@ __inline__ bool operator < (const GLKVector4& left, const GLKVector4& right) {
 
 //Assigning binary operators
 
-__inline__ GLKVector4 operator += (const GLKVector4& left, const GLKVector4& right) {
-	return GLKVector4Add(left, right);
+__inline__ GLKVector4 operator += (GLKVector4& left, const GLKVector4& right) {
+	return (left = GLKVector4Add(left, right));
 }
 
-__inline__ GLKVector4 operator -= (const GLKVector4& left, const GLKVector4& right) {
-	return GLKVector4Subtract(left, right);
+__inline__ GLKVector4 operator -= (GLKVector4& left, const GLKVector4& right) {
+	return (left = GLKVector4Subtract(left, right));
 }
 
-__inline__ GLKVector4 operator *= (const GLKVector4& left, const GLKVector4& right) {
-	return GLKVector4Multiply(left, right);
+__inline__ GLKVector4 operator *= (GLKVector4& left, const GLKVector4& right) {
+	return (left = GLKVector4Multiply(left, right));
 }
 
-__inline__ GLKVector4 operator /= (const GLKVector4& left, const GLKVector4& right) {
-	return GLKVector4Divide(left, right);
+__inline__ GLKVector4 operator /= (GLKVector4& left, const GLKVector4& right) {
+	return (left = GLKVector4Divide(left, right));
 }
 
-__inline__ GLKVector4 operator += (const GLKVector4& left, const float& right) {
-	return GLKVector4AddScalar(left, right);
+__inline__ GLKVector4 operator += (GLKVector4& left, const float& right) {
+	return (left = GLKVector4AddScalar(left, right));
 }
 
-__inline__ GLKVector4 operator -= (const GLKVector4& left, const float& right) {
-	return GLKVector4SubtractScalar(left, right);
+__inline__ GLKVector4 operator -= (GLKVector4& left, const float& right) {
+	return (left = GLKVector4SubtractScalar(left, right));
 }
 
-__inline__ GLKVector4 operator *= (const GLKVector4& left, const float& right) {
-	return GLKVector4MultiplyScalar(left, right);
+__inline__ GLKVector4 operator *= (GLKVector4& left, const float& right) {
+	return (left = GLKVector4MultiplyScalar(left, right));
 }
 
-__inline__ GLKVector4 operator /= (const GLKVector4& left, const float& right) {
-	return GLKVector4DivideScalar(left, right);
+__inline__ GLKVector4 operator /= (GLKVector4& left, const float& right) {
+	return (left = GLKVector4DivideScalar(left, right));
 }
 
 //Convenience Functions
