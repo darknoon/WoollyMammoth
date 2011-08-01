@@ -240,13 +240,14 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 
 - (void)showSettingsForPatchView:(WMPatchView *)inPatchView;
 {
-	Class settingsViewControllerClass = [inPatchView.patch settingsControllerClass];
-	if (settingsViewControllerClass) {
-		UIViewController *vc = [[settingsViewControllerClass alloc] initWithPatch:inPatchView.patch];
+	if (inPatchView.patch.hasSettings && !patchSettingsPopover) {
+		UIViewController<WMPatchSettingsController> *settingsController = [inPatchView.patch settingsController];
 		
-		patchSettingsPopover = [[UIPopoverController alloc] initWithContentViewController:vc];
+		UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:settingsController] autorelease];
+		
+		patchSettingsPopover = [[UIPopoverController alloc] initWithContentViewController:wrapper];
+		patchSettingsPopover.delegate = (id<UIPopoverControllerDelegate>)self;
 		[patchSettingsPopover presentPopoverFromRect:inPatchView.frame inView:inPatchView.superview permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-		
 	}
 }
 
@@ -256,6 +257,19 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	if (inputPortsPopover == inPopoverController) {
 		[inputPortsPopover release];
 		inputPortsPopover = nil;
+	}
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)inPopoverController;
+{
+	if (inPopoverController == patchSettingsPopover) {
+		[patchSettingsPopover release];
+		patchSettingsPopover = nil;
+	} else if (inPopoverController == addNodePopover) {
+		[addNodePopover release];
+		addNodePopover = nil;
+	} else {
+		NSLog(@"Unknown popover controller closed: %@", inPopoverController);
 	}
 }
 

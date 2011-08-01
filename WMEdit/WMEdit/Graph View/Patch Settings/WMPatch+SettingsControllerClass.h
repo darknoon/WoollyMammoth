@@ -8,8 +8,21 @@
 
 #import "WMPatch.h"
 
+@protocol WMPatchSettingsController <NSObject>
+
+- (id)initWithPatch:(WMPatch *)inPatch;
+
+@property (nonatomic, retain) WMPatch *patch;
+
+@end
+
 @interface WMPatch (WMPatch_SettingsControllerClass)
 
-- (Class)settingsControllerClass;
+//You should override this to return yes if you could create a settings controller for the patch when asked for -settingsController
+- (BOOL)hasSettings;
+
+//Creates an autoreleased instance of the appropriate settings controller.
+//You should probably override this in your <BlahPatch>SettingsController.m to define it to create a <BlahPatch>SettingsController.
+- (UIViewController<WMPatchSettingsController> *)settingsController;
 
 @end
