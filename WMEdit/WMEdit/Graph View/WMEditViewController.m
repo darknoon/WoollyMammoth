@@ -41,6 +41,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	UIPopoverController *patchSettingsPopover;
 
 	
+	UIWindow *previewWindow;
 	BOOL previewFullScreen;
 	WMViewController *previewController;
 	
@@ -70,15 +71,14 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 		rootPatch = [[WMPatch alloc] initWithPlistRepresentation:nil];
 	}
 	rootPatch.key = @"root";
-	
-	previewController = [[WMViewController alloc] initWithRootPatch:rootPatch];
-	[self addChildViewController:previewController];
-	
+		
 	return self;
 }
 
 - (void)dealloc
 {
+	[previewWindow release];
+	[previewController release];
 	[graphView release];
     [super dealloc];
 }
@@ -100,14 +100,36 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	graphView.viewController = self;
 	graphView.rootPatch = rootPatch;
 	
-	CGRect bounds = self.view.bounds;
-	previewController.view.frame = (CGRect){.origin.x = bounds.size.width - previewSize.width, .origin.y = bounds.size.height - previewSize.height, .size = previewSize};
-	previewController.view.backgroundColor = [UIColor blackColor];
-	previewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
-	[self.view addSubview:previewController.view];
 	
-	UITapGestureRecognizer *enlargeRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(togglePreviewFullscreen:)] autorelease];
-	[previewController.view addGestureRecognizer:enlargeRecognizer];
+	NSArray *possibleScreens = [UIScreen screens];
+	__block UIScreen *externalScreen = nil;
+	[possibleScreens enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		if (idx > 0) {
+			externalScreen = obj;
+			*stop = YES;
+		}
+	}];
+	
+	previewController = [[WMViewController alloc] initWithRootPatch:rootPatch];
+	if (externalScreen) {
+		previewWindow = [[UIWindow alloc] initWithFrame:externalScreen.applicationFrame];
+		previewWindow.rootViewController = previewController;
+		previewWindow.screen = externalScreen;
+		previewWindow.hidden = NO;
+	} else {
+		[self addChildViewController:previewController];
+
+		CGRect bounds = self.view.bounds;
+		previewController.view.frame = (CGRect){.origin.x = bounds.size.width - previewSize.width, .origin.y = bounds.size.height - previewSize.height, .size = previewSize};
+		previewController.view.backgroundColor = [UIColor blackColor];
+		previewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
+		[self.view addSubview:previewController.view];
+
+		UITapGestureRecognizer *enlargeRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(togglePreviewFullscreen:)] autorelease];
+		[previewController.view addGestureRecognizer:enlargeRecognizer];
+	}
+
+	
 	
     self.navigationItem.titleView = titleLabel;
     UITapGestureRecognizer *editRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(editCompositionNameAction:)] autorelease];
