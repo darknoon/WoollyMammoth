@@ -13,9 +13,14 @@
 
 @implementation WMSetShader (WMPatch_SettingsControllerClass)
 
-- (Class)settingsControllerClass;
+- (BOOL)hasSettings;
 {
-	return [WMSetShaderSettingsController class];
+	return YES;
+}
+
+- (UIViewController<WMPatchSettingsController> *)settingsController;
+{
+	return [[[WMSetShaderSettingsController alloc] initWithPatch:self] autorelease];
 }
 
 @end
@@ -31,7 +36,7 @@
 
 - (id)initWithPatch:(WMSetShader *)inPatch;
 {
-    self = [self initWithNibName:@"WMSetShaderSettingsController" bundle:nil];
+	self = [self initWithNibName:NSStringFromClass([self class]) bundle:nil];
 	if (!self) return nil;
 
     patch = [inPatch retain];

@@ -97,7 +97,12 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
     if (context)
     {
         [EAGLContext setCurrentContext:context];
-        
+     
+		if (context.boundFramebuffer == framebuffer)
+		{
+			context.boundFramebuffer = nil;
+		}
+		
 		[framebuffer release];
 		framebuffer = nil;		
     }
@@ -192,7 +197,7 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
 - (void)layoutSubviews
 {
     // The framebuffer will be re-created at the beginning of the next setFramebuffer method call.
-    [self deleteFramebuffer];
+	[self deleteFramebuffer];
 }
 
 @end

@@ -54,6 +54,26 @@
 	return self;
 }
 
++ (NSString *)descriptionOfFramebufferStatus:(GLenum)inStatus;
+{
+	switch (inStatus) {
+		case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+			return @"Incomplete attachment";
+		case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+			return @"Missing attachment";
+		case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
+			return @"Incomplete Dimensions";
+		case GL_FRAMEBUFFER_UNSUPPORTED:
+			return @"Unsupported";
+		case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE_APPLE:
+			return @"Incomplete multisample";
+		case GL_FRAMEBUFFER_COMPLETE:
+			return @"Complete!";
+		default:
+			return @"??";
+	}
+}
+
 - (id)initWithLayerRenderbufferStorage:(CAEAGLLayer *)inLayer;
 {
 	self = [super init];
@@ -74,28 +94,37 @@
 	// Create color render buffer and allocate backing store.
 	glGenRenderbuffers(1, &colorRenderbuffer);
 	glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer);
-	[context renderbufferStorage:GL_RENDERBUFFER fromDrawable:inLayer];
-	glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &framebufferWidth);
-	glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &framebufferHeight);
-	//Attach color buffer
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorRenderbuffer);
+	BOOL storageOk = [context renderbufferStorage:GL_RENDERBUFFER fromDrawable:inLayer];
+	if (storageOk) {
+		glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &framebufferWidth);
+		glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &framebufferHeight);
+		//Attach color buffer
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorRenderbuffer);
+		
+		//Create depth buffer
+		glGenRenderbuffers(1, &depthRenderbuffer);
+		glBindRenderbuffer(GL_RENDERBUFFER_OES, depthRenderbuffer); 
+		glRenderbufferStorage(GL_RENDERBUFFER_OES, GL_DEPTH_COMPONENT16_OES, framebufferWidth, framebufferHeight); 
+		//Attach depth buffer
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
+
+		GL_CHECK_ERROR;
+	}
 	
-	//Create depth buffer
-	glGenRenderbuffers(1, &depthRenderbuffer);
-	glBindRenderbuffer(GL_RENDERBUFFER_OES, depthRenderbuffer); 
-	glRenderbufferStorage(GL_RENDERBUFFER_OES, GL_DEPTH_COMPONENT16_OES, framebufferWidth, framebufferHeight); 
-	//Attach depth buffer
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
 	
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-		NSLog(@"Failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
+		
+		NSLog(@"Failed to make complete framebuffer object (%@) with layer %@", [WMFramebuffer descriptionOfFramebufferStatus:glCheckFramebufferStatus(GL_FRAMEBUFFER)], inLayer);
 
 		[oldFrameBuffer bind];
 		
 		[self release];
 		return nil;
+	} else {
+		NSLog(@"Created framebuffer %@ from layer: %@", self, inLayer);
 	}
 	
+
 	[oldFrameBuffer bind];
 	
 	return self;

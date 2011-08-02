@@ -11,8 +11,9 @@
 #import "WMPatch.h"
 
 @class WMImagePort;
-@interface WMImageLoader : WMPatch {
-}
+@interface WMImageLoader : WMPatch
+
+@property (nonatomic, retain) NSData *imageData;
 
 //TODO: WMImagePort
 @property (retain, nonatomic) WMImagePort *outputImage;

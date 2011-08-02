@@ -414,7 +414,7 @@ static const UIEdgeInsets insets = {.top = 11.f, .left = 10.f, .right = 10.f, .b
 
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-	return action == @selector(delete:) || (action == @selector(showSettings:) && [patch settingsControllerClass] != Nil);
+	return action == @selector(delete:) || (action == @selector(showSettings:) && [patch hasSettings]);
 }
 
 - (void)tapped:(UITapGestureRecognizer *)inR;

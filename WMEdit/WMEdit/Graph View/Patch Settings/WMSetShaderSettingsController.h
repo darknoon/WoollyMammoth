@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@class WMSetShader;
+#import "WMPatch+SettingsControllerClass.h"
+#import "WMSetShader.h"
 
-@interface WMSetShaderSettingsController : UIViewController
+@interface WMSetShaderSettingsController : UIViewController <WMPatchSettingsController>
 
 @property (nonatomic, retain) WMSetShader *patch;
 
