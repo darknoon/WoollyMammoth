@@ -2,10 +2,7 @@
 //  WMImageFalseColor.m
 //  WMViewer
 //
-//  Created by Andrew Pouliot on 5/20/11.
-// 
-//  Copyright 2011 Darknoon. All rights reserved.
-
+//  Created by Warren Stringer
 
 #import "WMImageFalseColor.h"
 
@@ -41,29 +38,18 @@ typedef struct {
 	return [super setPlistState:inPlist];
 }
 
-- (void)loadQuadData;
+- (void)loadQuadData
 {	
 	glGenBuffers(1, &vbo);
 	glGenBuffers(1, &ebo);
 		
 	//Add vertices
-	WMQuadVertex vertexDataPtr[4] = {
-		{
-			.v = {-1, -1, 0, 1}, 
-			.tc = {0, 0}
-		},
-		{
-			.v = {1, -1, 0, 1}, 
-			.tc = {1, 0}
-		},
-		{
-			.v = {-1, 1, 0, 1}, 
-			.tc = {0, 1}
-		},
-		{
-			.v = {1, 1, 0, 1}, 
-			.tc = {1, 1}
-		}};	
+	WMQuadVertex vertexDataPtr[4] = { 
+        { .v = {-1, -1, 0, 1}, .tc = {0, 0} },
+        { .v = { 1, -1, 0, 1}, .tc = {1, 0} },
+		{ .v = {-1,  1, 0, 1}, .tc = {0, 1} },
+		{ .v = { 1,  1, 0, 1}, .tc = {1, 1} }
+    };	
 	
 	//Add triangles
 	unsigned short indexData[2 * 3] = {0,1,2, 1,2,3}; 
@@ -78,6 +64,17 @@ typedef struct {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
+-(void) overwriteRgbPal:(unsigned char*)pali {
+
+    for (int i =  0; i < 32; i++) { *pali++ = i*4; *pali++ = 0;   *pali++ = 0;   *pali++ = 255; }
+    for (int i = 32; i >  0; i--) { *pali++ = i*4; *pali++ = 0;   *pali++ = 0;   *pali++ = 255; }
+    for (int i =  0; i < 32; i++) { *pali++ = 0;   *pali++ = i*4; *pali++ = 0;   *pali++ = 255; }
+    for (int i = 32; i >  0; i--) { *pali++ = 0;   *pali++ = i*4; *pali++ = 0;   *pali++ = 255; }
+    for (int i =  0; i < 32; i++) { *pali++ = 0;   *pali++ = 0;   *pali++ = i*4; *pali++ = 255; }
+    for (int i = 32; i >  0; i--) { *pali++ = 0;   *pali++ = 0;   *pali++ = i*4; *pali++ = 255; }
+    for (int i =  0; i < 32; i++) { *pali++ = i*4; *pali++ = i*4; *pali++ = i*4; *pali++ = 255; }
+    for (int i = 32; i >  0; i--) { *pali++ = i*4; *pali++ = i*4; *pali++ = i*4; *pali++ = 255; }
+}
 - (BOOL)setup:(WMEAGLContext *)context;
 {
 	BOOL ok = [super setup:context];
@@ -97,66 +94,16 @@ typedef struct {
 	
 	[self loadQuadData];
 	
-    NSData *palette = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RainbowLight" ofType:@"pal"]];
-#if 1
-    unsigned char *pali = (unsigned char *) [palette bytes];
-    for (int i=0; i<32; i++) {
-        *pali++ = i*4;
-        *pali++ = 0;
-        *pali++ = 0;
-        *pali++ = 255;
-    }
-    for (int i=32; i>0; i--) {
-        *pali++ = i*4;
-        *pali++ = 0;
-        *pali++ = 0;
-        *pali++ = 255;
-    }
-    for (int i=0; i<32; i++) {
-        *pali++ = 0;
-        *pali++ = i*4;
-        *pali++ = 0;
-        *pali++ = 255;
-    }
-    for (int i=32; i>0; i--) {
-        *pali++ = 0;
-        *pali++ = i*4;
-        *pali++ = 0;
-        *pali++ = 255;
-    }
-    for (int i=0; i<32; i++) {
-        *pali++ = 0;
-        *pali++ = 0;
-        *pali++ = i*4;
-        *pali++ = 255;
-    }
-    for (int i=32; i>0; i--) {
-        *pali++ = 0;
-        *pali++ = 0;
-        *pali++ = i*4;
-        *pali++ = 255;
-    }
-    for (int i=0; i<32; i++) {
-        *pali++ = i*4;
-        *pali++ = i*4;
-        *pali++ = i*4;
-        *pali++ = 255;
-    }
-    for (int i=32; i>0; i--) {
-        *pali++ = i*4;
-        *pali++ = i*4;
-        *pali++ = i*4;
-        *pali++ = 255;
-    }
-#endif
+    NSData *palette = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RainbowDark" ofType:@"pal"]];
+
+    //[self overwriteRgbPal: [palette bytes]]; // test only
+    
     texPal = [[WMTexture2D alloc] initWithData:[palette bytes]
                                    pixelFormat:kWMTexture2DPixelFormat_RGBA8888 
                                     pixelsWide:256 
                                     pixelsHigh:1 
                                    contentSize:CGSizeMake(256, 1)];
-    
-	
-	return ok;
+ 	return ok;
 }
 
 - (void)cleanup:(WMEAGLContext *)context;

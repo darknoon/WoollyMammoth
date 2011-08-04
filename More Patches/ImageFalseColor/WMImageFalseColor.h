@@ -1,10 +1,9 @@
 //
-//  WMImageFilter.h
+//  WMImageFalseColor.h
 //  WMViewer
 //
-//  Created by Andrew Pouliot on 5/20/11.
-//  Copyright 2011 Darknoon. All rights reserved.
-//
+//  Created by Warren Stringer
+
 
 #import <Foundation/Foundation.h>
 
