@@ -46,7 +46,7 @@
 
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
-	if (!inputObject.object) {
+	if (!inputObject1.object && !inputObject2.object && !inputObject3.object && !inputObject4.object) {
 		outputImage.image = nil;
 		return YES;
 	}
@@ -96,7 +96,10 @@
 	glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	[context renderObject:inputObject.object];
+	if (inputObject1.object) [context renderObject:inputObject1.object];
+	if (inputObject2.object) [context renderObject:inputObject2.object];
+	if (inputObject3.object) [context renderObject:inputObject3.object];
+	if (inputObject4.object) [context renderObject:inputObject4.object];
 	
 	outputImage.image = texture;
 	

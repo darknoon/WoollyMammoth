@@ -14,7 +14,10 @@
 @class WMTexture2D;
 
 @interface WMRenderInImage : WMPatch {
-	WMRenderObjectPort *inputObject;
+	WMRenderObjectPort *inputObject1;
+	WMRenderObjectPort *inputObject2;
+	WMRenderObjectPort *inputObject3;
+	WMRenderObjectPort *inputObject4;
 	
 	WMColorPort *inputClearColor;
 	
