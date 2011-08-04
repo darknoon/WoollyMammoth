@@ -166,7 +166,7 @@
 			CGRect desiredViewport = (CGRect){.size.width = boundFramebuffer.framebufferWidth, .size.height = boundFramebuffer.framebufferHeight};
 			//Set viewport as necessary
 			if (!CGRectEqualToRect(desiredViewport, viewport)) {
-				glViewport(desiredViewport.origin.x, desiredViewport.origin.y, desiredViewport.size.height, desiredViewport.size.height);
+				glViewport(desiredViewport.origin.x, desiredViewport.origin.y, desiredViewport.size.width, desiredViewport.size.height);
 			}
 		} else {
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
