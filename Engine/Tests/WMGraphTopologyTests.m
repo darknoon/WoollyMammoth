@@ -98,7 +98,8 @@
 }
 
 
-/**
+/*
+ * Graph looks like
  * A -> B ----> C 
  *      D -/
  */
@@ -127,8 +128,24 @@
 	STAssertTrue([executionOrderKeys indexOfObject:@"d"] < [executionOrderKeys indexOfObject:@"c"], @"d before c %@", executionOrderKeys);
 }
 
-- (void)testAcyclicGraph;
+/*
+ * Graph looks like
+ *  A -----> B -> C -> D
+ *       /        |
+ *       +--------+
+ */
+- (void)testCyclicGraph;
 {
+	//TODO: this test
+	
+	//We should get either ([A, B, C, D], {CB}), ([A, C, B, D], {BC}), ([C, A, B, D], {BC}), ([A, C, D, B], {BC}), ([C, A, B, D], {BC})
+	for (NSString *key in [NSArray arrayWithObjects:@"a", @"c", @"d", nil]) {
+		[self addBasicPatchWithKey:key];
+	}
+	WMPatch *b = [self patchWithKey:@"b" inputPorts:[NSArray arrayWithObjects:@"i0", @"i1", nil] outputPorts:nil];
+	[root addChild:b];
+	
+	
 	
 }
 

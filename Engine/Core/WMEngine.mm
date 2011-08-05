@@ -14,6 +14,8 @@
 #import "WMConnection.h"
 #import "WMPort.h"
 
+#import "WMPatch+GraphAlgorithms.h"
+
 #import "WMEAGLContext.h"
 #import "WMFramebuffer.h"
 #import "DNQCComposition.h"
@@ -109,87 +111,19 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 	//TODO: this could be made more efficent I think
 }
 
-- (BOOL)_nodeHasIncomingEdges:(WMPatch *)inPatch connections:(NSArray *)inConnections excludedConnections:(NSSet *)inExcludedConnections;
-{
-	for (WMConnection *connection in inConnections) {
-		if (![inExcludedConnections containsObject:connection]) {
-			if ([connection.destinationNode isEqualToString:inPatch.key]) {
-				return YES;
-			}
-		}
-	}
-	return NO;
-}
-
-- (BOOL)_nodeHasOutgoingEdges:(WMPatch *)inPatch connections:(NSArray *)inConnections;
-{
-	for (WMConnection *connection in inConnections) {
-		if ([connection.sourceNode isEqualToString:inPatch.key]) {
-			return YES;
-		}
-	}
-	return NO;
-}
-
 
 //This only supports children of a node NOT sub-children for now!!
 //Perhaps use an iterator aka NSEnumerator?
 - (NSArray *)executionOrderingOfChildren:(WMPatch *)inPatch;
 {
-	//TODO: reduce complexity of this method
-	//TODO: define this algorithm formally
-    
-	//The following while loop will only apply to these nodes
-	NSSet *children = [NSSet setWithArray:inPatch.children];
-    
-	NSMutableSet *hiddenEdges = [NSMutableSet set]; //hidden WMConnecitions
-	
-	NSMutableArray *sorted = [NSMutableArray array];
-	NSMutableSet *noIncomingEdgeNodeSet = [NSMutableSet set];
-	//Add starting set of nodes with no incoming edges
-	for (WMPatch *node in inPatch.children) {
-		if ([children containsObject:node] && ![self _nodeHasIncomingEdges:node connections:inPatch.connections excludedConnections:hiddenEdges]) {
-			[noIncomingEdgeNodeSet addObject:node];		
-		}
+	NSArray *executionOrdering = nil;
+	BOOL ok = [inPatch getTopologicalOrdering:&executionOrdering andExcludedEdges:NULL];
+	if (ok) {
+		return executionOrdering;
+	} else {
+		return nil;
 	}
-    
-	while (noIncomingEdgeNodeSet.count > 0) {
-		WMPatch *n = [noIncomingEdgeNodeSet anyObject];
-		[noIncomingEdgeNodeSet removeObject:n];
-		[sorted addObject:n];
-		
-		//for each node m with an edge e from n to m do
-		for (WMConnection *e in inPatch.connections) {
-			if (![hiddenEdges containsObject:e]) {
-				
-				//If this is an edge from e to m
-				if ([e.sourceNode isEqualToString:n.key]) {
-					WMPatch *m = [inPatch patchWithKey:e.destinationNode];
-					NSAssert1(m, @"Couldn't find connected node %@", e.destinationNode);
-					[hiddenEdges addObject:e];
-					
-					//if m has no other incoming edges then
-					//TODO: also check if m has nodes that need to go before it
-					if ([children containsObject:m] && ![self _nodeHasIncomingEdges:m connections:inPatch.connections excludedConnections:hiddenEdges]) {
-						// insert m into S
-						[noIncomingEdgeNodeSet addObject:m];
-					}
-				}
-			}
-		}
-	}
-	
-	//Now add consumer nodes (in render order!)
-	for (WMPatch *patch in inPatch.children) {
-		if (![children containsObject:patch]) {
-			[sorted addObject:patch];
-		}
-	}
-	
-	//TODO: assert all connections are hidden (graph has at least one cycle)
-	return sorted;
 }
-
 
 #pragma -
 
