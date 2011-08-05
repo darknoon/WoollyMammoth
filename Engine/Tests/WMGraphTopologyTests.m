@@ -139,7 +139,7 @@
  */
 - (void)testCyclicGraph;
 {
-	//TODO: this test
+	
 	
 	for (NSString *key in [NSArray arrayWithObjects:@"a", @"c", @"d", nil]) {
 		[self addBasicPatchWithKey:key];
@@ -151,6 +151,15 @@
 	[self connectOutputOfPatch:@"c" toInputOfPatch:@"d"];
 	[root addConnectionFromPort:@"o" ofPatch:@"a" toPort:@"i0" ofPatch:@"b"];
 	[root addConnectionFromPort:@"o" ofPatch:@"c" toPort:@"i1" ofPatch:@"b"];
+	
+	//First ask for strongly connected components. This should return the cycle [B, C]
+	NSArray *stronglyConnectedComponents = [root stronglyConnectedComponents];
+	STAssertEquals(stronglyConnectedComponents.count, 1u, @"Should find one strongly connected component in the graph. Found %@", stronglyConnectedComponents);
+	if (stronglyConnectedComponents.count > 0) {
+		NSArray *componentKeys = [[stronglyConnectedComponents objectAtIndex:0] valueForKey:@"key"];
+		STAssertEquals(componentKeys.count, 2u, @"Component count wrong");
+		STAssertTrue([componentKeys containsObject:@"b"] && [componentKeys containsObject:@"c"], @"Component has the wrong nodes: %@", componentKeys);
+	}
 	
 	//We should get one of ([A, B, C, D], {CB}), ([A, C, B, D], {BC}), ([C, A, B, D], {BC}), ([A, C, D, B], {BC}), or ([C, A, B, D], {BC})
 	
