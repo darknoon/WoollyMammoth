@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		07C99A9113D38E8B00712EFA /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 07C99A9013D38E8B00712EFA /* Icon-72.png */; };
-		490AC1E713D8F10F005E61CD /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 490AC1E613D8F10F005E61CD /* GLKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		490AC1E713D8F10F005E61CD /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 490AC1E613D8F10F005E61CD /* GLKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		49174AAC13D235BD008B5B8D /* DNAssertionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174AA413D235BD008B5B8D /* DNAssertionHandler.m */; };
 		49174AAD13D235BD008B5B8D /* EAGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174AA613D235BD008B5B8D /* EAGLView.m */; };
 		49174AAE13D235BD008B5B8D /* WMDebugViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174AA813D235BD008B5B8D /* WMDebugViewController.m */; };
@@ -185,6 +185,72 @@
 		49B3DB4D13E10F03002DC713 /* WMRenderObjectPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB4C13E10F03002DC713 /* WMRenderObjectPort.m */; };
 		49B3DB5B13E11039002DC713 /* WMRenderOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB5813E11039002DC713 /* WMRenderOutput.m */; };
 		49B3DB5F13E1115B002DC713 /* WMSetShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB5E13E1115B002DC713 /* WMSetShader.m */; };
+		49BACB4B13EB592A008ED051 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49BACB4A13EB592A008ED051 /* SenTestingKit.framework */; };
+		49BACB4C13EB592A008ED051 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595013D15F640056C506 /* UIKit.framework */; };
+		49BACB4D13EB592A008ED051 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595213D15F640056C506 /* Foundation.framework */; };
+		49BACB4E13EB592A008ED051 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595413D15F640056C506 /* CoreGraphics.framework */; };
+		49BACB5D13EB59D4008ED051 /* WMEngineTests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49BACB5C13EB59D4008ED051 /* WMEngineTests-Info.plist */; };
+		49BACB5E13EB59D9008ED051 /* WMGraphTopologyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BACB4113EB5847008ED051 /* WMGraphTopologyTests.m */; };
+		49BACB6013EB5A08008ED051 /* DNQCComposition.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC713DE4C1F0061A1A8 /* DNQCComposition.m */; };
+		49BACB6213EB5A08008ED051 /* WMConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC913DE4C1F0061A1A8 /* WMConnection.m */; };
+		49BACB6413EB5A08008ED051 /* WMEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49858DCB13DE4C1F0061A1A8 /* WMEngine.mm */; };
+		49BACB6613EB5A08008ED051 /* WMPatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DCD13DE4C1F0061A1A8 /* WMPatch.m */; };
+		49BACB6813EB5A08008ED051 /* WMPatchCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DCF13DE4C1F0061A1A8 /* WMPatchCategories.m */; };
+		49BACB6A13EB5A08008ED051 /* WMAccelerometer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49858DD313DE4C1F0061A1A8 /* WMAccelerometer.mm */; };
+		49BACB6C13EB5A08008ED051 /* WMVideoCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DD513DE4C1F0061A1A8 /* WMVideoCapture.m */; };
+		49BACB6E13EB5A08008ED051 /* WMClear.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DD813DE4C1F0061A1A8 /* WMClear.m */; };
+		49BACB7013EB5A08008ED051 /* WMParticleSystem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49858DDA13DE4C1F0061A1A8 /* WMParticleSystem.mm */; };
+		49BACB7213EB5A08008ED051 /* WMQuad.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49858DDC13DE4C1F0061A1A8 /* WMQuad.mm */; };
+		49BACB7413EB5A08008ED051 /* WMSphere.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49858DDE13DE4C1F0061A1A8 /* WMSphere.mm */; };
+		49BACB7613EB5A08008ED051 /* WMRenderOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB5813E11039002DC713 /* WMRenderOutput.m */; };
+		49BACB7813EB5A08008ED051 /* WMSetShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB5E13E1115B002DC713 /* WMSetShader.m */; };
+		49BACB7B13EB5A08008ED051 /* WMImageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DE213DE4C1F0061A1A8 /* WMImageFilter.m */; };
+		49BACB7D13EB5A08008ED051 /* WMImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DE413DE4C1F0061A1A8 /* WMImageLoader.m */; };
+		49BACB7F13EB5A08008ED051 /* WMRenderInImage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49858DE613DE4C1F0061A1A8 /* WMRenderInImage.mm */; };
+		49BACB8113EB5A08008ED051 /* WMColorFromComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DE913DE4C1F0061A1A8 /* WMColorFromComponents.m */; };
+		49BACB8313EB5A08008ED051 /* WMLFO.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DEB13DE4C1F0061A1A8 /* WMLFO.m */; };
+		49BACB8513EB5A08008ED051 /* WMMathOp.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DED13DE4C1F0061A1A8 /* WMMathOp.m */; };
+		49BACB8713EB5A08008ED051 /* WMSplitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DEF13DE4C1F0061A1A8 /* WMSplitter.m */; };
+		49BACB8913EB5A08008ED051 /* WMVectorFromComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD651613DE9E1200A2CC66 /* WMVectorFromComponents.m */; };
+		49BACB8B13EB5A08008ED051 /* WMBooleanPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DF213DE4C1F0061A1A8 /* WMBooleanPort.m */; };
+		49BACB8D13EB5A08008ED051 /* WMColorPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DF413DE4C1F0061A1A8 /* WMColorPort.m */; };
+		49BACB8F13EB5A08008ED051 /* WMImagePort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DF613DE4C1F0061A1A8 /* WMImagePort.m */; };
+		49BACB9113EB5A08008ED051 /* WMIndexPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DF813DE4C1F0061A1A8 /* WMIndexPort.m */; };
+		49BACB9313EB5A08008ED051 /* WMNumberPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DFA13DE4C1F0061A1A8 /* WMNumberPort.m */; };
+		49BACB9513EB5A08008ED051 /* WMPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DFC13DE4C1F0061A1A8 /* WMPort.m */; };
+		49BACB9813EB5A08008ED051 /* WMStringPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DFF13DE4C1F0061A1A8 /* WMStringPort.m */; };
+		49BACB9A13EB5A08008ED051 /* WMVectorPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD650B13DE8FF600A2CC66 /* WMVectorPort.m */; };
+		49BACB9C13EB5A08008ED051 /* WMRenderObjectPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB4C13E10F03002DC713 /* WMRenderObjectPort.m */; };
+		49BACB9E13EB5A08008ED051 /* WMStructuredBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC213DE4C1F0061A1A8 /* WMStructuredBuffer.m */; };
+		49BACBA013EB5A08008ED051 /* WMStructureDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC413DE4C1F0061A1A8 /* WMStructureDefinition.m */; };
+		49BACBA113EB5A08008ED051 /* WMEngineTests-Info.plist in Sources */ = {isa = PBXBuildFile; fileRef = 49BACB5C13EB59D4008ED051 /* WMEngineTests-Info.plist */; };
+		49BACBA413EB5A08008ED051 /* GLDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E0213DE4C1F0061A1A8 /* GLDefines.m */; };
+		49BACBA613EB5A08008ED051 /* WMEAGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E0413DE4C1F0061A1A8 /* WMEAGLContext.m */; };
+		49BACBA813EB5A08008ED051 /* WMFramebuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E0613DE4C1F0061A1A8 /* WMFramebuffer.m */; };
+		49BACBAC13EB5A08008ED051 /* WMRenderObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E0A13DE4C1F0061A1A8 /* WMRenderObject.m */; };
+		49BACBAE13EB5A08008ED051 /* WMShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E0C13DE4C1F0061A1A8 /* WMShader.m */; };
+		49BACBB113EB5A08008ED051 /* WMTexture2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E0F13DE4C1F0061A1A8 /* WMTexture2D.m */; };
+		49BACBB313EB5A08008ED051 /* WMTextureCubeMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E1113DE4C1F0061A1A8 /* WMTextureCubeMap.m */; };
+		49BACBB713EB5A08008ED051 /* EAGLContext+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E1413DE4C1F0061A1A8 /* EAGLContext+Extensions.m */; };
+		49BACBBF13EB5A08008ED051 /* SimplexNoise.c in Sources */ = {isa = PBXBuildFile; fileRef = 49858E1C13DE4C1F0061A1A8 /* SimplexNoise.c */; };
+		49BACBC213EB5A08008ED051 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E1F13DE4C1F0061A1A8 /* UIImage+Alpha.m */; };
+		49BACBC413EB5A08008ED051 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E2113DE4C1F0061A1A8 /* UIImage+Resize.m */; };
+		49BACBC613EB5A08008ED051 /* UIImage+RoundedCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E2313DE4C1F0061A1A8 /* UIImage+RoundedCorner.m */; };
+		49BACBC713EB5A08008ED051 /* WMMathUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = 49858E2413DE4C1F0061A1A8 /* WMMathUtil.c */; };
+		49BACBCE13EB5BBB008ED051 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 490AC1E613D8F10F005E61CD /* GLKit.framework */; };
+		49BACBCF13EB5BBF008ED051 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494E4EF113D25D2B00402784 /* CoreMedia.framework */; };
+		49BACBD013EB5BC2008ED051 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494E4EEF13D25D1C00402784 /* AVFoundation.framework */; };
+		49BACBD113EB5BC5008ED051 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 494E4ED813D24ADD00402784 /* libz.dylib */; };
+		49BACBD213EB5BC8008ED051 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494E4ED613D24AD600402784 /* MobileCoreServices.framework */; };
+		49BACBD313EB5BCB008ED051 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5264B13D17308004EC7F6 /* AudioToolbox.framework */; };
+		49BACBD413EB5BCE008ED051 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5264913D17301004EC7F6 /* SystemConfiguration.framework */; };
+		49BACBD513EB5BD0008ED051 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5264713D172FB004EC7F6 /* Security.framework */; };
+		49BACBD613EB5BD3008ED051 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5264513D172EF004EC7F6 /* CoreMotion.framework */; };
+		49BACBD713EB5BD5008ED051 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5264313D172E5004EC7F6 /* CoreVideo.framework */; };
+		49BACBD813EB5BD8008ED051 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5264113D172DE004EC7F6 /* OpenGLES.framework */; };
+		49BACBD913EB5BDA008ED051 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5263F13D172CF004EC7F6 /* CFNetwork.framework */; };
+		49BACBDA13EB5BDD008ED051 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5263D13D172C6004EC7F6 /* QuartzCore.framework */; };
+		49BACBDB13EB5BDF008ED051 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5263B13D172BC004EC7F6 /* CoreMIDI.framework */; };
 		49E3145913DA44F600813CE0 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49E3145613DA44F600813CE0 /* Random.cpp */; };
 		49E3145A13DA44F600813CE0 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49E3145613DA44F600813CE0 /* Random.cpp */; };
 		49F0595113D15F640056C506 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595013D15F640056C506 /* UIKit.framework */; };
@@ -545,6 +611,12 @@
 		49B3DB5813E11039002DC713 /* WMRenderOutput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMRenderOutput.m; sourceTree = "<group>"; };
 		49B3DB5D13E1115B002DC713 /* WMSetShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSetShader.h; sourceTree = "<group>"; };
 		49B3DB5E13E1115B002DC713 /* WMSetShader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSetShader.m; sourceTree = "<group>"; };
+		49BACB4013EB5847008ED051 /* WMGraphTopologyTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMGraphTopologyTests.h; sourceTree = "<group>"; };
+		49BACB4113EB5847008ED051 /* WMGraphTopologyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMGraphTopologyTests.m; sourceTree = "<group>"; };
+		49BACB4913EB592A008ED051 /* WMEngineTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WMEngineTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		49BACB4A13EB592A008ED051 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		49BACB5C13EB59D4008ED051 /* WMEngineTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "WMEngineTests-Info.plist"; sourceTree = "<group>"; };
+		49BACBC913EB5B54008ED051 /* WMEngineTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMEngineTests-Prefix.pch"; sourceTree = "<group>"; };
 		49E3145613DA44F600813CE0 /* Random.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Random.cpp; sourceTree = "<group>"; };
 		49E3145713DA44F600813CE0 /* Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Random.h; sourceTree = "<group>"; };
 		49E3145813DA44F600813CE0 /* Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Types.h; sourceTree = "<group>"; };
@@ -569,6 +641,31 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		49BACB4513EB592A008ED051 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49BACB4B13EB592A008ED051 /* SenTestingKit.framework in Frameworks */,
+				49BACB4C13EB592A008ED051 /* UIKit.framework in Frameworks */,
+				49BACB4D13EB592A008ED051 /* Foundation.framework in Frameworks */,
+				49BACB4E13EB592A008ED051 /* CoreGraphics.framework in Frameworks */,
+				49BACBCE13EB5BBB008ED051 /* GLKit.framework in Frameworks */,
+				49BACBCF13EB5BBF008ED051 /* CoreMedia.framework in Frameworks */,
+				49BACBD013EB5BC2008ED051 /* AVFoundation.framework in Frameworks */,
+				49BACBD113EB5BC5008ED051 /* libz.dylib in Frameworks */,
+				49BACBD213EB5BC8008ED051 /* MobileCoreServices.framework in Frameworks */,
+				49BACBD313EB5BCB008ED051 /* AudioToolbox.framework in Frameworks */,
+				49BACBD413EB5BCE008ED051 /* SystemConfiguration.framework in Frameworks */,
+				49BACBD513EB5BD0008ED051 /* Security.framework in Frameworks */,
+				49BACBD613EB5BD3008ED051 /* CoreMotion.framework in Frameworks */,
+				49BACBD713EB5BD5008ED051 /* CoreVideo.framework in Frameworks */,
+				49BACBD813EB5BD8008ED051 /* OpenGLES.framework in Frameworks */,
+				49BACBD913EB5BDA008ED051 /* CFNetwork.framework in Frameworks */,
+				49BACBDA13EB5BDD008ED051 /* QuartzCore.framework in Frameworks */,
+				49BACBDB13EB5BDF008ED051 /* CoreMIDI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		49F0594913D15F640056C506 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -765,6 +862,7 @@
 				49858DD013DE4C1F0061A1A8 /* Patches */,
 				49858DF013DE4C1F0061A1A8 /* Ports */,
 				49858DC013DE4C1F0061A1A8 /* Buffer */,
+				49BACB3E13EB5827008ED051 /* Tests */,
 				49858E0013DE4C1F0061A1A8 /* Render */,
 				49858E1213DE4C1F0061A1A8 /* Util */,
 			);
@@ -1285,6 +1383,17 @@
 			path = "Render Object";
 			sourceTree = "<group>";
 		};
+		49BACB3E13EB5827008ED051 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				49BACB5C13EB59D4008ED051 /* WMEngineTests-Info.plist */,
+				49BACBC913EB5B54008ED051 /* WMEngineTests-Prefix.pch */,
+				49BACB4013EB5847008ED051 /* WMGraphTopologyTests.h */,
+				49BACB4113EB5847008ED051 /* WMGraphTopologyTests.m */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
 		49E3145513DA44F600813CE0 /* Math */ = {
 			isa = PBXGroup;
 			children = (
@@ -1315,6 +1424,7 @@
 			children = (
 				49F0594C13D15F640056C506 /* WMEdit.app */,
 				49F0597013D15F640056C506 /* WMEditTests.octest */,
+				49BACB4913EB592A008ED051 /* WMEngineTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1339,6 +1449,7 @@
 				49F0595013D15F640056C506 /* UIKit.framework */,
 				49F0595213D15F640056C506 /* Foundation.framework */,
 				49F0595413D15F640056C506 /* CoreGraphics.framework */,
+				49BACB4A13EB592A008ED051 /* SenTestingKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1391,6 +1502,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		49BACB4813EB592A008ED051 /* WMEngineTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 49BACB5913EB592A008ED051 /* Build configuration list for PBXNativeTarget "WMEngineTests" */;
+			buildPhases = (
+				49BACB4413EB592A008ED051 /* Sources */,
+				49BACB4513EB592A008ED051 /* Frameworks */,
+				49BACB4613EB592A008ED051 /* Resources */,
+				49BACB4713EB592A008ED051 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WMEngineTests;
+			productName = WMEngineTests;
+			productReference = 49BACB4913EB592A008ED051 /* WMEngineTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
 		49F0594B13D15F640056C506 /* WMEdit */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49F0598313D15F640056C506 /* Build configuration list for PBXNativeTarget "WMEdit" */;
@@ -1451,11 +1580,20 @@
 			targets = (
 				49F0594B13D15F640056C506 /* WMEdit */,
 				49F0596F13D15F640056C506 /* WMEditTests */,
+				49BACB4813EB592A008ED051 /* WMEngineTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		49BACB4613EB592A008ED051 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49BACB5D13EB59D4008ED051 /* WMEngineTests-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		49F0594A13D15F640056C506 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1516,6 +1654,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		49BACB4713EB592A008ED051 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
 		49F0596E13D15F640056C506 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1532,6 +1683,60 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		49BACB4413EB592A008ED051 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49BACB6013EB5A08008ED051 /* DNQCComposition.m in Sources */,
+				49BACB6213EB5A08008ED051 /* WMConnection.m in Sources */,
+				49BACB6413EB5A08008ED051 /* WMEngine.mm in Sources */,
+				49BACB6613EB5A08008ED051 /* WMPatch.m in Sources */,
+				49BACB6813EB5A08008ED051 /* WMPatchCategories.m in Sources */,
+				49BACB6A13EB5A08008ED051 /* WMAccelerometer.mm in Sources */,
+				49BACB6C13EB5A08008ED051 /* WMVideoCapture.m in Sources */,
+				49BACB6E13EB5A08008ED051 /* WMClear.m in Sources */,
+				49BACB7013EB5A08008ED051 /* WMParticleSystem.mm in Sources */,
+				49BACB7213EB5A08008ED051 /* WMQuad.mm in Sources */,
+				49BACB7413EB5A08008ED051 /* WMSphere.mm in Sources */,
+				49BACB7613EB5A08008ED051 /* WMRenderOutput.m in Sources */,
+				49BACB7813EB5A08008ED051 /* WMSetShader.m in Sources */,
+				49BACB7B13EB5A08008ED051 /* WMImageFilter.m in Sources */,
+				49BACB7D13EB5A08008ED051 /* WMImageLoader.m in Sources */,
+				49BACB7F13EB5A08008ED051 /* WMRenderInImage.mm in Sources */,
+				49BACB8113EB5A08008ED051 /* WMColorFromComponents.m in Sources */,
+				49BACB8313EB5A08008ED051 /* WMLFO.m in Sources */,
+				49BACB8513EB5A08008ED051 /* WMMathOp.m in Sources */,
+				49BACB8713EB5A08008ED051 /* WMSplitter.m in Sources */,
+				49BACB8913EB5A08008ED051 /* WMVectorFromComponents.m in Sources */,
+				49BACB8B13EB5A08008ED051 /* WMBooleanPort.m in Sources */,
+				49BACB8D13EB5A08008ED051 /* WMColorPort.m in Sources */,
+				49BACB8F13EB5A08008ED051 /* WMImagePort.m in Sources */,
+				49BACB9113EB5A08008ED051 /* WMIndexPort.m in Sources */,
+				49BACB9313EB5A08008ED051 /* WMNumberPort.m in Sources */,
+				49BACB9513EB5A08008ED051 /* WMPort.m in Sources */,
+				49BACB9813EB5A08008ED051 /* WMStringPort.m in Sources */,
+				49BACB9A13EB5A08008ED051 /* WMVectorPort.m in Sources */,
+				49BACB9C13EB5A08008ED051 /* WMRenderObjectPort.m in Sources */,
+				49BACB9E13EB5A08008ED051 /* WMStructuredBuffer.m in Sources */,
+				49BACBA013EB5A08008ED051 /* WMStructureDefinition.m in Sources */,
+				49BACBA113EB5A08008ED051 /* WMEngineTests-Info.plist in Sources */,
+				49BACBA413EB5A08008ED051 /* GLDefines.m in Sources */,
+				49BACBA613EB5A08008ED051 /* WMEAGLContext.m in Sources */,
+				49BACBA813EB5A08008ED051 /* WMFramebuffer.m in Sources */,
+				49BACBAC13EB5A08008ED051 /* WMRenderObject.m in Sources */,
+				49BACBAE13EB5A08008ED051 /* WMShader.m in Sources */,
+				49BACBB113EB5A08008ED051 /* WMTexture2D.m in Sources */,
+				49BACBB313EB5A08008ED051 /* WMTextureCubeMap.m in Sources */,
+				49BACBB713EB5A08008ED051 /* EAGLContext+Extensions.m in Sources */,
+				49BACBBF13EB5A08008ED051 /* SimplexNoise.c in Sources */,
+				49BACBC213EB5A08008ED051 /* UIImage+Alpha.m in Sources */,
+				49BACBC413EB5A08008ED051 /* UIImage+Resize.m in Sources */,
+				49BACBC613EB5A08008ED051 /* UIImage+RoundedCorner.m in Sources */,
+				49BACBC713EB5A08008ED051 /* WMMathUtil.c in Sources */,
+				49BACB5E13EB59D9008ED051 /* WMGraphTopologyTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		49F0594813D15F640056C506 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1715,6 +1920,52 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		49BACB5A13EB592A008ED051 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "../Engine/Tests/WMEngineTests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				INFOPLIST_FILE = "../Engine/Tests/WMEngineTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		49BACB5B13EB592A008ED051 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "../Engine/Tests/WMEngineTests-Prefix.pch";
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				INFOPLIST_FILE = "../Engine/Tests/WMEngineTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALIDATE_PRODUCT = YES;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
 		49F0598113D15F640056C506 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1830,6 +2081,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		49BACB5913EB592A008ED051 /* Build configuration list for PBXNativeTarget "WMEngineTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				49BACB5A13EB592A008ED051 /* Debug */,
+				49BACB5B13EB592A008ED051 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		49F0594613D15F640056C506 /* Build configuration list for PBXProject "WMEdit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

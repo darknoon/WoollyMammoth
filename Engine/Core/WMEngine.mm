@@ -131,32 +131,6 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 	return NO;
 }
 
-//TODO: make this way more efficent!
-- (WMPatch *)_firstRenderingNodeInSet:(NSSet *)inNodeSet orderedNodes:(NSArray *)inOrderedNodes;
-{
-	NSUInteger minIndex = UINT32_MAX;
-	WMPatch *minPatch = nil;
-	for (WMPatch *patch in inNodeSet) {
-		NSUInteger i = [inOrderedNodes indexOfObject:patch];
-		if (i < minIndex) {
-			i = minIndex;
-			minPatch = patch;
-		}
-	}
-	return minPatch;
-}
-
-//Execute all of these first
-- (NSMutableSet *)_nonConsumerNodesInNodes:(NSArray *)inNodes connections:(NSArray *)inConnections;
-{
-	NSMutableSet *outSet = [NSMutableSet set];
-	for (WMPatch *patch in inNodes) {
-		if ([self _nodeHasOutgoingEdges:patch connections:inConnections]) {
-			[outSet addObject:patch];
-		}
-	}
-	return outSet;
-}
 
 //This only supports children of a node NOT sub-children for now!!
 //Perhaps use an iterator aka NSEnumerator?
@@ -166,21 +140,21 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 	//TODO: define this algorithm formally
     
 	//The following while loop will only apply to these nodes
-	NSSet *nonConsumerNodes = [self _nonConsumerNodesInNodes:inPatch.children connections:inPatch.connections];
+	NSSet *children = [NSSet setWithArray:inPatch.children];
     
 	NSMutableSet *hiddenEdges = [NSMutableSet set]; //hidden WMConnecitions
 	
 	NSMutableArray *sorted = [NSMutableArray array];
 	NSMutableSet *noIncomingEdgeNodeSet = [NSMutableSet set];
-	//Add starting set of no-incoming-edges-and-not-consumer nodes o_O
+	//Add starting set of nodes with no incoming edges
 	for (WMPatch *node in inPatch.children) {
-		if ([nonConsumerNodes containsObject:node] && ![self _nodeHasIncomingEdges:node connections:inPatch.connections excludedConnections:hiddenEdges]) {
+		if ([children containsObject:node] && ![self _nodeHasIncomingEdges:node connections:inPatch.connections excludedConnections:hiddenEdges]) {
 			[noIncomingEdgeNodeSet addObject:node];		
 		}
 	}
     
 	while (noIncomingEdgeNodeSet.count > 0) {
-		WMPatch *n = [self _firstRenderingNodeInSet:noIncomingEdgeNodeSet orderedNodes:inPatch.children]; //TODO: require nodes with lower rendering order to be rendered first
+		WMPatch *n = [noIncomingEdgeNodeSet anyObject];
 		[noIncomingEdgeNodeSet removeObject:n];
 		[sorted addObject:n];
 		
@@ -196,7 +170,7 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 					
 					//if m has no other incoming edges then
 					//TODO: also check if m has nodes that need to go before it
-					if ([nonConsumerNodes containsObject:m] && ![self _nodeHasIncomingEdges:m connections:inPatch.connections excludedConnections:hiddenEdges]) {
+					if ([children containsObject:m] && ![self _nodeHasIncomingEdges:m connections:inPatch.connections excludedConnections:hiddenEdges]) {
 						// insert m into S
 						[noIncomingEdgeNodeSet addObject:m];
 					}
@@ -207,7 +181,7 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 	
 	//Now add consumer nodes (in render order!)
 	for (WMPatch *patch in inPatch.children) {
-		if (![nonConsumerNodes containsObject:patch]) {
+		if (![children containsObject:patch]) {
 			[sorted addObject:patch];
 		}
 	}
