@@ -16,44 +16,6 @@
 @synthesize framebufferHeight;
 @synthesize texture;
 
-- (id)initWithTexture:(WMTexture2D *)inTexture depthBufferDepth:(GLuint)inDepthBufferDepth;
-{
-	self = [super init];
-	if (!self) return nil;
-	
-	WMEAGLContext *context = (WMEAGLContext *)[EAGLContext currentContext];
-	ZAssert(context, @"nil current context creating RTT WMFramebuffer");
-	ZAssert([context isKindOfClass:[WMEAGLContext class]], @"Cannot use WMFramebuffer without WMEAGLContext");
-	
-	// Create default framebuffer object.
-	glGenFramebuffers(1, &framebufferObject);
-	context.boundFramebuffer = self;
-
-	texture = [inTexture retain];
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, inTexture.name, 0);
-	
-	framebufferWidth = inTexture.pixelsWide;
-	framebufferHeight = inTexture.pixelsHigh;
-	
-	if (inDepthBufferDepth > 0) {
-		//Create depth buffer
-		glGenRenderbuffersOES(1, &depthRenderbuffer);
-		glBindRenderbufferOES(GL_RENDERBUFFER_OES, depthRenderbuffer); 
-		glRenderbufferStorageOES(GL_RENDERBUFFER_OES, inDepthBufferDepth, framebufferWidth, framebufferHeight); 
-		//Attach depth buffer
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
-	}
-	
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-		NSLog(@"Failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
-		context.boundFramebuffer = nil;
-		[self release];
-		return nil;
-	}
-	
-	return self;
-}
-
 + (NSString *)descriptionOfFramebufferStatus:(GLenum)inStatus;
 {
 	switch (inStatus) {
@@ -73,6 +35,59 @@
 			return @"??";
 	}
 }
+
+- (id)initWithTexture:(WMTexture2D *)inTexture depthBufferDepth:(GLuint)inDepthBufferDepth;
+{
+	if (!inTexture) return nil;
+	
+	self = [super init];
+	if (!self) return nil;
+	
+	WMEAGLContext *context = (WMEAGLContext *)[EAGLContext currentContext];
+	ZAssert(context, @"nil current context creating RTT WMFramebuffer");
+	ZAssert([context isKindOfClass:[WMEAGLContext class]], @"Cannot use WMFramebuffer without WMEAGLContext");
+	
+	WMFramebuffer *oldFrameBuffer = context.boundFramebuffer;
+	
+	// Create default framebuffer object.
+	glGenFramebuffers(1, &framebufferObject);
+	
+	//WARNING: we're modifying state outside of WMEAGLContext. This method should therefore be moved to WMEAGLContext!
+	[self bind];
+
+	texture = [inTexture retain];
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, inTexture.name, 0);
+	
+	framebufferWidth = inTexture.pixelsWide;
+	framebufferHeight = inTexture.pixelsHigh;
+	
+	if (inDepthBufferDepth > 0) {
+		//Create depth buffer
+		glGenRenderbuffersOES(1, &depthRenderbuffer);
+		glBindRenderbufferOES(GL_RENDERBUFFER_OES, depthRenderbuffer); 
+		glRenderbufferStorageOES(GL_RENDERBUFFER_OES, inDepthBufferDepth, framebufferWidth, framebufferHeight); 
+		//Attach depth buffer
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
+	}
+	
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+		
+		NSLog(@"Failed to make complete framebuffer object (%@) with texture %@", [WMFramebuffer descriptionOfFramebufferStatus:glCheckFramebufferStatus(GL_FRAMEBUFFER)], inTexture);
+		
+		[oldFrameBuffer bind];
+		
+		[self release];
+		return nil;
+	} else {
+		DLog(@"Created framebuffer %@ from texture: %@", self, inTexture);
+	}
+	
+	
+	[oldFrameBuffer bind];
+	
+	return self;
+}
+
 
 - (id)initWithLayerRenderbufferStorage:(CAEAGLLayer *)inLayer;
 {
@@ -187,12 +202,18 @@
 
 - (void)setColorAttachmentWithTexture:(WMTexture2D *)inTexture;
 {
-	[texture autorelease];
+	WMEAGLContext *context = (WMEAGLContext *)[EAGLContext currentContext];
+	WMFramebuffer *oldFrameBuffer = context.boundFramebuffer;
+	context.boundFramebuffer = self;
+	
+	[texture release];
 	texture = [inTexture retain];
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, inTexture.name, 0);
 	
 	framebufferWidth = inTexture.pixelsWide;
 	framebufferHeight = inTexture.pixelsHigh;
+	
+	context.boundFramebuffer = oldFrameBuffer;
 }
 
 - (BOOL)hasDepthbuffer;

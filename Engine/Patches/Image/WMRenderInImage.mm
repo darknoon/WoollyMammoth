@@ -69,17 +69,19 @@
 		return YES;
 	}
 	
+	//Recreate texture each frame (fix me!)
+	[texture release];
+	texture = [[WMTexture2D alloc] initWithData:NULL
+									pixelFormat:kWMTexture2DPixelFormat_RGBA8888
+									 pixelsWide:renderWidth
+									 pixelsHigh:renderHeight
+									contentSize:(CGSize){renderWidth, renderHeight}
+									orientation:UIImageOrientationRight];
+	
 	if (!framebuffer || framebuffer.framebufferWidth != renderWidth || framebuffer.framebufferHeight != renderHeight) {
 		//Re-create framebuffer and texture
-		[texture release];
 		[framebuffer release];
 		
-		texture = [[WMTexture2D alloc] initWithData:NULL
-										pixelFormat:kWMTexture2DPixelFormat_RGBA8888
-										 pixelsWide:renderWidth
-										 pixelsHigh:renderHeight
-										contentSize:(CGSize){renderWidth, renderHeight}
-										orientation:UIImageOrientationLeft];
 		framebuffer = [[WMFramebuffer alloc] initWithTexture:texture depthBufferDepth:useDepthBuffer ? GL_DEPTH_COMPONENT16 : 0];
 		
 		if (!texture || !framebuffer) {
@@ -88,6 +90,8 @@
 		NSLog(@"Created framebuffer: %@", framebuffer);
 	}
 	
+	[framebuffer setColorAttachmentWithTexture:texture];
+
 	context.modelViewMatrix = [WMEngine cameraMatrixWithRect:(CGRect){0, 0, renderWidth, renderHeight}];
 	context.boundFramebuffer = framebuffer;
 	

@@ -117,7 +117,8 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 - (NSArray *)executionOrderingOfChildren:(WMPatch *)inPatch;
 {
 	NSArray *executionOrdering = nil;
-	BOOL ok = [inPatch getTopologicalOrdering:&executionOrdering andExcludedEdges:NULL];
+	NSSet *excludedEdges = nil;
+	BOOL ok = [inPatch getTopologicalOrdering:&executionOrdering andExcludedEdges:&excludedEdges];
 	if (ok) {
 		return executionOrdering;
 	} else {
