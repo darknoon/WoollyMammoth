@@ -266,6 +266,7 @@
 		49F0598013D15F640056C506 /* WMEditTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F0597F13D15F640056C506 /* WMEditTests.m */; };
 		49F8A94513E69778000D4A3A /* WMImageLoaderSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F8A94313E69778000D4A3A /* WMImageLoaderSettingsController.m */; };
 		49F8A94613E69778000D4A3A /* WMImageLoaderSettingsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49F8A94413E69778000D4A3A /* WMImageLoaderSettingsController.xib */; };
+		B405C68D13EB99B000BD062D /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = B405C68C13EB99B000BD062D /* NSString+URLEncoding.m */; };
 		B43F38BD13D358B4004A6A47 /* missing_effect_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B43F38BC13D358B4004A6A47 /* missing_effect_thumb.jpg */; };
 /* End PBXBuildFile section */
 
@@ -637,6 +638,8 @@
 		49F8A94213E69778000D4A3A /* WMImageLoaderSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMImageLoaderSettingsController.h; sourceTree = "<group>"; };
 		49F8A94313E69778000D4A3A /* WMImageLoaderSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMImageLoaderSettingsController.m; sourceTree = "<group>"; };
 		49F8A94413E69778000D4A3A /* WMImageLoaderSettingsController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMImageLoaderSettingsController.xib; sourceTree = "<group>"; };
+		B405C68B13EB99B000BD062D /* NSString+URLEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+URLEncoding.h"; sourceTree = "<group>"; };
+		B405C68C13EB99B000BD062D /* NSString+URLEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+URLEncoding.m"; sourceTree = "<group>"; };
 		B43F38BC13D358B4004A6A47 /* missing_effect_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = missing_effect_thumb.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1039,6 +1042,8 @@
 				49858E2113DE4C1F0061A1A8 /* UIImage+Resize.m */,
 				49858E2213DE4C1F0061A1A8 /* UIImage+RoundedCorner.h */,
 				49858E2313DE4C1F0061A1A8 /* UIImage+RoundedCorner.m */,
+				B405C68B13EB99B000BD062D /* NSString+URLEncoding.h */,
+				B405C68C13EB99B000BD062D /* NSString+URLEncoding.m */,
 				49858E2413DE4C1F0061A1A8 /* WMMathUtil.c */,
 				49858E2513DE4C1F0061A1A8 /* WMMathUtil.h */,
 			);
@@ -1870,6 +1875,7 @@
 				496F554213E128A30065BB67 /* WMSetShaderSettingsController.m in Sources */,
 				496F554613E12D2E0065BB67 /* WMPatch+SettingsControllerClass.m in Sources */,
 				49F8A94513E69778000D4A3A /* WMImageLoaderSettingsController.m in Sources */,
+				B405C68D13EB99B000BD062D /* NSString+URLEncoding.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
