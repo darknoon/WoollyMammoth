@@ -606,7 +606,7 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 
 - (NSString *)availableKeyForSubPatch:(WMPatch *)inPatch;
 {
-	if ([childrenByKey objectForKey:inPatch.key]) {
+	if (!inPatch.key || [childrenByKey objectForKey:inPatch.key]) {
 		NSString *defaultKey = NSStringFromClass([inPatch class]);
 		int i = 0;
 		if ([childrenByKey objectForKey:defaultKey]) {
