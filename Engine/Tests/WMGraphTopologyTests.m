@@ -10,6 +10,9 @@
 
 #import "WMEngine.h"
 #import "WMPatch.h"
+#import "WMConnection.h"
+
+#import "WMPatch+GraphAlgorithms.h"
 
 @implementation WMGraphTopologyTests {
 	WMPatch *root;
@@ -138,15 +141,50 @@
 {
 	//TODO: this test
 	
-	//We should get either ([A, B, C, D], {CB}), ([A, C, B, D], {BC}), ([C, A, B, D], {BC}), ([A, C, D, B], {BC}), ([C, A, B, D], {BC})
 	for (NSString *key in [NSArray arrayWithObjects:@"a", @"c", @"d", nil]) {
 		[self addBasicPatchWithKey:key];
 	}
 	WMPatch *b = [self patchWithKey:@"b" inputPorts:[NSArray arrayWithObjects:@"i0", @"i1", nil] outputPorts:nil];
 	[root addChild:b];
 	
+	[self connectOutputOfPatch:@"b" toInputOfPatch:@"c"];
+	[self connectOutputOfPatch:@"c" toInputOfPatch:@"d"];
+	[root addConnectionFromPort:@"o" ofPatch:@"a" toPort:@"i0" ofPatch:@"b"];
+	[root addConnectionFromPort:@"o" ofPatch:@"c" toPort:@"i1" ofPatch:@"b"];
 	
+	//We should get one of ([A, B, C, D], {CB}), ([A, C, B, D], {BC}), ([C, A, B, D], {BC}), ([A, C, D, B], {BC}), or ([C, A, B, D], {BC})
 	
+	NSArray *ordering = nil;
+	NSSet *excludedEdges = nil;
+	[root getTopologicalOrdering:&ordering andExcludedEdges:&excludedEdges];
+	
+	STAssertTrue(excludedEdges.count > 0, @"Edges must be excluded to topologically sort the graph!");
+	STAssertTrue(excludedEdges.count <= 1, @"Too many edges excluded!");
+	STAssertEquals(ordering.count, 4u, @"Not all objects included in ordering!");
+	
+	NSArray *orderKeys = [ordering valueForKey:@"key"];
+	
+	if (excludedEdges.count > 0) {
+		WMConnection *excludedConnection = [excludedEdges anyObject];
+		STAssertEqualObjects([excludedConnection class], [WMConnection class], @"Object is not a connection");
+		
+		if ([excludedConnection.sourceNode isEqualToString:@"c"] && [excludedConnection.destinationNode isEqualToString:@"b"]) {
+			//Expecting ([A, B, C, D], {CB})
+			
+			NSArray *expectedOrder = [NSArray arrayWithObjects:@"a", @"b", @"c", @"d", nil];
+			STAssertEqualObjects(orderKeys, expectedOrder, @"Unexpected order: %@", orderKeys);
+		} else if ([excludedConnection.sourceNode isEqualToString:@"b"] && [excludedConnection.destinationNode isEqualToString:@"c"]) {
+			//Expecting ([A, C, B, D], {BC}), ([C, A, B, D], {BC}), ([A, C, D, B], {BC}), or ([C, A, B, D], {BC})
+			
+			//Just check that A comes before B and D, and that C comes before B and D
+			
+			STAssertTrue([orderKeys indexOfObject:@"a"] > [orderKeys indexOfObject:@"b"], @"a before b");
+			STAssertTrue([orderKeys indexOfObject:@"a"] > [orderKeys indexOfObject:@"d"], @"a before d");
+			STAssertTrue([orderKeys indexOfObject:@"c"] > [orderKeys indexOfObject:@"b"], @"c before b");
+			STAssertTrue([orderKeys indexOfObject:@"c"] > [orderKeys indexOfObject:@"d"], @"c before d");
+		}
+	}
+
 }
 
 @end
