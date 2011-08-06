@@ -131,21 +131,22 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 + (GLKMatrix4)cameraMatrixWithRect:(CGRect)inBounds;
 {
 	GLKMatrix4 cameraMatrix;
-	//TODO: move this state setting to WMEAGLContext
-	//glCullFace(GL_BACK);
-	
-	GLfloat viewAngle = 35.f * M_PI / 180.0f;
-	
+		
 	const float near = 0.1;
-	const float far = 1000.0;
+	const float far = 10.0;
 	
-	const float aspectRatio = inBounds.size.width / inBounds.size.height;
+	const float aspectRatio = inBounds.size.height / inBounds.size.width;
 	
-	GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(viewAngle, aspectRatio, near, far);
+	const float eyeZ = 3.0f; //rsl / nearZ
+	
+	const float scale = near / eyeZ;
+	
+	//GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(viewAngle, aspectRatio, near, far);
+	GLKMatrix4 projectionMatrix = GLKMatrix4MakeFrustum(-scale, scale, -scale * aspectRatio, scale * aspectRatio, near, far);
 	
 	//glDepthRangef(near, far);
 	
-	const GLKVector3 cameraPosition = {0, 0, 3.0f};
+	const GLKVector3 cameraPosition = {0, 0, eyeZ};
 	const GLKVector3 cameraTarget = {0, 0, 0};
 	const GLKVector3 upVec = {0, 1, 0};
 	

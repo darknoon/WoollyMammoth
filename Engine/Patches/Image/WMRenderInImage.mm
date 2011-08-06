@@ -76,7 +76,7 @@
 									 pixelsWide:renderWidth
 									 pixelsHigh:renderHeight
 									contentSize:(CGSize){renderWidth, renderHeight}
-									orientation:UIImageOrientationRight];
+									orientation:UIImageOrientationUpMirrored];
 	
 	if (!framebuffer || framebuffer.framebufferWidth != renderWidth || framebuffer.framebufferHeight != renderHeight) {
 		//Re-create framebuffer and texture
