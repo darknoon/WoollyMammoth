@@ -197,9 +197,9 @@ WMStructureField WMQuadVertex_fields[] = {
 		
 		switch (inputBlending.index) {
 			default:
-			case QCBlendModeReplace:
-				renderObject.renderBlendState = 0;
-				break;
+//			case QCBlendModeReplace:
+//				renderObject.renderBlendState = 0;
+//				break;
 			case QCBlendModeOver:
 				renderObject.renderBlendState = DNGLStateBlendEnabled;
 				break;
@@ -213,10 +213,11 @@ WMStructureField WMQuadVertex_fields[] = {
 		}
 		
 		GLKMatrix4 transform = GLKMatrix4Identity;
-		transform = GLKMatrix4Scale(transform, inputScale.value, inputScale.value, 1.0f);
-		transform = GLKMatrix4TranslateWithVector3(transform, inputPosition.v);
 		transform = GLKMatrix4RotateZ(transform, inputRotation.value * M_PI / 180.f);
+		transform = GLKMatrix4TranslateWithVector3(transform, inputPosition.v);
+		transform = GLKMatrix4Scale(transform, inputScale.value, inputScale.value, 1.0f);
 		transform = GLKMatrix4Multiply(transform, inContext.modelViewMatrix);
+		
 		[renderObject setValue:[NSValue valueWithBytes:&transform objCType:@encode(GLKMatrix4)] forUniformWithName:@"modelViewProjectionMatrix"];
 
 		[renderObject setValue:inputColor.objectValue forUniformWithName:@"color"];
