@@ -167,6 +167,7 @@
 			//Set viewport as necessary
 			if (!CGRectEqualToRect(desiredViewport, viewport)) {
 				glViewport(desiredViewport.origin.x, desiredViewport.origin.y, desiredViewport.size.width, desiredViewport.size.height);
+				viewport = desiredViewport;
 			}
 		} else {
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
