@@ -8,6 +8,7 @@
 
 #import "WMCompositionLibrary.h"
 #import "WMPatch.h"
+#import "NSString+URLEncoding.h"
 
 NSString *WM_PATH_EXTENSION = @"wmpatch";
 NSString *CompositionsChangedNotification = @"CompositionsChangedNotification";
@@ -113,7 +114,7 @@ NSArray *directoriesToAdd(NSString *path, NSString *existing) {
 
 - (NSString *)shortNameFromURL:(NSURL *)url;
 {
-    return [[[url absoluteString] lastPathComponent] stringByDeletingPathExtension];
+    return [[[[url absoluteString] URLDecodedString]lastPathComponent] stringByDeletingPathExtension];
 }
 
 - (NSArray *)compositions;

@@ -92,23 +92,42 @@ WMStructureField WMQuadVertex_fields[] = {
 	GLKVector3 basisU;
 	GLKVector3 basisV;
 	
+	
+	//If fitU, then scale the image to fit based on its U/width dimension. Otherwise use its V/height dimension.
+	
 	switch (inImage.orientation) {
 		default:
 		case UIImageOrientationUp:
 			basisU = (GLKVector3){1.0f, 0.0f, 0.0f};
-			basisV = (GLKVector3){0.0f, 1.0f, 0.0f};
+			basisV = (GLKVector3){0.0f, 1.0f * aspectRatio, 0.0f};
+			break;
+		case UIImageOrientationUpMirrored:
+			basisU = (GLKVector3){1.0f, 0.0f, 0.0f};
+			basisV = (GLKVector3){0.0f, -1.0f * aspectRatio, 0.0f};
 			break;
 		case UIImageOrientationDown:
 			basisU = (GLKVector3){-1.0f, 0.0f, 0.0f};
-			basisV = (GLKVector3){0.0f, -1.0f, 0.0f};
+			basisV = (GLKVector3){0.0f, -1.0f * aspectRatio, 0.0f};
+			break;
+		case UIImageOrientationDownMirrored:
+			basisU = (GLKVector3){-1.0f, 0.0f, 0.0f};
+			basisV = (GLKVector3){0.0f, 1.0f * aspectRatio, 0.0f};
 			break;
 		case UIImageOrientationLeft:
-			basisU = (GLKVector3){0.0f, -1.0f, 0.0f};
+			basisU = (GLKVector3){0.0f, -1.0f / aspectRatio, 0.0f};
+			basisV = (GLKVector3){1.0f, 0.0f, 0.0f};
+			break;
+		case UIImageOrientationLeftMirrored:
+			basisU = (GLKVector3){0.0f, 1.0f / aspectRatio, 0.0f};
 			basisV = (GLKVector3){1.0f, 0.0f, 0.0f};
 			break;
 		case UIImageOrientationRight:
-			basisU = (GLKVector3){0.0f, 1.0f, 0.0f};
+			basisU = (GLKVector3){0.0f, 1.0f / aspectRatio, 0.0f};
 			basisV = (GLKVector3){-1.0f, 0.0f, 0.0f};
+			break;
+		case UIImageOrientationRightMirrored:
+			basisU = (GLKVector3){0.0f, 1.0f / aspectRatio, 0.0f};
+			basisV = (GLKVector3){1.0f, 0.0f, 0.0f};
 			break;
 	}
 		
@@ -116,11 +135,11 @@ WMStructureField WMQuadVertex_fields[] = {
 	for (int v=0, i=0; v<2; v++) {
 		for (int u=0; u<2; u++, i++) {
 			
-			GLKVector3 point = ((float)u - 0.5f) * 2.0f * basisU + ((float)v - 0.5f) * 2.0f * basisV / aspectRatio;
+			GLKVector3 point = ((float)u - 0.5f) * 2.0f * basisU + ((float)v - 0.5f) * 2.0f * basisV;
 			
 			const struct WMQuadVertex vertex = {
 				.p = point,
-				.tc = {255 - (char)v * 255, 255 - (char)u * 255}
+				.tc = {u * 255, 255 - v * 255} //Flip y coord to account for differing coord systems
 			};
 			
 			//Append to vertex buffer
@@ -197,9 +216,9 @@ WMStructureField WMQuadVertex_fields[] = {
 		
 		switch (inputBlending.index) {
 			default:
-			case QCBlendModeReplace:
-				renderObject.renderBlendState = 0;
-				break;
+//			case QCBlendModeReplace:
+//				renderObject.renderBlendState = 0;
+//				break;
 			case QCBlendModeOver:
 				renderObject.renderBlendState = DNGLStateBlendEnabled;
 				break;
@@ -213,10 +232,11 @@ WMStructureField WMQuadVertex_fields[] = {
 		}
 		
 		GLKMatrix4 transform = GLKMatrix4Identity;
-		transform = GLKMatrix4Scale(transform, inputScale.value, inputScale.value, 1.0f);
-		transform = GLKMatrix4TranslateWithVector3(transform, inputPosition.v);
 		transform = GLKMatrix4RotateZ(transform, inputRotation.value * M_PI / 180.f);
+		transform = GLKMatrix4TranslateWithVector3(transform, inputPosition.v);
+		transform = GLKMatrix4Scale(transform, inputScale.value, inputScale.value, 1.0f);
 		transform = GLKMatrix4Multiply(transform, inContext.modelViewMatrix);
+		
 		[renderObject setValue:[NSValue valueWithBytes:&transform objCType:@encode(GLKMatrix4)] forUniformWithName:@"modelViewProjectionMatrix"];
 
 		[renderObject setValue:inputColor.objectValue forUniformWithName:@"color"];

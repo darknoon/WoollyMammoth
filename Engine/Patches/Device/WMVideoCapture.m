@@ -320,22 +320,32 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 	useFrontCamera = [[args objectForKey:@"com.darknoon.WMVideoCapture.useFront"] boolValue];
 	
 	UIInterfaceOrientation interfaceOrientation = [[args objectForKey:WMEngineInterfaceOrientationArgument] intValue];
-	//TODO: determine the correct values here
-	switch (interfaceOrientation) {
-		case UIInterfaceOrientationPortrait:
-			currentVideoOrientation = UIImageOrientationUp;
-			break;
-		case UIInterfaceOrientationPortraitUpsideDown:
-			currentVideoOrientation = UIImageOrientationDown;
-			break;
-		case UIInterfaceOrientationLandscapeLeft:
-			currentVideoOrientation = UIImageOrientationLeft;
-			break;
-		case UIInterfaceOrientationLandscapeRight:
-			currentVideoOrientation = UIImageOrientationRight;
-			break;
-		default:
-			break;
+	
+	BOOL isIPad2 = YES;
+	
+	if (isIPad2) {
+		
+		if (useFrontCamera) {
+			//TODO: this :)
+		} else {
+			//TODO: determine the correct values here
+			switch (interfaceOrientation) {
+				case UIInterfaceOrientationPortrait:
+					currentVideoOrientation = UIImageOrientationLeft;
+					break;
+				case UIInterfaceOrientationPortraitUpsideDown:
+					currentVideoOrientation = UIImageOrientationRight;
+					break;
+				case UIInterfaceOrientationLandscapeLeft:
+					currentVideoOrientation = UIImageOrientationDown;
+					break;
+				case UIInterfaceOrientationLandscapeRight:
+					currentVideoOrientation = UIImageOrientationUp;
+					break;
+				default:
+					break;
+			}
+		}
 	}
 	
 	if (!capturing && inputCapture.value) {

@@ -14,6 +14,8 @@
 #import "WMConnection.h"
 #import "WMPort.h"
 
+#import "WMPatch+GraphAlgorithms.h"
+
 #import "WMEAGLContext.h"
 #import "WMFramebuffer.h"
 #import "DNQCComposition.h"
@@ -109,134 +111,42 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 	//TODO: this could be made more efficent I think
 }
 
-- (BOOL)_nodeHasIncomingEdges:(WMPatch *)inPatch connections:(NSArray *)inConnections excludedConnections:(NSSet *)inExcludedConnections;
-{
-	for (WMConnection *connection in inConnections) {
-		if (![inExcludedConnections containsObject:connection]) {
-			if ([connection.destinationNode isEqualToString:inPatch.key]) {
-				return YES;
-			}
-		}
-	}
-	return NO;
-}
-
-- (BOOL)_nodeHasOutgoingEdges:(WMPatch *)inPatch connections:(NSArray *)inConnections;
-{
-	for (WMConnection *connection in inConnections) {
-		if ([connection.sourceNode isEqualToString:inPatch.key]) {
-			return YES;
-		}
-	}
-	return NO;
-}
-
-//TODO: make this way more efficent!
-- (WMPatch *)_firstRenderingNodeInSet:(NSSet *)inNodeSet orderedNodes:(NSArray *)inOrderedNodes;
-{
-	NSUInteger minIndex = UINT32_MAX;
-	WMPatch *minPatch = nil;
-	for (WMPatch *patch in inNodeSet) {
-		NSUInteger i = [inOrderedNodes indexOfObject:patch];
-		if (i < minIndex) {
-			i = minIndex;
-			minPatch = patch;
-		}
-	}
-	return minPatch;
-}
-
-//Execute all of these first
-- (NSMutableSet *)_nonConsumerNodesInNodes:(NSArray *)inNodes connections:(NSArray *)inConnections;
-{
-	NSMutableSet *outSet = [NSMutableSet set];
-	for (WMPatch *patch in inNodes) {
-		if ([self _nodeHasOutgoingEdges:patch connections:inConnections]) {
-			[outSet addObject:patch];
-		}
-	}
-	return outSet;
-}
 
 //This only supports children of a node NOT sub-children for now!!
 //Perhaps use an iterator aka NSEnumerator?
 - (NSArray *)executionOrderingOfChildren:(WMPatch *)inPatch;
 {
-	//TODO: reduce complexity of this method
-	//TODO: define this algorithm formally
-    
-	//The following while loop will only apply to these nodes
-	NSSet *nonConsumerNodes = [self _nonConsumerNodesInNodes:inPatch.children connections:inPatch.connections];
-    
-	NSMutableSet *hiddenEdges = [NSMutableSet set]; //hidden WMConnecitions
-	
-	NSMutableArray *sorted = [NSMutableArray array];
-	NSMutableSet *noIncomingEdgeNodeSet = [NSMutableSet set];
-	//Add starting set of no-incoming-edges-and-not-consumer nodes o_O
-	for (WMPatch *node in inPatch.children) {
-		if ([nonConsumerNodes containsObject:node] && ![self _nodeHasIncomingEdges:node connections:inPatch.connections excludedConnections:hiddenEdges]) {
-			[noIncomingEdgeNodeSet addObject:node];		
-		}
+	NSArray *executionOrdering = nil;
+	NSSet *excludedEdges = nil;
+	BOOL ok = [inPatch getTopologicalOrdering:&executionOrdering andExcludedEdges:&excludedEdges];
+	if (ok) {
+		return executionOrdering;
+	} else {
+		return nil;
 	}
-    
-	while (noIncomingEdgeNodeSet.count > 0) {
-		WMPatch *n = [self _firstRenderingNodeInSet:noIncomingEdgeNodeSet orderedNodes:inPatch.children]; //TODO: require nodes with lower rendering order to be rendered first
-		[noIncomingEdgeNodeSet removeObject:n];
-		[sorted addObject:n];
-		
-		//for each node m with an edge e from n to m do
-		for (WMConnection *e in inPatch.connections) {
-			if (![hiddenEdges containsObject:e]) {
-				
-				//If this is an edge from e to m
-				if ([e.sourceNode isEqualToString:n.key]) {
-					WMPatch *m = [inPatch patchWithKey:e.destinationNode];
-					NSAssert1(m, @"Couldn't find connected node %@", e.destinationNode);
-					[hiddenEdges addObject:e];
-					
-					//if m has no other incoming edges then
-					//TODO: also check if m has nodes that need to go before it
-					if ([nonConsumerNodes containsObject:m] && ![self _nodeHasIncomingEdges:m connections:inPatch.connections excludedConnections:hiddenEdges]) {
-						// insert m into S
-						[noIncomingEdgeNodeSet addObject:m];
-					}
-				}
-			}
-		}
-	}
-	
-	//Now add consumer nodes (in render order!)
-	for (WMPatch *patch in inPatch.children) {
-		if (![nonConsumerNodes containsObject:patch]) {
-			[sorted addObject:patch];
-		}
-	}
-	
-	//TODO: assert all connections are hidden (graph has at least one cycle)
-	return sorted;
 }
-
 
 #pragma -
 
 + (GLKMatrix4)cameraMatrixWithRect:(CGRect)inBounds;
 {
 	GLKMatrix4 cameraMatrix;
-	//TODO: move this state setting to WMEAGLContext
-	//glCullFace(GL_BACK);
-	
-	GLfloat viewAngle = 35.f * M_PI / 180.0f;
-	
+		
 	const float near = 0.1;
-	const float far = 1000.0;
+	const float far = 10.0;
 	
-	const float aspectRatio = inBounds.size.width / inBounds.size.height;
+	const float aspectRatio = inBounds.size.height / inBounds.size.width;
 	
-	GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(viewAngle, aspectRatio, near, far);
+	const float eyeZ = 3.0f; //rsl / nearZ
+	
+	const float scale = near / eyeZ;
+	
+	//GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(viewAngle, aspectRatio, near, far);
+	GLKMatrix4 projectionMatrix = GLKMatrix4MakeFrustum(-scale, scale, -scale * aspectRatio, scale * aspectRatio, near, far);
 	
 	//glDepthRangef(near, far);
 	
-	const GLKVector3 cameraPosition = {0, 0, 3.0f};
+	const GLKVector3 cameraPosition = {0, 0, eyeZ};
 	const GLKVector3 cameraTarget = {0, 0, 0};
 	const GLKVector3 upVec = {0, 1, 0};
 	

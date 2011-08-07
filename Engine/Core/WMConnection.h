@@ -13,6 +13,8 @@
     
 }
 
++ (WMConnection *)connection;
+
 @property (nonatomic, copy) NSString *name;
 
 @property (nonatomic, copy) NSString *sourceNode;

@@ -46,7 +46,7 @@
 
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
-	if (!inputObject.object) {
+	if (!inputObject1.object && !inputObject2.object && !inputObject3.object && !inputObject4.object) {
 		outputImage.image = nil;
 		return YES;
 	}
@@ -69,17 +69,19 @@
 		return YES;
 	}
 	
+	//Recreate texture each frame (fix me!)
+	[texture release];
+	texture = [[WMTexture2D alloc] initWithData:NULL
+									pixelFormat:kWMTexture2DPixelFormat_RGBA8888
+									 pixelsWide:renderWidth
+									 pixelsHigh:renderHeight
+									contentSize:(CGSize){renderWidth, renderHeight}
+									orientation:UIImageOrientationUpMirrored];
+	
 	if (!framebuffer || framebuffer.framebufferWidth != renderWidth || framebuffer.framebufferHeight != renderHeight) {
 		//Re-create framebuffer and texture
-		[texture release];
 		[framebuffer release];
 		
-		texture = [[WMTexture2D alloc] initWithData:NULL
-										pixelFormat:kWMTexture2DPixelFormat_RGBA8888
-										 pixelsWide:renderWidth
-										 pixelsHigh:renderHeight
-										contentSize:(CGSize){renderWidth, renderHeight}
-										orientation:UIImageOrientationLeft];
 		framebuffer = [[WMFramebuffer alloc] initWithTexture:texture depthBufferDepth:useDepthBuffer ? GL_DEPTH_COMPONENT16 : 0];
 		
 		if (!texture || !framebuffer) {
@@ -88,6 +90,8 @@
 		NSLog(@"Created framebuffer: %@", framebuffer);
 	}
 	
+	[framebuffer setColorAttachmentWithTexture:texture];
+
 	context.modelViewMatrix = [WMEngine cameraMatrixWithRect:(CGRect){0, 0, renderWidth, renderHeight}];
 	context.boundFramebuffer = framebuffer;
 	
@@ -96,7 +100,10 @@
 	glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	[context renderObject:inputObject.object];
+	if (inputObject1.object) [context renderObject:inputObject1.object];
+	if (inputObject2.object) [context renderObject:inputObject2.object];
+	if (inputObject3.object) [context renderObject:inputObject3.object];
+	if (inputObject4.object) [context renderObject:inputObject4.object];
 	
 	outputImage.image = texture;
 	

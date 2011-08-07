@@ -65,7 +65,9 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;
 {
-	UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
+	UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+	UIImage *editedImage = [info objectForKey:UIImagePickerControllerEditedImage];
+	image = editedImage ? editedImage : image;
 	patch.imageData = UIImagePNGRepresentation(image);
 	imageView.image = image;
 	

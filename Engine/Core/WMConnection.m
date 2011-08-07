@@ -12,6 +12,23 @@
 @implementation WMConnection
 @synthesize sourceNode, sourcePort, destinationNode, destinationPort, name;
 
++ (WMConnection *)connection;
+{
+	return [[[[self class] alloc] init] autorelease];
+}
+
+- (BOOL)isEqual:(id)other;
+{
+	if ([other isKindOfClass:[WMConnection class]]) {
+		WMConnection *otherConnection = (WMConnection *)other;
+		return [sourceNode isEqualToString:otherConnection->sourceNode]
+		&& [destinationNode isEqualToString:otherConnection->destinationNode]
+		&& [sourcePort isEqualToString:otherConnection->sourcePort]
+		&& [destinationPort isEqualToString:otherConnection->destinationPort];
+	}
+	return NO;
+}
+
 - (NSString *)description;
 {
 	return [NSString stringWithFormat:@"<%@: %p {%@ : %@ => %@ : %@ }>", NSStringFromClass([self class]), sourceNode, sourcePort, destinationNode, destinationPort];

@@ -42,4 +42,8 @@ extern NSString *const WMEngineInterfaceOrientationArgument;
 - (void)drawFrameInRect:(CGRect)inBounds interfaceOrientation:(UIInterfaceOrientation)inInterfaceOrientation;
 
 
+//For unit testing. No need to use directly!
+- (NSArray *)executionOrderingOfChildren:(WMPatch *)inPatch;
+
+
 @end

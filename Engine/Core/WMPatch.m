@@ -606,17 +606,21 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 
 - (NSString *)availableKeyForSubPatch:(WMPatch *)inPatch;
 {
-	NSString *defaultKey = NSStringFromClass([inPatch class]);
-	int i = 0;
-	if ([childrenByKey objectForKey:defaultKey]) {
-		NSString *tryKey = nil;
-		do {
-			tryKey = [defaultKey stringByAppendingFormat:@"-%d", i];
-			i++;
-		} while ([childrenByKey objectForKey:tryKey]);
-		return tryKey;
+	if (!inPatch.key || [childrenByKey objectForKey:inPatch.key]) {
+		NSString *defaultKey = NSStringFromClass([inPatch class]);
+		int i = 0;
+		if ([childrenByKey objectForKey:defaultKey]) {
+			NSString *tryKey = nil;
+			do {
+				tryKey = [defaultKey stringByAppendingFormat:@"-%d", i];
+				i++;
+			} while ([childrenByKey objectForKey:tryKey]);
+			return tryKey;
+		}
+		return defaultKey;
+	} else {
+		return inPatch.key;
 	}
-	return defaultKey;
 }
 
 - (void)addChild:(WMPatch *)inPatch;
