@@ -71,6 +71,8 @@ static WMStructureField WMQuadVertex_fields[] = {
 
 - (void) dealloc
 {	
+	[shader release];
+	[vertexBuffer release];
 	[super dealloc];
 }
 
@@ -79,11 +81,16 @@ static WMStructureField WMQuadVertex_fields[] = {
 	return kWMPatchExecutionModeConsumer;
 }
 
-- (WMStructuredBuffer *)vertexBufferForImage:(WMTexture2D *)inImage;
+- (void)updateVertexBufferForImageIfNecessary:(WMTexture2D *)inImage;
 {
-	if (!inImage) return nil;
+	if (!vertexBuffer) {
+		vertexBuffer = [[WMStructuredBuffer alloc] initWithDefinition:quadDef];
+	}
 	
-	WMStructuredBuffer *vertexData = [[[WMStructuredBuffer alloc] initWithDefinition:quadDef] autorelease];
+	//If the buffer doesn't need update, return
+	if (CGSizeEqualToSize(inImage.contentSize, vertexBufferSize) && inImage.orientation == vertexBufferOrientation) {
+		return;
+	}
 	
 	//Scale width to 1
 	
@@ -130,7 +137,10 @@ static WMStructureField WMQuadVertex_fields[] = {
 			basisV = (GLKVector3){1.0f, 0.0f, 0.0f};
 			break;
 	}
-		
+	
+	//Delete existing vertex buffer data
+	vertexBuffer.count = 0;
+	
 	//Add vertices
 	for (int v=0, i=0; v<2; v++) {
 		for (int u=0; u<2; u++, i++) {
@@ -143,10 +153,12 @@ static WMStructureField WMQuadVertex_fields[] = {
 			};
 			
 			//Append to vertex buffer
-			[vertexData appendData:&vertex withStructure:quadDef count:1];
+			[vertexBuffer appendData:&vertex withStructure:quadDef count:1];
 		}
 	}
-	return vertexData;
+	
+	vertexBufferSize = inImage.contentSize;
+	vertexBufferOrientation = inImage.orientation;	
 }
 
 
@@ -212,7 +224,10 @@ static WMStructureField WMQuadVertex_fields[] = {
 	ZAssert([shader.vertexAttributeNames containsObject:@"texCoord0"], @"Couldn't find texCoord0 in shader");
 
 	if (inputImage.image) {
-		renderObject.vertexBuffer = [self vertexBufferForImage:inputImage.image];
+		
+		[self updateVertexBufferForImageIfNecessary:inputImage.image];
+		
+		renderObject.vertexBuffer = vertexBuffer;		
 		
 		switch (inputBlending.index) {
 			default:
