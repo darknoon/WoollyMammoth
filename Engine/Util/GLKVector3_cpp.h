@@ -59,6 +59,10 @@ __inline__ bool operator == (const GLKVector3& left, const GLKVector3& right) {
 	return GLKVector3AllEqualToVector3(left, right);
 }
 
+__inline__ bool operator != (const GLKVector3& left, const GLKVector3& right) {
+	return !GLKVector3AllEqualToVector3(left, right);
+}
+
 __inline__ bool operator >= (const GLKVector3& left, const GLKVector3& right) {
 	return GLKVector3AllGreaterThanOrEqualToVector3(left, right);
 }
