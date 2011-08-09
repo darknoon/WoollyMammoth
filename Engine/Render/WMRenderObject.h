@@ -19,11 +19,13 @@
  * Other rendering types and configurations are supported, however, and YMMV.
  */
 
+
 @interface WMRenderObject : NSObject
 
 //Create an object that can be rendered to a WMEAGLContext
 - (id)init;
 
+//TODO: support multiple vertex buffers?
 @property (nonatomic, retain) WMStructuredBuffer *vertexBuffer;
 
 //Optional. If not specified, will render vertices once, in order
@@ -44,13 +46,5 @@
 
 - (void)setValue:(id)inValue forUniformWithName:(NSString *)inUniformName;
 - (id)valueForUniformWithName:(NSString *)inUniformName;
-
-@end
-
-
-//The WMEAGLContext will assign us a vao. Do not mess with this outside of WMEAGLContext
-@interface WMRenderObject (WMRenderObject_WMEAGLContext_Private)
-
-//TODO: @property (nonatomic) GLenum vertexArrayObject;
 
 @end

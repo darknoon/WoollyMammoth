@@ -16,6 +16,7 @@
 
 #import "WMStructuredBuffer_WMEAGLContext_Private.h"
 #import "WMTexture2D_WMEAGLContext_Private.h"
+#import "WMRenderObject_WMEAGLContext_Private.h"
 
 //TODO: where should this live?
 @interface WMShader (WMShader_Uniform_State)
@@ -33,19 +34,18 @@
 
 @interface WMEAGLContext ()
 
-- (void)setVertexAttributeEnableState:(int)vertexAttributeEnableState;
-
 @property (nonatomic) DNGLStateBlendMask blendState;
 @property (nonatomic) DNGLStateDepthMask depthState;
 
 @end
 
 @implementation WMEAGLContext {
-	int vertexAttributeEnableState;
 	DNGLStateBlendMask blendState;
 	DNGLStateDepthMask depthState;
 	WMFramebuffer *boundFramebuffer;
 	CGRect viewport;
+	
+	GLuint boundVAO;
 	
 	int activeTexture;
 	//Only 0 ... maxTextureUnits is defined
@@ -107,24 +107,6 @@
 }
 
 
-- (void)setVertexAttributeEnableState:(int)inVertexAttributeEnableState;
-{
-	if (vertexAttributeEnableState == inVertexAttributeEnableState) return;
-	
-	ZAssert(maxVertexAttributes < 32, @"We kind of assume that there are fewer than 32 possible attributes");
-
-	for (int attribute=0; attribute<maxVertexAttributes; attribute++) {
-		BOOL shouldBeEnabled = inVertexAttributeEnableState & (1 << attribute);
-		BOOL isEnabled = vertexAttributeEnableState & (1 << attribute);
-		if (shouldBeEnabled && !isEnabled) {
-			glEnableVertexAttribArray(attribute);
-		} else if (!shouldBeEnabled && isEnabled) {
-			glDisableVertexAttribArray(attribute);
-		}
-	}
-	vertexAttributeEnableState = inVertexAttributeEnableState;
-}
-
 - (void)setBlendState:(int)inBlendState;
 {
 	if ((inBlendState & DNGLStateBlendEnabled) && !(blendState & DNGLStateBlendEnabled)) {
@@ -172,10 +154,6 @@
 - (NSString *)description;
 {
 	NSMutableString *stateDesc = [NSMutableString string];
-	for (int attribute=0; attribute<maxVertexAttributes; attribute++) {
-		BOOL isEnabled = vertexAttributeEnableState & (1 << attribute);
-		[stateDesc appendFormat:@"\t%d %@\n", attribute, isEnabled ? @"on" : @"off"];
-	}
 	
 	[stateDesc appendFormat:@"\tblending %@\n", blendState & DNGLStateBlendEnabled ?  @"enabled" : @"disabled"];
 	[stateDesc appendFormat:@"\tadd mode %@\n", blendState & DNGLStateBlendModeAdd ?  @"enabled" : @"disabled"];
@@ -217,47 +195,59 @@
 	WMShader *shader = inObject.shader;
 	WMStructureDefinition *vertexDefinition = inObject.vertexBuffer.definition;
 	
-	//Find each relevant thing in the shader, attempt to bind to a part of the buffer
-	unsigned int enableMask = 0;
-	if (shader) {
-		for (NSString *attribute in inObject.shader.vertexAttributeNames) {
-			int location = [shader attributeLocationForName:attribute];
-			if (location != -1 && [vertexDefinition getFieldNamed:attribute outField:NULL]) {
-				enableMask |= 1 << location;
-			}
-		}
-		[self setVertexAttributeEnableState:enableMask];
-	} else {
-		NSLog(@"TODO: no shader defined");
-	}
-
-	//Make sure we have a VBO or EBO for the object
+	//Make sure we have a VBO or EBO for the object in the GL state
 	
 	//Make sure vertex buffer is uploaded to GPU
 	[inObject.vertexBuffer uploadToBufferObjectIfNecessaryOfType:GL_ARRAY_BUFFER inContext:self];
 	[inObject.indexBuffer uploadToBufferObjectIfNecessaryOfType:GL_ELEMENT_ARRAY_BUFFER inContext:self];
 	
 	GL_CHECK_ERROR;
-
-	//TODO: keep track of bound buffer state to eleminate redundant binds / unbinds here
-	glBindBuffer(GL_ARRAY_BUFFER, inObject.vertexBuffer.bufferObject);
 	
-	//Set up vertex state. 
-	//TODO: use vao
-	for (NSString *attribute in shader.vertexAttributeNames) {
-		int location = [shader attributeLocationForName:attribute];
-		ZAssert(location != -1, @"Couldn't fined attribute: %@", attribute);
-		if (location != -1) {
-			WMStructureField f;
-			if ([vertexDefinition getFieldNamed:attribute outField:&f]) {
-				glVertexAttribPointer(location, f.count, f.type, f.normalized, vertexDefinition.size, (void *)f.offset);
-			} else {
-				//Couldn't bind anything to this.
-				NSLog(@"Couldn't find data for attribute: %@", attribute);
+	//Create VAO
+	[inObject createVAOIfNecessary];
+	ZAssert(inObject.vertexArrayObject, @"No VAO set!");
+
+	//Bind it
+	if (boundVAO != inObject.vertexArrayObject) {
+		boundVAO = inObject.vertexArrayObject;
+		glBindVertexArrayOES(boundVAO);
+		GL_CHECK_ERROR;
+	}
+
+	//Find each relevant thing in the shader, attempt to bind to a part of the buffer
+	if (shader && inObject.vertexArrayObjectDirty) {
+		for (NSString *attribute in inObject.shader.vertexAttributeNames) {
+			int location = [shader attributeLocationForName:attribute];
+			if (location != -1 && [vertexDefinition getFieldNamed:attribute outField:NULL]) {
+				glEnableVertexAttribArray(location);
+			}
+		}
+	} else {
+		NSLog(@"TODO: no shader defined");
+	}
+
+	//Update vertex state in the VAO if necessary
+	if (inObject.vertexArrayObjectDirty) {
+		//TODO: keep track of bound buffer state to eleminate redundant binds / unbinds here
+		glBindBuffer(GL_ARRAY_BUFFER, inObject.vertexBuffer.bufferObject);
+		
+		//Set up vertex state. 
+		//TODO: use vao
+		for (NSString *attribute in shader.vertexAttributeNames) {
+			int location = [shader attributeLocationForName:attribute];
+			ZAssert(location != -1, @"Couldn't fined attribute: %@", attribute);
+			if (location != -1) {
+				WMStructureField f;
+				if ([vertexDefinition getFieldNamed:attribute outField:&f]) {
+					glVertexAttribPointer(location, f.count, f.type, f.normalized, vertexDefinition.size, (void *)f.offset);
+				} else {
+					//Couldn't bind anything to this.
+					NSLog(@"Couldn't find data for attribute: %@", attribute);
+				}
 			}
 		}
 	}
-	
+
 	GL_CHECK_ERROR;
 	
 	glUseProgram(shader.program);
@@ -332,7 +322,9 @@
 	if (inObject.indexBuffer) {
 		last = MIN(last, inObject.indexBuffer.count - 1);
 		
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, inObject.indexBuffer.bufferObject);
+		if (inObject.vertexArrayObjectDirty) {
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, inObject.indexBuffer.bufferObject);
+		}
 		
 		//Get element buffer type
 		WMStructureField f;
@@ -344,21 +336,22 @@
 		glDrawElements(inObject.renderType, last - first + 1, elementBufferType, 0x0 /*indicies from bound index buffer*/);
 		GL_CHECK_ERROR;
 		
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		
 		GL_CHECK_ERROR;
 		
 	} else {
-		
-		//TODO: keep track of bound buffer state to eleminate redundant binds / unbinds here
-		glBindBuffer(GL_ARRAY_BUFFER, inObject.vertexBuffer.bufferObject);
-		
 		last = MIN(last, inObject.vertexBuffer.count - 1);
 		glDrawArrays(inObject.renderType, first, last - first + 1);
 		
 	}
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	inObject.vertexArrayObjectDirty = NO;
+	
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	
+	//Unbind
+	glBindVertexArrayOES(0);
+	
 	//TODO: unbind unused textures, but keep used ones bound?
 //	for (int i=0; i<textures.count && i<maxTextureUnits; i++) {
 //		[self setBound2DTextureName:0 onTextureUnit:i];
@@ -493,6 +486,27 @@
 
 @end
 
+@implementation WMRenderObject (WMRenderObject_WMEAGLContext_Private)
+//These must be provided by the render object directly, so just make the compiler shut up.
+@dynamic vertexArrayObject;
+@dynamic vertexArrayObjectDirty;
+
+- (void)createVAOIfNecessary;
+{
+	if (self.vertexArrayObjectDirty && self.vertexArrayObject) {
+		//Delete any existing vao
+		glDeleteVertexArraysOES(1, &(GLuint){self.vertexArrayObject});
+		self.vertexArrayObject = 0;
+	}
+	
+	if (self.vertexArrayObject == 0) {
+		GLuint vao = 0;
+		glGenVertexArraysOES(1, &vao);
+		self.vertexArrayObject = vao;
+	}
+}
+
+@end
 
 @implementation WMShader (WMShader_Uniform_State)
 

@@ -8,8 +8,17 @@
 
 #import "WMRenderObject.h"
 
+#import "WMStructuredBuffer.h"
+
+@interface WMRenderObject()
+//Private state for WMEAGLContext
+@property (nonatomic) GLenum vertexArrayObject;
+@property (nonatomic) BOOL vertexArrayObjectDirty;
+@end
+
 @implementation WMRenderObject {
 	NSMutableDictionary *uniformValues;
+	BOOL _wmeaglcontextprivate_vaoDirty;
 }
 
 @synthesize vertexBuffer;
@@ -20,6 +29,9 @@
 @synthesize renderRange;
 @synthesize renderBlendState;
 @synthesize renderDepthState;
+
+@synthesize vertexArrayObject = _wmeaglcontextprivate_vertexArrayObject;
+@synthesize vertexArrayObjectDirty = _wmeaglcontextprivate_vaoDirty;
 
 - (id)init;
 {
@@ -45,6 +57,24 @@
 	[indexBuffer release];
 	[shader release];
     [super dealloc];
+}
+
+- (void)setVertexBuffer:(WMStructuredBuffer *)inVertexBuffer;
+{
+	if (vertexBuffer != inVertexBuffer) {
+		_wmeaglcontextprivate_vaoDirty = YES;
+		[vertexBuffer release];
+		vertexBuffer = [inVertexBuffer retain];
+	}
+}
+
+- (void)setIndexBuffer:(WMStructuredBuffer *)inIndexBuffer;
+{
+	if (indexBuffer != inIndexBuffer) {
+		_wmeaglcontextprivate_vaoDirty = YES;
+		[indexBuffer release];
+		indexBuffer = [inIndexBuffer retain];
+	}
 }
 
 + (NSString *)stringFromGLRenderType:(GLenum)inType;
