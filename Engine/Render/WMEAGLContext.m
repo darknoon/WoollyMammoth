@@ -47,6 +47,8 @@
 	
 	GLuint boundVAO;
 	
+	GLKVector4 clearColor;
+	
 	int activeTexture;
 	//Only 0 ... maxTextureUnits is defined
 	GLuint boundTextures2D[32];
@@ -357,6 +359,19 @@
 //		[self setBound2DTextureName:0 onTextureUnit:i];
 //	}
 	
+}
+- (void)clearToColor:(GLKVector4)inColor;
+{
+	if (!GLKVector4AllEqualToVector4(clearColor, inColor)) {
+		clearColor = inColor;
+		glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
+	}
+	glClear(GL_COLOR_BUFFER_BIT);
+}
+
+- (void)clearDepth;
+{
+	glClear(GL_DEPTH_BUFFER_BIT);
 }
 
 - (GLuint)genBuffer;

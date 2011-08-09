@@ -95,10 +95,8 @@
 	context.modelViewMatrix = [WMEngine cameraMatrixWithRect:(CGRect){0, 0, renderWidth, renderHeight}];
 	context.boundFramebuffer = framebuffer;
 	
-	GLKVector4 clearColor = inputClearColor.v;
-	
-	glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	[context clearToColor:inputClearColor.v];
+	[context clearDepth];
 
 	if (inputObject1.object) [context renderObject:inputObject1.object];
 	if (inputObject2.object) [context renderObject:inputObject2.object];

@@ -30,6 +30,12 @@ typedef int DNGLStateDepthMask;
 
 - (void)renderObject:(WMRenderObject *)inObject;
 
+//Clears the color buffer to the given color
+- (void)clearToColor:(GLKVector4)inColor;
+
+//Clears the depth buffer to the default depth (+inf?)
+- (void)clearDepth;
+
 //This is not GL state in GLES 2.0
 //TODO: Move to another part of the render engine.
 @property (nonatomic) GLKMatrix4 modelViewMatrix;

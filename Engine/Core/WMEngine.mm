@@ -213,7 +213,7 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 			[inputPort takeValueFromPort:sourcePort];
 		}
 
-//		NSLog(@"executing patch: %@", patch.key);
+		//NSLog(@"executing patch: %@", patch.key);
 		success = [patch execute:renderContext time:t arguments:compositionUserData];
 		if (!success) {
 			NSLog(@"Error executing patch: %@", patch);
@@ -226,8 +226,6 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 			[self drawPatchRecursive:patch];
 		}		
 	}
-	
-
 	
 	/// Write values of output ports from inPatch's children ///
 	for (WMPort *port in [inPatch outputPorts]) {
@@ -248,8 +246,8 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 	[self _setupRecursive:self.rootObject];
 	
 	//Clear out the rendering context
-	glClearColor(0, 0, 0, 1);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	[renderContext clearToColor:(GLKVector4){0, 0, 0, 1}];
+	[renderContext clearDepth];
 
 	renderContext.modelViewMatrix = [WMEngine cameraMatrixWithRect:inBounds];
 	

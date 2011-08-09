@@ -160,9 +160,6 @@ static WMStructureField WMQuadVertex_fields[] = {
 		NSLog(@"Failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
 	}
 	
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
-
 	//Set uniform values
 	[ro setValue:[NSNumber numberWithFloat:inputOffset.value] forUniformWithName:@"u_offset"];
 	[ro setValue:inSourceTexture forUniformWithName:@"s_texMono"];
@@ -176,6 +173,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 	}
 #endif
 
+	[inContext clearToColor:(GLKVector4){0,0,0,0}];
 	[inContext renderObject:ro];
 	[ro release];
 

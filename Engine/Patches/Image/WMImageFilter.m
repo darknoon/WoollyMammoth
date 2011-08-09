@@ -134,11 +134,6 @@ static WMStructureField WMQuadVertex_fields[] = {
 		NSLog(@"Failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
 	}
 
-	//Render blur quad into dest
-	
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
-	
 	WMRenderObject *ro = [[WMRenderObject alloc] init];
 	
 	ro.vertexBuffer = vertexBuffer;
@@ -165,6 +160,8 @@ static WMStructureField WMQuadVertex_fields[] = {
 	}
 #endif
 
+	//Render blur quad into dest
+	[inContext clearToColor:(GLKVector4){0,0,0,0}];
 	[inContext renderObject:ro];
 	[ro release];
 }

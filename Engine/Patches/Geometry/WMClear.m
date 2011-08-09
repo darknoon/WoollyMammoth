@@ -44,13 +44,7 @@
 
 - (BOOL)execute:(WMEAGLContext *)inContext time:(CFTimeInterval)time arguments:(NSDictionary *)args;
 {
-	GLKVector4 color = inputColor.v;
-	glClearColor(color.r, color.g, color.b, color.a);
-	if (inContext.boundFramebuffer.hasDepthbuffer) {
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	} else {
-		glClear(GL_COLOR_BUFFER_BIT);
-	}
+	[inContext clearToColor:inputColor.v];
 	return YES;
 }
 
