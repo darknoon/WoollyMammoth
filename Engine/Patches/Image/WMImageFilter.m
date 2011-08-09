@@ -72,11 +72,11 @@ static WMStructureField WMQuadVertex_fields[] = {
 	[vertexBuffer appendData:vertexDataPtr withStructure:vertexBuffer.definition count:4];
 	
 	
-	WMStructureDefinition *indexDef = [[WMStructureDefinition alloc] initWithAnonymousFieldOfType:WMStructureTypeUnsignedByte];
+	WMStructureDefinition *indexDef = [[WMStructureDefinition alloc] initWithAnonymousFieldOfType:WMStructureTypeUnsignedShort];
 	indexBuffer = [[WMStructuredBuffer alloc] initWithDefinition:indexDef];
 
 	//Add triangles
-	unsigned char indexData[2 * 3] = {0,1,2, 1,2,3};
+	unsigned short indexData[2 * 3] = {0,1,2, 1,2,3};
 
 	[indexBuffer appendData:indexData withStructure:indexBuffer.definition count:2 * 3];
 }
@@ -122,7 +122,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 	//Set dest fbo
 	inContext.boundFramebuffer = fbo;
 	
-	//Resize out output texture to the correct size (power of two, to contain the size)
+	//Resize out output texture to the correct size
 	NSUInteger destTextureWidth = inSize.width;
 	NSUInteger destTextureHeight = inSize.height;
 //	if (inDestinationTexture.pixelsWide != destTextureWidth || inDestinationTexture.pixelsHigh != destTextureHeight)
