@@ -28,8 +28,7 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    NSError *error = [request error];
-    DLog([error localizedDescription]);
+    DLog([[request error] localizedDescription]);
     [communicator photoTweetFailedToGetImage:self];
 }
 
