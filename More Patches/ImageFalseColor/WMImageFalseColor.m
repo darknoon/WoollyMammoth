@@ -126,14 +126,10 @@ static WMStructureField WMQuadVertex_fields[] = {
 
 - (void)cleanup:(WMEAGLContext *)context;
 {
-	if (vbo) glDeleteBuffers(1, &vbo);
-	if (ebo) glDeleteBuffers(1, &ebo);
-    
 	[shader  release];   shader = nil;
 	[fbo     release];      fbo = nil;
 	[texMono release];  texMono = nil;
 	[texPal  release];   texPal = nil;
-
 }
 
 - (void)renderFromTexture:(WMTexture2D *)inSourceTexture 
