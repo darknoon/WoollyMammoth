@@ -224,7 +224,7 @@
 				glEnableVertexAttribArray(location);
 			}
 		}
-	} else {
+	} else if (!shader) {
 		NSLog(@"TODO: no shader defined");
 	}
 
