@@ -16,6 +16,7 @@
 @class WMShader;
 @class WMFramebuffer;
 @class WMTexture2D;
+@class WMStructuredBuffer;
 
 @interface WMImageFalseColor : WMPatch {
     WMShader *shader;
@@ -25,8 +26,8 @@
     WMTexture2D *texPal;
 	
 	//For quad
-	GLuint vbo;
-	GLuint ebo;
+	WMStructuredBuffer *vertexBuffer;
+	WMStructuredBuffer *indexBuffer;
 	
 	WMImagePort *inputImage;
 	WMNumberPort *inputOffset;

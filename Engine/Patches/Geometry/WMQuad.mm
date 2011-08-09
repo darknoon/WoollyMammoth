@@ -26,7 +26,7 @@ struct WMQuadVertex {
 	char tc[2];
 };
 
-WMStructureField WMQuadVertex_fields[] = {
+static WMStructureField WMQuadVertex_fields[] = {
 	{.name = "position",  .type = WMStructureTypeFloat,        .count = 3, .normalized = NO,  .offset = offsetof(WMQuadVertex, p)},
 	{.name = "texCoord0", .type = WMStructureTypeUnsignedByte, .count = 2, .normalized = YES, .offset = offsetof(WMQuadVertex, tc)},
 };

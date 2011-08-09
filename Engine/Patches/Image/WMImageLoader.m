@@ -70,6 +70,7 @@ NSString *const WMImageLoaderImageDataKey = @"imageData";
 		}
 		WMTexture2D *texture = [[WMTexture2D alloc] initWithImage:uiImage];
 		outputImage.image = texture;
+		[texture release];
 		return texture != nil;
 	} else {
 		//Presumably data will be added later?

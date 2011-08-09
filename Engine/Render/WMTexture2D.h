@@ -93,13 +93,12 @@ Be aware that the content of the generated textures will be upside-down!
 //Equivalent to binding the texture and glTexImage2D with NULL data
 - (void)discardData;
 
-@property (nonatomic, readonly) UIImageOrientation orientation;
+//This is just metadata that's used by WMQuad and possibly other patches to determine how to interpret the image
+@property (nonatomic) UIImageOrientation orientation;
 
 @property (nonatomic, readonly) WMTexture2DPixelFormat pixelFormat;
 @property (nonatomic, readonly) NSUInteger pixelsWide;
 @property (nonatomic, readonly) NSUInteger pixelsHigh;
-
-@property (nonatomic, readonly) GLuint name;
 
 @property (nonatomic, readonly) CGSize contentSize;
 @property (nonatomic, readonly) GLfloat maxS;

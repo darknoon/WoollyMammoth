@@ -23,21 +23,7 @@ typedef int DNGLStateDepthMask;
 @class WMFramebuffer;
 @class WMRenderObject;
 
-@interface WMEAGLContext : EAGLContext {
-	int vertexAttributeEnableState;
-	DNGLStateBlendMask blendState;
-	DNGLStateDepthMask depthState;
-	WMFramebuffer *boundFramebuffer;
-	CGRect viewport;
-	
-	int maxVertexAttributes;
-	int maxTextureUnits;
-}
-
-- (void)setVertexAttributeEnableState:(int)vertexAttributeEnableState;
-
-@property (nonatomic) DNGLStateBlendMask blendState;
-@property (nonatomic) DNGLStateDepthMask depthState;
+@interface WMEAGLContext : EAGLContext
 
 //This also controls glViewport at the moment. Perhaps this will change in the future.
 @property (nonatomic, retain) WMFramebuffer *boundFramebuffer;

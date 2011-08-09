@@ -12,8 +12,10 @@
 #import "WMStructuredBuffer.h"
 #import "WMRenderObject.h"
 #import "WMTexture2D.h"
+#import "WMTexture2D_RenderPrivate.h"
 
 #import "WMStructuredBuffer_WMEAGLContext_Private.h"
+#import "WMTexture2D_WMEAGLContext_Private.h"
 
 //TODO: where should this live?
 @interface WMShader (WMShader_Uniform_State)
@@ -29,7 +31,31 @@
 
 @end
 
-@implementation WMEAGLContext
+@interface WMEAGLContext ()
+
+- (void)setVertexAttributeEnableState:(int)vertexAttributeEnableState;
+
+@property (nonatomic) DNGLStateBlendMask blendState;
+@property (nonatomic) DNGLStateDepthMask depthState;
+
+@end
+
+@implementation WMEAGLContext {
+	int vertexAttributeEnableState;
+	DNGLStateBlendMask blendState;
+	DNGLStateDepthMask depthState;
+	WMFramebuffer *boundFramebuffer;
+	CGRect viewport;
+	
+	int activeTexture;
+	//Only 0 ... maxTextureUnits is defined
+	GLuint boundTextures2D[32];
+	GLuint boundTexturesCube[32];
+	
+	int maxVertexAttributes;
+	int maxTextureUnits;
+}
+
 @synthesize blendState;
 @synthesize depthState;
 @synthesize boundFramebuffer;
@@ -57,6 +83,9 @@
 		
 		//Set matrix to identity
 		modelViewMatrix = GLKMatrix4Identity;
+		
+		glGetIntegerv(GL_ACTIVE_TEXTURE, &activeTexture);
+		activeTexture -= GL_TEXTURE0;
 		
 		glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &maxVertexAttributes);
 		
@@ -277,8 +306,7 @@
 	
 	//Bind textures as a separate pass
 	for (int i=0; i<textures.count && i<maxTextureUnits; i++) {
-		glActiveTexture(GL_TEXTURE0 + i);
-		glBindTexture(GL_TEXTURE_2D, [(WMTexture2D *)[textures objectAtIndex:i] name]);
+		[self setBound2DTextureName:[(WMTexture2D *)[textures objectAtIndex:i] name] onTextureUnit:i];
 	}
 	GL_CHECK_ERROR;
 
@@ -308,10 +336,9 @@
 		
 		//Get element buffer type
 		WMStructureField f;
-		[inObject.indexBuffer.definition getFieldNamed:nil outField:&f];
+		BOOL found = [inObject.indexBuffer.definition getFieldNamed:@"" outField:&f];
+		ZAssert(found, @"Couldn't get the element buffer description!");
 		GLenum elementBufferType = f.type;
-#warning read properly
-		elementBufferType = GL_UNSIGNED_SHORT;
 		
 		GL_CHECK_ERROR;
 		glDrawElements(inObject.renderType, last - first + 1, elementBufferType, 0x0 /*indicies from bound index buffer*/);
@@ -321,7 +348,6 @@
 		
 		GL_CHECK_ERROR;
 		
-		
 	} else {
 		
 		//TODO: keep track of bound buffer state to eleminate redundant binds / unbinds here
@@ -330,15 +356,13 @@
 		last = MIN(last, inObject.vertexBuffer.count - 1);
 		glDrawArrays(inObject.renderType, first, last - first + 1);
 		
-		
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//Unbind textures
-	for (int i=0; i<textures.count && i<maxTextureUnits; i++) {
-		glActiveTexture(GL_TEXTURE0 + i);
-		glBindTexture(GL_TEXTURE_2D, 0);
-	}
+	//TODO: unbind unused textures, but keep used ones bound?
+//	for (int i=0; i<textures.count && i<maxTextureUnits; i++) {
+//		[self setBound2DTextureName:0 onTextureUnit:i];
+//	}
 	
 }
 
@@ -411,6 +435,64 @@
 }
 
 @end
+
+@implementation WMEAGLContext (WMTexture2D_WMEAGLContext_Private)
+
+- (void)setActiveTextureUnit:(int)inActiveTextureUnitNumber;
+{
+	ZAssert(inActiveTextureUnitNumber < maxTextureUnits, @"Invalid texture unit to bind:%d max:%d", inActiveTextureUnitNumber, maxTextureUnits);
+	if (activeTexture != inActiveTextureUnitNumber && inActiveTextureUnitNumber < maxTextureUnits) {
+		glActiveTexture(GL_TEXTURE0 + inActiveTextureUnitNumber);
+		activeTexture = inActiveTextureUnitNumber;
+	}
+}
+
+- (GLuint)bound2DTextureNameOnTextureUnit:(int)inTextureUnit;
+{
+	ZAssert(inTextureUnit < maxTextureUnits, @"Invalid texture unit to query:%d max:%d", inTextureUnit, maxTextureUnits);
+	return boundTextures2D[inTextureUnit];
+}
+
+- (void)setBound2DTextureName:(GLuint)inTextureName onTextureUnit:(int)inTextureUnit;
+{
+	if (boundTextures2D[inTextureUnit] != inTextureName) {
+		[self setActiveTextureUnit:inTextureUnit];
+		glBindTexture(GL_TEXTURE_2D, inTextureName);
+		boundTextures2D[inTextureUnit] = inTextureName;
+	}
+	//Just check that it is bound as we thought
+#if DEBUG
+	[self setActiveTextureUnit:inTextureUnit];
+	int boundTexture;
+	glGetIntegerv(GL_TEXTURE_BINDING_2D, &boundTexture);
+	ZAssert(boundTexture == boundTextures2D[inTextureUnit], @"Not changed as we expected.");
+#endif
+}
+
+//Assigns a random texture unit for temporary use
+- (void)bind2DTextureNameForModification:(GLuint)inTextureName;
+{
+	//Find a texture unit on which this texture is already bound.
+	for (int i=0; i<maxTextureUnits; i++) {
+		if ([self bound2DTextureNameOnTextureUnit:i] == inTextureName) {
+			return;			
+		}
+	}
+	//Otherwise, use texture unit 0
+	[self setBound2DTextureName:inTextureName onTextureUnit:0];
+}
+
+- (void)forgetTexture2DName:(GLuint)inTextureName;
+{
+	for (int i=0; i<maxTextureUnits; i++) {
+		if (boundTextures2D[i] == inTextureName) {
+			boundTextures2D[i] = 0;
+		}
+	}
+}
+
+@end
+
 
 @implementation WMShader (WMShader_Uniform_State)
 

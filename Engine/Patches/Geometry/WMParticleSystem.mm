@@ -26,6 +26,10 @@ typedef struct {
 	float life;
 } WMParticle;
 
+#warning disabled anything that was using texture.name directly
+#if 0
+
+
 @implementation WMParticleSystem
 
 + (NSString *)category;
@@ -245,3 +249,5 @@ typedef struct {
 }
 
 @end
+
+#endif

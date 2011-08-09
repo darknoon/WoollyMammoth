@@ -639,6 +639,8 @@
 		49F0597C13D15F640056C506 /* WMEditTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WMEditTests-Prefix.pch"; sourceTree = "<group>"; };
 		49F0597D13D15F640056C506 /* WMEditTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WMEditTests.h; sourceTree = "<group>"; };
 		49F0597F13D15F640056C506 /* WMEditTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WMEditTests.m; sourceTree = "<group>"; };
+		49F425B413EE07D00093EE5F /* WMTexture2D_WMEAGLContext_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMTexture2D_WMEAGLContext_Private.h; sourceTree = "<group>"; };
+		49F425BA13EE14B40093EE5F /* WMTexture2D_RenderPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMTexture2D_RenderPrivate.h; sourceTree = "<group>"; };
 		49F8A94213E69778000D4A3A /* WMImageLoaderSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMImageLoaderSettingsController.h; sourceTree = "<group>"; };
 		49F8A94313E69778000D4A3A /* WMImageLoaderSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMImageLoaderSettingsController.m; sourceTree = "<group>"; };
 		49F8A94413E69778000D4A3A /* WMImageLoaderSettingsController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMImageLoaderSettingsController.xib; sourceTree = "<group>"; };
@@ -1020,6 +1022,8 @@
 				49858E0D13DE4C1F0061A1A8 /* WMStructuredBuffer_WMEAGLContext_Private.h */,
 				49858E0E13DE4C1F0061A1A8 /* WMTexture2D.h */,
 				49858E0F13DE4C1F0061A1A8 /* WMTexture2D.m */,
+				49F425BA13EE14B40093EE5F /* WMTexture2D_RenderPrivate.h */,
+				49F425B413EE07D00093EE5F /* WMTexture2D_WMEAGLContext_Private.h */,
 				49858E1013DE4C1F0061A1A8 /* WMTextureCubeMap.h */,
 				49858E1113DE4C1F0061A1A8 /* WMTextureCubeMap.m */,
 				498E4E9613E1342B003BB056 /* WMDefaultShader.vsh */,

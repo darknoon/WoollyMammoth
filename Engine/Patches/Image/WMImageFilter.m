@@ -14,12 +14,17 @@
 #import "WMTexture2D.h"
 #import "WMFramebuffer.h"
 #import "WMMathUtil.h"
+#import "WMRenderObject.h"
 
 typedef struct {
 	float v[4];
-	float tc[2];
-	//TODO: Align to even power boundary?
+	unsigned char tc[2];
 } WMQuadVertex;
+
+static WMStructureField WMQuadVertex_fields[] = {
+	{.name = "position",  .type = WMStructureTypeFloat,        .count = 3, .normalized = NO,  .offset = offsetof(WMQuadVertex, v)},
+	{.name = "texCoord0", .type = WMStructureTypeUnsignedByte, .count = 2, .normalized = YES, .offset = offsetof(WMQuadVertex, tc)},
+};
 
 @implementation WMImageFilter
 
@@ -42,9 +47,9 @@ typedef struct {
 
 - (void)loadQuadData;
 {	
-	glGenBuffers(1, &vbo);
-	glGenBuffers(1, &ebo);
-		
+	WMStructureDefinition *vertexDef = [[[WMStructureDefinition alloc] initWithFields:WMQuadVertex_fields count:2 totalSize:sizeof(WMQuadVertex)] autorelease];
+	vertexBuffer = [[WMStructuredBuffer alloc] initWithDefinition:vertexDef];
+	
 	//Add vertices
 	WMQuadVertex vertexDataPtr[4] = {
 		{
@@ -53,31 +58,27 @@ typedef struct {
 		},
 		{
 			.v = {1, -1, 0, 1}, 
-			.tc = {1, 0}
+			.tc = {255, 0}
 		},
 		{
 			.v = {-1, 1, 0, 1}, 
-			.tc = {0, 1}
+			.tc = {0, 255}
 		},
 		{
 			.v = {1, 1, 0, 1}, 
-			.tc = {1, 1}
+			.tc = {255, 255}
 		}};	
 	
+	[vertexBuffer appendData:vertexDataPtr withStructure:vertexBuffer.definition count:4];
+	
+	
+	WMStructureDefinition *indexDef = [[WMStructureDefinition alloc] initWithAnonymousFieldOfType:WMStructureTypeUnsignedByte];
+	indexBuffer = [[WMStructuredBuffer alloc] initWithDefinition:indexDef];
+
 	//Add triangles
-	unsigned short indexData[2 * 3] = {0,1,2, 1,2,3}; 
-	
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	
-	glBufferData(GL_ARRAY_BUFFER, sizeof(WMQuadVertex) * 4, vertexDataPtr, GL_STATIC_DRAW);
-	GL_CHECK_ERROR;
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof (unsigned short), indexData, GL_STATIC_DRAW);
-	
-	GL_CHECK_ERROR;
-	
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	unsigned char indexData[2 * 3] = {0,1,2, 1,2,3};
+
+	[indexBuffer appendData:indexData withStructure:indexBuffer.definition count:2 * 3];
 }
 
 - (BOOL)setup:(WMEAGLContext *)context;
@@ -90,7 +91,7 @@ typedef struct {
 														  encoding:NSUTF8StringEncoding
 															 error:&error];
 	if (!combindedShader) {
-		NSLog(@"Coludn't load blur shader: %@", error);
+		NSLog(@"Couldn't load blur shader: %@", error);
 	}
 	
 	shader = [[WMShader alloc] initWithVertexShader:combindedShader
@@ -104,8 +105,8 @@ typedef struct {
 
 - (void)cleanup:(WMEAGLContext *)context;
 {
-	if (vbo) glDeleteBuffers(1, &vbo);
-	if (ebo) glDeleteBuffers(1, &ebo);
+	[vertexBuffer release];
+	[indexBuffer release];
 	[shader release];
 	shader = nil;
 	[fbo release];
@@ -122,66 +123,38 @@ typedef struct {
 	inContext.boundFramebuffer = fbo;
 	
 	//Resize out output texture to the correct size (power of two, to contain the size)
-	NSUInteger destTextureWidth = nextPowerOf2(inSize.width);
-	NSUInteger destTextureHeight = nextPowerOf2(inSize.height);
+	NSUInteger destTextureWidth = inSize.width;
+	NSUInteger destTextureHeight = inSize.height;
 //	if (inDestinationTexture.pixelsWide != destTextureWidth || inDestinationTexture.pixelsHigh != destTextureHeight)
 	[inDestinationTexture setData:NULL pixelFormat:inDestinationTexture.pixelFormat pixelsWide:destTextureWidth pixelsHigh:destTextureHeight contentSize:inSize];
 	
 	//Make sure framebuffer has this texture
+	[fbo setColorAttachmentWithTexture:inDestinationTexture];
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
 		NSLog(@"Failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
 	}
-	[fbo setColorAttachmentWithTexture:inDestinationTexture];
 
 	//Render blur quad into dest
 	
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
-
-	int positionLocation = [shader attributeLocationForName:@"position"];
-	int texCoordLocation = [shader attributeLocationForName:@"texCoord0"];
 	
-	ZAssert(positionLocation != -1, @"Couldn't find position in shader!");
-	ZAssert(texCoordLocation != -1, @"Couldn't find texCoord0 in shader!");
+	WMRenderObject *ro = [[WMRenderObject alloc] init];
 	
-	unsigned int enableMask = 1 << positionLocation | 1 << texCoordLocation;
-	[inContext setVertexAttributeEnableState:enableMask];
-	
-	[inContext setDepthState:0];
-	
-	//TODO: support alpha channel
-	[inContext setBlendState: 0];
-		
-	size_t stride = sizeof(WMQuadVertex);
-		
-	
-	//Bind VBO, EBO
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	
-	//Position
-	glVertexAttribPointer(positionLocation, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMQuadVertex, v));
-	
-	//TexCoord0
-	glVertexAttribPointer(texCoordLocation, 2, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMQuadVertex, tc));
+	ro.vertexBuffer = vertexBuffer;
+	ro.indexBuffer = indexBuffer;
+	ro.shader = shader;
 	
 	//Set uniform values
-	int offsetUniform = [shader uniformLocationForName:@"offset"];
-	if (offsetUniform != -1) {
-		glUniform2f(offsetUniform, inAmountX / inSourceTexture.contentSize.width, inAmountY / inSourceTexture.contentSize.height);
-	}
-
-	int tcScaleUniform = [shader uniformLocationForName:@"tcScale"];
-	if (tcScaleUniform != -1) {
-		glUniform2f(tcScaleUniform, inSourceTexture.maxS, inSourceTexture.maxT);
-	}
-
-	int tex = [shader uniformLocationForName:@"sTexture"];
-	if (tex != -1) {
-		glBindTexture(GL_TEXTURE_2D, inSourceTexture.name);
-		glUniform1i(tex, 0);
-	}
 	
+	const GLKVector2 offset = {inAmountX / 64, inAmountY / 64};
+	[ro setValue:[NSValue valueWithBytes:&offset objCType:@encode(GLKVector2)] forUniformWithName:@"offset"];
+	
+	const GLKVector2 tcScale = {inSourceTexture.maxS, inSourceTexture.maxT};
+	[ro setValue:[NSValue valueWithBytes:&tcScale objCType:@encode(GLKVector2)] forUniformWithName:@"tcScale"];
+	
+	[ro setValue:inSourceTexture forUniformWithName:@"sTexture"];
+		
 	GL_CHECK_ERROR;
 	
 #if DEBUG
@@ -192,19 +165,12 @@ typedef struct {
 	}
 #endif
 
-	glDrawElements(GL_TRIANGLES, 2 * 3, GL_UNSIGNED_SHORT, NULL);
+	[inContext renderObject:ro];
+	[ro release];
 }
 
 - (void)renderBlurFromTexture:(WMTexture2D *)inSourceTexture toTexture:(WMTexture2D *)inDestinationTexture atSize:(CGSize)inOutputSize withIntermediateTexture:(WMTexture2D *)inTempTexture inContext:(WMEAGLContext *)inContext;
 {		
-	//Bind VBO, EBO
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	
-	GL_CHECK_ERROR;
-	
-	glUseProgram(shader.program);
-	
 	//TODO: use correct offsets here
 	//TODO: downscale texture to increase blur effectiveness
 	//TODO: use blur amount in calculation of passes
@@ -240,11 +206,6 @@ typedef struct {
 		[self renderBlurPassFromTexture:inSourceTexture toTexture:inTempTexture        atSize:inOutputSize amountX:1.0f * amt amountY:NONE inContext:inContext];
 		[self renderBlurPassFromTexture:inTempTexture   toTexture:inDestinationTexture atSize:inOutputSize amountX:NONE amountY:1.0f * amt inContext:inContext];
 	}
-	
-	GL_CHECK_ERROR;
-	
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);	
 }
 
 - (void)assureFramebuffer:(WMFramebuffer **)inoutFramebuffer isOfWidth:(NSUInteger)inWidth height:(NSUInteger)inHeight;
@@ -299,14 +260,16 @@ typedef struct {
 	//Bind this fbo for rendering
 	WMFramebuffer *prevFramebuffer = context.boundFramebuffer;
 		
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
+//	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+//	glClear(GL_COLOR_BUFFER_BIT);
 //	NSLog(@"Render blur %@ => %@", inputImage, texture);
 	[self renderBlurFromTexture:inputImage.image toTexture:texture1 atSize:inputImage.image.contentSize withIntermediateTexture:texture0 inContext:context];
 	
 	//Restore previous settings
 	context.boundFramebuffer = prevFramebuffer;
 
+	texture1.orientation = inputImage.image.orientation;
+	
 	outputImage.image = texture1;
 	
 	//Discard temp texture content

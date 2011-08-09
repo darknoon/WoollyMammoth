@@ -219,6 +219,7 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 			NSLog(@"Error executing patch: %@", patch);
 			break;
 		}
+		GL_CHECK_ERROR;
 
 		//Now execute any children
 		if ([patch children].count > 0) {

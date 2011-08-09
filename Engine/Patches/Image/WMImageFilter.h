@@ -17,6 +17,7 @@
 @class WMShader;
 @class WMFramebuffer;
 @class WMTexture2D;
+@class WMStructuredBuffer;
 
 @interface WMImageFilter : WMPatch {
     WMShader *shader;
@@ -26,8 +27,8 @@
 	WMTexture2D *texture1;
 	
 	//For quad
-	GLuint vbo;
-	GLuint ebo;
+	WMStructuredBuffer *vertexBuffer;
+	WMStructuredBuffer *indexBuffer;
 	
 	WMNumberPort *inputRadius;
 	WMImagePort *inputImage;

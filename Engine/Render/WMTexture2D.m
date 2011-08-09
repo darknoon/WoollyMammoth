@@ -53,6 +53,9 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 #import "WMTexture2D.h"
 
+#import "WMTexture2D_WMEAGLContext_Private.h"
+
+
 NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation);
 
 NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
@@ -67,7 +70,7 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 		case UIImageOrientationRight:
 			return @"90 deg CW";
 		case UIImageOrientationUpMirrored:
-			return @"as above but image mirrored along other axis. horizontal flip";
+			return @"90 deg CW, image mirrored along other axis. horizontal flip";
 		case UIImageOrientationDownMirrored:
 			return @"horizontal flip";
 		case UIImageOrientationLeftMirrored:
@@ -79,6 +82,9 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 
 @interface WMTexture2D ()
 - (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
+
+@property (nonatomic, readonly) GLuint name;
+
 @end
 
 //CONSTANTS:
@@ -102,7 +108,7 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 {
 	if((self = [super init])) {
 		glGenTextures(1, &_name);
-		glBindTexture(GL_TEXTURE_2D, _name);
+		[(WMEAGLContext *)[WMEAGLContext currentContext] bind2DTextureNameForModification:_name]; 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		//Needed by default for npot
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -120,7 +126,7 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 
 - (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;
 {
-	glBindTexture(GL_TEXTURE_2D, _name);
+	[(WMEAGLContext *)[WMEAGLContext currentContext] bind2DTextureNameForModification:self.name];
 	switch(pixelFormat) {
 			
 		case kWMTexture2DPixelFormat_RGBA8888:
@@ -160,15 +166,17 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 	[self setData:NULL pixelFormat:_format pixelsWide:_width pixelsHigh:_height contentSize:_size];
 }
 
-- (void) dealloc
+- (void)dealloc
 {
-	if(_name)
-	 glDeleteTextures(1, &_name);
+	if(_name) {
+		glDeleteTextures(1, &_name);
+		[(WMEAGLContext *)[WMEAGLContext currentContext] forgetTexture2DName:_name];
+	}
 	
 	[super dealloc];
 }
 
-- (NSString*) description
+- (NSString *)description
 {
 	return [NSString stringWithFormat:@"<%@ = %08X | Name = %i | Dimensions = %ix%i | Coordinates = (%.2f, %.2f) | orientation = %@>", [self class], self, _name, _width, _height, _maxS, _maxT, NSStringFromUIImageOrientation(orientation)];
 }

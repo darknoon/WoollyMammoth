@@ -101,23 +101,14 @@
 	
 	for (int i=0; i<VideoCapture_NumTextures; i++) {
 		textures[i] = [[WMTexture2D alloc] initWithData:buffer pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:0 pixelsHigh:0 contentSize:CGSizeZero orientation:orientation];
-		glBindTexture(GL_TEXTURE_2D, [textures[i] name]);
 		
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
 #if USE_BGRA
 		[textures[i] setData:buffer pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height}];
-//		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, buffer);
 #else
 		[textures[i] setData:buffer pixelFormat:kWMTexture2DPixelFormat_RGBA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height}];
-//		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA8_OES, GL_UNSIGNED_BYTE, buffer);
 #endif
 		GL_CHECK_ERROR;
 	}
-	glBindTexture(GL_TEXTURE_2D, 0);	
 	
 	
 	free(buffer);
@@ -237,9 +228,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 	//Copy buffer contents into vram
 	GL_CHECK_ERROR;
-	//glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, baseAddress);
 	[textures[currentTexture] setData:baseAddress pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height} orientation:currentVideoOrientation];
-	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, baseAddress);
 	GL_CHECK_ERROR;
 	
 	//Now release the lock
@@ -270,7 +259,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 	//Advance the current texture
 	currentTexture = (currentTexture+1) % VideoCapture_NumTextures;
 	//Get the texture ready
-	glBindTexture(GL_TEXTURE_2D, [textures[currentTexture] name]);
 	
 	unsigned width = 640;
 	unsigned height = 480;
@@ -289,12 +277,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 	}
 	ppp++;
 	
-	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_BGRA_EXT, GL_UNSIGNED_BYTE, buffer);
+	[textures[currentTexture] setData:buffer pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height} orientation:UIImageOrientationUp];
 	
 	free(buffer);
-	
-	glBindTexture(GL_TEXTURE_2D, 0);
-
 }
 
 #endif

@@ -9,7 +9,12 @@
 #import "WMFramebuffer.h"
 
 #import "WMTexture2D.h"
+//This gives us access to the "name" attribute
+#import "WMTexture2D_RenderPrivate.h"
+
 #import "WMEAGLContext.h"
+
+
 
 @implementation WMFramebuffer
 @synthesize framebufferWidth;
