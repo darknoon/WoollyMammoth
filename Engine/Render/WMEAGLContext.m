@@ -322,7 +322,7 @@
 
 	
 	if (inObject.indexBuffer) {
-		last = MIN(last, inObject.indexBuffer.count - 1);
+		last = MIN(last, (NSInteger)inObject.indexBuffer.count - 1);
 		
 		if (inObject.vertexArrayObjectDirty) {
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, inObject.indexBuffer.bufferObject);
@@ -333,26 +333,20 @@
 		BOOL found = [inObject.indexBuffer.definition getFieldNamed:@"" outField:&f];
 		ZAssert(found, @"Couldn't get the element buffer description!");
 		GLenum elementBufferType = f.type;
-		
-		GL_CHECK_ERROR;
+				
 		glDrawElements(inObject.renderType, last - first + 1, elementBufferType, 0x0 /*indicies from bound index buffer*/);
 		GL_CHECK_ERROR;
-		
-		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-		
-		GL_CHECK_ERROR;
-		
+				
 	} else {
 		last = MIN(last, inObject.vertexBuffer.count - 1);
 		glDrawArrays(inObject.renderType, first, last - first + 1);
 		
 	}
 	inObject.vertexArrayObjectDirty = NO;
-	
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-	
-	//Unbind
+		
+	//Unbind or can we leave it bound?
 	glBindVertexArrayOES(0);
+	boundVAO = 0;
 	
 	//TODO: unbind unused textures, but keep used ones bound?
 //	for (int i=0; i<textures.count && i<maxTextureUnits; i++) {
@@ -409,6 +403,8 @@
 		GL_CHECK_ERROR;
 		
 		glBindBuffer(inBufferType, 0);
+		
+		[self resetDirtyIndexSet];
 	}
 	
 	return YES;
@@ -418,6 +414,7 @@
 {
 	if (bufferObject != 0) {
 		[(WMEAGLContext *)[WMEAGLContext currentContext] destroyBuffer:bufferObject];
+		bufferObject = 0;
 	}
 }
 
