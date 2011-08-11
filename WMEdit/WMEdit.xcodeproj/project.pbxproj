@@ -448,7 +448,6 @@
 		49858E0413DE4C1F0061A1A8 /* WMEAGLContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMEAGLContext.m; sourceTree = "<group>"; };
 		49858E0513DE4C1F0061A1A8 /* WMFramebuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMFramebuffer.h; sourceTree = "<group>"; };
 		49858E0613DE4C1F0061A1A8 /* WMFramebuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMFramebuffer.m; sourceTree = "<group>"; };
-		49858E0713DE4C1F0061A1A8 /* WMRenderableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMRenderableDataSource.h; sourceTree = "<group>"; };
 		49858E0813DE4C1F0061A1A8 /* WMRenderCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMRenderCommon.h; sourceTree = "<group>"; };
 		49858E0913DE4C1F0061A1A8 /* WMRenderObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMRenderObject.h; sourceTree = "<group>"; };
 		49858E0A13DE4C1F0061A1A8 /* WMRenderObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMRenderObject.m; sourceTree = "<group>"; };
@@ -1014,7 +1013,6 @@
 				49858E0413DE4C1F0061A1A8 /* WMEAGLContext.m */,
 				49858E0513DE4C1F0061A1A8 /* WMFramebuffer.h */,
 				49858E0613DE4C1F0061A1A8 /* WMFramebuffer.m */,
-				49858E0713DE4C1F0061A1A8 /* WMRenderableDataSource.h */,
 				49858E0813DE4C1F0061A1A8 /* WMRenderCommon.h */,
 				49858E0913DE4C1F0061A1A8 /* WMRenderObject.h */,
 				49858E0A13DE4C1F0061A1A8 /* WMRenderObject.m */,
