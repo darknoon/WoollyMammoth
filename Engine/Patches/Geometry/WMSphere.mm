@@ -8,48 +8,130 @@
 
 #import "WMSphere.h"
 
+#import "WMStructuredBuffer.h"
+#import "WMShader.h"
+#import "WMRenderObject.h"
+
 //Position, Normal, Color, TexCoord0, TexCoord1, PointSize, Weight, MatrixIndex
 struct WMSphereVertex {
-	GLKVector3 v;
+	GLKVector3 p;
 	GLKVector3 n;
 	GLKVector2 tc;
-	//TODO: Align to even 32-byte boundary?
 };
 
-@implementation WMSphere
+static WMStructureField WMQuadVertex_fields[] = {
+	{.name = "position",  .type = WMStructureTypeFloat,  .count = 3, .normalized = NO,  .offset = offsetof(WMSphereVertex, p)},
+	{.name = "normal",    .type = WMStructureTypeFloat,  .count = 3, .normalized = NO,  .offset = offsetof(WMSphereVertex, n)},
+	{.name = "texCoord0", .type = WMStructureTypeFloat,  .count = 2, .normalized = NO,  .offset = offsetof(WMSphereVertex, tc)},
+};
+@interface WMSphere ()
+- (BOOL)loadDefaultShader;
+@end
+
+@implementation WMSphere {
+	//Cached values, correspond to current value
+	//TODO: use conditional execution instead?
+	float radius;
+	
+	int unum;
+	int vnum;
+	
+	WMShader *shader;
+}
+
+
++ (NSString *)category;
+{
+    return WMPatchCategoryGeometry;
+}
+
++ (NSString *)humanReadableTitle {
+    return @"Sphere";
+}
+
++ (void)load;
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	[self registerToRepresentClassNames:[NSSet setWithObject:NSStringFromClass(self)]];
+	[pool drain];
+}
 
 - (id)init;
 {
-	GL_CHECK_ERROR;
-
 	self = [super init];
 	if (!self) return nil;
+	
+	return self;
+}
 
-	
-	WMSphereVertex *vertexData;
-	unsigned short *indexData;
-
-	unum = 50;
-	vnum = 50;
-	
-	int numberOfTriangles = unum * (vnum - 1) * 2;
-	
-	radius = 0.535f;
-	
-	glGenBuffers(1, &vbo);
-	glGenBuffers(1, &ebo);
-	
-	vertexData = new WMSphereVertex[unum * vnum];
-	if (!vertexData) {
-		[self release];
-		NSLog(@"Out of mem");
-		return nil;
++ (id)defaultValueForInputPortKey:(NSString *)inKey;
+{
+	if ([inKey isEqualToString:@"inputUCount"]) {
+		return [NSNumber numberWithInt:5];
+	} else if ([inKey isEqualToString:@"inputVCount"]) {
+		return [NSNumber numberWithInt:5];
+	} else if ([inKey isEqualToString:@"inputRadius"]) {
+		return [NSNumber numberWithFloat:1.0f];
 	}
-	indexData = new unsigned short [unum * (vnum - 1) * 2 * 3]; 
-	if (!indexData) {
-		[self release];
+	return nil;
+}
+
+- (BOOL)setup:(WMEAGLContext *)context;
+{
+	[self loadDefaultShader];
+	
+	return shader != nil;
+}
+
+- (void)cleanup:(WMEAGLContext *)context;
+{
+}
+
+- (BOOL)loadDefaultShader;
+{
+	//TODO: make a better system for default shaders!
+	NSError *defaultShaderError = nil;
+	NSString *vertexShader = [NSString stringWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"WMDefaultShader" withExtension:@"vsh"] encoding:NSASCIIStringEncoding error:&defaultShaderError];
+	if (defaultShaderError) {
+		NSLog(@"Error loading default vertex shader: %@", defaultShaderError);
+		return NO;
+	}
+	
+	NSString *fragmentShader = [NSString stringWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"WMDefaultShader" withExtension:@"fsh"] encoding:NSASCIIStringEncoding error:&defaultShaderError];
+	if (defaultShaderError) {
+		NSLog(@"Error loading default fragment shader: %@", defaultShaderError);
+		return NO;
+	}
+	
+	shader = [[WMShader alloc] initWithVertexShader:vertexShader fragmentShader:fragmentShader error:&defaultShaderError];
+	if (defaultShaderError) {
+		NSLog(@"Error loading default shader: %@", defaultShaderError);
+		return NO;
+	}
+	
+	return YES;
+}
+
+- (BOOL)recreateVertexData;
+{	
+	unum = inputUCount.index;
+	vnum = inputVCount.index;
+	radius = inputRadius.value;
+	
+	const int numberOfVertices = unum * vnum;
+	const int numberOfTriangles = unum * (vnum - 1) * 2;
+	
+	
+	WMSphereVertex *vertexData = new WMSphereVertex[numberOfVertices];
+	if (!vertexData) {
 		NSLog(@"Out of mem");
-		return nil;
+		return NO;
+	}
+	
+	unsigned short *indexData = new unsigned short [numberOfTriangles * 3]; 
+	if (!indexData) {
+		NSLog(@"Out of mem");
+		return NO;
 	}
 	
 	GLKVector3 spherePosition = GLKVector3Make(0.0f, 0.045f, 0.0f);
@@ -60,11 +142,9 @@ struct WMSphereVertex {
 			float theta = u * 2.0f * M_PI / unum;
 			float phi = v * M_PI / vnum;
 			//Add the vertex
-			vertexData[i].n = GLKVector3Make(sinf(phi)*cosf(theta),
-								   sinf(phi)*sinf(theta), 
-								   cosf(phi));
-			vertexData[i].v = radius * vertexData[i].n + spherePosition;
-			vertexData[i].tc = GLKVector2Make(theta, phi);
+			vertexData[i].n = (GLKVector3){sinf(phi)*cosf(theta), sinf(phi)*sinf(theta), cosf(phi)};
+			vertexData[i].p = radius * vertexData[i].n + spherePosition;
+			vertexData[i].tc = (GLKVector2){theta, phi};
 			
 			//Add the triangles in the quad {(u,v), (u+1,v), (u,v+1), (u+1,v+1)}
 			unsigned short nextU = (u+1) % unum;
@@ -74,7 +154,7 @@ struct WMSphereVertex {
 				indexData[indexDataIndex++] = u * vnum + v;
 				indexData[indexDataIndex++] = nextU * vnum + v;
 				indexData[indexDataIndex++] = u * vnum + nextV;
-
+				
 				indexData[indexDataIndex++] = nextU * vnum + v;
 				indexData[indexDataIndex++] = u * vnum + nextV;
 				indexData[indexDataIndex++] = nextU * vnum + nextV;
@@ -90,80 +170,50 @@ struct WMSphereVertex {
 	ZAssert(maxRefI < unum * vnum, @"Bad tri index!");
 #endif
 	
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-
-	glBufferData(GL_ARRAY_BUFFER, unum * vnum * sizeof(WMSphereVertex), vertexData, GL_STATIC_DRAW);
-	GL_CHECK_ERROR;
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, unum * (vnum - 1) * 2 * 3 * sizeof (unsigned short), indexData, GL_STATIC_DRAW);
-
-	GL_CHECK_ERROR;
+	WMStructureDefinition *vertexDef = [[WMStructureDefinition alloc] initWithFields:WMQuadVertex_fields count:3 totalSize:sizeof(WMSphereVertex)];
 	
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	WMStructuredBuffer *vertexBuffer = [[[WMStructuredBuffer alloc] initWithDefinition:vertexDef] autorelease];
+	[vertexBuffer appendData:vertexData withStructure:vertexDef count:numberOfVertices];
 	
-	if (vertexData) delete vertexData;
-	if (indexData) delete indexData;
+	
+	WMStructureDefinition *indexDef = [[WMStructureDefinition alloc] initWithAnonymousFieldOfType:WMStructureTypeUnsignedShort];
+	WMStructuredBuffer *indexBuffer = [[[WMStructuredBuffer alloc] initWithDefinition:indexDef] autorelease];
+	[indexBuffer appendData:indexData withStructure:indexDef count:numberOfTriangles * 3];
 
-	return self;
+	
+	WMRenderObject *ro = [[[WMRenderObject alloc] init] autorelease];
+	
+	ro.shader = shader;
+	ro.vertexBuffer = vertexBuffer;
+	ro.indexBuffer = indexBuffer;
+	
+	ro.renderType = GL_TRIANGLE_STRIP;
+	ro.renderDepthState = DNGLStateDepthWriteEnabled;
+	ro.renderBlendState = 0;
+	
+	outputSphere.object = ro;
+	
+	return YES;
+}
+
+- (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
+{
+	BOOL dirty = radius != inputRadius.value || unum != inputUCount.index || vnum != inputVCount.index || radius != inputRadius.value;
+	
+	GLKMatrix4 transform = context.modelViewMatrix;
+
+	[outputSphere.object setValue:[NSValue valueWithBytes:&transform objCType:@encode(GLKMatrix4)] forUniformWithName:@"modelViewProjectionMatrix"];
+	
+	if (dirty) {
+		return [self recreateVertexData];
+	} else {
+		return YES;
+	}
 }
 
 - (void)dealloc;
 {
-	if (vbo) glDeleteBuffers(1, &vbo);
-	if (ebo) glDeleteBuffers(1, &ebo);
-	
 	[super dealloc];
-}
-
-- (GLuint)vbo;
-{
-	return vbo;
-}
-
-- (GLenum)ebo; //element buffer object
-{
-	return ebo;
-}
-
-
-
-- (int)positionOffset;
-{
-	return 0;
-}
-
-- (int)colorOffset;
-{
-	ZAssert(0, @"No coor component of sphere");
-	return 0;
-}
-- (int)texCoord0Offset;
-{
-	return 2 * sizeof(GLKVector3);
-}
-
-- (int)normalOffset;
-{
-	return sizeof(GLKVector3);
-}
-
-- (size_t)interleavedDataStride;
-{
-	return sizeof(WMSphereVertex);
-}
-- (size_t)numberOfTriangles;
-{
-	return unum * (vnum - 1) * 2;
-}
-- (size_t)numberOfVertices;
-{
-	return unum * vnum;
-}
-
-- (GLenum)triangleIndexType;
-{
-	return GL_UNSIGNED_SHORT;
 }
 
 

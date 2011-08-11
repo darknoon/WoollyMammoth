@@ -8,24 +8,20 @@
 
 #import <Foundation/Foundation.h>
 
-#import "WMRenderableDataSource.h"
-
 #import "WMPatch.h"
 
-struct WMSphereVertex;
-
 //Should render a nice sphere. Right now does a janky one :P
-@interface WMSphere : WMPatch {
-	GLuint vbo;
-	GLuint ebo;
+@interface WMSphere : WMPatch {	
 	
-	float radius;
-	float rhoStart;
-	float rhoEnd;
-	float phiStart;
-	float phiEnd;
-	int unum;
-	int vnum;
+	WMIndexPort *inputUCount;
+	WMIndexPort *inputVCount;
+	WMNumberPort *inputRadius;
+//	WMNumberPort *inputRhoStart;
+//	WMNumberPort *inputRhoEnd;
+//	WMNumberPort *inputPhiStart;
+//	WMNumberPort *inputPhiEnd;
+		
+	WMRenderObjectPort *outputSphere;
 }
 
 @end
