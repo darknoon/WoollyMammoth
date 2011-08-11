@@ -55,6 +55,7 @@
 {
     [vertexBuffer release];
 	[indexBuffer release];
+	[uniformValues release];
 	[shader release];
     [super dealloc];
 }
@@ -89,8 +90,8 @@
 
 - (NSString *)description;
 {
-	return [NSString stringWithFormat:@"<%@ %p vb:%@ ib:%@ shader:%@ renderType:%@ range:%@ renderBlendState:%d renderDepthState:%d>",
-			[self class], self, vertexBuffer, indexBuffer, shader, [WMRenderObject stringFromGLRenderType:renderType], NSStringFromRange(renderRange), renderBlendState, renderDepthState];
+	return [NSString stringWithFormat:@"<%@ %p vb:%@ ib:%@ shader:%@ renderType:%@ range:%@ renderBlendState:%d renderDepthState:%d vao:%d>",
+			[self class], self, vertexBuffer, indexBuffer, shader, [WMRenderObject stringFromGLRenderType:renderType], NSStringFromRange(renderRange), renderBlendState, renderDepthState, _wmeaglcontextprivate_vertexArrayObject];
 }
 
 - (void)setValue:(id)inValue forUniformWithName:(NSString *)inUniformName;
