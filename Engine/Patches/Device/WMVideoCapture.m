@@ -9,9 +9,11 @@
 #import "WMVideoCapture.h"
 
 #import <CoreVideo/CoreVideo.h>
+#import <CoreVideo/CVOpenGLESTextureCache.h>
 
 #import "WMEAGLContext.h"
 #import "WMTexture2D.h"
+#import "WMCVTexture2D.h"
 
 #import "WMBooleanPort.h"
 #import "WMImagePort.h"
@@ -19,7 +21,31 @@
 //For the interfaceOrientation argument
 #import "WMEngine.h"
 
-@implementation WMVideoCapture
+@implementation WMVideoCapture {
+	BOOL capturing;
+	
+	BOOL useFrontCamera;
+	
+	UIImageOrientation currentVideoOrientation;
+	
+	WMTexture2D *mostRecentTexture;
+
+#if TARGET_OS_EMBEDDED
+	
+	dispatch_queue_t videoCaptureQueue;
+	
+
+	AVCaptureSession *captureSession;
+	AVCaptureInput  *captureInput;
+	AVCaptureVideoDataOutput  *dataOutput;
+	AVCaptureDevice *cameraDevice;
+	
+	CVOpenGLESTextureCacheRef textureCache;
+#else			
+	NSTimer *simulatorDebugTimer;
+#endif
+	
+}
 
 @synthesize capturing;
 
@@ -65,61 +91,35 @@
 {	
 	GL_CHECK_ERROR;
 	
-	//TODO: why does this fail on ES2?
-	if (context.API == kEAGLRenderingAPIOpenGLES1) {
-		glEnable(GL_TEXTURE_2D);
-	}
+#if TARGET_OS_EMBEDDED
+	NSString *str = [NSString stringWithFormat:@"com.darknoon.%@.videoCaptureQueue", [self class]];
+	videoCaptureQueue = dispatch_queue_create([str UTF8String], DISPATCH_QUEUE_SERIAL);
+	dispatch_set_target_queue(videoCaptureQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0));
 
-	GL_CHECK_ERROR;
+	CVReturn result = CVOpenGLESTextureCacheCreate(NULL, NULL, context, NULL, &textureCache);
+	if (result != kCVReturnSuccess) {
+		NSLog(@"Error creating CVOpenGLESTextureCache");
+	}
 	
-	
-	//TODO: get these from the camera session somehow
-#if USE_LOW_RES_CAMERA
-	unsigned width = 192;
-	unsigned height = 144;
-#else
-	unsigned width = 640;
-	unsigned height = 480;
 #endif
 	
-	//Initialize the buffer
-	unsigned char *buffer = malloc(4 * width * height);
-	for (int y=0, i=0; y<height; y++) {
-		for (int x=0; x<width; x++, i++) {
-			//Set to medium grey for kicks
-			buffer[4*i + 0] = 51;
-			buffer[4*i + 1] = 51;
-			buffer[4*i + 2] = 51;
-			buffer[4*i + 3] = 255;
-		}
-	}
-
-	//glTexParameterf(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_FALSE);
-
-	//TODO: test different orientations, get interface orientation and indicate mismatch
-	UIImageOrientation orientation = UIImageOrientationUp;
-	
-	for (int i=0; i<VideoCapture_NumTextures; i++) {
-		textures[i] = [[WMTexture2D alloc] initWithData:buffer pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:0 pixelsHigh:0 contentSize:CGSizeZero orientation:orientation];
-		
-#if USE_BGRA
-		[textures[i] setData:buffer pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height}];
-#else
-		[textures[i] setData:buffer pixelFormat:kWMTexture2DPixelFormat_RGBA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height}];
-#endif
-		GL_CHECK_ERROR;
-	}
-	
-	
-	free(buffer);
 	return YES;
 }
 
 - (void)cleanup:(WMEAGLContext *)context;
 {
-	for (int i=0; i<VideoCapture_NumTextures; i++) {
-		[textures[i] release];
-	}
+	[self stopCapture];
+#if TARGET_OS_EMBEDDED
+	if (textureCache)
+		CFRelease(textureCache);
+	
+	if (videoCaptureQueue)
+		dispatch_release(videoCaptureQueue);
+#endif
+	
+	[mostRecentTexture release];
+	mostRecentTexture = nil;
+	
 	[super cleanup:context];
 }
 
@@ -128,9 +128,7 @@
 {
 	//TODO: make this hack less hacky
 	if (capturing) return;
-	
-	ZAssert(textures[0] != 0, @"Tried to start capture without any textures!");
-	
+		
 #if TARGET_OS_EMBEDDED
 	captureSession = [[AVCaptureSession alloc] init];
 
@@ -172,14 +170,18 @@
 	[dataOutput setVideoSettings:videoSettings];	
 	[dataOutput setAlwaysDiscardsLateVideoFrames:YES];
 	//1.0 / 60.0 seconds
-	[dataOutput setMinFrameDuration:CMTimeMake(1, 60)];
 
-	[dataOutput setSampleBufferDelegate:self queue:dispatch_get_main_queue()];
+	[dataOutput setSampleBufferDelegate:self queue:videoCaptureQueue];
 	
 	[captureSession addInput:captureInput];
 	[captureSession addOutput:dataOutput];
 	[captureSession startRunning];
+#else
+	if (!simulatorDebugTimer)
+		simulatorDebugTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/60.0 target:self selector:@selector(simulatorUploadTexture) userInfo:nil repeats:YES];
+
 #endif	
+
 	capturing = YES;
 }
 
@@ -189,6 +191,9 @@
 	[captureSession stopRunning];
 	[captureSession release]; captureSession = nil;
 	[captureInput release]; captureInput = nil;
+#else
+	[simulatorDebugTimer invalidate];
+	simulatorDebugTimer = nil;
 #endif
 	
 	capturing = NO;
@@ -196,68 +201,40 @@
 
 #if TARGET_OS_EMBEDDED
 
-//On main thread, for texture upload :(
-- (void)captureOutput:(AVCaptureOutput *)captureOutput 
-didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer 
+- (void)captureOutput:(AVCaptureOutput *)captureOutput  didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer 
 	   fromConnection:(AVCaptureConnection *)connection;
-{
-	
-#if DEBUG_TEXTURE_UPLOAD
-	NSTimeInterval __START_TIME = CFAbsoluteTimeGetCurrent();
-#endif
+{	
 
-	if (!textureWasRead) {
-		//NSLog(@"Texture was not read before swap!");
-		return;
-	}
-	//Advance the current texture
-	currentTexture = (currentTexture+1) % VideoCapture_NumTextures;
-	textureWasRead = NO;
-
-//Get the texture ready
-
-	//Get buffer info
-	CVPixelBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-	CVPixelBufferLockBaseAddress(imageBuffer,0);
-	uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(imageBuffer);
-	//size_t bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer);
-	size_t width = CVPixelBufferGetWidth(imageBuffer);
-	size_t height = CVPixelBufferGetHeight(imageBuffer);
-	
-	//NSLog(@"Is ready: %@ samples:%uld sampleSize:%d width:%d height:%d bytes/row:%d baseAddr:%x", ready ? @"Y" : @"N", numsamples, sampleSize, width, height, bytesPerRow, baseAddress);
-
-	//Copy buffer contents into vram
-	GL_CHECK_ERROR;
-	[textures[currentTexture] setData:baseAddress pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height} orientation:currentVideoOrientation];
-	GL_CHECK_ERROR;
-	
-	//Now release the lock
-	CVPixelBufferUnlockBaseAddress(imageBuffer, 0);
-	
-#if DEBUG_TEXTURE_UPLOAD
-	NSTimeInterval __END_TIME = CFAbsoluteTimeGetCurrent();
-	
-	NSTimeInterval mstime = (__END_TIME - __START_TIME) * 1000.0;
-	
-	//'W' if greater that 10 ms 'w' if less to upload texture
-	log[logi++] = mstime > 10.0 ? 'W' : 'w';
-	log[logi++] = '0' + (char)currentTexture;
-
-	static int i=0;
-	if (i%10 == 0) {
-		log[logi] = '\0';
-		logi = 0;
-		NSLog(@"Texture upload time: %.3lf ms %s", mstime, log);
-	}
-	i = (i+1 % 10);
-#endif //DEBUG_TEXTURE_UPLOAD
+	dispatch_sync(dispatch_get_main_queue(), ^{
+		if (capturing) {
+			//Get buffer info
+			CVPixelBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+			
+			//NSLog(@"Is ready: %@ samples:%uld sampleSize:%d width:%d height:%d bytes/row:%d baseAddr:%x", ready ? @"Y" : @"N", numsamples, sampleSize, width, height, bytesPerRow, baseAddress);
+			
+			//Copy buffer contents into vram
+			GL_CHECK_ERROR;
+			//[textures[currentTexture] setData:baseAddress pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height} orientation:currentVideoOrientation];
+			
+			//Create a BGRA texture
+			
+			WMCVTexture2D *texture = [[WMCVTexture2D alloc] initWithCVImageBuffer:imageBuffer inTextureCache:textureCache format:kWMTexture2DPixelFormat_BGRA8888];
+			texture.orientation = currentVideoOrientation;
+			
+			GL_CHECK_ERROR;
+			
+			//TODO: Pass this texture back to main thread from bg thread.
+			[mostRecentTexture release];
+			mostRecentTexture = texture;
+			
+			GL_CHECK_ERROR;
+		}
+	});
 }
 #else
 
 - (void)simulatorUploadTexture;
 {
-	//Advance the current texture
-	currentTexture = (currentTexture+1) % VideoCapture_NumTextures;
 	//Get the texture ready
 	
 	unsigned width = 640;
@@ -277,7 +254,8 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 	}
 	ppp++;
 	
-	[textures[currentTexture] setData:buffer pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height} orientation:UIImageOrientationUp];
+	[mostRecentTexture release];
+	mostRecentTexture = [[WMTexture2D alloc] initWithData:buffer pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height} orientation:UIImageOrientationUp];
 	
 	free(buffer);
 }
@@ -288,16 +266,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 - (WMTexture2D *)getVideoTexture;
 {
-	int textureToRead = (currentTexture - 1 + VideoCapture_NumTextures) % VideoCapture_NumTextures;
-	textureWasRead = YES;
-#if DEBUG_TEXTURE_UPLOAD
-	log[logi++] = 'r';
-	log[logi++] = '0' + (char)textureToRead;
-#endif
-#if TARGET_IPHONE_SIMULATOR
-	[self simulatorUploadTexture];
-#endif
-	return textures[textureToRead];
+	return mostRecentTexture;
 }
 
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
@@ -342,6 +311,14 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 	
 	outputImage.image = [self getVideoTexture];
 	
+	GL_CHECK_ERROR;
+
+#if TARGET_OS_EMBEDDED
+	CVOpenGLESTextureCacheFlush(textureCache, 0);
+#endif
+	
+	GL_CHECK_ERROR;
+
 	return YES;
 }
 

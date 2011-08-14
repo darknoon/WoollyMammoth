@@ -135,6 +135,7 @@
 		49858EBB13DE85BC0061A1A8 /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 49858EB813DE85BC0061A1A8 /* Icon-Small.png */; };
 		49858EBC13DE85BC0061A1A8 /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49858EB913DE85BC0061A1A8 /* Icon-Small@2x.png */; };
 		49858EBD13DE85BC0061A1A8 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49858EBA13DE85BC0061A1A8 /* Icon@2x.png */; };
+		498C2BC113F6630F0071B87F /* WMCVTexture2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 498C2BC013F6630F0071B87F /* WMCVTexture2D.m */; };
 		498DDEB913DF465400D10642 /* WMCompositionLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = 498DDE9F13DF465400D10642 /* WMCompositionLibrary.m */; };
 		498DDEBA13DF465400D10642 /* WMCompositionLibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498DDEA113DF465400D10642 /* WMCompositionLibraryViewController.m */; };
 		498DDEBB13DF465400D10642 /* WMCompositionLibraryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498DDEA213DF465400D10642 /* WMCompositionLibraryViewController.xib */; };
@@ -534,6 +535,8 @@
 		49858EB813DE85BC0061A1A8 /* Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small.png"; sourceTree = "<group>"; };
 		49858EB913DE85BC0061A1A8 /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@2x.png"; sourceTree = "<group>"; };
 		49858EBA13DE85BC0061A1A8 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		498C2BBF13F6630F0071B87F /* WMCVTexture2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMCVTexture2D.h; sourceTree = "<group>"; };
+		498C2BC013F6630F0071B87F /* WMCVTexture2D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMCVTexture2D.m; sourceTree = "<group>"; };
 		498DDE9E13DF465400D10642 /* WMCompositionLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMCompositionLibrary.h; sourceTree = "<group>"; };
 		498DDE9F13DF465400D10642 /* WMCompositionLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMCompositionLibrary.m; sourceTree = "<group>"; };
 		498DDEA013DF465400D10642 /* WMCompositionLibraryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMCompositionLibraryViewController.h; sourceTree = "<group>"; };
@@ -928,6 +931,8 @@
 				49858DD313DE4C1F0061A1A8 /* WMAccelerometer.mm */,
 				49858DD413DE4C1F0061A1A8 /* WMVideoCapture.h */,
 				49858DD513DE4C1F0061A1A8 /* WMVideoCapture.m */,
+				498C2BBF13F6630F0071B87F /* WMCVTexture2D.h */,
+				498C2BC013F6630F0071B87F /* WMCVTexture2D.m */,
 			);
 			path = Device;
 			sourceTree = "<group>";
@@ -1888,6 +1893,7 @@
 				49F8A94513E69778000D4A3A /* WMImageLoaderSettingsController.m in Sources */,
 				49791BC713EB98E9003B20EA /* WMPatch+GraphAlgorithms.m in Sources */,
 				B405C68D13EB99B000BD062D /* NSString+URLEncoding.m in Sources */,
+				498C2BC113F6630F0071B87F /* WMCVTexture2D.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -265,6 +265,8 @@
 	lastFrameEndTime = frameEndTime;
 
     [(EAGLView *)self.view presentFramebuffer];
+	
+	glFlush();
 }
 
 #pragma mark -

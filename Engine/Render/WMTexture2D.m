@@ -150,8 +150,6 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 	_width = width;
 	_height = height;
 	_format = pixelFormat;
-	_maxS = size.width / (float)width;
-	_maxT = size.height / (float)height;
 	orientation = inOrientation;
 
 }
@@ -164,6 +162,16 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 - (void)discardData;
 {
 	[self setData:NULL pixelFormat:_format pixelsWide:_width pixelsHigh:_height contentSize:_size];
+}
+
+- (GLfloat)maxS;
+{
+	return _size.width / (float)_width;
+}
+
+- (GLfloat)maxT;
+{
+	return _size.height / (float)_height;
 }
 
 - (void)dealloc
