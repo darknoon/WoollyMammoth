@@ -167,7 +167,8 @@ static WMStructureField WMQuadVertex_fields[] = {
 	//TODO: replace this with a user-specifiable shader
 	
 	renderObject = [[WMRenderObject alloc] init];
-	
+
+	//TODO: make a better system for default shaders!
 	NSError *defaultShaderError = nil;
 	NSString *vertexShader = [NSString stringWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"WMDefaultShader" withExtension:@"vsh"] encoding:NSASCIIStringEncoding error:&defaultShaderError];
 	if (defaultShaderError) {
@@ -258,6 +259,8 @@ static WMStructureField WMQuadVertex_fields[] = {
 		
 		
 		outputObject.object = renderObject;
+	} else {
+		outputObject.object = nil;
 	}
 
 	return YES;
