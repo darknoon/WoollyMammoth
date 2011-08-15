@@ -89,7 +89,7 @@ static int WMAccelerometerDelegateCount;
 }
 
 - (id) init {
-	[super init];
+	self = [super init];
 	if (self == nil) return self; 
 	
 	lowPassFactor = 0.95f;

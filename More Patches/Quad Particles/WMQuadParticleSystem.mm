@@ -228,8 +228,8 @@ int particleZCompare(const void *a, const void *b) {
 	
 	NSError *defaultShaderError = nil;
 	
-	NSString *vsh = [[NSString alloc] initWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"SnowParticle" withExtension:@"vsh"] encoding:NSASCIIStringEncoding error:NULL];
-	NSString *fsh = [[NSString alloc] initWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"SnowParticle" withExtension:@"fsh"] encoding:NSASCIIStringEncoding error:NULL];
+	NSString *vsh = [[[NSString alloc] initWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"SnowParticle" withExtension:@"vsh"] encoding:NSASCIIStringEncoding error:NULL] autorelease];
+	NSString *fsh = [[[NSString alloc] initWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"SnowParticle" withExtension:@"fsh"] encoding:NSASCIIStringEncoding error:NULL] autorelease];
 	
 	shader = [[WMShader alloc] initWithVertexShader:vsh
 									 fragmentShader:fsh

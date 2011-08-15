@@ -170,13 +170,13 @@ static WMStructureField WMQuadVertex_fields[] = {
 	ZAssert(maxRefI < unum * vnum, @"Bad tri index!");
 #endif
 	
-	WMStructureDefinition *vertexDef = [[WMStructureDefinition alloc] initWithFields:WMQuadVertex_fields count:3 totalSize:sizeof(WMSphereVertex)];
+	WMStructureDefinition *vertexDef = [[[WMStructureDefinition alloc] initWithFields:WMQuadVertex_fields count:3 totalSize:sizeof(WMSphereVertex)] autorelease];
 	
 	WMStructuredBuffer *vertexBuffer = [[[WMStructuredBuffer alloc] initWithDefinition:vertexDef] autorelease];
 	[vertexBuffer appendData:vertexData withStructure:vertexDef count:numberOfVertices];
 	
 	
-	WMStructureDefinition *indexDef = [[WMStructureDefinition alloc] initWithAnonymousFieldOfType:WMStructureTypeUnsignedShort];
+	WMStructureDefinition *indexDef = [[[WMStructureDefinition alloc] initWithAnonymousFieldOfType:WMStructureTypeUnsignedShort] autorelease];
 	WMStructuredBuffer *indexBuffer = [[[WMStructuredBuffer alloc] initWithDefinition:indexDef] autorelease];
 	[indexBuffer appendData:indexData withStructure:indexDef count:numberOfTriangles * 3];
 

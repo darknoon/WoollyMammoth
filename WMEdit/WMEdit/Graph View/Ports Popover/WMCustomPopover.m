@@ -92,6 +92,7 @@
 	WMCustomPopoverView *customPopoverView = [[WMCustomPopoverView alloc] initWithFrame:CGRectZero];
 	customPopoverView.contentView = contentViewController.view;
 	self.view = customPopoverView;
+	[customPopoverView release];
 }
 
 - (void)viewDidUnload

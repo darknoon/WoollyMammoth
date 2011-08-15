@@ -189,6 +189,7 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
 	UIImage *myImage = [UIImage imageWithCGImage:imageRef];
 	CGImageRelease(imageRef);
 	
+	CGContextRelease(cgcontext);
 	free(buffer);
 	
 	return myImage;

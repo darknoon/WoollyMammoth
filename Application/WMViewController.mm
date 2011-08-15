@@ -112,6 +112,7 @@
 	
 	GL_CHECK_ERROR;
 	engine = [[WMEngine alloc] initWithComposition:composition];
+	[composition release];
 	
 	//TODO: start lazily
 	GL_CHECK_ERROR;

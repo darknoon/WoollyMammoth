@@ -229,7 +229,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	
 	WMPatchCategoryListTableViewController *patchCategoryList = [[WMPatchCategoryListTableViewController alloc] initWithStyle:UITableViewStylePlain];
 	patchCategoryList.delegate = (id<WMPatchCategoryListTableViewControllerDelegate>)self;
-	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:patchCategoryList];
+	UINavigationController *nav = [[[UINavigationController alloc] initWithRootViewController:patchCategoryList] autorelease];
 	addNodePopover = [[UIPopoverController alloc] initWithContentViewController:nav];
 	addLocation = [inR locationInView:self.view];
 	[addNodePopover presentPopoverFromRect:(CGRect){.origin = addLocation} inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];

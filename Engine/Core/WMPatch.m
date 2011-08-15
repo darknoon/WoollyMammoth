@@ -168,7 +168,7 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 		patchClass = [WMPlaceholderPatch class];
 	}
 	
-	return [[patchClass alloc] initWithPlistRepresentation:inPlist];
+	return [[[patchClass alloc] initWithPlistRepresentation:inPlist] autorelease];
 }
 
 + (id)defaultValueForInputPortKey:(NSString *)inKey;
@@ -320,6 +320,7 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 			port.originalPort = childPort;
 			[self addOutputPort:port];
 			[port setStateValue:[[portDefinition objectForKey:@"state"] objectForKey:@"value"]];
+			[port release];
 		}
 		
 	}
@@ -667,6 +668,7 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	connection.destinationPort = toPort;
 
 	[connections addObject:connection];	
+	[connection release];
 }
 
 + (NSString *)humanReadableTitle {

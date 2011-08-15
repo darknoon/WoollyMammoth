@@ -70,6 +70,11 @@
 	return [inPort isKindOfClass:[WMVectorPort class]];
 }
 
+- (id)objectValue;
+{
+	return nil;
+}
+
 @end
 
 

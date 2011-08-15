@@ -72,7 +72,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 	[vertexBuffer appendData:vertexDataPtr withStructure:vertexBuffer.definition count:4];
 	
 	
-	WMStructureDefinition *indexDef = [[WMStructureDefinition alloc] initWithAnonymousFieldOfType:WMStructureTypeUnsignedShort];
+	WMStructureDefinition *indexDef = [[[WMStructureDefinition alloc] initWithAnonymousFieldOfType:WMStructureTypeUnsignedShort] autorelease];
 	indexBuffer = [[WMStructuredBuffer alloc] initWithDefinition:indexDef];
 
 	//Add triangles
@@ -155,6 +155,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 #if DEBUG
 	if (![shader validateProgram])
 	{
+		[ro release];
 		NSLog(@"Failed to validate program in shader: %@", shader);
 		return /*NO*/;
 	}

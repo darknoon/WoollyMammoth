@@ -145,7 +145,7 @@ NSArray *directoriesToAdd(NSString *path, NSString *existing) {
     if (d) {
         id propertyList = [self propertyListWithData:d];
         if (propertyList) {
-			WMPatch *patch = [[WMPatch alloc] initWithPlistRepresentation:propertyList];
+			WMPatch *patch = [[[WMPatch alloc] initWithPlistRepresentation:propertyList] autorelease];
 			return patch;
 		}
     }

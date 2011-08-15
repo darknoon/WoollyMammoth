@@ -36,9 +36,7 @@
 - (id)init;
 {
     self = [super init];
-    if (self) {
-        // Initialization code here.
-    }
+	if (!self) return nil;
 	
 	renderType = GL_TRIANGLES;
 	renderRange = (NSRange){.length = NSIntegerMax};

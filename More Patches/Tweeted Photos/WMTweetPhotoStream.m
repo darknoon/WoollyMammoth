@@ -58,7 +58,7 @@
 
 
 - (BOOL)setup:(WMEAGLContext *)context {
-    self.communicator = [[TweetServerCommunicator alloc] init];  // this fires up the search engine and downloading photos
+    self.communicator = [[[TweetServerCommunicator alloc] init] autorelease];  // this fires up the search engine and downloading photos
     // we need a string input!
     communicator.searchToken = @"iosdevcamp";
 
@@ -87,7 +87,7 @@
         
 
         
-        self.lastTexture = [[WMTexture2D alloc] initWithImage:photoImage];
+        self.lastTexture = [[[WMTexture2D alloc] initWithImage:photoImage] autorelease];
         lastTimeChanged = time;
     }
     
