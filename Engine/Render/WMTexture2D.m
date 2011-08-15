@@ -87,10 +87,6 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 
 @end
 
-//CONSTANTS:
-
-#define kMaxTextureSize	 1024
-
 //CLASS IMPLEMENTATIONS:
 
 @implementation WMTexture2D
@@ -230,7 +226,7 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 	WMTexture2DPixelFormat    pixelFormat;
 	CGImageRef				image;
 	BOOL					sizeToFit = NO;
-	
+	int                     maxTextureSize = [(WMEAGLContext *)[WMEAGLContext currentContext] maxTextureSize];
 	
 	image = [uiImage CGImage];
 	
@@ -271,13 +267,16 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 			i *= 2;
 		height = i;
 	}
-	while((width > kMaxTextureSize) || (height > kMaxTextureSize)) {
+	while((width > maxTextureSize) || (height > maxTextureSize)) {
 		width /= 2;
 		height /= 2;
 		transform = CGAffineTransformScale(transform, 0.5, 0.5);
 		imageSize.width *= 0.5;
 		imageSize.height *= 0.5;
 	}
+	//Ensure we'll never have textures with less than 1px dimension on either axis, leading to a 0-size malloc()
+	width = MAX(1, width);
+	height = MAX(1, height);
 	
 	switch(pixelFormat) {		
 		case kWMTexture2DPixelFormat_RGBA8888:

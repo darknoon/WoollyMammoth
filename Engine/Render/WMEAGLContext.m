@@ -62,6 +62,9 @@
 @synthesize depthState;
 @synthesize boundFramebuffer;
 @synthesize modelViewMatrix;
+@synthesize maxTextureSize;
+@synthesize maxTextureUnits;
+@synthesize maxVertexAttributes;
 
 - (id)initWithAPI:(EAGLRenderingAPI)api;
 {
@@ -92,6 +95,8 @@
 		glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &maxVertexAttributes);
 		
 		glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
+		
+		glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
 		
 	} else {
 		NSLog(@"Couldn't set current EAGLContext to self in WMEAGLContext initWithAPI:sharegroup:");

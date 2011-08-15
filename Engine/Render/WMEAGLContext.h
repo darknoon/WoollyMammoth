@@ -40,4 +40,8 @@ typedef int DNGLStateDepthMask;
 //TODO: Move to another part of the render engine.
 @property (nonatomic) GLKMatrix4 modelViewMatrix;
 
+@property (nonatomic, readonly) int maxTextureSize;
+@property (nonatomic, readonly) int maxVertexAttributes;
+@property (nonatomic, readonly) int maxTextureUnits;
+
 @end
