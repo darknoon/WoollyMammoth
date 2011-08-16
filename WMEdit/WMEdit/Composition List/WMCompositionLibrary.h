@@ -15,13 +15,8 @@
 
 + (WMCompositionLibrary *)compositionLibrary;
 
-
-- (NSString *)documentsDirectory;
-- (NSString *)pathForResource:(NSString *)shortName;
 - (NSURL *)URLForResourceShortName:(NSString *)shortName;
 - (NSString *)shortNameFromURL:(NSURL *)url;
-
-- (BOOL)renameComposition:(NSURL *)oldFileURL to:(NSString *)newName;
 
 - (UIImage *)imageForCompositionPath:(NSString *)fullCompositionPath;
 
