@@ -10,9 +10,14 @@
 
 @implementation WMPatch (WMPatch_SettingsControllerClass)
 
-- (Class)settingsControllerClass;
+- (BOOL)hasSettings;
 {
-	return Nil;
+	return NO;
+}
+
+- (UIViewController<WMPatchSettingsController> *)settingsController;
+{
+	return nil;
 }
 
 @end
