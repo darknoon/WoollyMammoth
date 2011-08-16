@@ -16,14 +16,14 @@
 
 + (WMPort *)portWithKey:(NSString *)inKey;
 {
-	WMPort *p = [[[[self class] alloc] init] autorelease];
+	WMPort *p = [[[self class] alloc] init];
 	p.key = inKey;
 	return p;
 }
 
 - (NSString *)name;
 {
-	return [[name ? name : key retain] autorelease];
+	return name ? name : key;
 }
 
 - (id)stateValue;

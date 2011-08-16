@@ -60,7 +60,7 @@
 	//WARNING: we're modifying state outside of WMEAGLContext. This method should therefore be moved to WMEAGLContext!
 	[self bind];
 
-	texture = [inTexture retain];
+	texture = inTexture;
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, inTexture.name, 0);
 	
 	framebufferWidth = inTexture.pixelsWide;
@@ -81,7 +81,6 @@
 		
 		[oldFrameBuffer bind];
 		
-		[self release];
 		return nil;
 	} else {
 		DLog(@"Created framebuffer %@ from texture: %@", self, inTexture);
@@ -138,7 +137,6 @@
 
 		[oldFrameBuffer bind];
 		
-		[self release];
 		return nil;
 	} else {
 		NSLog(@"Created framebuffer %@ from layer: %@", self, inLayer);
@@ -175,8 +173,6 @@
 - (void)dealloc;
 {
 	[self deleteFramebuffer];
-	[texture release];
-	[super dealloc];
 }
 
 - (void)bind;
@@ -211,8 +207,7 @@
 	WMFramebuffer *oldFrameBuffer = context.boundFramebuffer;
 	context.boundFramebuffer = self;
 	
-	[texture release];
-	texture = [inTexture retain];
+	texture = inTexture;
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, inTexture.name, 0);
 	
 	framebufferWidth = inTexture.pixelsWide;

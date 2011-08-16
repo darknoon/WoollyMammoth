@@ -51,9 +51,9 @@ static WMStructureField WMQuadVertex_fields[] = {
 
 + (void)load;
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[self registerToRepresentClassNames:[NSSet setWithObject:NSStringFromClass(self)]];
-	[pool drain];
+	@autoreleasepool {
+		[self registerToRepresentClassNames:[NSSet setWithObject:NSStringFromClass(self)]];
+	}
 }
 
 - (id)init;
@@ -170,18 +170,18 @@ static WMStructureField WMQuadVertex_fields[] = {
 	ZAssert(maxRefI < unum * vnum, @"Bad tri index!");
 #endif
 	
-	WMStructureDefinition *vertexDef = [[[WMStructureDefinition alloc] initWithFields:WMQuadVertex_fields count:3 totalSize:sizeof(WMSphereVertex)] autorelease];
+	WMStructureDefinition *vertexDef = [[WMStructureDefinition alloc] initWithFields:WMQuadVertex_fields count:3 totalSize:sizeof(WMSphereVertex)];
 	
-	WMStructuredBuffer *vertexBuffer = [[[WMStructuredBuffer alloc] initWithDefinition:vertexDef] autorelease];
+	WMStructuredBuffer *vertexBuffer = [[WMStructuredBuffer alloc] initWithDefinition:vertexDef];
 	[vertexBuffer appendData:vertexData withStructure:vertexDef count:numberOfVertices];
 	
 	
-	WMStructureDefinition *indexDef = [[[WMStructureDefinition alloc] initWithAnonymousFieldOfType:WMStructureTypeUnsignedShort] autorelease];
-	WMStructuredBuffer *indexBuffer = [[[WMStructuredBuffer alloc] initWithDefinition:indexDef] autorelease];
+	WMStructureDefinition *indexDef = [[WMStructureDefinition alloc] initWithAnonymousFieldOfType:WMStructureTypeUnsignedShort];
+	WMStructuredBuffer *indexBuffer = [[WMStructuredBuffer alloc] initWithDefinition:indexDef];
 	[indexBuffer appendData:indexData withStructure:indexDef count:numberOfTriangles * 3];
 
 	
-	WMRenderObject *ro = [[[WMRenderObject alloc] init] autorelease];
+	WMRenderObject *ro = [[WMRenderObject alloc] init];
 	
 	ro.shader = shader;
 	ro.vertexBuffer = vertexBuffer;
@@ -211,10 +211,6 @@ static WMStructureField WMQuadVertex_fields[] = {
 	}
 }
 
-- (void)dealloc;
-{
-	[super dealloc];
-}
 
 
 @end

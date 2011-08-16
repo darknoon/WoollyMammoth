@@ -18,9 +18,9 @@ static const CGFloat plugstripHeight = 22.f;
 
 @interface WMGraphEditView : UIView
 
-@property (nonatomic, assign) WMEditViewController *viewController;
+@property (nonatomic, weak) WMEditViewController *viewController;
 
-@property (nonatomic, retain) WMPatch *rootPatch;
+@property (nonatomic, strong) WMPatch *rootPatch;
 
 - (void)addPatch:(WMPatch *)inPatch;
 - (void)removePatch:(WMPatch *)inPatch;

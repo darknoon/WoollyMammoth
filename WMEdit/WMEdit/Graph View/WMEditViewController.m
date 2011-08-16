@@ -62,27 +62,19 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	if (!self) return nil;
 	
 	if (!inDocument) {
-		[self release];
 		return nil;
 	}
 	
-	document = [inDocument retain];
+	document = inDocument;
 
 	patchViewsByKey = [[NSMutableDictionary alloc] init];
 	
-	rootPatch = [document.rootPatch retain];
+	rootPatch = document.rootPatch;
 	rootPatch.key = @"root";
 
 	return self;
 }
 
-- (void)dealloc
-{
-	[previewWindow release];
-	[previewController release];
-	[graphView release];
-    [super dealloc];
-}
 
 - (NSURL *)fileURL;
 {
@@ -131,14 +123,14 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 		previewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
 		[self.view addSubview:previewController.view];
 
-		UITapGestureRecognizer *enlargeRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(togglePreviewFullscreen:)] autorelease];
+		UITapGestureRecognizer *enlargeRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(togglePreviewFullscreen:)];
 		[previewController.view addGestureRecognizer:enlargeRecognizer];
 	}
 
 	
 	
     self.navigationItem.titleView = titleLabel;
-    UITapGestureRecognizer *editRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(editCompositionNameAction:)] autorelease];
+    UITapGestureRecognizer *editRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(editCompositionNameAction:)];
 	[titleLabel addGestureRecognizer:editRecognizer];
     titleLabel.text = document.localizedName;
 	[self addPatchViews];
@@ -174,7 +166,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
     tf.delegate = self;
     [[titleLabel superview] addSubview:tf];
     [tf becomeFirstResponder];
-    [tf release]; // give me ARC - I love it so much now and can't stand this bs anymore!
+     // give me ARC - I love it so much now and can't stand this bs anymore!
 }
 
 
@@ -203,7 +195,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 {	
 	Class patchClass = NSClassFromString(inClass);
 	if (patchClass) {
-		WMPatch *patch = [[[patchClass alloc] initWithPlistRepresentation:nil] autorelease];
+		WMPatch *patch = [[patchClass alloc] initWithPlistRepresentation:nil];
 		patch.editorPosition = inPoint;
 		
 		[graphView addPatch:patch];
@@ -225,12 +217,11 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 {
 	if (addNodePopover) {
 		[addNodePopover dismissPopoverAnimated:NO];
-		[addNodePopover release];
 	}
 	
 	WMPatchCategoryListTableViewController *patchCategoryList = [[WMPatchCategoryListTableViewController alloc] initWithStyle:UITableViewStylePlain];
 	patchCategoryList.delegate = (id<WMPatchCategoryListTableViewControllerDelegate>)self;
-	UINavigationController *nav = [[[UINavigationController alloc] initWithRootViewController:patchCategoryList] autorelease];
+	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:patchCategoryList];
 	addNodePopover = [[UIPopoverController alloc] initWithContentViewController:nav];
 	addLocation = [inR locationInView:self.view];
 	[addNodePopover presentPopoverFromRect:(CGRect){.origin = addLocation} inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -241,7 +232,6 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 {
 	[self addNodeAtLocation:addLocation class:inClassName];
 	[addNodePopover dismissPopoverAnimated:YES];
-	[addNodePopover release];
 	addNodePopover = nil;
 }
 
@@ -251,9 +241,8 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 {	
 	if (inputPortsPopover) {
 		[inputPortsPopover dismissPopoverAnimated:NO];
-		[inputPortsPopover release];
 	}
-	WMInputPortsController *content = [[[WMInputPortsController alloc] initWithNibName:@"WMInputPortsController" bundle:nil] autorelease];
+	WMInputPortsController *content = [[WMInputPortsController alloc] initWithNibName:@"WMInputPortsController" bundle:nil];
 	content.ports = inPatchView.patch.inputPorts;
 
 	inputPortsPopover = [[WMCustomPopover alloc] initWithContentViewController:content];
@@ -266,7 +255,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	if (inPatchView.patch.hasSettings && !patchSettingsPopover) {
 		UIViewController<WMPatchSettingsController> *settingsController = [inPatchView.patch settingsController];
 		
-		UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:settingsController] autorelease];
+		UINavigationController *wrapper = [[UINavigationController alloc] initWithRootViewController:settingsController];
 		
 		patchSettingsPopover = [[UIPopoverController alloc] initWithContentViewController:wrapper];
 		patchSettingsPopover.delegate = (id<UIPopoverControllerDelegate>)self;
@@ -278,7 +267,6 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 {
 	ZAssert(inputPortsPopover == inPopoverController, @"Wrong popover dismissed!");
 	if (inputPortsPopover == inPopoverController) {
-		[inputPortsPopover release];
 		inputPortsPopover = nil;
 	}
 }
@@ -286,10 +274,8 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)inPopoverController;
 {
 	if (inPopoverController == patchSettingsPopover) {
-		[patchSettingsPopover release];
 		patchSettingsPopover = nil;
 	} else if (inPopoverController == addNodePopover) {
-		[addNodePopover release];
 		addNodePopover = nil;
 	} else {
 		NSLog(@"Unknown popover controller closed: %@", inPopoverController);

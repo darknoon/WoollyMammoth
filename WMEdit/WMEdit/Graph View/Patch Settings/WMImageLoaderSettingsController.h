@@ -18,8 +18,8 @@
 
 - (id)initWithPatch:(WMImageLoader *)inPatch;
 
-@property (nonatomic, retain) WMImageLoader *patch;
-@property (retain, nonatomic) IBOutlet UIImageView *imageView;
+@property (nonatomic, strong) WMImageLoader *patch;
+@property (strong, nonatomic) IBOutlet UIImageView *imageView;
 
 - (IBAction)choosePhoto:(id)sender;
 

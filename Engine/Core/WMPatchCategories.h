@@ -19,7 +19,7 @@ extern NSString *WMPatchCategoryUnknown;
 
 + (WMPatchCategories *)sharedInstance;
 
-@property (nonatomic, retain) NSMutableDictionary *categoriesMap;
+@property (nonatomic, strong) NSMutableDictionary *categoriesMap;
 
 - (void)addClassWithName:(Class)inClass key:(NSString*)className;
 - (NSArray*)patchCategoriesArray;

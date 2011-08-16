@@ -31,8 +31,8 @@ typedef enum {
 	//TODO: QCBooleanPort system_inputEnable;
 	
 	NSString *key;
-    NSMutableArray *connections;
-	NSMutableArray *children;
+    NSMutableArray *_connections;
+	NSMutableArray *_children;
 	NSMutableDictionary *childrenByKey;
 	id userInfo;
 	

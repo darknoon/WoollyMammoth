@@ -26,6 +26,6 @@
 
 @property (nonatomic, copy) NSString *key;
 @property (nonatomic, copy) NSString *name;
-@property (nonatomic, assign) WMPort *originalPort;
+@property (nonatomic, weak) WMPort *originalPort;
 
 @end

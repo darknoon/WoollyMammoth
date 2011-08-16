@@ -177,7 +177,6 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 		[(WMEAGLContext *)[WMEAGLContext currentContext] forgetTexture2DName:_name];
 	}
 	
-	[super dealloc];
 }
 
 - (NSString *)description
@@ -231,7 +230,6 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 	image = [uiImage CGImage];
 	
 	if(image == NULL) {
-		[self release];
 		NSLog(@"Could not create texture: UIImage is null.");
 		return nil;
 	}

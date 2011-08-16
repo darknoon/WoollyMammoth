@@ -62,13 +62,6 @@
 	[self initShared];
 }
 
-- (void)dealloc
-{
-	[rootPatch release];
-	[patchViews release];
-	[patchConnectionsView release];
-    [super dealloc];
-}
 
 - (BOOL)patchHit:(CGPoint)pt {
 //    pt = [self convertPoint:pt fromView:[self superview]];
@@ -86,7 +79,7 @@
 
 - (void)addPatch:(WMPatch *)inPatch;
 {
-	WMPatchView *newNodeView = [[[WMPatchView alloc] initWithPatch:inPatch] autorelease];	
+	WMPatchView *newNodeView = [[WMPatchView alloc] initWithPatch:inPatch];	
 	newNodeView.graphView = self;
 	[self addSubview:newNodeView];
 	[patchViews addObject:newNodeView];

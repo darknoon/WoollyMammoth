@@ -48,7 +48,6 @@
 - (IBAction)reloadGame;
 {
 	[activityIndicator startAnimating];
-	[parent reloadEngine];
 	[activityIndicator stopAnimating];
 }
 
@@ -86,7 +85,7 @@
 	
 	
 	NSString *addr = nil;
-	for (NSData *data in [netService addresses]) {
+	for (NSData *data __attribute__((objc_precise_lifetime)) in [netService addresses]) {
 		if (!addr && data.length == sizeof(struct sockaddr_in)) {
 			addr = [self hostFromAddress4:[data bytes]];
 		} else if (!addr && data.length == sizeof(struct sockaddr_in6)) {
@@ -113,11 +112,6 @@
 
 #pragma mark -
 
-- (void)dealloc {
-	[gamePathLabel release];
-	[gameTitleLabel release];
-    [super dealloc];
-}
 
 
 @end

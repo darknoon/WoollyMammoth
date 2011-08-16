@@ -26,13 +26,13 @@
 - (id)init;
 
 //TODO: support multiple vertex buffers?
-@property (nonatomic, retain) WMStructuredBuffer *vertexBuffer;
+@property (nonatomic, strong) WMStructuredBuffer *vertexBuffer;
 
 //Optional. If not specified, will render vertices once, in order
-@property (nonatomic, retain) WMStructuredBuffer *indexBuffer;
+@property (nonatomic, strong) WMStructuredBuffer *indexBuffer;
 
 //If you specify glPoints, you must specify a compatible shader
-@property (nonatomic, retain) WMShader *shader;
+@property (nonatomic, strong) WMShader *shader;
 
 //One of GL_POINTS, GL_LINES, GL_LINE_LOOP, GL_LINE_STRIP, GL_TRIANGLES, GL_TRIANGLE_STRIP, or GL_TRIANGLE_FAN
 //Default is GL_TRIANGLES
@@ -44,6 +44,7 @@
 @property (nonatomic) DNGLStateBlendMask renderBlendState;
 @property (nonatomic) DNGLStateDepthMask renderDepthState;
 
+- (NSArray *)uniformKeys;
 - (void)setValue:(id)inValue forUniformWithName:(NSString *)inUniformName;
 - (id)valueForUniformWithName:(NSString *)inUniformName;
 

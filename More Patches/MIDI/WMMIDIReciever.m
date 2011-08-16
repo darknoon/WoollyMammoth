@@ -24,9 +24,9 @@
 
 + (void)load;
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[self registerToRepresentClassNames:[NSSet setWithObject:@"QCMidiControllers"]];
-	[pool drain];
+	@autoreleasepool {
+		[self registerToRepresentClassNames:[NSSet setWithObject:@"QCMidiControllers"]];
+	}
 }
 
 - (BOOL)setPlistState:(id)inPlist;
@@ -46,7 +46,7 @@
 		
 		for (int i=0; i<120; i++) {
 			if (channelMask & 1<<i) {
-				WMNumberPort *outputPort = [[[WMNumberPort alloc] init] autorelease];
+				WMNumberPort *outputPort = [[WMNumberPort alloc] init];
 				outputPort.name = [NSString stringWithFormat:@"controller_%d", i];
 				[self addOutputPort:outputPort];
 			}
@@ -91,40 +91,39 @@
 //BACKGROUND THREAD!!
 - (void) midiSource:(PGMidiSource*)input midiReceived:(const MIDIPacketList *)packetList;
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	@autoreleasepool {
 	
-	dispatch_queue_t mainQueue = dispatch_get_main_queue();
-	const MIDIPacket *packet = &packetList->packet[0];
-	for (int i=0; i<packetList->numPackets; i++) {
-		NSData *dat = [[NSData alloc] initWithBytes:packet->data length:packet->length];
+		dispatch_queue_t mainQueue = dispatch_get_main_queue();
+		const MIDIPacket *packet = &packetList->packet[0];
+		for (int i=0; i<packetList->numPackets; i++) {
+			NSData *dat = [[NSData alloc] initWithBytes:packet->data length:packet->length];
 //		NSLog(@"midi packet: %@", dat);
-		[dat release];
-		//TODO: put in some real MIDI packet parsing here!
-		for (int byte = 0; byte < packet->length; byte++) {
-			//Take control data only
-			unsigned char statusByte = packet->data[byte++];
-			unsigned char msgType = statusByte & 0xf0;
-			if (msgType == 0xb0) {
-				//Read control number
-				char controlNumber = packet->data[byte++];
-				char value = (int)packet->data[byte++];
+			//TODO: put in some real MIDI packet parsing here!
+			for (int byte = 0; byte < packet->length; byte++) {
+				//Take control data only
+				unsigned char statusByte = packet->data[byte++];
+				unsigned char msgType = statusByte & 0xf0;
+				if (msgType == 0xb0) {
+					//Read control number
+					char controlNumber = packet->data[byte++];
+					char value = (int)packet->data[byte++];
 //				NSLog(@"midi control change number %d = %d (%f)", (int)controlNumber, (int)value, value / 127.f);
-				if (controlNumber < 120) { //Numbers above 120 are reserved
-					dispatch_async(mainQueue, ^{
-						WMNumberPort *outputPort = (WMNumberPort *)[self outputPortWithKey:[NSString stringWithFormat:@"controller_%d", controlNumber]];
-						outputPort.value = value / 127.f;
-					});
-				}
-			} else {
+					if (controlNumber < 120) { //Numbers above 120 are reserved
+						dispatch_async(mainQueue, ^{
+							WMNumberPort *outputPort = (WMNumberPort *)[self outputPortWithKey:[NSString stringWithFormat:@"controller_%d", controlNumber]];
+							outputPort.value = value / 127.f;
+						});
+					}
+				} else {
 //				NSLog(@"unknown type %c", msgType);
-				//TODO: correctly handle other data sizes so we can get control data in the same packet
-				break;
+					//TODO: correctly handle other data sizes so we can get control data in the same packet
+					break;
+				}
 			}
+			
+			packet = MIDIPacketNext(packet);
 		}
-		
-		packet = MIDIPacketNext(packet);
 	}
-	[pool drain];
 }
 
 

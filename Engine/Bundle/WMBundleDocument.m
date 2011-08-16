@@ -20,7 +20,7 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 
 @interface WMBundleDocument ()
 
-@property (nonatomic, retain) WMPatch *rootPatch;
+@property (nonatomic, strong) WMPatch *rootPatch;
 
 @end
 
@@ -41,12 +41,6 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 	return self;
 }
 
-- (void)dealloc {
-    [rootPatch release];
-	[userDictionary release];
-	
-    [super dealloc];
-}
 
 
 - (BOOL)loadFromContents:(id)contents ofType:(NSString *)typeName error:(NSError **)outError;
@@ -68,7 +62,7 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 					
 					NSDictionary *tempUserDictionary = nil;
 					error = nil;
-					WMPatch *tempRootPatch = [WMCompositionSerialization patchWithPlistDictionary:plistObject compositionBasePath:[[self fileURL] path] userDictionary:&userDictionary error:&error];
+					WMPatch *tempRootPatch = [WMCompositionSerialization patchWithPlistDictionary:plistObject compositionBasePath:[[self fileURL] path] userDictionary:&tempUserDictionary error:&error];
 					if (tempRootPatch) {
 						self.userDictionary = tempUserDictionary;
 						self.rootPatch = tempRootPatch;
@@ -129,7 +123,7 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 			
 			NSDictionary *tempUserDictionary = nil;
 			error = nil;
-			WMPatch *tempRootPatch = [WMCompositionSerialization patchWithPlistDictionary:plistObject compositionBasePath:[[self fileURL] path] userDictionary:&userDictionary error:&error];
+			WMPatch *tempRootPatch = [WMCompositionSerialization patchWithPlistDictionary:plistObject compositionBasePath:[[self fileURL] path] userDictionary:&tempUserDictionary error:&error];
 			if (tempRootPatch) {
 				self.userDictionary = tempUserDictionary;
 				self.rootPatch = tempRootPatch;
@@ -180,7 +174,7 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 	NSData *rootPlistData = [NSPropertyListSerialization dataWithPropertyList:rootPlist format:NSPropertyListBinaryFormat_v1_0 options:0 error:&plistError];
 	
 	if (rootPlistData) {
-		NSFileWrapper *contents = [[[NSFileWrapper alloc] initDirectoryWithFileWrappers:nil] autorelease];
+		NSFileWrapper *contents = [[NSFileWrapper alloc] initDirectoryWithFileWrappers:nil];
 		[contents addRegularFileWithContents:rootPlistData preferredFilename:WMBundleDocumentRootPlistFileName];
 		return contents;
 	} else {

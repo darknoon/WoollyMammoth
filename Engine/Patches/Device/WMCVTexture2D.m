@@ -54,7 +54,6 @@
 		
 	} else {
 		NSLog(@"couldn't create gl texture!");
-		[self release];
 		return nil;
 	}
 	
@@ -77,7 +76,6 @@
 	//Don't delete the texture name
 	_name = 0;
 	CFRelease(cvTexture);
-    [super dealloc];
 }
 
 @end

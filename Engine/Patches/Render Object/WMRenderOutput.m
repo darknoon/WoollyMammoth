@@ -16,9 +16,9 @@
 
 + (void)load;
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[self registerToRepresentClassNames:[NSSet setWithObject:@"WMRenderOutput"]];
-	[pool drain];
+	@autoreleasepool {
+		[self registerToRepresentClassNames:[NSSet setWithObject:@"WMRenderOutput"]];
+	}
 }
 
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;

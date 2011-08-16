@@ -24,9 +24,9 @@ NSString *const WMImageLoaderImageDataKey = @"imageData";
 
 + (void)load;
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[self registerToRepresentClassNames:[NSSet setWithObject:NSStringFromClass([self class])]];
-	[pool drain];
+	@autoreleasepool {
+		[self registerToRepresentClassNames:[NSSet setWithObject:NSStringFromClass([self class])]];
+	}
 }
 
 - (BOOL)setPlistState:(id)inPlist;
@@ -37,12 +37,6 @@ NSString *const WMImageLoaderImageDataKey = @"imageData";
 	return [super setPlistState:inPlist];
 }
 
-- (void)dealloc;
-{
-	[imageData release];
-	
-	[super dealloc];
-}
 
 - (id)plistState;
 {
@@ -52,7 +46,7 @@ NSString *const WMImageLoaderImageDataKey = @"imageData";
 		[state setObject:imageData forKey:WMImageLoaderImageDataKey];
 	}
 	
-	return [state autorelease];
+	return state;
 }
 
 - (BOOL)setup:(WMEAGLContext *)context;
@@ -70,7 +64,6 @@ NSString *const WMImageLoaderImageDataKey = @"imageData";
 		}
 		WMTexture2D *texture = [[WMTexture2D alloc] initWithImage:uiImage];
 		outputImage.image = texture;
-		[texture release];
 		return texture != nil;
 	} else {
 		//Presumably data will be added later?

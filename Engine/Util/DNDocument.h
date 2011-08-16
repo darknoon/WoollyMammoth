@@ -18,7 +18,7 @@
 
 - (id)initWithFileURL:(NSURL *)url;
 
-@property(readonly) NSURL *fileURL;
+@property(weak, readonly) NSURL *fileURL;
 @property(readonly, copy) NSString *localizedName;  // The default implementation derives the name from the URL. Subclasses may override to provide a custom name for presentation to the user, such as in error strings.
 @property(readonly, copy) NSString *fileType;       // The file's UTI. Derived from the fileURL by default.
 

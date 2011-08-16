@@ -37,14 +37,14 @@ NSString *WMFragmentShaderKey = @"fragmentShader";
 
 + (void)load;
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[self registerToRepresentClassNames:[NSSet setWithObject:NSStringFromClass(self)]];
-	[pool drain];
+	@autoreleasepool {
+		[self registerToRepresentClassNames:[NSSet setWithObject:NSStringFromClass(self)]];
+	}
 }
 
 - (id)plistState;
 {
-	NSMutableDictionary *d = [[[super plistState] mutableCopy] autorelease];
+	NSMutableDictionary *d = [[super plistState] mutableCopy];
 	
 	if (self.vertexShader) [d setObject:self.vertexShader forKey:WMVertexShaderKey];
 	if (self.fragmentShader) [d setObject:self.fragmentShader forKey:WMFragmentShaderKey];
@@ -79,7 +79,6 @@ NSString *WMFragmentShaderKey = @"fragmentShader";
 - (void)setVertexShader:(NSString *)inVertexShader;
 {
 	if (vertexShader != inVertexShader && ![vertexShader isEqualToString:inVertexShader]) {
-		[vertexShader release];
 		vertexShader = [inVertexShader copy];
 		shaderDirty = YES;
 	}
@@ -88,7 +87,6 @@ NSString *WMFragmentShaderKey = @"fragmentShader";
 - (void)setFragmentShader:(NSString *)inFragmentShader;
 {
 	if (fragmentShader != inFragmentShader && ![fragmentShader isEqualToString:inFragmentShader]) {
-		[fragmentShader release];
 		fragmentShader = [inFragmentShader copy];
 		shaderDirty = YES;
 	}
@@ -130,7 +128,6 @@ NSString *WMFragmentShaderKey = @"fragmentShader";
 - (void)compileShaderIfNecessary;
 {
 	if (shaderDirty) {
-		[shader release];
 		NSError *error = nil;
 		shader = [[WMShader alloc] initWithVertexShader:self.vertexShader fragmentShader:self.fragmentShader error:&error];
 		if (error) {

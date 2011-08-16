@@ -20,7 +20,7 @@
     self = [super initWithFrame:frame];
 	if (!self) return nil;
 	
-	UIImageView *background = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"plugstrip-stretchable"] stretchableImageWithLeftCapWidth:11.f topCapHeight:0.f]] autorelease];
+	UIImageView *background = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"plugstrip-stretchable"] stretchableImageWithLeftCapWidth:11.f topCapHeight:0.f]];
 	background.frame = self.bounds;
 	background.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self addSubview:background];
@@ -61,10 +61,6 @@
 	}
 }
 
-- (void)dealloc
-{
-    [super dealloc];
-}
 
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event;
 {

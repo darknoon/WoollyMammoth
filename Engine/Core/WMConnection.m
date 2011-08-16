@@ -14,7 +14,7 @@
 
 + (WMConnection *)connection;
 {
-	return [[[[self class] alloc] init] autorelease];
+	return [[[self class] alloc] init];
 }
 
 - (BOOL)isEqual:(id)other;
@@ -33,6 +33,5 @@
 {
 	return [NSString stringWithFormat:@"<%@: %p {%@ : %@ => %@ : %@ }>", NSStringFromClass([self class]), sourceNode, sourcePort, destinationNode, destinationPort];
 }
-
 
 @end

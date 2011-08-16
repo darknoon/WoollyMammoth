@@ -13,6 +13,6 @@
 
 @interface WMPatchCategoryListTableViewController : UITableViewController 
 
-@property (nonatomic, assign) id<WMPatchCategoryListTableViewControllerDelegate> delegate;
+@property (nonatomic, unsafe_unretained) id<WMPatchCategoryListTableViewControllerDelegate> delegate;
 
 @end

@@ -40,7 +40,7 @@ static const UIEdgeInsets insets = {.top = 11.f, .left = 10.f, .right = 10.f, .b
 	self.opaque = NO;
 	self.draggable = YES;
 	
-	patch = [inPatch retain];
+	patch = inPatch;
 	
 	inputPlugStrip = [[WMPatchPlugStripView alloc] initWithFrame:CGRectZero];
 	inputPlugStrip.inputCount = 3;
@@ -50,10 +50,10 @@ static const UIEdgeInsets insets = {.top = 11.f, .left = 10.f, .right = 10.f, .b
 	outputPlugStrip.inputCount = 2;
 	[self addSubview:outputPlugStrip];
 		
-	UITapGestureRecognizer *tapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)] autorelease];
+	UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
 	[self addGestureRecognizer:tapRecognizer];
 	
-	UIGestureRecognizer *inputTapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(inputsTapped:)] autorelease];
+	UIGestureRecognizer *inputTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(inputsTapped:)];
 	[inputPlugStrip addGestureRecognizer:inputTapRecognizer];
 
 	label = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -77,16 +77,10 @@ static const UIEdgeInsets insets = {.top = 11.f, .left = 10.f, .right = 10.f, .b
     return self;
 }
 
-- (void)dealloc
-{
-	[label release];
-	[patch release];
-    [super dealloc];
-}
 
 - (WMPatch *)patch;
 {
-	return [[patch retain] autorelease];
+	return patch;
 }
 
 - (void)layoutSubviews;
@@ -419,7 +413,7 @@ static const UIEdgeInsets insets = {.top = 11.f, .left = 10.f, .right = 10.f, .b
 
 - (void)tapped:(UITapGestureRecognizer *)inR;
 {
-	UIMenuItem *settingsItem = [[[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Settings…", nil) action:@selector(showSettings:)] autorelease];
+	UIMenuItem *settingsItem = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Settings…", nil) action:@selector(showSettings:)];
 	
 	[UIMenuController sharedMenuController].menuItems = [NSArray arrayWithObject:settingsItem];
 	[[UIMenuController sharedMenuController] setTargetRect:label.frame inView:self];

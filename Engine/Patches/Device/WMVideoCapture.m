@@ -51,9 +51,9 @@
 
 + (void)load;
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[self registerToRepresentClassNames:[NSSet setWithObject:@"QCVideoInput"]];
-	[pool drain];
+	@autoreleasepool {
+		[self registerToRepresentClassNames:[NSSet setWithObject:@"QCVideoInput"]];
+	}
 }
 
 
@@ -77,10 +77,6 @@
 	return kWMPatchExecutionModeProvider;
 }
 
-- (void)dealloc
-{
-	[super dealloc];
-}
 
 + (NSString *)category;
 {
@@ -96,7 +92,7 @@
 	videoCaptureQueue = dispatch_queue_create([str UTF8String], DISPATCH_QUEUE_SERIAL);
 	dispatch_set_target_queue(videoCaptureQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0));
 
-	CVReturn result = CVOpenGLESTextureCacheCreate(NULL, NULL, context, NULL, &textureCache);
+	CVReturn result = CVOpenGLESTextureCacheCreate(NULL, NULL, (__bridge void *)context, NULL, &textureCache);
 	if (result != kCVReturnSuccess) {
 		NSLog(@"Error creating CVOpenGLESTextureCache");
 	}
@@ -117,7 +113,6 @@
 		dispatch_release(videoCaptureQueue);
 #endif
 	
-	[mostRecentTexture release];
 	mostRecentTexture = nil;
 	
 	[super cleanup:context];
@@ -146,7 +141,7 @@
 	for (AVCaptureDevice *device in devices) {
 		if (device.position == (useFrontCamera ? AVCaptureDevicePositionFront : AVCaptureDevicePositionBack)) {
 			DLog(@"Video capture from device: %@", device);
-			cameraDevice = [device retain];
+			cameraDevice = device;
 			break;
 		}
 	}
@@ -189,8 +184,8 @@
 {
 #if TARGET_OS_EMBEDDED
 	[captureSession stopRunning];
-	[captureSession release]; captureSession = nil;
-	[captureInput release]; captureInput = nil;
+	captureSession = nil;
+	captureInput = nil;
 #else
 	[simulatorDebugTimer invalidate];
 	simulatorDebugTimer = nil;
@@ -224,7 +219,6 @@
 			GL_CHECK_ERROR;
 			
 			//TODO: Pass this texture back to main thread from bg thread.
-			[mostRecentTexture release];
 			mostRecentTexture = texture;
 			
 			GL_CHECK_ERROR;
@@ -254,7 +248,6 @@
 	}
 	ppp++;
 	
-	[mostRecentTexture release];
 	mostRecentTexture = [[WMTexture2D alloc] initWithData:buffer pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height} orientation:UIImageOrientationUp];
 	
 	free(buffer);

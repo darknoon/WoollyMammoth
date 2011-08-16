@@ -25,7 +25,7 @@
 
 - (id)initWithDefinition:(WMStructureDefinition *)inDefinition;
 
-@property (nonatomic, retain, readonly) WMStructureDefinition *definition;
+@property (nonatomic, strong, readonly) WMStructureDefinition *definition;
 
 //Can set or get count, ie resize buffer.
 @property (nonatomic) NSUInteger count;

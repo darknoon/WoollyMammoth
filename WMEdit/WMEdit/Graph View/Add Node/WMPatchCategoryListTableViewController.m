@@ -20,18 +20,13 @@
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
-	patchCategoryList = [[[WMPatchCategories sharedInstance] patchCategoriesArray] retain];	
+	patchCategoryList = [[WMPatchCategories sharedInstance] patchCategoriesArray];	
     self.contentSizeForViewInPopover = CGSizeMake(320.0, patchCategoryList.count * kCellHeightPatches);
     self.title = NSLocalizedString(@"Patch Category", nil);
 
     return self;
 }
 
-- (void)dealloc
-{
-	[patchCategoryList release];
-    [super dealloc];
-}
 
 - (void)didReceiveMemoryWarning
 {
@@ -105,7 +100,7 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
 	cell.textLabel.text = [patchCategoryList objectAtIndex:indexPath.row];
@@ -168,7 +163,6 @@
     // ...
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];
-     [detailViewController release];
 
 }
 

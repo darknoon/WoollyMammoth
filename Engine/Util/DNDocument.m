@@ -25,7 +25,7 @@
 #else
 	self = [super init];
 	if (!self) return nil;
-	fileURL = [url retain];
+	fileURL = url;
 	documentState = UIDocumentStateClosed;
 #endif
 		
@@ -84,12 +84,17 @@
 			*outError = error;
 		}
 	}
-	[wrapper release];
 	return ok;
 }
 
 - (void)saveToURL:(NSURL *)url forSaveOperation:(UIDocumentSaveOperation)saveOperation completionHandler:(void (^)(BOOL success))completionHandler;
 {
+	if (!url) {
+		NSLog(@"Can't save document to a nil url.");
+		completionHandler(NO);
+		return;
+	}
+	
 	//Save
 	NSError *error = nil;
 	id contents = [self contentsForType:self.fileType error:&error];
@@ -99,11 +104,12 @@
 			[self handleError:error userInteractionPermitted:YES];
 		}
 		if (fileURL != url) {
-			[fileURL release];
-			fileURL = [url retain];
+			fileURL = url;
 		}
 		completionHandler(ok);
-	}	
+	} else {
+		completionHandler(NO);
+	}
 }
 
 #endif

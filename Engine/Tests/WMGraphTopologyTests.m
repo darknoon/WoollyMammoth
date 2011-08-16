@@ -23,7 +23,7 @@
 //Generic patch, generic ports.
 - (WMPatch *)patchWithKey:(NSString *)inKey inputPorts:(NSArray *)inputPortKeys outputPorts:(NSArray *)outputPortKeys;
 {
-	WMPatch *patch = [[[WMPatch alloc] initWithPlistRepresentation:nil] autorelease];
+	WMPatch *patch = [[WMPatch alloc] initWithPlistRepresentation:nil];
 	patch.key = inKey;
 	
 	for (NSString *key in inputPortKeys) {
@@ -54,15 +54,14 @@
 
 - (void)setUp;
 {
-	root = [[self patchWithKey:@"_root" inputPorts:nil outputPorts:nil] retain];
+	root = [self patchWithKey:@"_root" inputPorts:nil outputPorts:nil];
 	e = [[WMEngine alloc] initWithRootObject:root userData:nil];
-
 }
 
 - (void)tearDown;
 {
-	[e release];
-	[root release];
+	e = nil;
+	root = nil;
 }
 
 

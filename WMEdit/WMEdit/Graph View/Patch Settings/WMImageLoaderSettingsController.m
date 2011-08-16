@@ -17,7 +17,7 @@
 
 - (UIViewController<WMPatchSettingsController> *)settingsController;
 {
-	return [[[WMImageLoaderSettingsController alloc] initWithPatch:self] autorelease];
+	return [[WMImageLoaderSettingsController alloc] initWithPatch:self];
 }
 
 @end
@@ -32,18 +32,11 @@
 	self = [self initWithNibName:NSStringFromClass([self class]) bundle:nil];
 	if (!self) return nil;
 	
-	patch = [inPatch retain];
+	patch = inPatch;
 	
 	return self;
 }
 
-- (void)dealloc;
-{
-    [patch release];
-	
-	[imageView release];
-    [super dealloc];
-}
 
 - (void)viewDidLoad;
 {
@@ -58,7 +51,7 @@
 
 - (IBAction)choosePhoto:(id)sender;
 {
-	UIImagePickerController *controller = [[[UIImagePickerController alloc] init] autorelease];
+	UIImagePickerController *controller = [[UIImagePickerController alloc] init];
 	controller.delegate = self;
 	[self.navigationController presentViewController:controller animated:YES completion:NULL];
 }

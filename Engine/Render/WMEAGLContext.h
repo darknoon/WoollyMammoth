@@ -26,7 +26,7 @@ typedef int DNGLStateDepthMask;
 @interface WMEAGLContext : EAGLContext
 
 //This also controls glViewport at the moment. Perhaps this will change in the future.
-@property (nonatomic, retain) WMFramebuffer *boundFramebuffer;
+@property (nonatomic, strong) WMFramebuffer *boundFramebuffer;
 
 - (void)renderObject:(WMRenderObject *)inObject;
 

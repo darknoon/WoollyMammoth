@@ -72,9 +72,9 @@ COLOUR HSL2RGB(HSL c1)
 
 + (void)load;
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[self registerToRepresentClassNames:[NSSet setWithObject:@"QCColorFromComponents"]];
-	[pool drain];
+	@autoreleasepool {
+		[self registerToRepresentClassNames:[NSSet setWithObject:@"QCColorFromComponents"]];
+	}
 }
 
 - (id)initWithPlistRepresentation:(id)inPlist;

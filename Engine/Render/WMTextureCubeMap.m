@@ -19,7 +19,6 @@
 	//Make sure we have an array of 6 images
 	if (inImages.count != 6) {
 		NSLog(@"Could not make cube map: not 6 images!");
-		[self release];
 		return nil;
 	}
 	
@@ -27,7 +26,6 @@
 	for (UIImage *image in inImages) {
 		if (!CGSizeEqualToSize(image.size, imageSize)) {
 			NSLog(@"Could not make cube map: unequal image size!");
-			[self release];
 			return nil;
 		}
 	}

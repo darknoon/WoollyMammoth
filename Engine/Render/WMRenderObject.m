@@ -49,21 +49,12 @@
     return self;
 }
 
-- (void)dealloc;
-{
-    [vertexBuffer release];
-	[indexBuffer release];
-	[uniformValues release];
-	[shader release];
-    [super dealloc];
-}
 
 - (void)setVertexBuffer:(WMStructuredBuffer *)inVertexBuffer;
 {
 	if (vertexBuffer != inVertexBuffer) {
 		_wmeaglcontextprivate_vaoDirty = YES;
-		[vertexBuffer release];
-		vertexBuffer = [inVertexBuffer retain];
+		vertexBuffer = inVertexBuffer;
 	}
 }
 
@@ -71,8 +62,7 @@
 {
 	if (indexBuffer != inIndexBuffer) {
 		_wmeaglcontextprivate_vaoDirty = YES;
-		[indexBuffer release];
-		indexBuffer = [inIndexBuffer retain];
+		indexBuffer = inIndexBuffer;
 	}
 }
 
@@ -90,6 +80,11 @@
 {
 	return [NSString stringWithFormat:@"<%@ %p vb:%@ ib:%@ shader:%@ renderType:%@ range:%@ renderBlendState:%d renderDepthState:%d vao:%d>",
 			[self class], self, vertexBuffer, indexBuffer, shader, [WMRenderObject stringFromGLRenderType:renderType], NSStringFromRange(renderRange), renderBlendState, renderDepthState, _wmeaglcontextprivate_vertexArrayObject];
+}
+
+- (NSArray *)uniformKeys;
+{
+	return [uniformValues allKeys];
 }
 
 - (void)setValue:(id)inValue forUniformWithName:(NSString *)inUniformName;

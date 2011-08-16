@@ -23,11 +23,10 @@
 	
 	data = [[NSMutableData alloc] init];
 	if (!data) {
-		[self release];
 		return nil;
 	}
 	
-	definition = [inDefinition retain];
+	definition = inDefinition;
     
 	dirtySet = [[NSMutableIndexSet alloc] init];
 	
@@ -36,9 +35,6 @@
 
 - (void)dealloc {
 	[self releaseBufferObject];
-	[dirtySet release];
-    [definition release];
-    [super dealloc];
 }
 
 - (void)setCount:(NSUInteger)inCount;

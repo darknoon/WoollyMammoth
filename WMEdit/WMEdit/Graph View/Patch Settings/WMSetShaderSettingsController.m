@@ -20,7 +20,7 @@
 
 - (UIViewController<WMPatchSettingsController> *)settingsController;
 {
-	return [[[WMSetShaderSettingsController alloc] initWithPatch:self] autorelease];
+	return [[WMSetShaderSettingsController alloc] initWithPatch:self];
 }
 
 @end
@@ -39,16 +39,11 @@
 	self = [self initWithNibName:NSStringFromClass([self class]) bundle:nil];
 	if (!self) return nil;
 
-    patch = [inPatch retain];
+    patch = inPatch;
 	
 	return self;
 }
 
-- (void)dealloc {
-    [patch release];
-	[textView release];
-    [super dealloc];
-}
 
 
 #pragma mark - View lifecycle

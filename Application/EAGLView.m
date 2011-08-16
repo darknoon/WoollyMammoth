@@ -69,9 +69,7 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
 - (void)dealloc
 {
     [self deleteFramebuffer];    
-    [context release];
     
-    [super dealloc];
 }
 
 - (WMEAGLContext *)context
@@ -85,8 +83,7 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
     {
         [self deleteFramebuffer];
         
-        [context release];
-        context = [newContext retain];
+        context = newContext;
         
         [EAGLContext setCurrentContext:nil];
     }
@@ -103,7 +100,6 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
 			context.boundFramebuffer = nil;
 		}
 		
-		[framebuffer release];
 		framebuffer = nil;		
     }
 }

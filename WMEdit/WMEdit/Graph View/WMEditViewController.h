@@ -18,14 +18,14 @@
 //nil == new document
 - (id)initWithDocument:(WMBundleDocument *)inDocument;
 
-@property (nonatomic, retain) WMBundleDocument *document;
+@property (nonatomic, strong) WMBundleDocument *document;
 
-@property (nonatomic, retain) IBOutlet WMGraphEditView *graphView;
-@property (nonatomic, retain) IBOutlet UIButton *libraryButton;
-@property (nonatomic, retain) IBOutlet UIButton *patchesButton;
-@property (nonatomic, retain) IBOutlet UILabel *titleLabel;
+@property (nonatomic, strong) IBOutlet WMGraphEditView *graphView;
+@property (nonatomic, strong) IBOutlet UIButton *libraryButton;
+@property (nonatomic, strong) IBOutlet UIButton *patchesButton;
+@property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 
-@property (nonatomic, retain) IBOutlet UIGestureRecognizer *addNodeRecognizer;
+@property (nonatomic, strong) IBOutlet UIGestureRecognizer *addNodeRecognizer;
 
 
 - (IBAction)close:(id)sender;

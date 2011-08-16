@@ -35,12 +35,6 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	[draggingConnectionsByPatchKey release];
-	[draggingConnectionViewsByPatchKey release];
-    [super dealloc];
-}
 
 
 - (void)reloadAllConnections;
@@ -51,7 +45,7 @@
 	[connectionViews removeAllObjects];
 	
 	for (WMConnection *connection in [rootPatch connections]) {
-		WMConnectionView *view = [[[WMConnectionView alloc] initWithFrame:CGRectZero] autorelease];
+		WMConnectionView *view = [[WMConnectionView alloc] initWithFrame:CGRectZero];
 		
 		WMPatchView *startPatchView = [graphView patchViewForKey:connection.sourceNode];
 		WMPatchView *endPatchView = [graphView patchViewForKey:connection.destinationNode];
@@ -78,12 +72,12 @@
 
 - (void)addDraggingConnectionFromPatchView:(WMPatchView *)inPatch port:(WMPort *)inPort;
 {
-	WMDraggingConnection *connection = [[[WMDraggingConnection alloc] init] autorelease];
+	WMDraggingConnection *connection = [[WMDraggingConnection alloc] init];
 	connection.sourceNode = inPatch.patch.key;
 	connection.sourcePort = inPort.key;
 	[draggingConnectionsByPatchKey setObject:connection forKey:inPatch.patch.key];
 	
-	WMConnectionView *view = [[[WMConnectionView alloc] initWithFrame:CGRectZero] autorelease];
+	WMConnectionView *view = [[WMConnectionView alloc] initWithFrame:CGRectZero];
 	[draggingConnectionViewsByPatchKey setObject:view forKey:inPatch.patch.key];
 	[self addSubview:view];
 }

@@ -13,9 +13,9 @@
 @class WMImagePort;
 @interface WMImageLoader : WMPatch
 
-@property (nonatomic, retain) NSData *imageData;
+@property (nonatomic, strong) NSData *imageData;
 
 //TODO: WMImagePort
-@property (retain, nonatomic) WMImagePort *outputImage;
+@property (strong, nonatomic) WMImagePort *outputImage;
 
 @end

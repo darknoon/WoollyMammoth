@@ -22,9 +22,9 @@
 
 + (void)load;
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[self registerToRepresentClassNames:[NSSet setWithObject:NSStringFromClass(self)]];
-	[pool drain];
+	@autoreleasepool {
+		[self registerToRepresentClassNames:[NSSet setWithObject:NSStringFromClass(self)]];
+	}
 }
 
 
@@ -58,11 +58,11 @@
 
 
 - (BOOL)setup:(WMEAGLContext *)context {
-    self.communicator = [[[TweetServerCommunicator alloc] init] autorelease];  // this fires up the search engine and downloading photos
+    self.communicator = [[TweetServerCommunicator alloc] init];  // this fires up the search engine and downloading photos
     // we need a string input!
     communicator.searchToken = @"iosdevcamp";
 
-    _timer = [[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(nextOne:) userInfo:nil repeats:YES] retain];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(nextOne:) userInfo:nil repeats:YES];
     return YES;
     
 }
@@ -87,7 +87,7 @@
         
 
         
-        self.lastTexture = [[[WMTexture2D alloc] initWithImage:photoImage] autorelease];
+        self.lastTexture = [[WMTexture2D alloc] initWithImage:photoImage];
         lastTimeChanged = time;
     }
     
@@ -100,14 +100,10 @@
 }
 
 - (void)cleanup:(WMEAGLContext *)context {
-    [communicator release];
     communicator = nil;
-    [photoTweet release];
     photoTweet = nil;
-    [lastTexture release];
     lastTexture = nil;
     [_timer invalidate];
-    [_timer release];
     
 }
 

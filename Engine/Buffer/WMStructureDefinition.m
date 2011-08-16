@@ -50,7 +50,6 @@ size_t WMStructureTypeSize(WMStructureType inType) {
 - (id)initWithFields:(const WMStructureField *)inFields count:(NSUInteger)inCount totalSize:(size_t)totalSize;
 {
 	if (!inFields || inCount < 1) {
-		[self release];
 		return nil;
 	}
 	
@@ -59,7 +58,6 @@ size_t WMStructureTypeSize(WMStructureType inType) {
 	
 	fields = malloc(inCount * sizeof(WMStructureField));
 	if (!fields) {
-		[self release];
 		return nil;
 	}
 	memcpy(fields, inFields, inCount * sizeof(WMStructureField));
@@ -82,7 +80,6 @@ size_t WMStructureTypeSize(WMStructureType inType) {
 
 - (void)dealloc {
 	if (fields) free(fields);
-    [super dealloc];
 }
 
 

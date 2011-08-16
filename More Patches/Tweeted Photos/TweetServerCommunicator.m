@@ -68,8 +68,8 @@
 
 - (void)talkToServer:(NSTimer *)t {
     NSURL *url = [NSURL URLWithString:[self requestString]];
-    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block TweetServerCommunicator *myself = self;
+    __block __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+    __weak TweetServerCommunicator *myself = self;
     [request setCompletionBlock:^{
         NSData *responseData = [request responseData];
         CJSONDeserializer *deserializer = [CJSONDeserializer deserializer];
@@ -105,21 +105,16 @@
     self = [super init];
     _downloadedPhotoTweets = [[NSMutableArray alloc] init];
     _allPhotoTweets = [[NSMutableArray alloc] init];
-    _timer = [[NSTimer scheduledTimerWithTimeInterval:GRAB_MORE_TIME target:self selector:@selector(talkToServer:) userInfo:nil repeats:YES] retain];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:GRAB_MORE_TIME target:self selector:@selector(talkToServer:) userInfo:nil repeats:YES];
     [self performSelector:@selector(talkToServer:) withObject:nil afterDelay:0.0];
-    [self setQueue:[[[NSOperationQueue alloc] init] autorelease]];
+    [self setQueue:[[NSOperationQueue alloc] init]];
 
     return self;
 }
 
 - (void)dealloc {
     [self.queue setSuspended:YES];
-    self.queue = nil;
-    [_downloadedPhotoTweets release];
-    [_allPhotoTweets release];
     [_timer invalidate];
-    [_timer release];
-    [super dealloc];
 }
 
 @end

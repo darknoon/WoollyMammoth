@@ -191,9 +191,9 @@ int particleZCompare(const void *a, const void *b) {
 
 + (void)load;
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[self registerToRepresentClassNames:[NSSet setWithObject:NSStringFromClass(self)]];
-	[pool drain];
+	@autoreleasepool {
+		[self registerToRepresentClassNames:[NSSet setWithObject:NSStringFromClass(self)]];
+	}
 }
 
 - (id)initWithPlistRepresentation:(id)inPlist;
@@ -228,19 +228,19 @@ int particleZCompare(const void *a, const void *b) {
 	
 	NSError *defaultShaderError = nil;
 	
-	NSString *vsh = [[[NSString alloc] initWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"SnowParticle" withExtension:@"vsh"] encoding:NSASCIIStringEncoding error:NULL] autorelease];
-	NSString *fsh = [[[NSString alloc] initWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"SnowParticle" withExtension:@"fsh"] encoding:NSASCIIStringEncoding error:NULL] autorelease];
+	NSString *vsh = [[NSString alloc] initWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"SnowParticle" withExtension:@"vsh"] encoding:NSASCIIStringEncoding error:NULL];
+	NSString *fsh = [[NSString alloc] initWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"SnowParticle" withExtension:@"fsh"] encoding:NSASCIIStringEncoding error:NULL];
 	
 	shader = [[WMShader alloc] initWithVertexShader:vsh
 									 fragmentShader:fsh
 											  error:&defaultShaderError];
 	
-	WMStructureDefinition *vboDef = [[[WMStructureDefinition alloc] initWithFields:WMQuadParticleVertex_fields count:3 totalSize:sizeof(struct WMQuadParticleVertex)] autorelease];
+	WMStructureDefinition *vboDef = [[WMStructureDefinition alloc] initWithFields:WMQuadParticleVertex_fields count:3 totalSize:sizeof(struct WMQuadParticleVertex)];
 	vboDef.shouldAlignTo4ByteBoundary = YES;
 	particleVertexBuffers[0] = [[WMStructuredBuffer alloc] initWithDefinition:vboDef];
 	particleVertexBuffers[1] = [[WMStructuredBuffer alloc] initWithDefinition:vboDef];
 	
-	WMStructureDefinition *indexStructure = [[[WMStructureDefinition alloc] initWithAnonymousFieldOfType:WMStructureTypeUnsignedShort] autorelease];
+	WMStructureDefinition *indexStructure = [[WMStructureDefinition alloc] initWithAnonymousFieldOfType:WMStructureTypeUnsignedShort];
 	
 	particleIndexBuffer = [[WMStructuredBuffer alloc] initWithDefinition:indexStructure];
 	
@@ -270,21 +270,14 @@ int particleZCompare(const void *a, const void *b) {
 
 - (void)cleanup:(WMEAGLContext *)context;
 {
-	[renderObject release];
 	renderObject = nil;
 	
-	[particleVertexBuffers[0] release];
 	particleVertexBuffers[0] = nil;
-	[particleVertexBuffers[1] release];
 	particleVertexBuffers[1] = nil;
 	delete particles;
 	delete particleVertices;
 }
 
-- (void) dealloc
-{
-	[super dealloc];
-}
 
 - (void)update;
 {
@@ -411,7 +404,6 @@ int particleZCompare(const void *a, const void *b) {
 	if (inputTexture.image) {
 		[renderObject setValue:inputTexture.image forUniformWithName:@"texture"];
 		if (defaultTexture) {
-			[defaultTexture release];
 			defaultTexture = nil;
 		}
 	} else {

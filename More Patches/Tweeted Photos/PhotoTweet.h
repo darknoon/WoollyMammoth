@@ -11,9 +11,9 @@
 #import "TweetServerCommunicator.h"
 
 @interface PhotoTweet : NSObject <ASIHTTPRequestDelegate>
-@property (nonatomic, assign) TweetServerCommunicator *communicator;
-@property (nonatomic, retain) NSMutableDictionary *tweet;
-@property (nonatomic, retain) UIImage *image;
+@property (nonatomic, weak) TweetServerCommunicator *communicator;
+@property (nonatomic, strong) NSMutableDictionary *tweet;
+@property (nonatomic, strong) UIImage *image;
 
 
 + (PhotoTweet *)photoTweetWithDictionary:(NSMutableDictionary *)d;

@@ -14,7 +14,7 @@
 
 @interface WMPatchView : UIView
 
-@property (nonatomic, assign) WMGraphEditView *graphView;
+@property (nonatomic, weak) WMGraphEditView *graphView;
 
 @property BOOL dragging;
 @property BOOL draggable;

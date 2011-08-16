@@ -18,9 +18,9 @@
 
 + (void)load;
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[self registerToRepresentClassNames:[NSSet setWithObject:@"QCMath"]];
-	[pool drain];
+	@autoreleasepool {
+		[self registerToRepresentClassNames:[NSSet setWithObject:@"QCMath"]];
+	}
 }
 
 
@@ -28,7 +28,7 @@
 {
 	int numberOfOperations = [[inPlist objectForKey:@"numberOfOperations"] intValue];
 	for (int i=0; i<numberOfOperations; i++) {
-		WMNumberPort *operandPort = [[[WMNumberPort alloc] init] autorelease];
+		WMNumberPort *operandPort = [[WMNumberPort alloc] init];
 		operandPort.key = [NSString stringWithFormat:@"operand_%d", i + 1];
 		[self addInputPort:operandPort];
 	}

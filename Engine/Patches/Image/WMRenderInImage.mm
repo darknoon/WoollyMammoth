@@ -24,9 +24,9 @@
 
 + (void)load;
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[self registerToRepresentClassNames:[NSSet setWithObject:@"QCRenderInImage"]];
-	[pool drain];
+	@autoreleasepool {
+		[self registerToRepresentClassNames:[NSSet setWithObject:@"QCRenderInImage"]];
+	}
 }
 
 - (id)initWithPlistRepresentation:(id)inPlist;
@@ -70,7 +70,6 @@
 	}
 	
 	//Recreate texture each frame (fix me!)
-	[texture release];
 	texture = [[WMTexture2D alloc] initWithData:NULL
 									pixelFormat:kWMTexture2DPixelFormat_RGBA8888
 									 pixelsWide:renderWidth
@@ -80,7 +79,6 @@
 	
 	if (!framebuffer || framebuffer.framebufferWidth != renderWidth || framebuffer.framebufferHeight != renderHeight) {
 		//Re-create framebuffer and texture
-		[framebuffer release];
 		
 		framebuffer = [[WMFramebuffer alloc] initWithTexture:texture depthBufferDepth:useDepthBuffer ? GL_DEPTH_COMPONENT16 : 0];
 		

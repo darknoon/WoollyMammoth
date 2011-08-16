@@ -18,8 +18,7 @@
 
 	//TODO: observe external value changes
 	
-	[port release];
-	port = [inPort retain];
+	port = inPort;
 	
 	nameLabel.text = inPort.name;
 }

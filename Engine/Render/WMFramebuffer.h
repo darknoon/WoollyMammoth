@@ -19,7 +19,7 @@
     GLint framebufferHeight;
 	
 	//If rendering to a texture
-	WMTexture2D *texture;
+	WMTexture2D *__weak texture;
 	
 	GLuint colorRenderbuffer;
 	GLuint depthRenderbuffer;
@@ -41,7 +41,7 @@
 //Sets the color attachment mipmap level 0 to be backed by the texture
 - (void)setColorAttachmentWithTexture:(WMTexture2D *)inTexture;
 
-@property (nonatomic, readonly) WMTexture2D *texture;
+@property (weak, nonatomic, readonly) WMTexture2D *texture;
 
 @property (nonatomic, readonly) GLint framebufferWidth;
 @property (nonatomic, readonly) GLint framebufferHeight;

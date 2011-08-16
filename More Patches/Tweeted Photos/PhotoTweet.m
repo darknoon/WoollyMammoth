@@ -34,7 +34,7 @@
 
 
 + (PhotoTweet *)photoTweetWithDictionary:(NSMutableDictionary *)d {
-    return [[[PhotoTweet alloc] initWithDictionary:d] autorelease];
+    return [[PhotoTweet alloc] initWithDictionary:d];
 }
 
 - (PhotoTweet *)initWithDictionary:(NSMutableDictionary *)d {
@@ -167,9 +167,5 @@
     return [NSString stringWithFormat:@"%C%@ %@",'@',sender ? sender : @"twittelator", clean ? clean : @""];
 }
 
-- (void)dealloc {
-    self.tweet = nil;
-    [super dealloc];
-}
 
 @end

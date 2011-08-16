@@ -39,14 +39,10 @@ NSArray *WMPatchCategoryNames;
     return self;
 }
 
-- (void)dealloc {
-    [_categoriesMap release];
-    [super dealloc];
-}
 
 - (NSDictionary *)categoriesMap;
 {
-    return [[_categoriesMap copy] autorelease];
+    return [_categoriesMap copy];
 }
 - (void)addClassWithName:(Class)inClass key:(NSString*)className;
 {
@@ -72,7 +68,7 @@ NSArray *WMPatchCategoryNames;
     for (NSDictionary* detail in details) {
         [toReturn addObject:[detail objectForKey:@"className"]];
     }
-    return [toReturn autorelease];
+    return toReturn;
 }
 
 - (NSDictionary *)patchesForCategory:(NSString *)categoryName;
@@ -86,7 +82,7 @@ NSArray *WMPatchCategoryNames;
     NSDictionary* patches = [self patchesForCategory:category];
     for (NSDictionary* detail in patches) {
         if( [(NSString*)[detail objectForKey:@"className"] compare:name] == NSOrderedSame){
-            return [[(NSString*)[detail objectForKey:@"class"] copy] autorelease];
+            return [(NSString*)[detail objectForKey:@"class"] copy];
         }
     }    
     return @"unknown";

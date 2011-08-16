@@ -19,7 +19,7 @@
     int currentTweetIndex;
 }
 
-@property (nonatomic, retain) NSOperationQueue *queue;
+@property (nonatomic, strong) NSOperationQueue *queue;
 @property (nonatomic, copy) NSString *searchToken;
 
 - (PhotoTweet *)currentTweet;

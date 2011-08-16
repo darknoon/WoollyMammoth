@@ -55,7 +55,6 @@ NSString *WMCompositionFrameworkVersion = @"0.1";
 				[userDictionaryMutable removeObjectsForKeys:[[self standardKeys] allObjects]];
 				[userDictionaryMutable setObject:inBasePath forKey:WMCompositionPathKey];
 				*outUserDictionary = [userDictionaryMutable copy];
-				[userDictionaryMutable release];
 			}
 		} else {
 			//TODO: return root object deserialization error
@@ -85,7 +84,6 @@ NSString *WMCompositionFrameworkVersion = @"0.1";
 	//Make sure the user dictionary never can override our built-in keys
 	[userDictionary removeObjectsForKeys:[[self standardKeys] allObjects]];
 	[plistDictionary addEntriesFromDictionary:userDictionary];
-	[userDictionary release];
 	
 	//Save our framework version
 	[plistDictionary setObject:WMCompositionFrameworkVersion forKey:WMCompositionUserInfoVersionKey];

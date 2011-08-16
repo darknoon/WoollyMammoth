@@ -30,8 +30,8 @@ extern NSString *const WMEngineInterfaceOrientationArgument;
 
 + (GLKMatrix4)cameraMatrixWithRect:(CGRect)inBounds;
 
-@property (nonatomic, retain, readonly) WMEAGLContext *renderContext;
-@property (nonatomic, retain, readonly) WMPatch *rootObject;
+@property (nonatomic, strong, readonly) WMEAGLContext *renderContext;
+@property (nonatomic, strong, readonly) WMPatch *rootObject;
 
 - (NSString *)title;
 

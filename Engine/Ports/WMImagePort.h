@@ -15,6 +15,6 @@
 @interface WMImagePort : WMPort {
     
 }
-@property (nonatomic, retain) WMTexture2D *image;
+@property (nonatomic, strong) WMTexture2D *image;
 
 @end

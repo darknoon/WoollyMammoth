@@ -95,7 +95,7 @@
 - (void)loadView;
 {
 	CGRect defaultFrame = [[UIScreen mainScreen] applicationFrame];
-	EAGLView *view = [[[EAGLView alloc] initWithFrame:defaultFrame] autorelease];
+	EAGLView *view = [[EAGLView alloc] initWithFrame:defaultFrame];
 	view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	self.view = view;
 }
@@ -113,16 +113,10 @@
 	fpsLabel.text = @"";
 	[self.view addSubview:fpsLabel];
 	
-	UITapGestureRecognizer *tapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleNavigationBar)] autorelease];
+	UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleNavigationBar)];
 	[self.view addGestureRecognizer:tapRecognizer];
 }
 
-- (void)dealloc
-{    
-    [engine release];
-	[debugViewController release];
-    [super dealloc];
-}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -146,7 +140,6 @@
 - (void)viewDidUnload
 {
 	[super viewDidUnload];
-	[fpsLabel release];
 	fpsLabel = nil;
 }
 

@@ -13,14 +13,14 @@
 @class WMViewController;
 
 @interface WMDebugViewController : UIViewController <BrowserViewControllerDelegate> {
-	WMViewController *parent;	
+	WMViewController *__weak parent;	
 }
 
-@property (nonatomic, assign) IBOutlet WMViewController *parent;
+@property (nonatomic, weak) IBOutlet WMViewController *parent;
 
-@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *activityIndicator;
-@property (nonatomic, retain) IBOutlet UILabel *gameTitleLabel;
-@property (nonatomic, retain) IBOutlet UILabel *gamePathLabel;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, strong) IBOutlet UILabel *gameTitleLabel;
+@property (nonatomic, strong) IBOutlet UILabel *gamePathLabel;
 
 - (IBAction)close;
 - (IBAction)reloadGame;

@@ -22,8 +22,8 @@
     BOOL _getNextOne;
 }
 
-@property (nonatomic, retain) PhotoTweet *photoTweet;
-@property (nonatomic, retain) WMTexture2D *lastTexture;
-@property (nonatomic, retain) TweetServerCommunicator *communicator;
-@property (nonatomic, retain) NSTimer *timer;
+@property (nonatomic, strong) PhotoTweet *photoTweet;
+@property (nonatomic, strong) WMTexture2D *lastTexture;
+@property (nonatomic, strong) TweetServerCommunicator *communicator;
+@property (nonatomic, strong) NSTimer *timer;
 @end

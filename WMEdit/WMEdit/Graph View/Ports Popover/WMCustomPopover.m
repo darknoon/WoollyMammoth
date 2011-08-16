@@ -23,7 +23,7 @@
 	self = [super initWithNibName:nil bundle:nil];
 	if (!self) return nil;
 	
-	contentViewController = [inViewController retain];
+	contentViewController = inViewController;
 	[self addChildViewController:contentViewController];
 	
 	return self;
@@ -92,7 +92,6 @@
 	WMCustomPopoverView *customPopoverView = [[WMCustomPopoverView alloc] initWithFrame:CGRectZero];
 	customPopoverView.contentView = contentViewController.view;
 	self.view = customPopoverView;
-	[customPopoverView release];
 }
 
 - (void)viewDidUnload

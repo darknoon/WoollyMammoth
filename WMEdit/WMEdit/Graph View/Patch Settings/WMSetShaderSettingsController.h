@@ -13,9 +13,9 @@
 
 @interface WMSetShaderSettingsController : UIViewController <WMPatchSettingsController>
 
-@property (nonatomic, retain) WMSetShader *patch;
+@property (nonatomic, strong) WMSetShader *patch;
 
 - (IBAction)toggleEditingVertexOrFragmentShader:(UISegmentedControl *)sender;
-@property (retain, nonatomic) IBOutlet UITextView *textView;
+@property (strong, nonatomic) IBOutlet UITextView *textView;
 
 @end

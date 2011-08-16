@@ -31,11 +31,6 @@
     return CGSizeMake(320.0, patchList.count * kCellHeightPatches);
 }
 
-- (void)dealloc
-{
-	[patchList release];
-    [super dealloc];
-}
 
 - (void)didReceiveMemoryWarning
 {
@@ -83,7 +78,7 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     NSString *className = [patchList objectAtIndex:indexPath.row];
     NSString *pretty = [NSClassFromString(className) humanReadableTitle];

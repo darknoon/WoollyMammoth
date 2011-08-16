@@ -195,10 +195,13 @@
 			[sorted addObject:patch];
 		}
 	}
-		
-	if (outTopologicalSort) *outTopologicalSort = [[sorted copy] autorelease];
+	
+	sorted = [sorted copy];
+	excludedEdges = [excludedEdges copy];
+	
+	if (outTopologicalSort) *outTopologicalSort = sorted;
 	//TODO: implement cycle exclusion!
-	if (outExcludedEdges) *outExcludedEdges = [[excludedEdges copy] autorelease];
+	if (outExcludedEdges) *outExcludedEdges = excludedEdges;
 	
 	return YES;
 }

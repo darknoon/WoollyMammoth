@@ -62,8 +62,6 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 @end
 
 @implementation WMPatch
-@synthesize connections;
-@synthesize children;
 @synthesize key;
 @synthesize editorPosition;
 @synthesize hasSetup;
@@ -108,9 +106,9 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 
 + (void)load;
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[self registerToRepresentClassNames:[NSSet setWithObject:@"QCPatch"]];
-	[pool drain];
+	@autoreleasepool {
+		[self registerToRepresentClassNames:[NSSet setWithObject:@"QCPatch"]];
+	}
 }
 
 + (void)registerToRepresentClassNames:(NSSet *)inClassNames;
@@ -166,7 +164,7 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 		patchClass = [WMPlaceholderPatch class];
 	}
 	
-	return [[[patchClass alloc] initWithPlistRepresentation:inPlist] autorelease];
+	return [[patchClass alloc] initWithPlistRepresentation:inPlist];
 }
 
 + (id)defaultValueForInputPortKey:(NSString *)inKey;
@@ -199,9 +197,8 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	free(classNameStr);
 	
 	Class portClass = NSClassFromString(className);
-	[className release];
 	
-	WMPort *port = [[[portClass alloc] init] autorelease];
+	WMPort *port = [[portClass alloc] init];
 	port.key = inKey;
 	
 	return port;
@@ -214,7 +211,7 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	for (Class class = [self class]; class; class = [class superclass]) {
 		Ivar *ivars = class_copyIvarList(class, &count);
 		for (int i=0; i<count; i++) {
-			NSString *ivarName = [[[NSString alloc] initWithCString:ivar_getName(ivars[i]) encoding:NSUTF8StringEncoding] autorelease];
+			NSString *ivarName = [[NSString alloc] initWithCString:ivar_getName(ivars[i]) encoding:NSUTF8StringEncoding];
 			if (([ivarName hasPrefix:@"input"] || [ivarName hasPrefix:@"_input"]) && ![ivarName isEqualToString:@"inputPorts"]) {
 				
 				if ([ivarName isEqualToString:@"_inputEnable"]) {
@@ -225,7 +222,6 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 				WMPort *inputPort = [self portForIvar:ivars[i] key:ivarName];
 				if (inputPort) {
 					object_setIvar(self, ivars[i], inputPort);
-					[inputPort retain];
 					[self addInputPort:inputPort];
 				}
 				
@@ -237,7 +233,6 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 				WMPort *outputPort = [self portForIvar:ivars[i] key:ivarName];
 				if (outputPort) {
 					object_setIvar(self, ivars[i], outputPort);
-					[outputPort retain];
 					[self addOutputPort:outputPort];
 				}
 				
@@ -266,7 +261,8 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 
 - (void)createConnectionsWithState:(NSDictionary *)state;
 {
-	NSDictionary *plistConnections = [state objectForKey:WMPatchConnectionsPlistName];
+	//Hack for iOS 5 beta 5
+	NSDictionary *plistConnections = [state objectForKey:WMPatchConnectionsPlistName];	
 	for (NSString *connectionName in plistConnections) {
 		NSDictionary *connectionDictionary = [plistConnections objectForKey:connectionName];
 		WMConnection *connection = [[WMConnection alloc] init];
@@ -275,8 +271,7 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 		connection.sourcePort = [connectionDictionary objectForKey:@"sourcePort"];
 		connection.destinationNode = [connectionDictionary objectForKey:@"destinationNode"];
 		connection.destinationPort = [connectionDictionary objectForKey:@"destinationPort"];
-		[connections addObject: connection];
-		[connection release];
+		[_connections addObject: connection];
 	}
 }
 
@@ -292,7 +287,7 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 		WMPort *childPort = [child inputPortWithKey:[portDefinition objectForKey:@"port"]];
 		if (childPort) {
 			Class portClass = [childPort class];
-			WMPort *port = [[[portClass alloc] init] autorelease];
+			WMPort *port = [[portClass alloc] init];
 			port.key = portKey;
 			port.originalPort = childPort;
 			[self addInputPort:port];
@@ -318,7 +313,6 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 			port.originalPort = childPort;
 			[self addOutputPort:port];
 			[port setStateValue:[[portDefinition objectForKey:@"state"] objectForKey:@"value"]];
-			[port release];
 		}
 		
 	}
@@ -331,45 +325,45 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	self = [super init];
 	if (!self) return nil;
 		
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	@autoreleasepool {
 	
-	children = [[NSMutableArray alloc] init];
-	childrenByKey = [[NSMutableDictionary alloc] init];
-	connections = [[NSMutableArray alloc] init];
-	
-	self.key = [inPlist objectForKey:WMPatchKeyPlistName];
-	
-	outputPorts = [[NSMutableArray alloc] init];
-	inputPorts = [[NSMutableArray alloc] init];
-	
-	//Create ivar ports for this 
-	[self createIvarPorts];
-	
-	NSDictionary *state = [inPlist objectForKey:WMPatchStatePlistName];
+		_children = [[NSMutableArray alloc] init];
+		childrenByKey = [[NSMutableDictionary alloc] init];
+		_connections = [[NSMutableArray alloc] init];
 		
-	//Set state of ivar ports
-	[self setPlistState:state];
-	if (!state) {
-		for (WMPort *port in inputPorts) {
-			id value = [[self class] defaultValueForInputPortKey:port.key];
-			if (value) {
-				BOOL ok = [port setStateValue:value];
-				if (!ok) {
-					NSLog(@"Could not set default value for port key: %@", port.key);
+		self.key = [inPlist objectForKey:WMPatchKeyPlistName];
+		
+		outputPorts = [[NSMutableArray alloc] init];
+		inputPorts = [[NSMutableArray alloc] init];
+		
+		//Create ivar ports for this 
+		[self createIvarPorts];
+		
+		NSDictionary *state = [inPlist objectForKey:WMPatchStatePlistName];
+			
+		//Set state of ivar ports
+		[self setPlistState:state];
+		if (!state) {
+			for (WMPort *port in inputPorts) {
+				id value = [[self class] defaultValueForInputPortKey:port.key];
+				if (value) {
+					BOOL ok = [port setStateValue:value];
+					if (!ok) {
+						NSLog(@"Could not set default value for port key: %@", port.key);
+					}
 				}
 			}
 		}
+				
+		//Set position
+		NSString *posStr = [inPlist objectForKey:WMPatchEditorPositionPlistName];
+		if (posStr) {
+			self.editorPosition = CGPointFromString(posStr);
+		}
+		
+		
+		return self;
 	}
-			
-	//Set position
-	NSString *posStr = [inPlist objectForKey:WMPatchEditorPositionPlistName];
-	if (posStr) {
-		self.editorPosition = CGPointFromString(posStr);
-	}
-	
-	[pool drain];
-	
-	return self;
 }
 
 - (id)plistRepresentation;
@@ -391,13 +385,6 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	return dict;
 }
 
-- (void)dealloc {
-	[userInfo release];
-    [children release];
-	[childrenByKey release];
-	[connections release];
-    [super dealloc];
-}
 
 - (BOOL)setPlistState:(id)inPlist;
 {
@@ -457,7 +444,7 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	//Serialize connections
 	NSMutableDictionary *cpl = [NSMutableDictionary dictionary];
 	int cnum = 1;
-	for (WMConnection *c in connections) {
+	for (WMConnection *c in self.connections) {
 		NSMutableDictionary *d = [NSMutableDictionary dictionary];
 		
 		[d setObject:c.sourceNode forKey:@"sourceNode"];
@@ -510,11 +497,11 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 
 - (NSArray *)inputPorts;
 {
-	return [[inputPorts copy] autorelease];
+	return [inputPorts copy];
 }
 - (NSArray *)outputPorts;
 {
-	return [[outputPorts copy] autorelease];
+	return [outputPorts copy];
 }
 
 - (NSArray *)systemInputPorts;
@@ -553,6 +540,15 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	return nil;
 }
 
+- (NSArray *)children;
+{
+	return [_children copy];
+}
+
+- (NSArray *)connections;
+{
+	return [_connections copy];
+}
 
 #pragma mark -
 #pragma mark Execution
@@ -590,13 +586,13 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 
 - (NSString *)description;
 {
-	return [NSString stringWithFormat:@"<%@ : %p>{key: %@, connections: %u, childen: %u>}", NSStringFromClass([self class]), self, key, connections.count, children.count];
+	return [NSString stringWithFormat:@"<%@ : %p>{key: %@, connections: %u, childen: %u>}", NSStringFromClass([self class]), self, key, _connections.count, _children.count];
 }
 
 - (NSString *)descriptionRecursive;
 {
 	NSMutableString *descriptionRecursive = [NSMutableString stringWithString:[self description]];
-	for (WMPatch *child in children) {
+	for (WMPatch *child in _children) {
 		[descriptionRecursive appendFormat:@"\n\t%@", [child descriptionRecursive]];
 	}
 	[descriptionRecursive appendString:@"\n"];
@@ -624,10 +620,10 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 
 - (void)addChild:(WMPatch *)inPatch;
 {
-	if (![children containsObject:inPatch]) {
+	if (![_children containsObject:inPatch]) {
 		//Generate a key if necessary
 		inPatch.key = [self availableKeyForSubPatch:inPatch];
-		[children addObject:inPatch];
+		[_children addObject:inPatch];
 	} 
 	if ([childrenByKey objectForKey:inPatch.key] != inPatch) {
 		[childrenByKey setObject:inPatch forKey:inPatch.key];
@@ -637,12 +633,12 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 - (void)removeChild:(WMPatch *)inPatch;
 {
 	//Remove any connections related
-	for (WMConnection *connection in [[connections copy] autorelease]) {
+	for (WMConnection *connection in self.connections) {
 		if ([connection.destinationNode isEqualToString:inPatch.key] || [connection.sourceNode isEqualToString:inPatch.key]) {
-			[connections removeObject:connection];
+			[_connections removeObject:connection];
 		}
 	}
-	[children removeObject:inPatch];
+	[_children removeObject:inPatch];
 	[childrenByKey removeObjectForKey:inPatch.key];
 }
 
@@ -650,13 +646,13 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 {
 	//Find an existing connection
 	WMConnection *existingConnectionToInputPort = nil;
-	for (WMConnection *connection in connections) {
+	for (WMConnection *connection in self.connections) {
 		if ([connection.destinationNode isEqualToString:toPatch] && [connection.destinationPort isEqualToString:toPort]) {
 			existingConnectionToInputPort = connection;
 		}
 	}
 	if (existingConnectionToInputPort) {
-		[connections removeObject:existingConnectionToInputPort];
+		[_connections removeObject:existingConnectionToInputPort];
 	}
 	
 	WMConnection *connection = [[WMConnection alloc] init];
@@ -665,8 +661,7 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	connection.destinationNode = toPatch;
 	connection.destinationPort = toPort;
 
-	[connections addObject:connection];	
-	[connection release];
+	[_connections addObject:connection];	
 }
 
 + (NSString *)humanReadableTitle {
@@ -690,14 +685,14 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	self = [super initWithPlistRepresentation:inPlist];
 	if (!self) return nil;
 	
-	originalClassName = [[inPlist objectForKey:WMPatchClassPlistName] retain];
+	originalClassName = [inPlist objectForKey:WMPatchClassPlistName];
 	
 	return self;
 }
 
 - (NSString *)description;
 {
-	return [NSString stringWithFormat:@"<%@ (was %@) : %p>{key: %@, connections: %u, childen: %u>}", NSStringFromClass([self class]), originalClassName, self, key, connections.count, children.count];
+	return [NSString stringWithFormat:@"<%@ (was %@) : %p>{key: %@, connections: %u, childen: %u>}", NSStringFromClass([self class]), originalClassName, self, key, _connections.count, _children.count];
 }
 
 

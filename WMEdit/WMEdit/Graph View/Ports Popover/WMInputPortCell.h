@@ -12,8 +12,8 @@
 
 @interface WMInputPortCell : UITableViewCell
 
-@property (nonatomic, retain) IBOutlet UILabel *nameLabel;
+@property (nonatomic, strong) IBOutlet UILabel *nameLabel;
 
-@property (nonatomic, retain) IBOutlet WMPort *port;
+@property (nonatomic, strong) IBOutlet WMPort *port;
 
 @end

@@ -24,7 +24,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 	//Set our assertion handler
-	[[[NSThread currentThread] threadDictionary] setObject:[[[DNAssertionHandler alloc] init] autorelease] forKey:NSAssertionHandlerKey];
+	[[[NSThread currentThread] threadDictionary] setObject:[[DNAssertionHandler alloc] init] forKey:NSAssertionHandlerKey];
 	
     return YES;
 }
@@ -68,11 +68,5 @@
 	 */
 }
 
-- (void)dealloc
-{
-	[_window release];
-	[_viewController release];
-    [super dealloc];
-}
 
 @end

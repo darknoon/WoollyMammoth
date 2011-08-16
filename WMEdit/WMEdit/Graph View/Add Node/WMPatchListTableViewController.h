@@ -15,9 +15,9 @@
 
 - (id)initWithPatchesAndCategory:(NSArray *)array category:(NSString*)categoryIn;
 
-@property (nonatomic, assign) id<WMPatchListTableViewControllerDelegate> delegate;
-@property (nonatomic, assign) NSArray *patchList;
-@property (nonatomic, assign) NSString *category;
+@property (nonatomic, unsafe_unretained) id<WMPatchListTableViewControllerDelegate> delegate;
+@property (nonatomic, copy) NSArray *patchList;
+@property (nonatomic, copy) NSString *category;
 @end
 
 

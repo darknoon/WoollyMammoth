@@ -32,7 +32,7 @@
     // The pixel dimensions of the CAEAGLLayer.
 }
 
-@property (nonatomic, retain) WMEAGLContext *context;
+@property (nonatomic, strong) WMEAGLContext *context;
 
 - (void)setFramebuffer;
 - (BOOL)presentFramebuffer;

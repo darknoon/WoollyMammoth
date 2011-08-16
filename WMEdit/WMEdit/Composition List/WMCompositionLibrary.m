@@ -119,7 +119,7 @@ NSArray *directoriesToAdd(NSString *path, NSString *existing) {
 
 - (NSArray *)compositions;
 {
-	return [[compositions copy] autorelease];
+	return [compositions copy];
 }
 
 - (void)findAllDocuments {
@@ -172,10 +172,6 @@ NSString *base62FromBase10(int num)
     return [UIImage imageNamed:@"missing_effect_thumb.jpg"];
 }
 
-- (void)dealloc
-{
-    [super dealloc];
-}
 
 
 @end

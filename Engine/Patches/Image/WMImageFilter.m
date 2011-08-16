@@ -35,9 +35,9 @@ static WMStructureField WMQuadVertex_fields[] = {
 
 + (void)load;
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[self registerToRepresentClassNames:[NSSet setWithObject:@"QCImageFilter"]];
-	[pool drain];
+	@autoreleasepool {
+		[self registerToRepresentClassNames:[NSSet setWithObject:@"QCImageFilter"]];
+	}
 }
 
 - (BOOL)setPlistState:(id)inPlist;
@@ -47,7 +47,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 
 - (void)loadQuadData;
 {	
-	WMStructureDefinition *vertexDef = [[[WMStructureDefinition alloc] initWithFields:WMQuadVertex_fields count:2 totalSize:sizeof(WMQuadVertex)] autorelease];
+	WMStructureDefinition *vertexDef = [[WMStructureDefinition alloc] initWithFields:WMQuadVertex_fields count:2 totalSize:sizeof(WMQuadVertex)];
 	vertexBuffer = [[WMStructuredBuffer alloc] initWithDefinition:vertexDef];
 	
 	//Add vertices
@@ -72,7 +72,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 	[vertexBuffer appendData:vertexDataPtr withStructure:vertexBuffer.definition count:4];
 	
 	
-	WMStructureDefinition *indexDef = [[[WMStructureDefinition alloc] initWithAnonymousFieldOfType:WMStructureTypeUnsignedShort] autorelease];
+	WMStructureDefinition *indexDef = [[WMStructureDefinition alloc] initWithAnonymousFieldOfType:WMStructureTypeUnsignedShort];
 	indexBuffer = [[WMStructuredBuffer alloc] initWithDefinition:indexDef];
 
 	//Add triangles
@@ -105,15 +105,9 @@ static WMStructureField WMQuadVertex_fields[] = {
 
 - (void)cleanup:(WMEAGLContext *)context;
 {
-	[vertexBuffer release];
-	[indexBuffer release];
-	[shader release];
 	shader = nil;
-	[fbo release];
 	fbo = nil;
-	[texture0 release];
 	texture0 = nil;
-	[texture1 release];
 	texture1 = nil;
 }
 
@@ -155,7 +149,6 @@ static WMStructureField WMQuadVertex_fields[] = {
 #if DEBUG
 	if (![shader validateProgram])
 	{
-		[ro release];
 		NSLog(@"Failed to validate program in shader: %@", shader);
 		return /*NO*/;
 	}
@@ -164,7 +157,6 @@ static WMStructureField WMQuadVertex_fields[] = {
 	//Render blur quad into dest
 	[inContext clearToColor:(GLKVector4){0,0,0,0}];
 	[inContext renderObject:ro];
-	[ro release];
 }
 
 - (void)renderBlurFromTexture:(WMTexture2D *)inSourceTexture toTexture:(WMTexture2D *)inDestinationTexture atSize:(CGSize)inOutputSize withIntermediateTexture:(WMTexture2D *)inTempTexture inContext:(WMEAGLContext *)inContext;
@@ -215,7 +207,6 @@ static WMStructureField WMQuadVertex_fields[] = {
 
 	if (!framebuffer || framebuffer.framebufferWidth != pixelsWide || framebuffer.framebufferHeight != pixelsHigh) {
 		//Re-create framebuffer and texture
-		[framebuffer release];
 				
 		WMTexture2D *texture = [[WMTexture2D alloc] initWithData:NULL
 													 pixelFormat:kWMTexture2DPixelFormat_RGBA8888
@@ -223,7 +214,6 @@ static WMStructureField WMQuadVertex_fields[] = {
 													  pixelsHigh:pixelsHigh
 													 contentSize:(CGSize){inWidth, inHeight}];
 		framebuffer = [[WMFramebuffer alloc] initWithTexture:texture depthBufferDepth:0];
-		[texture release];
 		
 		if (!texture || !framebuffer) {
 		} else {

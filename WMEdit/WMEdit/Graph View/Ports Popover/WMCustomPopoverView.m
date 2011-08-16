@@ -62,8 +62,7 @@ static const CGFloat imageSize = 60.f;
 	if (contentView == inContentView) return;
 	
 	[contentView removeFromSuperview];
-	[contentView release];
-	contentView = [inContentView retain];
+	contentView = inContentView;
 	
 	if (contentView) [self addSubview:contentView];
 }

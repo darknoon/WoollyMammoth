@@ -53,12 +53,6 @@ const CGFloat backgroundHeight = 92;
 	
     return self;
 }
-- (void)dealloc {
-    [title release];
-	[backgroundView release];
-	[chevron release];
-    [super dealloc];
-}
 
 - (void)layoutSubviews;
 {
@@ -102,13 +96,12 @@ const CGFloat backgroundHeight = 92;
 	}
 	NSMutableArray *pvm = [NSMutableArray array];
 	for (WMPort *p in ports) {
-		UIImageView *pv = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plug-popover-dot"]] autorelease];
+		UIImageView *pv = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plug-popover-dot"]];
 		pv.alpha = [connectablePorts containsObject:p] ? 1.0f : 0.4f;
 		[pvm addObject:pv];
 		[self addSubview:pv];
 	}
-	[portViews release];
-	portViews = [pvm retain];
+	portViews = pvm;
 		
 	[self bringSubviewToFront:highlight];
 

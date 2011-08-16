@@ -17,9 +17,9 @@
 
 + (void)load;
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[self registerToRepresentClassNames:[NSSet setWithObject:@"QCSplitter"]];
-	[pool drain];
+	@autoreleasepool {
+		[self registerToRepresentClassNames:[NSSet setWithObject:@"QCSplitter"]];
+	}
 }
 
 - (BOOL)setPlistState:(id)inPlist;
@@ -29,17 +29,17 @@
 	WMPort *inputPort = nil;
 	WMPort *outputPort = nil;
 	if ([portClassName isEqualToString:@"QCNumberPort"]) {
-		inputPort = [[[WMNumberPort alloc] init] autorelease];
-		outputPort = [[[WMNumberPort alloc] init] autorelease];
+		inputPort = [[WMNumberPort alloc] init];
+		outputPort = [[WMNumberPort alloc] init];
 	} else if ([portClassName isEqualToString:@"QCBooleanPort"]) {
-		inputPort = [[[WMBooleanPort alloc] init] autorelease];
-		outputPort = [[[WMBooleanPort alloc] init] autorelease];
+		inputPort = [[WMBooleanPort alloc] init];
+		outputPort = [[WMBooleanPort alloc] init];
 	} else if ([portClassName isEqualToString:@"QCIndexPort"]) {
-		inputPort = [[[WMIndexPort alloc] init] autorelease];
-		outputPort = [[[WMIndexPort alloc] init] autorelease];
+		inputPort = [[WMIndexPort alloc] init];
+		outputPort = [[WMIndexPort alloc] init];
 	} else if ([portClassName isEqualToString:@"QCColorPort"]) {
-		inputPort = [[[WMColorPort alloc] init] autorelease];
-		outputPort = [[[WMColorPort alloc] init] autorelease];
+		inputPort = [[WMColorPort alloc] init];
+		outputPort = [[WMColorPort alloc] init];
 	} else {
 		NSLog(@"Attempt to create unsupported splitter of type: %@", portClassName);
 		return NO;

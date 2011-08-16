@@ -48,7 +48,6 @@ NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
 	self.fragmentShader = inPixelShader;
 	
 	if (![self loadShadersWithError:outError]) {
-		[self release];
 		return nil;
 	}
 	
@@ -62,10 +61,6 @@ NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
 
 - (void)dealloc
 {
-	[vertexShader release];
-	[fragmentShader release];
-	[uniformNames release];
-	[uniformLocations release];
 
 	if (program)
     {
@@ -74,7 +69,6 @@ NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
     }
 
 
-	[super dealloc];
 }
 
 + (NSString *)nameOfShaderType:(GLenum)inType;

@@ -10,7 +10,7 @@
 
 @interface WMNumberInputPortCell : WMInputPortCell
 
-@property (nonatomic, retain) IBOutlet UISlider *valueSlider;
+@property (nonatomic, strong) IBOutlet UISlider *valueSlider;
 
 - (IBAction)changeValue:(id)sender;
 

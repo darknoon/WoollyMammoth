@@ -35,12 +35,6 @@ const CGFloat lineWidth = 8.f;
     return self;
 }
 
-- (void)dealloc
-{
-	[shadowLayer release];
-	[lineLayer release];
-    [super dealloc];
-}
 
 - (void)adjustFrame;
 {

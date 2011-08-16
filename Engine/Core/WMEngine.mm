@@ -25,7 +25,7 @@
 NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 
 @interface WMEngine ()
-@property (nonatomic, retain, readwrite) WMPatch *rootObject;
+@property (nonatomic, strong, readwrite) WMPatch *rootObject;
 
 @end
 
@@ -61,12 +61,6 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 	//TODO: expose the idea of cleanup outside of -dealloc
 	//Call cleanup on all patches
 	[self _cleanupRecursive:rootObject];
-	
-	[rootObject release];
-	[renderContext release];
-	[compositionUserData release];
-
-	[super dealloc];
 }
 
 - (void)_setupRecursive:(WMPatch *)inPatch;
@@ -167,6 +161,8 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 
 - (WMConnection *)connectionToInputPort:(WMPort *)inPort ofNode:(WMPatch *)inPatch inParent:(WMPatch *)inParent;
 {
+#warning Remove this hack when the ARC bug is no longer present
+#if 0
 	for (WMConnection *connection in inParent.connections) {
 		if ([connection.destinationNode isEqualToString:inPatch.key] && [connection.destinationPort isEqualToString:inPort.key]) {
 			//Find the source node
@@ -175,6 +171,18 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 		}
 	}
 	return nil;
+#else
+	__block WMConnection *found_ios_bug_hack;
+	[inParent.connections enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		WMConnection *connection = obj;
+		if ([connection.destinationNode isEqualToString:inPatch.key] && [connection.destinationPort isEqualToString:inPort.key]) {
+			//Find the source node
+			//TODO: optimize the order of this
+			found_ios_bug_hack = connection;
+		}
+	}];
+	return found_ios_bug_hack;
+#endif
 }
 
 - (void)drawPatchRecursive:(WMPatch *)inPatch;
@@ -198,10 +206,11 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 			//TODO: keep a record of what connections are connected to what ports for efficency here
 			//Find a connection to this input port
 			WMConnection *connection = [self connectionToInputPort:inputPort ofNode:patch inParent:inPatch];
-			if (!connection) continue;
-			WMPatch *sourcePatch = [inPatch patchWithKey:connection.sourceNode];
-			WMPort *sourcePort = [sourcePatch outputPortWithKey:connection.sourcePort];
-			[inputPort takeValueFromPort:sourcePort];
+			if (connection) {
+				WMPatch *sourcePatch = [inPatch patchWithKey:connection.sourceNode];
+				WMPort *sourcePort = [sourcePatch outputPortWithKey:connection.sourcePort];
+				[inputPort takeValueFromPort:sourcePort];
+			}
 		}
 
 		//NSLog(@"executing patch: %@", patch.key);

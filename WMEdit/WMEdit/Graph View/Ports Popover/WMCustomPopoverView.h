@@ -10,7 +10,7 @@
 
 @interface WMCustomPopoverView : UIView
 
-@property (nonatomic, retain) UIView *contentView;
+@property (nonatomic, strong) UIView *contentView;
 
 @property (nonatomic) UIPopoverArrowDirection arrowDirection;
 

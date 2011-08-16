@@ -14,10 +14,6 @@
 
 @implementation WMCompositionLibraryViewController
 
-- (void)dealloc
-{
-    [super dealloc];
-}
 
 - (void)didReceiveMemoryWarning
 {
@@ -98,7 +94,7 @@
     
     UITableViewCell *cell = [inTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
     BOOL notNewCompostion = inIndexPath.row < [self compositionsAsPaths].count;
@@ -126,14 +122,13 @@
 		[document openWithCompletionHandler:^(BOOL success) {
 			if (success) {
 				NSLog(@"-openWithCompletionHandler: handler called.");
-				WMEditViewController *e = [[[WMEditViewController alloc] initWithDocument:document] autorelease];			
+				WMEditViewController *e = [[WMEditViewController alloc] initWithDocument:document];			
 				[self.navigationController pushViewController:e animated:YES];
 			} else {
 				NSLog(@"error reading document.");
 			}
 		}];
 
-		[document release];
 
 	} else {
 		fileURL = [[WMCompositionLibrary compositionLibrary] URLForResourceShortName:@"Untitled Document"];
@@ -147,7 +142,7 @@
 			[document openWithCompletionHandler:^(BOOL success) {
 				if (success) {
 					NSLog(@"-openWithCompletionHandler: handler called.");
-					WMEditViewController *e = [[[WMEditViewController alloc] initWithDocument:document] autorelease];			
+					WMEditViewController *e = [[WMEditViewController alloc] initWithDocument:document];			
 					[self.navigationController pushViewController:e animated:YES];
 				} else {
 					NSLog(@"error reading document.");
@@ -155,7 +150,6 @@
 			}];
 
 		}];
-		[document release];
 	}
 	
 	

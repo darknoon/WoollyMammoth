@@ -100,18 +100,12 @@
 		
 	} else {
 		NSLog(@"Couldn't set current EAGLContext to self in WMEAGLContext initWithAPI:sharegroup:");
-		[self release];
 		return nil;
 	}
 	
 	return self;
 }
 
-- (void)dealloc {
-    [boundFramebuffer release];
-	
-    [super dealloc];
-}
 
 
 - (void)setBlendState:(int)inBlendState;
@@ -172,8 +166,7 @@
 - (void)setBoundFramebuffer:(WMFramebuffer *)inFramebuffer;
 {
 	if (boundFramebuffer != inFramebuffer) {
-		[boundFramebuffer release];
-		boundFramebuffer = [inFramebuffer retain];
+		boundFramebuffer = inFramebuffer;
 		
 		if (boundFramebuffer) {
 			[boundFramebuffer bind];
@@ -259,7 +252,7 @@
 	
 	glUseProgram(shader.program);
 	
-	NSMutableOrderedSet *textures = [[[NSMutableOrderedSet alloc] init] autorelease];
+	NSMutableOrderedSet *textures = [[NSMutableOrderedSet alloc] init];
 	
 	//Set uniform values
 	for (NSString *uniformName in shader.uniformNames) {
@@ -436,7 +429,7 @@
 
 - (NSIndexSet *)dirtyIndexSet;
 {
-	return [[dirtySet copy] autorelease];
+	return [dirtySet copy];
 }
 
 - (void)resetDirtyIndexSet;

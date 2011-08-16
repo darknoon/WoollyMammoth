@@ -20,10 +20,10 @@
 
 @interface WMViewController : UIViewController <UIActionSheetDelegate>
 
-@property (readonly, retain) WMEngine *engine;
+@property (readonly, strong) WMEngine *engine;
 @property (readonly, nonatomic, getter=isAnimating) BOOL animating;
 @property (nonatomic) NSInteger animationFrameInterval;
-@property (nonatomic, retain) IBOutlet WMDebugViewController *debugViewController;
+@property (nonatomic, strong) IBOutlet WMDebugViewController *debugViewController;
 
 - (id)initWithRootPatch:(WMPatch *)inPatch;
 

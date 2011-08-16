@@ -16,8 +16,8 @@
 
 @interface WMPatchConnectionsView : UIView
 
-@property (nonatomic, assign) WMGraphEditView *graphView;
-@property (nonatomic, retain) WMPatch *rootPatch;
+@property (nonatomic, weak) WMGraphEditView *graphView;
+@property (nonatomic, strong) WMPatch *rootPatch;
 
 - (void)reloadAllConnections;
 

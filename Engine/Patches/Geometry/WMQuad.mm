@@ -48,9 +48,9 @@ static WMStructureField WMQuadVertex_fields[] = {
 
 + (void)load;
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[self registerToRepresentClassNames:[NSSet setWithObject:@"WMBillboard"]];
-	[pool drain];
+	@autoreleasepool {
+		[self registerToRepresentClassNames:[NSSet setWithObject:@"WMBillboard"]];
+	}
 }
 
 + (id)defaultValueForInputPortKey:(NSString *)inKey;
@@ -69,12 +69,6 @@ static WMStructureField WMQuadVertex_fields[] = {
 	return self;
 }
 
-- (void) dealloc
-{	
-	[shader release];
-	[vertexBuffer release];
-	[super dealloc];
-}
 
 - (WMPatchExecutionMode)executionMode;
 {
@@ -196,8 +190,8 @@ static WMStructureField WMQuadVertex_fields[] = {
 	GL_CHECK_ERROR;
 
 	//Create index data
-	WMStructureDefinition *indexDef  = [[[WMStructureDefinition alloc] initWithAnonymousFieldOfType:WMStructureTypeUnsignedShort] autorelease];
-	WMStructuredBuffer *indexBuffer = [[[WMStructuredBuffer alloc] initWithDefinition:indexDef] autorelease];
+	WMStructureDefinition *indexDef  = [[WMStructureDefinition alloc] initWithAnonymousFieldOfType:WMStructureTypeUnsignedShort];
+	WMStructuredBuffer *indexBuffer = [[WMStructuredBuffer alloc] initWithDefinition:indexDef];
 	[indexBuffer appendData:(unsigned short[]){0,1,2, 1,2,3} withStructure:indexDef count:6];
 	
 	renderObject.indexBuffer = indexBuffer;
@@ -211,7 +205,6 @@ static WMStructureField WMQuadVertex_fields[] = {
 
 - (void)cleanup:(WMEAGLContext *)context;
 {
-	[renderObject release];
 	renderObject = nil;
 	GL_CHECK_ERROR;
 

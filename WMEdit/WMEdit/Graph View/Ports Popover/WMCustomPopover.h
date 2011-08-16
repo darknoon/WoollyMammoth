@@ -13,9 +13,9 @@
 @interface WMCustomPopover : UIViewController
 
 - (id)initWithContentViewController:(UIViewController *)inViewController;
-@property (nonatomic, readonly) UIViewController *contentViewController;
+@property (weak, nonatomic, readonly) UIViewController *contentViewController;
 
-@property (nonatomic, assign) id<WMCustomPopoverDelegate> delegate;
+@property (nonatomic, unsafe_unretained) id<WMCustomPopoverDelegate> delegate;
 
 - (void)presentPopoverFromRect:(CGRect)rect inView:(UIView *)view permittedArrowDirections:(UIPopoverArrowDirection)arrowDirections animated:(BOOL)animated;
 - (void)dismissPopoverAnimated:(BOOL)animated;

@@ -26,7 +26,7 @@ extern NSString *WMBundleDocumentErrorDomain;
 
 @interface WMBundleDocument : DNDocument
 
-@property (nonatomic, retain, readonly) WMPatch *rootPatch;
+@property (nonatomic, strong, readonly) WMPatch *rootPatch;
 @property (nonatomic, copy) NSDictionary *userDictionary;
 
 @end
