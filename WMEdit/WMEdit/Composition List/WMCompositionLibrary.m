@@ -9,12 +9,12 @@
 #import "WMCompositionLibrary.h"
 #import "WMPatch.h"
 #import "NSString+URLEncoding.h"
+#import "WMBundleDocument.h"
 
-NSString *WM_PATH_EXTENSION = @"wmpatch";
 NSString *CompositionsChangedNotification = @"CompositionsChangedNotification";
 
 @interface WMCompositionLibrary(myPascalLikeStuff)
-- (void)findResources;
+- (void)findAllDocuments;
 @end
 
 @implementation WMCompositionLibrary {
@@ -25,7 +25,7 @@ NSString *CompositionsChangedNotification = @"CompositionsChangedNotification";
     self = [super init];
     if (self) {
         compositions = [[NSMutableArray alloc] init];
-        [self findResources];
+        [self findAllDocuments];
     }
     return self;
 }
@@ -98,14 +98,14 @@ NSArray *directoriesToAdd(NSString *path, NSString *existing) {
 	}
 }
 
-- (NSString *)saveFolder {
+- (NSString *)documentsDirectory {
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	return [paths objectAtIndex:0];
 }
 
 - (NSString *)pathForResource:(NSString *)shortName
 {
-	return [[[self saveFolder] stringByAppendingPathComponent:shortName] stringByAppendingPathExtension:WM_PATH_EXTENSION];
+	return [[[self documentsDirectory] stringByAppendingPathComponent:shortName] stringByAppendingPathExtension:WMBundleDocumentExtension];
 }
 
 - (NSURL *)URLForResourceShortName:(NSString *)shortName {
@@ -152,14 +152,17 @@ NSArray *directoriesToAdd(NSString *path, NSString *existing) {
 	return nil;
 }
 
-- (void)findResources {
-    NSString *saveFolder = [self saveFolder];
+- (void)findAllDocuments {
+    NSString *saveFolder = [self documentsDirectory];
     NSError *error = nil;
     NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:saveFolder error:&error];
     for (NSString *file in files) {
         NSString *path = [saveFolder stringByAppendingPathComponent:file];
-        if ([[path pathExtension] isEqualToString:WM_PATH_EXTENSION]) 
+        if ([[path pathExtension] isEqualToString:WMBundleDocumentExtension]) { 
             [compositions addObject:[NSURL fileURLWithPath:path]];
+		} else if ([[path pathExtension] isEqualToString:@"wmpatch"]) {
+			[compositions addObject:[NSURL fileURLWithPath:path]];
+		}
     }
 }
 
@@ -189,7 +192,7 @@ NSString *base62FromBase10(int num)
 }
 
 - (NSString *)pathForThumbOfComposition:(NSURL *)inFileURL {
-    return [[[inFileURL path] stringByDeletingPathExtension] stringByAppendingPathExtension:@"png"];
+    return [[inFileURL path] stringByAppendingPathComponent:@"preview.png"];
 }
 
 - (UIImage *)imageForCompositionPath:(NSURL *)fullComposition {
@@ -197,24 +200,6 @@ NSString *base62FromBase10(int num)
     NSData *d = [NSData dataWithContentsOfFile:path];
     if (d) return [UIImage imageWithData:d];
     return [UIImage imageNamed:@"missing_effect_thumb.jpg"];
-}
-
-
-- (BOOL)saveComposition:(WMPatch *)root image:(UIImage *)image toURL:(NSURL *)inFileURL;
-{
-	if (!inFileURL) inFileURL = [self URLForResourceShortName:[self timeAsCompactString]];
-	
-    NSDictionary *d = [root plistRepresentation];
-    if ([self savePropertyList:d toURL:inFileURL]) {
-        NSString *thumbPath = [self pathForThumbOfComposition:inFileURL];
-        NSData *data = UIImagePNGRepresentation(image);
-        if (data) [data writeToFile:thumbPath atomically:YES];
-		if (![compositions containsObject:inFileURL]) {
-			[compositions addObject:inFileURL];
-		}
-        return YES;
-    }
-    return NO;
 }
 
 - (BOOL)renameComposition:(NSURL *)oldFileURL to:(NSString *)newName {

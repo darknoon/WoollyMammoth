@@ -9,6 +9,7 @@
 #import "WMCompositionLibraryViewController.h"
 #import "WMCompositionLibrary.h"
 
+#import "WMBundleDocument.h"
 #import "WMEditViewController.h"
 
 @implementation WMCompositionLibraryViewController
@@ -102,7 +103,7 @@
     
     BOOL notNewCompostion = inIndexPath.row < [self compositionsAsPaths].count;
     
-    NSString *path =  notNewCompostion ? (NSString *)[[self compositionsAsPaths] objectAtIndex:inIndexPath.row]: nil;
+    NSString *path = notNewCompostion ? (NSString *)[[self compositionsAsPaths] objectAtIndex:inIndexPath.row]: nil;
     UIImage *image = path ? [[WMCompositionLibrary compositionLibrary] imageForCompositionPath:[NSURL fileURLWithPath:path]] : nil;
     
     cell.textLabel.text = notNewCompostion ? [[path lastPathComponent] stringByDeletingPathExtension] : NSLocalizedString(@"New Composition", nil);
@@ -115,15 +116,51 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)inIndexPath
 {
-	WMPatch *p = nil;
 	NSURL *fileURL = nil;
+	WMBundleDocument *document = nil;
 	if (inIndexPath.row < [self compositionsAsPaths].count) {
 		fileURL = [[[WMCompositionLibrary compositionLibrary] compositions] objectAtIndex:inIndexPath.row];
-		p = [[WMCompositionLibrary compositionLibrary] compositionWithURL:fileURL];
+		document = [[WMBundleDocument alloc] initWithFileURL:fileURL];
+		
+		NSLog(@"opening document %@", document);
+		[document openWithCompletionHandler:^(BOOL success) {
+			if (success) {
+				NSLog(@"-openWithCompletionHandler: handler called.");
+				WMEditViewController *e = [[[WMEditViewController alloc] initWithDocument:document] autorelease];			
+				[self.navigationController pushViewController:e animated:YES];
+			} else {
+				NSLog(@"error reading document.");
+			}
+		}];
+
+		[document release];
+
+	} else {
+		fileURL = [[WMCompositionLibrary compositionLibrary] URLForResourceShortName:@"Untitled Document"];
+		document = [[WMBundleDocument alloc] initWithFileURL:fileURL];
+		//Write document to the url
+		NSLog(@"will make new document at url: %@", fileURL);
+		[document saveToURL:fileURL forSaveOperation:UIDocumentSaveForCreating completionHandler:^(BOOL success) {
+			NSLog(@"saved new document to url: %@", fileURL);
+			
+			NSLog(@"opening document %@", document);
+			[document openWithCompletionHandler:^(BOOL success) {
+				if (success) {
+					NSLog(@"-openWithCompletionHandler: handler called.");
+					WMEditViewController *e = [[[WMEditViewController alloc] initWithDocument:document] autorelease];			
+					[self.navigationController pushViewController:e animated:YES];
+				} else {
+					NSLog(@"error reading document.");
+				}
+			}];
+
+		}];
+		[document release];
 	}
-	WMEditViewController *e = [[[WMEditViewController alloc] initWithPatch:p fileURL:fileURL] autorelease];
 	
-	return [self.navigationController pushViewController:e animated:YES];
+	
+	
+	
 }
 
 @end

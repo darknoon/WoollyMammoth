@@ -15,7 +15,7 @@
 #import "WMEngine.h"
 #import "WMDebugViewController.h"
 
-#import "DNQCComposition.h"
+#import "WMCompositionSerialization.h"
 
 @interface WMViewController ()
 
@@ -90,39 +90,6 @@
 	
 	
 	return self;
-}
-
-- (void)reloadEngine;
-{
-	[self reloadEngineFromURL:self.compositionURL];
-}
-
-- (void)reloadEngineFromURL:(NSURL *)inURL;
-{
-	if (engine) {
-		[engine release];
-		engine = nil;
-	}
-	
-	self.compositionURL = inURL;
-	
-	NSString *filePath = [inURL path];
-	NSError *error = nil;
-	DNQCComposition *composition = [[DNQCComposition alloc] initWithContentsOfFile:filePath  error:&error];
-	
-	GL_CHECK_ERROR;
-	engine = [[WMEngine alloc] initWithComposition:composition];
-	[composition release];
-	
-	//TODO: start lazily
-	GL_CHECK_ERROR;
-	[engine start];
-	GL_CHECK_ERROR;
-	
-	[(EAGLView *)self.view setContext:engine.renderContext];
-	//This will create a framebuffer and set it on the context
-    [(EAGLView *)self.view setFramebuffer];
-	
 }
 
 - (void)loadView;

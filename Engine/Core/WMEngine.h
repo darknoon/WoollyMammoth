@@ -12,7 +12,7 @@
 
 @class WMPatch;
 @class WMEAGLContext;
-@class DNQCComposition;
+@class WMCompositionSerialization;
 
 extern NSString *const WMEngineInterfaceOrientationArgument;
 
@@ -27,8 +27,6 @@ extern NSString *const WMEngineInterfaceOrientationArgument;
 }
 
 - (id)initWithRootObject:(WMPatch *)inNode userData:(NSDictionary *)inUserData;
-
-- (id)initWithComposition:(DNQCComposition *)inComposition;
 
 + (GLKMatrix4)cameraMatrixWithRect:(CGRect)inBounds;
 

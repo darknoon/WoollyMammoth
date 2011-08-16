@@ -18,8 +18,6 @@
 #import <objc/objc.h>
 #import <objc/runtime.h>
 
-NSString *WMCompositionPathKey = @"WMCompositionPathKey";
-
 NSString *WMPatchClassPlistName = @"class";
 NSString *WMPatchPluginClassPlistName = @"identifier";
 NSString *WMPatchKeyPlistName = @"key";

@@ -13,7 +13,11 @@
 		49174AAD13D235BD008B5B8D /* EAGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174AA613D235BD008B5B8D /* EAGLView.m */; };
 		49174AAE13D235BD008B5B8D /* WMDebugViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174AA813D235BD008B5B8D /* WMDebugViewController.m */; };
 		49174AAF13D235BD008B5B8D /* WMDebugViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49174AA913D235BD008B5B8D /* WMDebugViewController.xib */; };
-		49174AB013D235BD008B5B8D /* WMViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49174AAB13D235BD008B5B8D /* WMViewController.mm */; };
+		49174AB013D235BD008B5B8D /* WMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174AAB13D235BD008B5B8D /* WMViewController.m */; };
+		4917AC9F13F9C722008AD2CB /* WMBundleDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917AC9C13F9C722008AD2CB /* WMBundleDocument.m */; };
+		4917ACA013F9C722008AD2CB /* WMBundleDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917AC9C13F9C722008AD2CB /* WMBundleDocument.m */; };
+		4917ACA113F9C722008AD2CB /* WMCompositionSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917AC9E13F9C722008AD2CB /* WMCompositionSerialization.m */; };
+		4917ACA213F9C722008AD2CB /* WMCompositionSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917AC9E13F9C722008AD2CB /* WMCompositionSerialization.m */; };
 		491D665513D630BD003C609B /* plugstrip-stretchable~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 491D665413D630BD003C609B /* plugstrip-stretchable~ipad.png */; };
 		494E4D7613D24A4C00402784 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 494E4D2513D24A4C00402784 /* ASIAuthenticationDialog.m */; };
 		494E4D7713D24A4C00402784 /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 494E4D2813D24A4C00402784 /* ASIDataCompressor.m */; };
@@ -68,7 +72,6 @@
 		497928AB13E2AA6800DDBD2A /* SnowParticle.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 497928A813E2AA6700DDBD2A /* SnowParticle.vsh */; };
 		49858E2613DE4C1F0061A1A8 /* WMStructuredBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC213DE4C1F0061A1A8 /* WMStructuredBuffer.m */; };
 		49858E2713DE4C1F0061A1A8 /* WMStructureDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC413DE4C1F0061A1A8 /* WMStructureDefinition.m */; };
-		49858E2813DE4C1F0061A1A8 /* DNQCComposition.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC713DE4C1F0061A1A8 /* DNQCComposition.m */; };
 		49858E2913DE4C1F0061A1A8 /* WMConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC913DE4C1F0061A1A8 /* WMConnection.m */; };
 		49858E2A13DE4C1F0061A1A8 /* WMEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49858DCB13DE4C1F0061A1A8 /* WMEngine.mm */; };
 		49858E2B13DE4C1F0061A1A8 /* WMPatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DCD13DE4C1F0061A1A8 /* WMPatch.m */; };
@@ -192,9 +195,7 @@
 		49BACB4C13EB592A008ED051 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595013D15F640056C506 /* UIKit.framework */; };
 		49BACB4D13EB592A008ED051 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595213D15F640056C506 /* Foundation.framework */; };
 		49BACB4E13EB592A008ED051 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595413D15F640056C506 /* CoreGraphics.framework */; };
-		49BACB5D13EB59D4008ED051 /* WMEngineTests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49BACB5C13EB59D4008ED051 /* WMEngineTests-Info.plist */; };
 		49BACB5E13EB59D9008ED051 /* WMGraphTopologyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BACB4113EB5847008ED051 /* WMGraphTopologyTests.m */; };
-		49BACB6013EB5A08008ED051 /* DNQCComposition.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC713DE4C1F0061A1A8 /* DNQCComposition.m */; };
 		49BACB6213EB5A08008ED051 /* WMConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC913DE4C1F0061A1A8 /* WMConnection.m */; };
 		49BACB6413EB5A08008ED051 /* WMEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49858DCB13DE4C1F0061A1A8 /* WMEngine.mm */; };
 		49BACB6613EB5A08008ED051 /* WMPatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DCD13DE4C1F0061A1A8 /* WMPatch.m */; };
@@ -294,7 +295,11 @@
 		49174AA813D235BD008B5B8D /* WMDebugViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMDebugViewController.m; sourceTree = "<group>"; };
 		49174AA913D235BD008B5B8D /* WMDebugViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMDebugViewController.xib; sourceTree = "<group>"; };
 		49174AAA13D235BD008B5B8D /* WMViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMViewController.h; sourceTree = "<group>"; };
-		49174AAB13D235BD008B5B8D /* WMViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WMViewController.mm; sourceTree = "<group>"; };
+		49174AAB13D235BD008B5B8D /* WMViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMViewController.m; sourceTree = "<group>"; };
+		4917AC9B13F9C722008AD2CB /* WMBundleDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMBundleDocument.h; sourceTree = "<group>"; };
+		4917AC9C13F9C722008AD2CB /* WMBundleDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMBundleDocument.m; sourceTree = "<group>"; };
+		4917AC9D13F9C722008AD2CB /* WMCompositionSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMCompositionSerialization.h; sourceTree = "<group>"; };
+		4917AC9E13F9C722008AD2CB /* WMCompositionSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMCompositionSerialization.m; sourceTree = "<group>"; };
 		491D665413D630BD003C609B /* plugstrip-stretchable~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plugstrip-stretchable~ipad.png"; sourceTree = "<group>"; };
 		494E4D2413D24A4C00402784 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
 		494E4D2513D24A4C00402784 /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIAuthenticationDialog.m; sourceTree = "<group>"; };
@@ -391,8 +396,6 @@
 		49858DC213DE4C1F0061A1A8 /* WMStructuredBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMStructuredBuffer.m; sourceTree = "<group>"; };
 		49858DC313DE4C1F0061A1A8 /* WMStructureDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMStructureDefinition.h; sourceTree = "<group>"; };
 		49858DC413DE4C1F0061A1A8 /* WMStructureDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMStructureDefinition.m; sourceTree = "<group>"; };
-		49858DC613DE4C1F0061A1A8 /* DNQCComposition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNQCComposition.h; sourceTree = "<group>"; };
-		49858DC713DE4C1F0061A1A8 /* DNQCComposition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNQCComposition.m; sourceTree = "<group>"; };
 		49858DC813DE4C1F0061A1A8 /* WMConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMConnection.h; sourceTree = "<group>"; };
 		49858DC913DE4C1F0061A1A8 /* WMConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMConnection.m; sourceTree = "<group>"; };
 		49858DCA13DE4C1F0061A1A8 /* WMEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMEngine.h; sourceTree = "<group>"; };
@@ -726,10 +729,21 @@
 				49174AA813D235BD008B5B8D /* WMDebugViewController.m */,
 				49174AA913D235BD008B5B8D /* WMDebugViewController.xib */,
 				49174AAA13D235BD008B5B8D /* WMViewController.h */,
-				49174AAB13D235BD008B5B8D /* WMViewController.mm */,
+				49174AAB13D235BD008B5B8D /* WMViewController.m */,
 			);
 			name = Application;
 			path = ../Application;
+			sourceTree = "<group>";
+		};
+		4917AC9A13F9C722008AD2CB /* Bundle */ = {
+			isa = PBXGroup;
+			children = (
+				4917AC9B13F9C722008AD2CB /* WMBundleDocument.h */,
+				4917AC9C13F9C722008AD2CB /* WMBundleDocument.m */,
+				4917AC9D13F9C722008AD2CB /* WMCompositionSerialization.h */,
+				4917AC9E13F9C722008AD2CB /* WMCompositionSerialization.m */,
+			);
+			path = Bundle;
 			sourceTree = "<group>";
 		};
 		494E4D2313D24A4C00402784 /* ASIHTTPRequest */ = {
@@ -871,6 +885,7 @@
 			isa = PBXGroup;
 			children = (
 				49858DC513DE4C1F0061A1A8 /* Core */,
+				4917AC9A13F9C722008AD2CB /* Bundle */,
 				49858DD013DE4C1F0061A1A8 /* Patches */,
 				49858DF013DE4C1F0061A1A8 /* Ports */,
 				49858DC013DE4C1F0061A1A8 /* Buffer */,
@@ -896,8 +911,6 @@
 		49858DC513DE4C1F0061A1A8 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				49858DC613DE4C1F0061A1A8 /* DNQCComposition.h */,
-				49858DC713DE4C1F0061A1A8 /* DNQCComposition.m */,
 				49858DC813DE4C1F0061A1A8 /* WMConnection.h */,
 				49858DC913DE4C1F0061A1A8 /* WMConnection.m */,
 				49858DCA13DE4C1F0061A1A8 /* WMEngine.h */,
@@ -1610,7 +1623,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49BACB5D13EB59D4008ED051 /* WMEngineTests-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1707,7 +1719,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49BACB6013EB5A08008ED051 /* DNQCComposition.m in Sources */,
 				49BACB6213EB5A08008ED051 /* WMConnection.m in Sources */,
 				49BACB6413EB5A08008ED051 /* WMEngine.mm in Sources */,
 				49BACB6613EB5A08008ED051 /* WMPatch.m in Sources */,
@@ -1755,6 +1766,8 @@
 				49BACBC713EB5A08008ED051 /* WMMathUtil.c in Sources */,
 				49BACB5E13EB59D9008ED051 /* WMGraphTopologyTests.m in Sources */,
 				49791BC813EB9C45003B20EA /* WMPatch+GraphAlgorithms.m in Sources */,
+				4917ACA013F9C722008AD2CB /* WMBundleDocument.m in Sources */,
+				4917ACA213F9C722008AD2CB /* WMCompositionSerialization.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1770,7 +1783,7 @@
 				49174AAC13D235BD008B5B8D /* DNAssertionHandler.m in Sources */,
 				49174AAD13D235BD008B5B8D /* EAGLView.m in Sources */,
 				49174AAE13D235BD008B5B8D /* WMDebugViewController.m in Sources */,
-				49174AB013D235BD008B5B8D /* WMViewController.mm in Sources */,
+				49174AB013D235BD008B5B8D /* WMViewController.m in Sources */,
 				494E4D7613D24A4C00402784 /* ASIAuthenticationDialog.m in Sources */,
 				494E4D7713D24A4C00402784 /* ASIDataCompressor.m in Sources */,
 				494E4D7813D24A4C00402784 /* ASIDataDecompressor.m in Sources */,
@@ -1806,7 +1819,6 @@
 				49E3145913DA44F600813CE0 /* Random.cpp in Sources */,
 				49858E2613DE4C1F0061A1A8 /* WMStructuredBuffer.m in Sources */,
 				49858E2713DE4C1F0061A1A8 /* WMStructureDefinition.m in Sources */,
-				49858E2813DE4C1F0061A1A8 /* DNQCComposition.m in Sources */,
 				49858E2913DE4C1F0061A1A8 /* WMConnection.m in Sources */,
 				49858E2A13DE4C1F0061A1A8 /* WMEngine.mm in Sources */,
 				49858E2B13DE4C1F0061A1A8 /* WMPatch.m in Sources */,
@@ -1894,6 +1906,8 @@
 				49791BC713EB98E9003B20EA /* WMPatch+GraphAlgorithms.m in Sources */,
 				B405C68D13EB99B000BD062D /* NSString+URLEncoding.m in Sources */,
 				498C2BC113F6630F0071B87F /* WMCVTexture2D.m in Sources */,
+				4917AC9F13F9C722008AD2CB /* WMBundleDocument.m in Sources */,
+				4917ACA113F9C722008AD2CB /* WMCompositionSerialization.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2003,6 +2017,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 				mthumb = YES;
@@ -2020,6 +2035,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 				mthumb = YES;

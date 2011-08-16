@@ -11,14 +11,14 @@
 
 #import "WMGraphEditView.h"
 
-@class WMCompositionLibraryViewController;
+@class WMBundleDocument;
 
 @interface WMEditViewController : UIViewController <UITextFieldDelegate>
 
 //nil == new document
-- (id)initWithPatch:(WMPatch *)inPatch fileURL:(NSURL *)inURL;
+- (id)initWithDocument:(WMBundleDocument *)inDocument;
 
-@property (nonatomic, readonly) NSURL *fileURL;
+@property (nonatomic, retain) WMBundleDocument *document;
 
 @property (nonatomic, retain) IBOutlet WMGraphEditView *graphView;
 @property (nonatomic, retain) IBOutlet UIButton *libraryButton;

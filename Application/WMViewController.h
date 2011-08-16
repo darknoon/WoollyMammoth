@@ -31,9 +31,6 @@
 
 - (IBAction)showDebug:(id)sender;
 
-- (void)reloadEngine;
-- (void)reloadEngineFromURL:(NSURL *)inURL;
-
 - (void)startAnimation;
 - (void)stopAnimation;
 

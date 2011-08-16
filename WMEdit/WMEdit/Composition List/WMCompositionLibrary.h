@@ -16,13 +16,7 @@
 + (WMCompositionLibrary *)compositionLibrary;
 
 
-// client calling this will save both image and plist next to each other, same name, diff extenstions: .plist .jpg
-
-- (BOOL)saveComposition:(WMPatch *)root image:(UIImage *)image toURL:(NSURL *)inFileURL;
-- (WMPatch *)compositionWithURL:(NSURL *)inURL;
-
-
-- (NSString *)saveFolder;
+- (NSString *)documentsDirectory;
 - (NSString *)pathForResource:(NSString *)shortName;
 - (NSURL *)URLForResourceShortName:(NSString *)shortName;
 - (NSString *)shortNameFromURL:(NSURL *)url;
@@ -33,5 +27,4 @@
 
 @end
 
-extern NSString *WM_PATH_EXTENSION;
 extern NSString *CompositionsChangedNotification;

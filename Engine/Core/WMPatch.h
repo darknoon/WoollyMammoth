@@ -12,8 +12,6 @@
 
 #import "WMPatchCategories.h"
 
-extern NSString *WMCompositionPathKey;
-
 typedef enum {
 	kWMPatchExecutionModeProcessor = 0, // 0 (e.g., "Math", "Image With String")
 	kWMPatchExecutionModeConsumer,      // 1 (e.g., "Clear", "Billboard", "Lighting")

@@ -26,12 +26,6 @@
 	//Set our assertion handler
 	[[[NSThread currentThread] threadDictionary] setObject:[[[DNAssertionHandler alloc] init] autorelease] forKey:NSAssertionHandlerKey];
 	
-	//Create new document if none existing
-	if ([WMCompositionLibrary compositionLibrary].compositions.count == 0) {
-		WMEditViewController *e = [[[WMEditViewController alloc] initWithPatch:nil fileURL:nil] autorelease];
-		[self.navController pushViewController:e animated:NO];
-	}
-	
     return YES;
 }
 

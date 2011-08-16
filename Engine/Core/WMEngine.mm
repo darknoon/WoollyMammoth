@@ -18,7 +18,7 @@
 
 #import "WMEAGLContext.h"
 #import "WMFramebuffer.h"
-#import "DNQCComposition.h"
+#import "wMCompositionSerialization.h"
 
 #define DEBUG_LOG_RENDER_MATRICES 0
 
@@ -45,15 +45,6 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 	compositionUserData = inUserData ? [inUserData mutableCopy] : [[NSMutableDictionary alloc] init];
 	
 	return self;
-}
-
-- (id)initWithComposition:(DNQCComposition *)inComposition;
-{
-	if (inComposition.rootPatch) {
-		return [self initWithRootObject:inComposition.rootPatch userData:inComposition.userDictionary];
-	} else {
-		return nil;
-	}
 }
 
 //TODO: This could be done with an "enumerate children recursive with block"

@@ -18,6 +18,7 @@
 #import "WMCustomPopover.h"
 #import "WMInputPortsController.h"
 #import "WMPatch+SettingsControllerClass.h"
+#import "WMBundleDocument.h"
 
 #import "WMCompositionLibrary.h"
 
@@ -49,29 +50,30 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
     WMGraphEditView *graphicView;
 }
 
+@synthesize document;
 @synthesize graphView;
 @synthesize libraryButton;
 @synthesize patchesButton;
-@synthesize fileURL;
 @synthesize titleLabel;
 @synthesize addNodeRecognizer;
 
-- (id)initWithPatch:(WMPatch *)inPatch fileURL:(NSURL *)inURL
+- (id)initWithDocument:(WMBundleDocument *)inDocument;
 {
-	self = [super initWithNibName:@"WMEditViewController" bundle:nil];
+	self = [super init];
 	if (!self) return nil;
 	
-	fileURL = [inURL retain];
+	if (!inDocument) {
+		[self release];
+		return nil;
+	}
 	
+	document = [inDocument retain];
+
 	patchViewsByKey = [[NSMutableDictionary alloc] init];
 	
-	if (inPatch) {
-		rootPatch = [inPatch retain];
-	} else {
-		rootPatch = [[WMPatch alloc] initWithPlistRepresentation:nil];
-	}
+	rootPatch = [document.rootPatch retain];
 	rootPatch.key = @"root";
-		
+
 	return self;
 }
 
@@ -81,6 +83,11 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	[previewController release];
 	[graphView release];
     [super dealloc];
+}
+
+- (NSURL *)fileURL;
+{
+	return document.fileURL;
 }
 
 - (void)didReceiveMemoryWarning
@@ -134,7 +141,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
     self.navigationItem.titleView = titleLabel;
     UITapGestureRecognizer *editRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(editCompositionNameAction:)] autorelease];
 	[titleLabel addGestureRecognizer:editRecognizer];
-    titleLabel.text = fileURL ? [[WMCompositionLibrary compositionLibrary] shortNameFromURL:fileURL] : NSLocalizedString(@"Tap to name Composition", nil);
+    titleLabel.text = document.localizedName;
 	[self addPatchViews];
 }
 
@@ -295,16 +302,14 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	}
 }
 
-- (BOOL)saveComposition;
-{
-	//Save
-	return [[WMCompositionLibrary compositionLibrary] saveComposition:rootPatch image:[previewController screenshotImage] toURL:self.fileURL];
-}
-
 - (IBAction)close:(id)sender;
 {
-	[self saveComposition];
-	[self.navigationController popViewControllerAnimated:YES];
+	//Save
+	NSLog(@"Attempting to close document: %@", document);
+	[document closeWithCompletionHandler:^(BOOL success) {
+		NSLog(@"Success in closing document: %@", document);
+		[self.navigationController popViewControllerAnimated:YES];
+	}];
 }
 
 - (void)viewWillAppear:(BOOL)inAnimated;
