@@ -10,11 +10,12 @@
 
 #import "WMPatch.h"
 #import "WMCompositionSerialization.h"
+#import "DNDocument.h"
 
 //File extension for Woolly Mammoth bundles
 extern NSString *WMBundleDocumentExtension;
 
-enum WMBundleDocumentRError {
+enum WMBundleDocumentError {
 	WMBundleDocumentErrorRootDataSize = -14,
 	WMBundleDocumentErrorRootPlistInvalid = -15,	
 	WMBundleDocumentErrorRootPatchReadError = -16,	
@@ -23,37 +24,7 @@ enum WMBundleDocumentRError {
 
 extern NSString *WMBundleDocumentErrorDomain;
 
-#define USE_UIDOCUMENT 0
-
-//UIDocument is fucking broken. So, I'm subclassing object instead for now.
-#if USE_UIDOCUMENT
-@interface WMBundleDocument : UIDocument
-#else
-@interface WMBundleDocument : NSObject
-
-- (id)initWithFileURL:(NSURL *)url;
-
-@property(readonly) NSURL *fileURL;
-@property(readonly, copy) NSString *localizedName;  // The default implementation derives the name from the URL. Subclasses may override to provide a custom name for presentation to the user, such as in error strings.
-@property(readonly, copy) NSString *fileType;       // The file's UTI. Derived from the fileURL by default.
-
-@property(readonly) UIDocumentState documentState;
-
-- (void)openWithCompletionHandler:(void (^)(BOOL success))completionHandler;
-- (void)closeWithCompletionHandler:(void (^)(BOOL success))completionHandler;
-
-- (BOOL)loadFromContents:(id)contents ofType:(NSString *)typeName error:(NSError **)outError;
-- (id)contentsForType:(NSString *)typeName error:(NSError **)outError;
-
-- (void)handleError:(NSError *)error userInteractionPermitted:(BOOL)userInteractionPermitted;
-
-- (void)saveToURL:(NSURL *)url forSaveOperation:(UIDocumentSaveOperation)saveOperation completionHandler:(void (^)(BOOL success))completionHandler;
-- (BOOL)readFromURL:(NSURL *)url error:(NSError **)outError;
-
-#endif
-
-
-
+@interface WMBundleDocument : DNDocument
 
 @property (nonatomic, retain, readonly) WMPatch *rootPatch;
 @property (nonatomic, copy) NSDictionary *userDictionary;

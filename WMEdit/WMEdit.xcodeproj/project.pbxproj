@@ -19,6 +19,7 @@
 		4917ACA113F9C722008AD2CB /* WMCompositionSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917AC9E13F9C722008AD2CB /* WMCompositionSerialization.m */; };
 		4917ACA213F9C722008AD2CB /* WMCompositionSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917AC9E13F9C722008AD2CB /* WMCompositionSerialization.m */; };
 		491D665513D630BD003C609B /* plugstrip-stretchable~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 491D665413D630BD003C609B /* plugstrip-stretchable~ipad.png */; };
+		4937415713FAFD3900ABC9BA /* DNDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4937415613FAFD3900ABC9BA /* DNDocument.m */; };
 		494E4D7613D24A4C00402784 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 494E4D2513D24A4C00402784 /* ASIAuthenticationDialog.m */; };
 		494E4D7713D24A4C00402784 /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 494E4D2813D24A4C00402784 /* ASIDataCompressor.m */; };
 		494E4D7813D24A4C00402784 /* ASIDataDecompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 494E4D2A13D24A4C00402784 /* ASIDataDecompressor.m */; };
@@ -301,6 +302,8 @@
 		4917AC9D13F9C722008AD2CB /* WMCompositionSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMCompositionSerialization.h; sourceTree = "<group>"; };
 		4917AC9E13F9C722008AD2CB /* WMCompositionSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMCompositionSerialization.m; sourceTree = "<group>"; };
 		491D665413D630BD003C609B /* plugstrip-stretchable~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plugstrip-stretchable~ipad.png"; sourceTree = "<group>"; };
+		4937415513FAFD3900ABC9BA /* DNDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNDocument.h; sourceTree = "<group>"; };
+		4937415613FAFD3900ABC9BA /* DNDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNDocument.m; sourceTree = "<group>"; };
 		494E4D2413D24A4C00402784 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
 		494E4D2513D24A4C00402784 /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIAuthenticationDialog.m; sourceTree = "<group>"; };
 		494E4D2613D24A4C00402784 /* ASICacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASICacheDelegate.h; sourceTree = "<group>"; };
@@ -1053,6 +1056,8 @@
 		49858E1213DE4C1F0061A1A8 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				4937415513FAFD3900ABC9BA /* DNDocument.h */,
+				4937415613FAFD3900ABC9BA /* DNDocument.m */,
 				49858E1313DE4C1F0061A1A8 /* EAGLContext+Extensions.h */,
 				49858E1413DE4C1F0061A1A8 /* EAGLContext+Extensions.m */,
 				49858E1513DE4C1F0061A1A8 /* GLKMath_cpp.h */,
@@ -1908,6 +1913,7 @@
 				498C2BC113F6630F0071B87F /* WMCVTexture2D.m in Sources */,
 				4917AC9F13F9C722008AD2CB /* WMBundleDocument.m in Sources */,
 				4917ACA113F9C722008AD2CB /* WMCompositionSerialization.m in Sources */,
+				4937415713FAFD3900ABC9BA /* DNDocument.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
