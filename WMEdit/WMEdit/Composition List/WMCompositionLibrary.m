@@ -114,42 +114,12 @@ NSArray *directoriesToAdd(NSString *path, NSString *existing) {
 
 - (NSString *)shortNameFromURL:(NSURL *)url;
 {
-    return [[[[url absoluteString] URLDecodedString]lastPathComponent] stringByDeletingPathExtension];
+    return [[[[url absoluteString] URLDecodedString] lastPathComponent] stringByDeletingPathExtension];
 }
 
 - (NSArray *)compositions;
 {
 	return [[compositions copy] autorelease];
-}
-
-- (BOOL)savePropertyList:(id)d toURL:(NSURL *)inURL {
-	NSString *errorString = nil;
-	NSData *data = [NSPropertyListSerialization dataFromPropertyList:d format:kCFPropertyListBinaryFormat_v1_0 errorDescription:&errorString];
-	
-	return [data writeToURL:inURL atomically:YES];
-}
-
-- (NSMutableDictionary *)propertyListWithData:(NSData *)data {
-	if (!data) return nil;
-	
-    NSString * errorString = nil;
-	NSPropertyListFormat format;	
-	NSMutableDictionary *dict = [NSPropertyListSerialization propertyListFromData:data mutabilityOption:NSPropertyListMutableContainersAndLeaves format:&format errorDescription:&errorString];
-	return dict;
-}
-
-
-- (WMPatch *)compositionWithURL:(NSURL *)inURL;
-{
-    NSData *d = [NSData dataWithContentsOfURL:inURL];
-    if (d) {
-        id propertyList = [self propertyListWithData:d];
-        if (propertyList) {
-			WMPatch *patch = [[[WMPatch alloc] initWithPlistRepresentation:propertyList] autorelease];
-			return patch;
-		}
-    }
-	return nil;
 }
 
 - (void)findAllDocuments {
@@ -200,20 +170,6 @@ NSString *base62FromBase10(int num)
     NSData *d = [NSData dataWithContentsOfFile:path];
     if (d) return [UIImage imageWithData:d];
     return [UIImage imageNamed:@"missing_effect_thumb.jpg"];
-}
-
-- (BOOL)renameComposition:(NSURL *)oldFileURL to:(NSString *)newName {
-    NSString *oldThumbPath = [self pathForThumbOfComposition:oldFileURL];
-    NSURL *newURL = [self URLForResourceShortName:newName];
-    NSString *newThumbPath = [self pathForThumbOfComposition:newURL];
-    NSError *error = nil;
-    if ([[NSFileManager defaultManager] moveItemAtURL:oldFileURL toURL:newURL error:&error] &&
-        [[NSFileManager defaultManager] moveItemAtPath:oldThumbPath toPath:newThumbPath error:&error]) {
-        [compositions replaceObjectAtIndex:[compositions indexOfObject:oldFileURL] withObject:newURL];
-        [[NSNotificationCenter defaultCenter] postNotificationName:CompositionsChangedNotification object:oldFileURL];
-        return  YES;
-    }
-    return  NO;
 }
 
 - (void)dealloc

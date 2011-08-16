@@ -27,7 +27,6 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 
 @interface WMEditViewController ()
 - (void)addPatchViews;
-- (BOOL)saveComposition;
 
 @end
 
@@ -149,17 +148,12 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 {
     NSString *shortName = textField.text;
     if (shortName.length > 0) {
-        if (!fileURL) {
-            fileURL = [[[WMCompositionLibrary compositionLibrary] URLForResourceShortName:shortName] retain];
-            if ([self saveComposition]) self.titleLabel.text = shortName;
-        } else {
-            if (![shortName isEqualToString:[[[fileURL absoluteString] lastPathComponent] stringByDeletingPathExtension]]) {
-                if ([[WMCompositionLibrary compositionLibrary] renameComposition:fileURL to:shortName]) {
-                    self.titleLabel.text = shortName;
-                    fileURL = [[[WMCompositionLibrary compositionLibrary] URLForResourceShortName:shortName] retain];
-                }
-            }
-        }
+		NSURL *newFileURL = [[WMCompositionLibrary compositionLibrary] URLForResourceShortName:shortName];
+		[document saveToURL:newFileURL forSaveOperation:UIDocumentSaveForCreating completionHandler:^(BOOL success) {
+			if (success) {
+				titleLabel.text = document.localizedName;
+			}
+		}];
     }
     [textField removeFromSuperview];
 }

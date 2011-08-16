@@ -37,6 +37,9 @@ extern NSString *WMBundleDocumentErrorDomain;
 
 @property(readonly) UIDocumentState documentState;
 
+- (void)openWithCompletionHandler:(void (^)(BOOL success))completionHandler;
+- (void)closeWithCompletionHandler:(void (^)(BOOL success))completionHandler;
+
 - (BOOL)loadFromContents:(id)contents ofType:(NSString *)typeName error:(NSError **)outError;
 - (id)contentsForType:(NSString *)typeName error:(NSError **)outError;
 

@@ -42,8 +42,6 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 #else
 	self = [super init];
 	fileURL = [url retain];
-	fileType = [[url pathExtension] retain];
-	localizedName = [[[url lastPathComponent] stringByDeletingPathExtension] retain];
 	documentState = UIDocumentStateClosed;
 #endif
 	if (!self) return nil;
@@ -52,8 +50,6 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 	rootPatch = [[WMPatch alloc] initWithPlistRepresentation:nil];
 	rootPatch.key = @"root";
 		
-	NSLog(@"Current file presenters: %@", [NSFileCoordinator filePresenters]);
-	
 	return self;
 }
 
@@ -66,19 +62,36 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 
 #if !USE_UIDOCUMENT
 
+- (NSString *)fileType;
+{
+	return fileType ? fileType : [self.fileURL pathExtension];
+}
+
+- (NSString *)localizedName;
+{
+	return localizedName ? localizedName : [[self.fileURL lastPathComponent] stringByDeletingPathExtension];
+}
+
 - (void)openWithCompletionHandler:(void (^)(BOOL success))completionHandler;
 {
 	NSError *error = nil;
 	BOOL ok = [self readFromURL:self.fileURL error:&error];
 	if (!ok) {
 		[self handleError:error userInteractionPermitted:YES];
+	} else {
+		documentState = UIDocumentStateNormal;
 	}
 	completionHandler(ok);
 }
 
 - (void)closeWithCompletionHandler:(void (^)(BOOL success))completionHandler;
 {
-	[self saveToURL:self.fileURL forSaveOperation:UIDocumentSaveForOverwriting completionHandler:completionHandler];
+	[self saveToURL:self.fileURL forSaveOperation:UIDocumentSaveForOverwriting completionHandler:^(BOOL success) {
+		if (success) {
+			documentState = UIDocumentStateClosed;
+		}
+		completionHandler(success);
+	}];
 }
 
 - (BOOL)readFromURL:(NSURL *)url error:(NSError **)outError;
@@ -112,6 +125,10 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 		BOOL ok = [(NSFileWrapper *)contents writeToURL:url options:NSFileWrapperWritingAtomic originalContentsURL:self.fileURL error:&error];
 		if (!ok) {
 			[self handleError:error userInteractionPermitted:YES];
+		}
+		if (fileURL != url) {
+			[fileURL release];
+			fileURL = [url retain];
 		}
 		completionHandler(ok);
 	}	
