@@ -48,7 +48,6 @@
 - (IBAction)reloadGame;
 {
 	[activityIndicator startAnimating];
-	[parent reloadEngine];
 	[activityIndicator stopAnimating];
 }
 

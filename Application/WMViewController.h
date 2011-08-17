@@ -27,6 +27,8 @@
 
 - (id)initWithRootPatch:(WMPatch *)inPatch;
 
+@property (nonatomic, copy) NSURL *compositionURL;
+
 - (UIImage *)screenshotImage;
 
 - (IBAction)showDebug:(id)sender;

@@ -13,15 +13,10 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "WMEngine.h"
+#import "WMBundleDocument.h"
 #import "WMDebugViewController.h"
 
 #import "WMCompositionSerialization.h"
-
-@interface WMViewController ()
-
-@property (nonatomic, copy) NSURL *compositionURL;
-
-@end
 
 @implementation WMViewController {
     CADisplayLink *displayLink;
@@ -73,12 +68,30 @@
 {
 	self = [super initWithNibName:nil bundle:nil];
 	if (!self) return nil;
-		
+	
 	self.compositionURL = nil;
 	
 	GL_CHECK_ERROR;
 	engine = [[WMEngine alloc] initWithRootObject:inPatch userData:nil];
 	
+	return self;
+}
+
+- (void)loadView;
+{
+	if (self.nibName) {
+		[super loadView];
+	}
+	if (![self isViewLoaded]) {
+		CGRect defaultFrame = [[UIScreen mainScreen] applicationFrame];
+		EAGLView *view = [[[EAGLView alloc] initWithFrame:defaultFrame] autorelease];
+		view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		self.view = view;
+	}
+}
+
+- (void)engineDidLoad;
+{
 	//TODO: start lazily
 	GL_CHECK_ERROR;
 	[engine start];
@@ -86,23 +99,31 @@
 	
 	[(EAGLView *)self.view setContext:engine.renderContext];
 	//This will create a framebuffer and set it on the context
-    [(EAGLView *)self.view setFramebuffer];
-	
-	
-	return self;
-}
-
-- (void)loadView;
-{
-	CGRect defaultFrame = [[UIScreen mainScreen] applicationFrame];
-	EAGLView *view = [[[EAGLView alloc] initWithFrame:defaultFrame] autorelease];
-	view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	self.view = view;
+	[(EAGLView *)self.view setFramebuffer];
 }
 
 - (void)viewDidLoad;
 {
 	[super viewDidLoad];
+	
+	if (!engine && self.compositionURL) {
+		WMBundleDocument *document = [[WMBundleDocument alloc] initWithFileURL:self.compositionURL];
+		[document openWithCompletionHandler:^(BOOL success) {
+			dispatch_async(dispatch_get_main_queue(), ^() {
+				if (success) {
+					engine = [[WMEngine alloc] initWithRootObject:document.rootPatch userData:nil];
+					[self engineDidLoad];				
+				} else {
+					NSLog(@"Error loading composition");
+				}
+			});
+		}];
+	}
+	
+	if (engine) {
+		[self engineDidLoad];
+	}
+	
 	fpsLabel = [[UILabel alloc] initWithFrame:CGRectMake(74, 10, 200, 22)];
 	fpsLabel.backgroundColor = [UIColor clearColor];
 	fpsLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:18.f];
