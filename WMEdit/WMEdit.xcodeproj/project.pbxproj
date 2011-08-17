@@ -228,7 +228,6 @@
 		49BACB9C13EB5A08008ED051 /* WMRenderObjectPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB4C13E10F03002DC713 /* WMRenderObjectPort.m */; };
 		49BACB9E13EB5A08008ED051 /* WMStructuredBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC213DE4C1F0061A1A8 /* WMStructuredBuffer.m */; };
 		49BACBA013EB5A08008ED051 /* WMStructureDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC413DE4C1F0061A1A8 /* WMStructureDefinition.m */; };
-		49BACBA113EB5A08008ED051 /* WMEngineTests-Info.plist in Sources */ = {isa = PBXBuildFile; fileRef = 49BACB5C13EB59D4008ED051 /* WMEngineTests-Info.plist */; };
 		49BACBA413EB5A08008ED051 /* GLDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E0213DE4C1F0061A1A8 /* GLDefines.m */; };
 		49BACBA613EB5A08008ED051 /* WMEAGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E0413DE4C1F0061A1A8 /* WMEAGLContext.m */; };
 		49BACBA813EB5A08008ED051 /* WMFramebuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E0613DE4C1F0061A1A8 /* WMFramebuffer.m */; };
@@ -1755,7 +1754,6 @@
 				49BACB9C13EB5A08008ED051 /* WMRenderObjectPort.m in Sources */,
 				49BACB9E13EB5A08008ED051 /* WMStructuredBuffer.m in Sources */,
 				49BACBA013EB5A08008ED051 /* WMStructureDefinition.m in Sources */,
-				49BACBA113EB5A08008ED051 /* WMEngineTests-Info.plist in Sources */,
 				49BACBA413EB5A08008ED051 /* GLDefines.m in Sources */,
 				49BACBA613EB5A08008ED051 /* WMEAGLContext.m in Sources */,
 				49BACBA813EB5A08008ED051 /* WMFramebuffer.m in Sources */,
@@ -2013,30 +2011,25 @@
 		49F0598113D15F640056C506 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
-				mthumb = YES;
 			};
 			name = Debug;
 		};
 		49F0598213D15F640056C506 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -2044,7 +2037,6 @@
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
-				mthumb = YES;
 			};
 			name = Release;
 		};
