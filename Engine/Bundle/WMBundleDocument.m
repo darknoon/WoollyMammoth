@@ -30,6 +30,7 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 @synthesize rootPatch;
 @synthesize userDictionary;
 @synthesize resourceWrappers;
+@synthesize preview;
 
 - (id)initWithFileURL:(NSURL *)url;
 {
@@ -283,6 +284,25 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 			}
 		};
 	}];
+}
+
+- (UIImage *)preview;
+{
+	//This has to be synchronous... Any way to get around that?
+	if (!preview) {
+		preview = [[UIImage imageWithContentsOfFile:[[self.fileURL URLByAppendingPathComponent:WMBundleDocumentPreviewFileName] path]] retain];
+	}
+	return preview;
+}
+
+- (void)setPreview:(UIImage *)inPreview;
+{
+	if (preview != inPreview) {
+		preview = [inPreview retain];
+		[self performAsynchronousFileAccessUsingBlock:^() {
+			[UIImagePNGRepresentation(inPreview) writeToURL:[self.fileURL URLByAppendingPathComponent:WMBundleDocumentPreviewFileName] atomically:YES];
+		}];
+	}
 }
 
 - (void)removeResourceNamed:(NSString *)inResourceName;

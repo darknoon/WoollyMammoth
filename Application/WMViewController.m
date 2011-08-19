@@ -162,6 +162,8 @@
 {
     [self stopAnimation];
     
+	document.preview = [(EAGLView *)self.view screenshotImage];
+	
 	[[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 	
     [super viewWillDisappear:animated];

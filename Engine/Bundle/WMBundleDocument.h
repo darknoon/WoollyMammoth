@@ -30,6 +30,8 @@ extern NSString *WMBundleDocumentErrorDomain;
 @property (nonatomic, retain, readonly) WMPatch *rootPatch;
 @property (nonatomic, copy) NSDictionary *userDictionary;
 
+@property (nonatomic, retain) UIImage *preview;
+
 //Dictionary of name => file wrapper representing the resources for this bundle
 @property (nonatomic, copy) NSDictionary *resourceWrappers;
 
