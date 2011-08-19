@@ -35,6 +35,7 @@
 - (void)saveToURL:(NSURL *)url forSaveOperation:(UIDocumentSaveOperation)saveOperation completionHandler:(void (^)(BOOL success))completionHandler;
 - (BOOL)readFromURL:(NSURL *)url error:(NSError **)outError;
 
+- (void)performAsynchronousFileAccessUsingBlock:(void (^)(void))block;
 #endif
 
 @end

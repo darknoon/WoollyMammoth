@@ -255,6 +255,7 @@
 		49BACBD913EB5BDA008ED051 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5263F13D172CF004EC7F6 /* CFNetwork.framework */; };
 		49BACBDA13EB5BDD008ED051 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5263D13D172C6004EC7F6 /* QuartzCore.framework */; };
 		49BACBDB13EB5BDF008ED051 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5263B13D172BC004EC7F6 /* CoreMIDI.framework */; };
+		49D73A8713FEE0F60028AF22 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D73A8613FEE0F60028AF22 /* AssetsLibrary.framework */; };
 		49E3145913DA44F600813CE0 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49E3145613DA44F600813CE0 /* Random.cpp */; };
 		49E3145A13DA44F600813CE0 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49E3145613DA44F600813CE0 /* Random.cpp */; };
 		49F0595113D15F640056C506 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595013D15F640056C506 /* UIKit.framework */; };
@@ -630,6 +631,7 @@
 		49BACB4A13EB592A008ED051 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		49BACB5C13EB59D4008ED051 /* WMEngineTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "WMEngineTests-Info.plist"; sourceTree = "<group>"; };
 		49BACBC913EB5B54008ED051 /* WMEngineTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMEngineTests-Prefix.pch"; sourceTree = "<group>"; };
+		49D73A8613FEE0F60028AF22 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		49E3145613DA44F600813CE0 /* Random.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Random.cpp; sourceTree = "<group>"; };
 		49E3145713DA44F600813CE0 /* Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Random.h; sourceTree = "<group>"; };
 		49E3145813DA44F600813CE0 /* Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Types.h; sourceTree = "<group>"; };
@@ -687,6 +689,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49D73A8713FEE0F60028AF22 /* AssetsLibrary.framework in Frameworks */,
 				490AC1E713D8F10F005E61CD /* GLKit.framework in Frameworks */,
 				494E4EF213D25D2B00402784 /* CoreMedia.framework in Frameworks */,
 				494E4EF013D25D1C00402784 /* AVFoundation.framework in Frameworks */,
@@ -1469,6 +1472,7 @@
 		49F0594F13D15F640056C506 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				49D73A8613FEE0F60028AF22 /* AssetsLibrary.framework */,
 				490AC1E613D8F10F005E61CD /* GLKit.framework */,
 				494E4EF113D25D2B00402784 /* CoreMedia.framework */,
 				494E4EEF13D25D1C00402784 /* AVFoundation.framework */,

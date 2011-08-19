@@ -10,12 +10,16 @@
 
 #import "WMTexture2D.h"
 #import "WMImagePort.h"
+#import "WMEngine.h"
+#import "WMBundleDocument.h"
 
+//Deprecated
 NSString *const WMImageLoaderImageDataKey = @"imageData";
 
+NSString *const WMImageLoaderImageResourceKey = @"imageResource";
+
 @implementation WMImageLoader
-@synthesize outputImage;
-@synthesize imageData;
+@synthesize imageResource;
 
 + (NSString *)category;
 {
@@ -32,15 +36,13 @@ NSString *const WMImageLoaderImageDataKey = @"imageData";
 - (BOOL)setPlistState:(id)inPlist;
 {
 	//TODO: should we check that the image is valid for use here?
-	self.imageData = [inPlist objectForKey:WMImageLoaderImageDataKey];
+	self.imageResource = [inPlist objectForKey:WMImageLoaderImageResourceKey];
 
 	return [super setPlistState:inPlist];
 }
 
 - (void)dealloc;
-{
-	[imageData release];
-	
+{	
 	[super dealloc];
 }
 
@@ -48,11 +50,26 @@ NSString *const WMImageLoaderImageDataKey = @"imageData";
 {
 	NSMutableDictionary *state = [[super plistState] mutableCopy];
 	
-	if (self.imageData) {
-		[state setObject:imageData forKey:WMImageLoaderImageDataKey];
+	if (self.imageResource) {
+		[state setObject:self.imageResource forKey:WMImageLoaderImageResourceKey];
 	}
 	
 	return [state autorelease];
+}
+
+- (UIImage *)imageInDocument:(WMBundleDocument *)inDocument;
+{
+	NSFileWrapper *wrapper = [[inDocument resourceWrappers] objectForKey:self.imageResource];
+	
+	NSString *basePath = [inDocument.fileURL path];
+	NSString *path = [basePath stringByAppendingPathComponent:wrapper.filename];
+	
+	UIImage *uiImage = [UIImage imageWithContentsOfFile:path];
+	if (!uiImage) {
+		NSLog(@"Couldn't load image data! Path: %@", path);
+	}
+
+	return uiImage;
 }
 
 - (BOOL)setup:(WMEAGLContext *)context;
@@ -63,15 +80,18 @@ NSString *const WMImageLoaderImageDataKey = @"imageData";
 
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
-	if (imageData && !outputImage.image) {
-		UIImage *uiImage = [UIImage imageWithData:imageData];
-		if (!uiImage) {
-			NSLog(@"Couldn't load image data!");
+	WMBundleDocument *document = [args objectForKey:WMEngineArgumentsDocumentKey];
+	
+	if (!outputImage.image && document && self.imageResource) {
+		UIImage *image = [self imageInDocument:document];
+		if (image) {
+			WMTexture2D *texture = [[WMTexture2D alloc] initWithImage:image];
+			outputImage.image = texture;
+			[texture release];
+			return texture != nil;
+		} else {
+			return NO;
 		}
-		WMTexture2D *texture = [[WMTexture2D alloc] initWithImage:uiImage];
-		outputImage.image = texture;
-		[texture release];
-		return texture != nil;
 	} else {
 		//Presumably data will be added later?
 		return YES;

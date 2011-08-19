@@ -29,7 +29,7 @@
 	NSUInteger framesSinceLastFPSUpdate;
 }
 
-
+@synthesize document;
 @synthesize engine;
 @synthesize animating;
 @synthesize debugViewController;
@@ -43,6 +43,16 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
+}
+
+- (id)initWithDocument:(WMBundleDocument *)inDocument;
+{
+	self = [self initWithNibName:nil bundle:nil];
+	if (!self) return nil;
+	
+	document = [inDocument retain];
+	
+	return self;
 }
 
 - (id)initWithCoder:(NSCoder *)coder {
@@ -64,17 +74,12 @@
 	return self;
 }
 
-- (id)initWithRootPatch:(WMPatch *)inPatch;
+- (void)dealloc;
 {
-	self = [super initWithNibName:nil bundle:nil];
-	if (!self) return nil;
-	
-	self.compositionURL = nil;
-	
-	GL_CHECK_ERROR;
-	engine = [[WMEngine alloc] initWithRootObject:inPatch userData:nil];
-	
-	return self;
+	[document release];
+    [engine release];
+	[debugViewController release];
+    [super dealloc];
 }
 
 - (void)loadView;
@@ -102,26 +107,31 @@
 	[(EAGLView *)self.view setFramebuffer];
 }
 
+- (void)setup;
+{
+	engine = [[WMEngine alloc] initWithBundle:document];
+	[self engineDidLoad];
+}
+
 - (void)viewDidLoad;
 {
 	[super viewDidLoad];
 	
-	if (!engine && self.compositionURL) {
-		WMBundleDocument *document = [[WMBundleDocument alloc] initWithFileURL:self.compositionURL];
+	if (!document && self.compositionURL) {
+		document = [[WMBundleDocument alloc] initWithFileURL:self.compositionURL];
+	}
+	if (document.documentState == UIDocumentStateClosed) {
 		[document openWithCompletionHandler:^(BOOL success) {
 			dispatch_async(dispatch_get_main_queue(), ^() {
 				if (success) {
-					engine = [[WMEngine alloc] initWithRootObject:document.rootPatch userData:nil];
-					[self engineDidLoad];				
+					[self setup];
 				} else {
 					NSLog(@"Error loading composition");
 				}
 			});
 		}];
-	}
-	
-	if (engine) {
-		[self engineDidLoad];
+	} else {
+		[self setup];
 	}
 	
 	fpsLabel = [[UILabel alloc] initWithFrame:CGRectMake(74, 10, 200, 22)];
@@ -136,13 +146,6 @@
 	
 	UITapGestureRecognizer *tapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleNavigationBar)] autorelease];
 	[self.view addGestureRecognizer:tapRecognizer];
-}
-
-- (void)dealloc
-{    
-    [engine release];
-	[debugViewController release];
-    [super dealloc];
 }
 
 - (void)viewWillAppear:(BOOL)animated

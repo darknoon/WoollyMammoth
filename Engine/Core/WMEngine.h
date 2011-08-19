@@ -13,25 +13,26 @@
 @class WMPatch;
 @class WMEAGLContext;
 @class WMCompositionSerialization;
+@class WMBundleDocument;
 
-extern NSString *const WMEngineInterfaceOrientationArgument;
+extern NSString *const WMEngineArgumentsInterfaceOrientationKey;
+extern NSString *const WMEngineArgumentsDocumentKey;
 
 @interface WMEngine : NSObject {
-	WMEAGLContext *renderContext;
-	
 	CFAbsoluteTime previousAbsoluteTime;
 	CFAbsoluteTime t;
-		
-	WMPatch *rootObject;
+	
 	NSMutableDictionary *compositionUserData;
 }
 
-- (id)initWithRootObject:(WMPatch *)inNode userData:(NSDictionary *)inUserData;
+- (id)initWithBundle:(WMBundleDocument *)inDocument;
 
 + (GLKMatrix4)cameraMatrixWithRect:(CGRect)inBounds;
 
 @property (nonatomic, retain, readonly) WMEAGLContext *renderContext;
 @property (nonatomic, retain, readonly) WMPatch *rootObject;
+@property (nonatomic, retain) WMBundleDocument *document;
+
 
 - (NSString *)title;
 

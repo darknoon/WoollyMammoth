@@ -8,6 +8,7 @@
 
 #import "WMBundleDocument.h"
 #import "WMCompositionSerialization.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 NSString *WMBundleDocumentErrorDomain = @"com.darknoon.WMBundleDocument";
 
@@ -213,7 +214,7 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 	}
 }
 
-- (BOOL)addResourceNamed:(NSString *)inResourceName atCurrentURL:(NSURL *)inFileURL error:(NSError **)outError;
+- (void)addResourceNamed:(NSString *)inResourceName fromURL:(NSURL *)inFileURL completion:(void (^)(NSError *error))completion;
 {
 	NSMutableDictionary *resourceWrappersMutable = [[resourceWrappers mutableCopy] autorelease];
 	
@@ -226,14 +227,62 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 		[resourceWrappersMutable setObject:wrapper forKey:inResourceName];
 	} else {
 		NSLog(@"File wrapper error: %@", error);
-		if (outError) {
-			*outError = error;
-		}
-		return NO;
+		completion(error);
+		return;
 	}
 	
 	self.resourceWrappers = resourceWrappersMutable;
-	return YES;
+	completion(nil);
+}
+
+- (void)addResourceNamed:(NSString *)inResourceName fromAssetRepresentation:(ALAssetRepresentation *)inAsset completion:(void (^)(NSError *error))completion;
+{
+	//Write 1 MB at a time
+	long long bufferSize = 1 * 1024 * 1024;
+	long long assetSize = inAsset.size;
+	
+	//Copy data into our bundle
+	NSURL *destinationURL = [[self fileURL] URLByAppendingPathComponent:inResourceName];
+	
+	//If the destination already exists, overwrite
+	
+	[[NSFileManager defaultManager] createFileAtPath:[destinationURL path] contents:nil attributes:nil];
+
+	NSFileHandle *file = [NSFileHandle fileHandleForWritingAtPath:[destinationURL path]];
+	[file truncateFileAtOffset:0];
+	
+	dispatch_queue_t currentQueue = dispatch_get_current_queue();
+	
+	[self performAsynchronousFileAccessUsingBlock:^{
+		uint8_t *tempBuffer = malloc(bufferSize);	
+		file.writeabilityHandler = ^(NSFileHandle *handle) {
+			long long offset = handle.offsetInFile;
+			
+			NSError *error = nil;
+			BOOL ok = [inAsset getBytes:tempBuffer fromOffset:offset length:bufferSize error:&error];
+			if (ok) {
+				[handle writeData:[NSData dataWithBytesNoCopy:tempBuffer length:bufferSize freeWhenDone:NO]];
+			} else {
+				free(tempBuffer);
+				NSLog(@"error getting data: %@", error);
+				completion(error);
+				return;
+			}
+			
+			NSLog(@"Wrote some data. Offset: %lld", offset);
+			
+			offset = handle.offsetInFile;
+			if (offset >= assetSize) {
+				handle.writeabilityHandler = nil;
+				free(tempBuffer);
+				//Call back to main thread (whatever we were called on)
+				dispatch_async(currentQueue, ^() {
+					//Success. Add this file to our assets
+					[self addResourceNamed:inResourceName fromURL:destinationURL completion:completion];				
+				});
+			}
+		};
+	}];
 }
 
 - (void)removeResourceNamed:(NSString *)inResourceName;
@@ -241,6 +290,7 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 	NSMutableDictionary *resourceWrappersMutable = [[resourceWrappers mutableCopy] autorelease];
 	
 	[resourceWrappersMutable removeObjectForKey:inResourceName];
+	//Delete file if exists
 	
 	self.resourceWrappers = resourceWrappersMutable;
 }

@@ -106,6 +106,12 @@
 	}	
 }
 
+- (void)performAsynchronousFileAccessUsingBlock:(void (^)(void))block;
+{
+	//Since this is just a shell, we don't care about actually doing coordination here
+	block();
+}
+
 #endif
 
 - (void)handleError:(NSError *)error userInteractionPermitted:(BOOL)userInteractionPermitted;

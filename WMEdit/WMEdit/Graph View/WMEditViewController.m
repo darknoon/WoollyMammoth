@@ -116,7 +116,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 		}
 	}];
 	
-	previewController = [[WMViewController alloc] initWithRootPatch:rootPatch];
+	previewController = [[WMViewController alloc] initWithDocument:document];
 	if (externalScreen) {
 		previewWindow = [[UIWindow alloc] initWithFrame:externalScreen.applicationFrame];
 		previewWindow.rootViewController = previewController;
@@ -135,7 +135,6 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 		[previewController.view addGestureRecognizer:enlargeRecognizer];
 	}
 
-	
 	
     self.navigationItem.titleView = titleLabel;
     UITapGestureRecognizer *editRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(editCompositionNameAction:)] autorelease];
@@ -267,6 +266,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 {
 	if (inPatchView.patch.hasSettings && !patchSettingsPopover) {
 		UIViewController<WMPatchSettingsController> *settingsController = [inPatchView.patch settingsController];
+		settingsController.editViewController = self;
 		
 		UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:settingsController] autorelease];
 		

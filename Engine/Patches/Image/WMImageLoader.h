@@ -11,11 +11,15 @@
 #import "WMPatch.h"
 
 @class WMImagePort;
-@interface WMImageLoader : WMPatch
+@class WMBundleDocument;
+@interface WMImageLoader : WMPatch {
+	WMImagePort *outputImage;
+}
 
-@property (nonatomic, retain) NSData *imageData;
+- (void)setImageWithImageFileURL:(NSURL *)inFileURL;
 
-//TODO: WMImagePort
-@property (retain, nonatomic) WMImagePort *outputImage;
+- (UIImage *)imageInDocument:(WMBundleDocument *)inDocument;
+
+@property (nonatomic, copy) NSString *imageResource;
 
 @end

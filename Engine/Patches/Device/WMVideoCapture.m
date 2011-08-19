@@ -273,7 +273,7 @@
 {
 	useFrontCamera = [[args objectForKey:@"com.darknoon.WMVideoCapture.useFront"] boolValue];
 	
-	UIInterfaceOrientation interfaceOrientation = [[args objectForKey:WMEngineInterfaceOrientationArgument] intValue];
+	UIInterfaceOrientation interfaceOrientation = [[args objectForKey:WMEngineArgumentsInterfaceOrientationKey] intValue];
 	
 	BOOL isIPad2 = YES;
 	

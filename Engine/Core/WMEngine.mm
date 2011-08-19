@@ -19,10 +19,12 @@
 #import "WMEAGLContext.h"
 #import "WMFramebuffer.h"
 #import "wMCompositionSerialization.h"
+#import "WMBundleDocument.h"
 
 #define DEBUG_LOG_RENDER_MATRICES 0
 
-NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
+NSString *const WMEngineArgumentsInterfaceOrientationKey = @"interfaceOrientation";
+NSString *const WMEngineArgumentsDocumentKey = @"document";
 
 @interface WMEngine ()
 @property (nonatomic, retain, readwrite) WMPatch *rootObject;
@@ -34,15 +36,22 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 
 @synthesize renderContext;
 @synthesize rootObject;
+@synthesize document;
 
-- (id)initWithRootObject:(WMPatch *)inNode userData:(NSDictionary *)inUserData;
+- (id)initWithBundle:(WMBundleDocument *)inDocument;
 {
 	self = [super init];
 	if (self == nil) return self; 
 	
+	if (!inDocument) {
+		[self release];
+		return nil;
+	}
+	
 	renderContext = [[WMEAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-	self.rootObject = inNode;
-	compositionUserData = inUserData ? [inUserData mutableCopy] : [[NSMutableDictionary alloc] init];
+	self.document = inDocument;
+	self.rootObject = document.rootPatch;
+	compositionUserData = document.userDictionary ? [document.userDictionary mutableCopy] : [[NSMutableDictionary alloc] init];
 	
 	return self;
 }
@@ -65,6 +74,7 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 	[rootObject release];
 	[renderContext release];
 	[compositionUserData release];
+	[document release];
 
 	[super dealloc];
 }
@@ -231,7 +241,11 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 {
 	//Pass along the device orientation. This is necessary for patches whose semantics are dependent on which direction is "up" for the user.
 	//Examples: accelerometer, camera input.
-	[compositionUserData setObject:[NSNumber numberWithInt:inInterfaceOrientation] forKey:WMEngineInterfaceOrientationArgument];
+	[compositionUserData setObject:[NSNumber numberWithInt:inInterfaceOrientation] forKey:WMEngineArgumentsInterfaceOrientationKey];
+	if (document) {
+		[compositionUserData setObject:document forKey:WMEngineArgumentsDocumentKey];
+	}
+	
 	
 	//Make sure we have set up all new node
 	[self _setupRecursive:self.rootObject];
