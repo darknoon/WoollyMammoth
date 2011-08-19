@@ -12,20 +12,18 @@
 @implementation WMNumberPort
 @synthesize value;
 
-- (id)stateValue;
+- (id)objectValue;
 {
 	return [NSNumber numberWithDouble:value];
 }
 
-- (BOOL)setStateValue:(id)inStateValue;
+- (BOOL)setObjectValue:(id)inRuntimeValue
 {
-	@try {
-		self.value = [inStateValue doubleValue];
+	if ([inRuntimeValue isKindOfClass:[NSNumber class]]) {
+		self.value = [inRuntimeValue doubleValue];
 		return YES;
 	}
-	@catch (NSException *exception) {
-		return NO;
-	}
+	return NO;
 }
 
 - (BOOL)takeValueFromPort:(WMPort *)inPort;

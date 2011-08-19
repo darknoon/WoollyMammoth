@@ -13,6 +13,17 @@
 @implementation WMImagePort
 @synthesize image;
 
+//We can't be serialized, so there is no value here
+- (id)stateValue;
+{
+	return nil;
+}
+
+- (BOOL)setStateValue:(id)inStateValue;
+{
+	return NO;
+}
+
 - (BOOL)takeValueFromPort:(WMPort *)inPort;
 {
 	if ([inPort isKindOfClass:[WMImagePort class]]) {

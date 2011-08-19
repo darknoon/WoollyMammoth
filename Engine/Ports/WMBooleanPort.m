@@ -12,20 +12,18 @@
 @implementation WMBooleanPort
 @synthesize value;
 
-- (id)stateValue;
+- (id)objectValue;
 {
 	return [NSNumber numberWithBool:value];
 }
 
-- (BOOL)setStateValue:(id)inStateValue;
+- (BOOL)setObjectValue:(id)inRuntimeValue;
 {
-	@try {
-		self.value = [inStateValue boolValue];
+	if ([inRuntimeValue isKindOfClass:[NSNumber class]]) {
+		self.value = [inRuntimeValue boolValue];
 		return YES;
 	}
-	@catch (NSException *exception) {
-		return NO;
-	}
+	return NO;
 }
 
 - (BOOL)takeValueFromPort:(WMPort *)inPort;

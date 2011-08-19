@@ -13,15 +13,15 @@
 @synthesize value;
 
 
-- (id)stateValue;
+- (id)objectValue;
 {
 	return value;
 }
 
-- (BOOL)setStateValue:(id)inStateValue;
+- (BOOL)setObjectValue:(id)inRuntimeValue;
 {
-	if ([inStateValue isKindOfClass:[NSString class]]) {
-		self.value = (NSString *)inStateValue;
+	if ([inRuntimeValue isKindOfClass:[NSString class]]) {
+		self.value = (NSString *)inRuntimeValue;
 		return YES;
 	}
 	return NO;

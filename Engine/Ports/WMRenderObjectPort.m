@@ -4,9 +4,36 @@
 //
 
 #import "WMRenderObjectPort.h"
+#import "WMRenderObject.h"
 
 @implementation WMRenderObjectPort
 @synthesize object;
+
+- (id)objectValue;
+{
+	return self.object;
+}
+
+
+//We can't be serialized, so there is no value here
+- (id)stateValue;
+{
+	return nil;
+}
+
+- (BOOL)setStateValue:(id)inStateValue;
+{
+	return NO;
+}
+
+- (BOOL)setObjectValue:(id)inRuntimeValue;
+{
+	if ([inRuntimeValue isKindOfClass:[WMRenderObject class]]) {
+		self.object = inRuntimeValue;
+		return YES;
+	}
+	return NO;
+}
 
 - (BOOL)takeValueFromPort:(WMPort *)inPort;
 {

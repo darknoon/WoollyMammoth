@@ -26,17 +26,28 @@
 	return [[name ? name : key retain] autorelease];
 }
 
+//Default implementations use the runtime values, but should be overriden to provide plist-compatible values
 - (id)stateValue;
 {
-	return nil;
+	return [self objectValue];
 }
 
 - (BOOL)setStateValue:(id)inStateValue;
 {
-	return YES;
+	return [self setObjectValue:inStateValue];
 }
 
 - (BOOL)takeValueFromPort:(WMPort *)inPort;
+{
+	return YES;
+}
+
+- (id)objectValue;
+{
+	return nil;
+}
+
+- (BOOL)setObjectValue:(id)inRuntimeValue;
 {
 	return YES;
 }
