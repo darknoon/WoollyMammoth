@@ -29,4 +29,12 @@ extern NSString *WMBundleDocumentErrorDomain;
 @property (nonatomic, retain, readonly) WMPatch *rootPatch;
 @property (nonatomic, copy) NSDictionary *userDictionary;
 
+//Dictionary of name => file wrapper representing the resources for this bundle
+@property (nonatomic, copy) NSDictionary *resourceWrappers;
+
+//Resource name should include the file path extension
+- (BOOL)addResourceNamed:(NSString *)inResourceName atCurrentURL:(NSURL *)inFileURL error:(NSError **)outError;
+- (void)removeResourceNamed:(NSString *)inResourceName;
+
+
 @end

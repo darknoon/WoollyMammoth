@@ -12,6 +12,7 @@
 NSString *WMBundleDocumentErrorDomain = @"com.darknoon.WMBundleDocument";
 
 NSString *WMBundleDocumentRootPlistFileName = @"root.plist";
+NSString *WMBundleDocumentPreviewFileName = @"preview.png";
 
 NSString *WMBundleDocumentExtension = @"wmbundle";
 
@@ -27,7 +28,7 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 @implementation WMBundleDocument
 @synthesize rootPatch;
 @synthesize userDictionary;
-
+@synthesize resourceWrappers;
 
 - (id)initWithFileURL:(NSURL *)url;
 {
@@ -52,11 +53,11 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 - (BOOL)loadFromContents:(id)contents ofType:(NSString *)typeName error:(NSError **)outError;
 {
 	if ([contents isKindOfClass:[NSFileWrapper class]]) {
-		NSDictionary *fileWrappers = [contents fileWrappers];
-		NSFileWrapper *bundleWrapper = [fileWrappers objectForKey:WMBundleDocumentRootPlistFileName];
-		if ([bundleWrapper isRegularFile]) {
+		NSMutableDictionary *fileWrappers = [NSMutableDictionary dictionaryWithDictionary:[contents fileWrappers]];
+		NSFileWrapper *rootPlistWrapper = [fileWrappers objectForKey:WMBundleDocumentRootPlistFileName];
+		if ([rootPlistWrapper isRegularFile]) {
 			
-			NSData *plistData = [bundleWrapper regularFileContents];
+			NSData *plistData = [rootPlistWrapper regularFileContents];
 			
 			if (plistData.length < maxPlistSize) {
 				
@@ -72,6 +73,12 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 					if (tempRootPatch) {
 						self.userDictionary = tempUserDictionary;
 						self.rootPatch = tempRootPatch;
+						
+						//Resources = file wrappers - WMBundleDocumentRootPlistFileName
+						[fileWrappers removeObjectForKey:WMBundleDocumentRootPlistFileName];
+						[fileWrappers removeObjectForKey:WMBundleDocumentPreviewFileName];
+						self.resourceWrappers = fileWrappers;
+						
 						NSLog(@"Success in loadFromContents:ofType:error:");
 						return YES;
 					} else {
@@ -167,6 +174,7 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 
 - (id)contentsForType:(NSString *)typeName error:(NSError **)outError;
 {
+	//Serialize object graph
 	NSError *plistError = nil;
 	NSDictionary *rootPlist = [WMCompositionSerialization plistDictionaryWithRootPatch:self.rootPatch userDictionary:self.userDictionary error:&plistError];
 	if (!rootPlist) {
@@ -177,11 +185,22 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 																			 forKey:NSLocalizedDescriptionKey]];
 		}
 	}
+	
+	//Write plist
 	NSData *rootPlistData = [NSPropertyListSerialization dataWithPropertyList:rootPlist format:NSPropertyListBinaryFormat_v1_0 options:0 error:&plistError];
 	
 	if (rootPlistData) {
 		NSFileWrapper *contents = [[[NSFileWrapper alloc] initDirectoryWithFileWrappers:nil] autorelease];
 		[contents addRegularFileWithContents:rootPlistData preferredFilename:WMBundleDocumentRootPlistFileName];
+		
+		//Add our resource files
+		[self.resourceWrappers enumerateKeysAndObjectsUsingBlock:^(id _key, id _obj, BOOL *stop) {
+			NSString *key = _key;
+			NSFileWrapper *wrapper = _obj;
+			wrapper.preferredFilename = key;
+			[contents addFileWrapper:wrapper];
+		}];
+		
 		return contents;
 	} else {
 		if (outError) {
@@ -192,6 +211,38 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 		}
 		return nil;
 	}
+}
+
+- (BOOL)addResourceNamed:(NSString *)inResourceName atCurrentURL:(NSURL *)inFileURL error:(NSError **)outError;
+{
+	NSMutableDictionary *resourceWrappersMutable = [[resourceWrappers mutableCopy] autorelease];
+	
+	NSError *error = nil;
+	
+	NSFileWrapper *wrapper = [[[NSFileWrapper alloc] initWithURL:inFileURL options:0 error:&error] autorelease];
+	
+	if (wrapper) {
+		wrapper.preferredFilename = inResourceName;
+		[resourceWrappersMutable setObject:wrapper forKey:inResourceName];
+	} else {
+		NSLog(@"File wrapper error: %@", error);
+		if (outError) {
+			*outError = error;
+		}
+		return NO;
+	}
+	
+	self.resourceWrappers = resourceWrappersMutable;
+	return YES;
+}
+
+- (void)removeResourceNamed:(NSString *)inResourceName;
+{
+	NSMutableDictionary *resourceWrappersMutable = [[resourceWrappers mutableCopy] autorelease];
+	
+	[resourceWrappersMutable removeObjectForKey:inResourceName];
+	
+	self.resourceWrappers = resourceWrappersMutable;
 }
 
 - (void)handleError:(NSError *)error userInteractionPermitted:(BOOL)userInteractionPermitted;
