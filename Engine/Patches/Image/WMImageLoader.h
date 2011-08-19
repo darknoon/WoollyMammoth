@@ -16,10 +16,6 @@
 	WMImagePort *outputImage;
 }
 
-- (void)setImageWithImageFileURL:(NSURL *)inFileURL;
-
-- (UIImage *)imageInDocument:(WMBundleDocument *)inDocument;
-
 @property (nonatomic, copy) NSString *imageResource;
 
 @end
