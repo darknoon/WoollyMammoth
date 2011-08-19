@@ -112,6 +112,16 @@
 	block();
 }
 
+- (BOOL)loadFromContents:(id)contents ofType:(NSString *)typeName error:(NSError **)outError;
+{
+	return NO;
+}
+
+- (id)contentsForType:(NSString *)typeName error:(NSError **)outError;
+{
+	return nil;
+}
+
 #endif
 
 - (void)handleError:(NSError *)error userInteractionPermitted:(BOOL)userInteractionPermitted;
