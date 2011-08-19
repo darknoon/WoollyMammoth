@@ -33,6 +33,7 @@
 @synthesize textView;
 @synthesize patch;
 @synthesize segmentIndex;
+@synthesize editViewController;
 
 - (id)initWithPatch:(WMSetShader *)inPatch;
 {
