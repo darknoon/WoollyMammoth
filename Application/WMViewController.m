@@ -14,7 +14,6 @@
 
 #import "WMEngine.h"
 #import "WMBundleDocument.h"
-#import "WMDebugViewController.h"
 
 #import "WMCompositionSerialization.h"
 
@@ -268,12 +267,6 @@
 - (void)toggleNavigationBar;
 {
 	[self.navigationController setNavigationBarHidden:!self.navigationController.navigationBarHidden animated:NO];
-}
-
-- (IBAction)showDebug:(id)sender;
-{
-	[self.view addSubview:debugViewController.view];
-	debugViewController.view.frame = self.view.bounds;
 }
 
 #pragma mark -
