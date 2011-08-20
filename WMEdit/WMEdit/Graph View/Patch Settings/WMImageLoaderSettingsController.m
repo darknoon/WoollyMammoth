@@ -7,6 +7,9 @@
 //
 
 #import "WMImageLoaderSettingsController.h"
+#import "WMEditViewController.h"
+#import "WMBundleDocument.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 @implementation WMImageLoader (WMPatch_SettingsControllerClass)
 
@@ -26,6 +29,7 @@
 @implementation WMImageLoaderSettingsController
 @synthesize patch;
 @synthesize imageView;
+@synthesize editViewController;
 
 - (id)initWithPatch:(WMImageLoader *)inPatch;
 {
@@ -38,9 +42,20 @@
 }
 
 
+- (void)refreshImageFromPatch;
+{
+	if (patch.imageResource) {
+		NSFileWrapper *wrapper = [[self.editViewController.document resourceWrappers] objectForKey:patch.imageResource];
+		self.imageView.image = [UIImage imageWithData:[wrapper regularFileContents]];
+	} else {
+		self.imageView.image = nil;
+	}
+}
+
+
 - (void)viewDidLoad;
 {
-	imageView.image = [UIImage imageWithData:patch.imageData];
+	[self refreshImageFromPatch];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -58,13 +73,33 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;
 {
-	UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
-	UIImage *editedImage = [info objectForKey:UIImagePickerControllerEditedImage];
-	image = editedImage ? editedImage : image;
-	patch.imageData = UIImagePNGRepresentation(image);
-	imageView.image = image;
+	NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
 	
-	[picker dismissViewControllerAnimated:YES completion:NULL];
+	ALAssetsLibraryAccessFailureBlock fail = ^(NSError *error) {
+		[[[UIAlertView alloc] initWithTitle:@"Unable to load image" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"Close" otherButtonTitles:nil] show];
+		[picker dismissViewControllerAnimated:YES completion:NULL];
+	};
+	
+	ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+	[library assetForURL:assetURL resultBlock:^(ALAsset *asset) {
+		
+		ALAssetRepresentation *rep = [asset defaultRepresentation];
+		if (rep) {
+			//Copy this asset into the document
+			[self.editViewController.document addResourceNamed:rep.filename fromAssetRepresentation:rep completion:^(NSError *error) {
+				if (error) {
+					fail(error);
+				} else {
+					patch.imageResource = rep.filename;
+					[self refreshImageFromPatch];
+					[picker dismissViewControllerAnimated:YES completion:NULL];
+				}
+			}];
+		} else {
+			fail(nil);
+		}
+	} failureBlock:fail];
+	
 }
 
 - (void)viewDidUnload {

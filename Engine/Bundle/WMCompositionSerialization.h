@@ -11,9 +11,8 @@
 @class WMPatch;
 
 extern NSString *WMCompositionUserInfoVersionKey;
-extern NSString *WMCompositionPathKey;
 
-//This is the version of the composition file format we write
+//This is the current version number of the composition file format we write
 extern NSString *WMCompositionFrameworkVersion;
 
 @interface WMCompositionSerialization : NSObject

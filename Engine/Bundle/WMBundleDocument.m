@@ -8,10 +8,12 @@
 
 #import "WMBundleDocument.h"
 #import "WMCompositionSerialization.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 NSString *WMBundleDocumentErrorDomain = @"com.darknoon.WMBundleDocument";
 
 NSString *WMBundleDocumentRootPlistFileName = @"root.plist";
+NSString *WMBundleDocumentPreviewFileName = @"preview.png";
 
 NSString *WMBundleDocumentExtension = @"wmbundle";
 
@@ -27,7 +29,8 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 @implementation WMBundleDocument
 @synthesize rootPatch;
 @synthesize userDictionary;
-
+@synthesize resourceWrappers;
+@synthesize preview;
 
 - (id)initWithFileURL:(NSURL *)url;
 {
@@ -46,11 +49,11 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 - (BOOL)loadFromContents:(id)contents ofType:(NSString *)typeName error:(NSError **)outError;
 {
 	if ([contents isKindOfClass:[NSFileWrapper class]]) {
-		NSDictionary *fileWrappers = [contents fileWrappers];
-		NSFileWrapper *bundleWrapper = [fileWrappers objectForKey:WMBundleDocumentRootPlistFileName];
-		if ([bundleWrapper isRegularFile]) {
+		NSMutableDictionary *fileWrappers = [NSMutableDictionary dictionaryWithDictionary:[contents fileWrappers]];
+		NSFileWrapper *rootPlistWrapper = [fileWrappers objectForKey:WMBundleDocumentRootPlistFileName];
+		if ([rootPlistWrapper isRegularFile]) {
 			
-			NSData *plistData = [bundleWrapper regularFileContents];
+			NSData *plistData = [rootPlistWrapper regularFileContents];
 			
 			if (plistData.length < maxPlistSize) {
 				
@@ -66,6 +69,12 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 					if (tempRootPatch) {
 						self.userDictionary = tempUserDictionary;
 						self.rootPatch = tempRootPatch;
+						
+						//Resources = file wrappers - WMBundleDocumentRootPlistFileName
+						[fileWrappers removeObjectForKey:WMBundleDocumentRootPlistFileName];
+						[fileWrappers removeObjectForKey:WMBundleDocumentPreviewFileName];
+						self.resourceWrappers = fileWrappers;
+						
 						NSLog(@"Success in loadFromContents:ofType:error:");
 						return YES;
 					} else {
@@ -161,6 +170,7 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 
 - (id)contentsForType:(NSString *)typeName error:(NSError **)outError;
 {
+	//Serialize object graph
 	NSError *plistError = nil;
 	NSDictionary *rootPlist = [WMCompositionSerialization plistDictionaryWithRootPatch:self.rootPatch userDictionary:self.userDictionary error:&plistError];
 	if (!rootPlist) {
@@ -171,11 +181,22 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 																			 forKey:NSLocalizedDescriptionKey]];
 		}
 	}
+	
+	//Write plist
 	NSData *rootPlistData = [NSPropertyListSerialization dataWithPropertyList:rootPlist format:NSPropertyListBinaryFormat_v1_0 options:0 error:&plistError];
 	
 	if (rootPlistData) {
 		NSFileWrapper *contents = [[NSFileWrapper alloc] initDirectoryWithFileWrappers:nil];
 		[contents addRegularFileWithContents:rootPlistData preferredFilename:WMBundleDocumentRootPlistFileName];
+		
+		//Add our resource files
+		[self.resourceWrappers enumerateKeysAndObjectsUsingBlock:^(id _key, id _obj, BOOL *stop) {
+			NSString *key = _key;
+			NSFileWrapper *wrapper = _obj;
+			wrapper.preferredFilename = key;
+			[contents addFileWrapper:wrapper];
+		}];
+		
 		return contents;
 	} else {
 		if (outError) {
@@ -186,6 +207,106 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 		}
 		return nil;
 	}
+}
+
+- (void)addResourceNamed:(NSString *)inResourceName fromURL:(NSURL *)inFileURL completion:(void (^)(NSError *error))completion;
+{
+	NSMutableDictionary *resourceWrappersMutable = [resourceWrappers mutableCopy];
+	
+	NSError *error = nil;
+	
+	NSFileWrapper *wrapper = [[NSFileWrapper alloc] initWithURL:inFileURL options:0 error:&error];
+	
+	if (wrapper) {
+		wrapper.preferredFilename = inResourceName;
+		[resourceWrappersMutable setObject:wrapper forKey:inResourceName];
+	} else {
+		NSLog(@"File wrapper error: %@", error);
+		completion(error);
+		return;
+	}
+	
+	self.resourceWrappers = resourceWrappersMutable;
+	completion(nil);
+}
+
+- (void)addResourceNamed:(NSString *)inResourceName fromAssetRepresentation:(ALAssetRepresentation *)inAsset completion:(void (^)(NSError *error))completion;
+{
+	//Write 1 MB at a time
+	long long bufferSize = 1 * 1024 * 1024;
+	long long assetSize = inAsset.size;
+	
+	//Copy data into our bundle
+	NSURL *destinationURL = [[self fileURL] URLByAppendingPathComponent:inResourceName];
+	
+	//If the destination already exists, overwrite
+	
+	[[NSFileManager defaultManager] createFileAtPath:[destinationURL path] contents:nil attributes:nil];
+
+	NSFileHandle *file = [NSFileHandle fileHandleForWritingAtPath:[destinationURL path]];
+	[file truncateFileAtOffset:0];
+	
+	dispatch_queue_t currentQueue = dispatch_get_current_queue();
+	
+	[self performAsynchronousFileAccessUsingBlock:^{
+		uint8_t *tempBuffer = malloc(bufferSize);	
+		file.writeabilityHandler = ^(NSFileHandle *handle) {
+			long long offset = handle.offsetInFile;
+			
+			NSError *error = nil;
+			BOOL ok = [inAsset getBytes:tempBuffer fromOffset:offset length:bufferSize error:&error];
+			if (ok) {
+				[handle writeData:[NSData dataWithBytesNoCopy:tempBuffer length:bufferSize freeWhenDone:NO]];
+			} else {
+				free(tempBuffer);
+				NSLog(@"error getting data: %@", error);
+				completion(error);
+				return;
+			}
+			
+			NSLog(@"Wrote some data. Offset: %lld", offset);
+			
+			offset = handle.offsetInFile;
+			if (offset >= assetSize) {
+				handle.writeabilityHandler = nil;
+				free(tempBuffer);
+				//Call back to main thread (whatever we were called on)
+				dispatch_async(currentQueue, ^() {
+					//Success. Add this file to our assets
+					[self addResourceNamed:inResourceName fromURL:destinationURL completion:completion];				
+				});
+			}
+		};
+	}];
+}
+
+- (UIImage *)preview;
+{
+	//This has to be synchronous... Any way to get around that?
+	if (!preview) {
+		preview = [UIImage imageWithContentsOfFile:[[self.fileURL URLByAppendingPathComponent:WMBundleDocumentPreviewFileName] path]];
+	}
+	return preview;
+}
+
+- (void)setPreview:(UIImage *)inPreview;
+{
+	if (preview != inPreview) {
+		preview = inPreview;
+		[self performAsynchronousFileAccessUsingBlock:^() {
+			[UIImagePNGRepresentation(inPreview) writeToURL:[self.fileURL URLByAppendingPathComponent:WMBundleDocumentPreviewFileName] atomically:YES];
+		}];
+	}
+}
+
+- (void)removeResourceNamed:(NSString *)inResourceName;
+{
+	NSMutableDictionary *resourceWrappersMutable = [resourceWrappers mutableCopy];
+	
+	[resourceWrappersMutable removeObjectForKey:inResourceName];
+	//Delete file if exists
+	
+	self.resourceWrappers = resourceWrappersMutable;
 }
 
 - (void)handleError:(NSError *)error userInteractionPermitted:(BOOL)userInteractionPermitted;

@@ -433,10 +433,15 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	NSMutableDictionary *inputPortStates = [NSMutableDictionary dictionary];
 	//Save values of input ports
 	for (WMPort *inputPort in [self inputPorts]) {
-		if ([inputPort stateValue]) {
-			NSDictionary *valueDict = [NSDictionary dictionaryWithObject:[inputPort stateValue] forKey:@"value"];
-			
-			[inputPortStates setObject:valueDict forKey:inputPort.key];
+		id stateValue = [inputPort stateValue];
+		if (stateValue) {
+			if ([NSPropertyListSerialization propertyList:stateValue isValidForFormat:NSPropertyListBinaryFormat_v1_0]) {
+				NSDictionary *valueDict = [NSDictionary dictionaryWithObject:[inputPort stateValue] forKey:@"value"];
+				
+				[inputPortStates setObject:valueDict forKey:inputPort.key];
+			} else {
+				NSLog(@"%@ returned invalid stateValue(%@ %@) for inputPort %@", self, [stateValue class], stateValue, inputPort);
+			}
 		}
 	}
 	[plistState setObject:inputPortStates forKey:@"ivarInputPortStates"];

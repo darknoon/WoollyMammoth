@@ -11,6 +11,8 @@
 #import "WMPatch+SettingsControllerClass.h"
 #import "WMImageLoader.h"
 
+@class WMEditViewController;
+
 @interface WMImageLoaderSettingsController : UIViewController <WMPatchSettingsController, UINavigationControllerDelegate, UIImagePickerControllerDelegate> {
 	UIImageView *imageView;
 }

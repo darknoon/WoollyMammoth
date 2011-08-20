@@ -13,15 +13,10 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "WMEngine.h"
+#import "WMBundleDocument.h"
 #import "WMDebugViewController.h"
 
 #import "WMCompositionSerialization.h"
-
-@interface WMViewController ()
-
-@property (nonatomic, copy) NSURL *compositionURL;
-
-@end
 
 @implementation WMViewController {
     CADisplayLink *displayLink;
@@ -34,7 +29,7 @@
 	NSUInteger framesSinceLastFPSUpdate;
 }
 
-
+@synthesize document;
 @synthesize engine;
 @synthesize animating;
 @synthesize debugViewController;
@@ -48,6 +43,16 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
+}
+
+- (id)initWithDocument:(WMBundleDocument *)inDocument;
+{
+	self = [self initWithNibName:nil bundle:nil];
+	if (!self) return nil;
+	
+	document = inDocument;
+	
+	return self;
 }
 
 - (id)initWithCoder:(NSCoder *)coder {
@@ -69,16 +74,21 @@
 	return self;
 }
 
-- (id)initWithRootPatch:(WMPatch *)inPatch;
+- (void)loadView;
 {
-	self = [super initWithNibName:nil bundle:nil];
-	if (!self) return nil;
-		
-	self.compositionURL = nil;
-	
-	GL_CHECK_ERROR;
-	engine = [[WMEngine alloc] initWithRootObject:inPatch userData:nil];
-	
+	if (self.nibName) {
+		[super loadView];
+	}
+	if (![self isViewLoaded]) {
+		CGRect defaultFrame = [[UIScreen mainScreen] applicationFrame];
+		EAGLView *view = [[EAGLView alloc] initWithFrame:defaultFrame];
+		view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		self.view = view;
+	}
+}
+
+- (void)engineDidLoad;
+{
 	//TODO: start lazily
 	GL_CHECK_ERROR;
 	[engine start];
@@ -86,23 +96,36 @@
 	
 	[(EAGLView *)self.view setContext:engine.renderContext];
 	//This will create a framebuffer and set it on the context
-    [(EAGLView *)self.view setFramebuffer];
-	
-	
-	return self;
+	[(EAGLView *)self.view setFramebuffer];
 }
 
-- (void)loadView;
+- (void)setup;
 {
-	CGRect defaultFrame = [[UIScreen mainScreen] applicationFrame];
-	EAGLView *view = [[EAGLView alloc] initWithFrame:defaultFrame];
-	view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	self.view = view;
+	engine = [[WMEngine alloc] initWithBundle:document];
+	[self engineDidLoad];
 }
 
 - (void)viewDidLoad;
 {
 	[super viewDidLoad];
+	
+	if (!document && self.compositionURL) {
+		document = [[WMBundleDocument alloc] initWithFileURL:self.compositionURL];
+	}
+	if (document.documentState == UIDocumentStateClosed) {
+		[document openWithCompletionHandler:^(BOOL success) {
+			dispatch_async(dispatch_get_main_queue(), ^() {
+				if (success) {
+					[self setup];
+				} else {
+					NSLog(@"Error loading composition");
+				}
+			});
+		}];
+	} else {
+		[self setup];
+	}
+	
 	fpsLabel = [[UILabel alloc] initWithFrame:CGRectMake(74, 10, 200, 22)];
 	fpsLabel.backgroundColor = [UIColor clearColor];
 	fpsLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:18.f];
@@ -116,7 +139,6 @@
 	UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleNavigationBar)];
 	[self.view addGestureRecognizer:tapRecognizer];
 }
-
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -132,6 +154,8 @@
 {
     [self stopAnimation];
     
+	document.preview = [(EAGLView *)self.view screenshotImage];
+	
 	[[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 	
     [super viewWillDisappear:animated];

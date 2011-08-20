@@ -112,6 +112,22 @@
 	}
 }
 
+- (void)performAsynchronousFileAccessUsingBlock:(void (^)(void))block;
+{
+	//Since this is just a shell, we don't care about actually doing coordination here
+	block();
+}
+
+- (BOOL)loadFromContents:(id)contents ofType:(NSString *)typeName error:(NSError **)outError;
+{
+	return NO;
+}
+
+- (id)contentsForType:(NSString *)typeName error:(NSError **)outError;
+{
+	return nil;
+}
+
 #endif
 
 - (void)handleError:(NSError *)error userInteractionPermitted:(BOOL)userInteractionPermitted;

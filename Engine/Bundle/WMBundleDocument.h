@@ -24,9 +24,22 @@ enum WMBundleDocumentError {
 
 extern NSString *WMBundleDocumentErrorDomain;
 
+@class ALAssetRepresentation;
 @interface WMBundleDocument : DNDocument
 
 @property (nonatomic, strong, readonly) WMPatch *rootPatch;
 @property (nonatomic, copy) NSDictionary *userDictionary;
+
+@property (nonatomic, retain) UIImage *preview;
+
+//Dictionary of name => file wrapper representing the resources for this bundle
+@property (nonatomic, copy) NSDictionary *resourceWrappers;
+
+//Resource name should include the file path extension
+- (void)addResourceNamed:(NSString *)inResourceName fromURL:(NSURL *)inFileURL completion:(void (^)(NSError *error))completion;
+- (void)addResourceNamed:(NSString *)inResourceName fromAssetRepresentation:(ALAssetRepresentation *)inAsset completion:(void (^)(NSError *error))completion;
+
+- (void)removeResourceNamed:(NSString *)inResourceName;
+
 
 @end

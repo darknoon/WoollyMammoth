@@ -26,6 +26,46 @@ CTrivialRandomGenerator rng;
 
 #define PARTICLES_USE_REAL_GRAVITY 1
 
+@interface WMQuadParticleSystem () {
+	//Internal
+@public
+	
+	NSUInteger maxParticles;
+	//Evaluates the noise function for every nth particle
+	NSUInteger particleUpdateSkip;
+	//The current index modulo particleUpdateSkip to start
+	NSUInteger particleUpdateIndex;
+	WMQuadParticle *particles;
+	
+	WMQuadParticleVertex *particleVertices;
+	
+	//0 when no data, 1 when 1st buffer, filled 2 when both
+	int particleDataAvailable;
+	NSUInteger currentParticleVBOIndex;
+	WMStructuredBuffer *particleVertexBuffers[2];
+	
+	//Holds indices. always the same, as each particle is a quad! ie boring (0,1,2, 1,2,3 … )
+	WMStructuredBuffer *particleIndexBuffer;
+	
+	//Current values of the input ports
+	float radius;
+	float particleSize;
+	
+	GLKVector3 particleCentroid;
+	
+	float turbulence;
+	
+	double t;
+	
+	//Potentially slower. Try turning off for performance
+	BOOL zSortParticles;
+	
+	WMShader *shader;
+	WMTexture2D *defaultTexture;
+	WMRenderObject *renderObject;
+}
+@end
+
 struct WMQuadParticle {
 	GLKVector3 position;
 	GLKVector3 velocity;
@@ -101,7 +141,7 @@ void WMQuadParticle::update(double dt, double t, int i, GLKVector3 gravity, WMQu
 	float distanceFromFromCentroid2 = lengthSquared(displacementFromFromCentroid);
 	force += opposition * (particleOppositionForce / (10.f * distanceFromFromCentroid2 + coff)) * (displacementFromFromCentroid / sqrtf(distanceFromFromCentroid2));
 	
-	const float sphereRadius = 0.53f;
+	const float sphereRadius = sys->radius;
 	
 	//Constrain to be inside sphere
 	float distanceFromOrigin2 = lengthSquared(position);
@@ -128,7 +168,7 @@ void WMQuadParticle::update(double dt, double t, int i, GLKVector3 gravity, WMQu
 		//If we're not on the edge of the sphere
 		//Have the particle kind of randomly rotate, yay
 
-		quaternion *= GLKQuaternionMakeWithAngleAndVector3Axis(2.0f * 2.0f / dt, noiseVec);
+		quaternion = GLKQuaternionNormalize(quaternion * GLKQuaternionMakeWithAngleAndVector3Axis(0.2 / dt, noiseVec));
 	}
 	
 	
@@ -194,6 +234,15 @@ int particleZCompare(const void *a, const void *b) {
 	@autoreleasepool {
 		[self registerToRepresentClassNames:[NSSet setWithObject:NSStringFromClass(self)]];
 	}
+}
+
++ (id)defaultValueForInputPortKey:(NSString *)inKey;
+{
+	if ([inKey isEqualToString:@"inputRadius"]) {
+		return [NSNumber numberWithFloat:1.0f];
+	}
+	return nil;
+	
 }
 
 - (id)initWithPlistRepresentation:(id)inPlist;
@@ -293,7 +342,7 @@ int particleZCompare(const void *a, const void *b) {
 	double dt = t - t_prev;
 	dt = fmax(1.0/30.0, fmin(dt, 1.0/60.0));
 #else
-	double dt = 1.0/30.0;
+	double dt = 1.0/60.0;
 	t += dt;
 #endif
 
@@ -348,7 +397,7 @@ int particleZCompare(const void *a, const void *b) {
 	WMStructuredBuffer *currentBuffer = particleVertexBuffers[currentParticleVBOIndex];
 	
 	GLKVector3 spherePosition = GLKVector3Make(0.0f, 0.045f, 0.0f);
-	float sz = 0.010f;
+	float sz = particleSize;
 	
 	const GLKVector3 offsets[4] = {
 		{-sz,  sz, 0},
@@ -394,6 +443,9 @@ int particleZCompare(const void *a, const void *b) {
 
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {	
+	radius = MAX(0.1f, MIN(inputRadius.value, 2.0f));
+	particleSize = MAX(0.001f, MIN(inputParticleSize.value * 0.05f, 0.05f));
+
 	[self update];
 	
 	if (particleDataAvailable < 2) {

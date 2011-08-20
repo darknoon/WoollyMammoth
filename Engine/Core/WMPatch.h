@@ -22,7 +22,6 @@ typedef enum {
 @class WMEAGLContext;
 @class WMPort;
 @class WMNumberPort;
-@class WMEngine;
 
 @interface WMPatch : NSObject {
 @protected;

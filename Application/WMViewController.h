@@ -17,15 +17,21 @@
 @class WMEngine;
 @class WMDebugViewController;
 @class WMPatch;
+@class WMBundleDocument;
 
 @interface WMViewController : UIViewController <UIActionSheetDelegate>
 
-@property (readonly, strong) WMEngine *engine;
+//Designated initalizer for an existing document
+- (id)initWithDocument:(WMBundleDocument *)inDocument;
+
+//If you want to read from a file, you can load from a nib and use this:
+@property (nonatomic, copy) NSURL *compositionURL;
+
+@property (nonatomic, retain, readonly) WMBundleDocument *document;
+@property (readonly, retain, readonly) WMEngine *engine;
 @property (readonly, nonatomic, getter=isAnimating) BOOL animating;
 @property (nonatomic) NSInteger animationFrameInterval;
 @property (nonatomic, strong) IBOutlet WMDebugViewController *debugViewController;
-
-- (id)initWithRootPatch:(WMPatch *)inPatch;
 
 - (UIImage *)screenshotImage;
 

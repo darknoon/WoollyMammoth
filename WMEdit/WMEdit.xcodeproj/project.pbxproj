@@ -213,7 +213,6 @@
 		49BACB9C13EB5A08008ED051 /* WMRenderObjectPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB4C13E10F03002DC713 /* WMRenderObjectPort.m */; };
 		49BACB9E13EB5A08008ED051 /* WMStructuredBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC213DE4C1F0061A1A8 /* WMStructuredBuffer.m */; };
 		49BACBA013EB5A08008ED051 /* WMStructureDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC413DE4C1F0061A1A8 /* WMStructureDefinition.m */; };
-		49BACBA113EB5A08008ED051 /* WMEngineTests-Info.plist in Sources */ = {isa = PBXBuildFile; fileRef = 49BACB5C13EB59D4008ED051 /* WMEngineTests-Info.plist */; };
 		49BACBA413EB5A08008ED051 /* GLDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E0213DE4C1F0061A1A8 /* GLDefines.m */; };
 		49BACBA613EB5A08008ED051 /* WMEAGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E0413DE4C1F0061A1A8 /* WMEAGLContext.m */; };
 		49BACBA813EB5A08008ED051 /* WMFramebuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E0613DE4C1F0061A1A8 /* WMFramebuffer.m */; };
@@ -241,6 +240,7 @@
 		49BACBD913EB5BDA008ED051 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5263F13D172CF004EC7F6 /* CFNetwork.framework */; };
 		49BACBDA13EB5BDD008ED051 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5263D13D172C6004EC7F6 /* QuartzCore.framework */; };
 		49BACBDB13EB5BDF008ED051 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5263B13D172BC004EC7F6 /* CoreMIDI.framework */; };
+		49D73A8713FEE0F60028AF22 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D73A8613FEE0F60028AF22 /* AssetsLibrary.framework */; };
 		49E3145913DA44F600813CE0 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49E3145613DA44F600813CE0 /* Random.cpp */; };
 		49E3145A13DA44F600813CE0 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49E3145613DA44F600813CE0 /* Random.cpp */; };
 		49F0595113D15F640056C506 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595013D15F640056C506 /* UIKit.framework */; };
@@ -589,6 +589,7 @@
 		49BACB4A13EB592A008ED051 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		49BACB5C13EB59D4008ED051 /* WMEngineTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "WMEngineTests-Info.plist"; sourceTree = "<group>"; };
 		49BACBC913EB5B54008ED051 /* WMEngineTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMEngineTests-Prefix.pch"; sourceTree = "<group>"; };
+		49D73A8613FEE0F60028AF22 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		49E3145613DA44F600813CE0 /* Random.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Random.cpp; sourceTree = "<group>"; };
 		49E3145713DA44F600813CE0 /* Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Random.h; sourceTree = "<group>"; };
 		49E3145813DA44F600813CE0 /* Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Types.h; sourceTree = "<group>"; };
@@ -646,6 +647,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49D73A8713FEE0F60028AF22 /* AssetsLibrary.framework in Frameworks */,
 				490AC1E713D8F10F005E61CD /* GLKit.framework in Frameworks */,
 				494E4EF213D25D2B00402784 /* CoreMedia.framework in Frameworks */,
 				494E4EF013D25D1C00402784 /* AVFoundation.framework in Frameworks */,
@@ -1385,6 +1387,7 @@
 		49F0594F13D15F640056C506 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				49D73A8613FEE0F60028AF22 /* AssetsLibrary.framework */,
 				490AC1E613D8F10F005E61CD /* GLKit.framework */,
 				494E4EF113D25D2B00402784 /* CoreMedia.framework */,
 				494E4EEF13D25D1C00402784 /* AVFoundation.framework */,
@@ -1670,7 +1673,6 @@
 				49BACB9C13EB5A08008ED051 /* WMRenderObjectPort.m in Sources */,
 				49BACB9E13EB5A08008ED051 /* WMStructuredBuffer.m in Sources */,
 				49BACBA013EB5A08008ED051 /* WMStructureDefinition.m in Sources */,
-				49BACBA113EB5A08008ED051 /* WMEngineTests-Info.plist in Sources */,
 				49BACBA413EB5A08008ED051 /* GLDefines.m in Sources */,
 				49BACBA613EB5A08008ED051 /* WMEAGLContext.m in Sources */,
 				49BACBA813EB5A08008ED051 /* WMFramebuffer.m in Sources */,
@@ -1915,30 +1917,25 @@
 		49F0598113D15F640056C506 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
-				mthumb = YES;
 			};
 			name = Debug;
 		};
 		49F0598213D15F640056C506 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -1946,7 +1943,6 @@
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
-				mthumb = YES;
 			};
 			name = Release;
 		};

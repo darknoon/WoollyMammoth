@@ -11,7 +11,6 @@
 #import "WMPatch.h"
 
 NSString *WMCompositionUserInfoVersionKey = @"frameworkVersion";
-NSString *WMCompositionPathKey = @"WMCompositionPathKey";
 
 NSString *WMCompositionKeyRootPatch = @"rootPatch";
 
@@ -53,7 +52,6 @@ NSString *WMCompositionFrameworkVersion = @"0.1";
 			if (outUserDictionary) {
 				NSMutableDictionary *userDictionaryMutable = [[NSMutableDictionary alloc] initWithDictionary:inPlistDictionary];
 				[userDictionaryMutable removeObjectsForKeys:[[self standardKeys] allObjects]];
-				[userDictionaryMutable setObject:inBasePath forKey:WMCompositionPathKey];
 				*outUserDictionary = [userDictionaryMutable copy];
 			}
 		} else {

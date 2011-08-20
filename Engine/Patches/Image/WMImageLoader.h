@@ -11,11 +11,11 @@
 #import "WMPatch.h"
 
 @class WMImagePort;
-@interface WMImageLoader : WMPatch
+@class WMBundleDocument;
+@interface WMImageLoader : WMPatch {
+	WMImagePort *outputImage;
+}
 
-@property (nonatomic, strong) NSData *imageData;
-
-//TODO: WMImagePort
-@property (strong, nonatomic) WMImagePort *outputImage;
+@property (nonatomic, copy) NSString *imageResource;
 
 @end

@@ -8,11 +8,15 @@
 
 #import "WMPatch.h"
 
+@class WMEditViewController;
+
 @protocol WMPatchSettingsController <NSObject>
 
 - (id)initWithPatch:(WMPatch *)inPatch;
 
 @property (nonatomic, retain) WMPatch *patch;
+
+@property (nonatomic, assign) WMEditViewController *editViewController;
 
 @end
 
