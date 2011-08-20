@@ -161,8 +161,6 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 
 - (WMConnection *)connectionToInputPort:(WMPort *)inPort ofNode:(WMPatch *)inPatch inParent:(WMPatch *)inParent;
 {
-#warning Remove this hack when the ARC bug is no longer present
-#if 0
 	for (WMConnection *connection in inParent.connections) {
 		if ([connection.destinationNode isEqualToString:inPatch.key] && [connection.destinationPort isEqualToString:inPort.key]) {
 			//Find the source node
@@ -171,18 +169,6 @@ NSString *const WMEngineInterfaceOrientationArgument = @"interfaceOrientation";
 		}
 	}
 	return nil;
-#else
-	__block WMConnection *found_ios_bug_hack;
-	[inParent.connections enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-		WMConnection *connection = obj;
-		if ([connection.destinationNode isEqualToString:inPatch.key] && [connection.destinationPort isEqualToString:inPort.key]) {
-			//Find the source node
-			//TODO: optimize the order of this
-			found_ios_bug_hack = connection;
-		}
-	}];
-	return found_ios_bug_hack;
-#endif
 }
 
 - (void)drawPatchRecursive:(WMPatch *)inPatch;
