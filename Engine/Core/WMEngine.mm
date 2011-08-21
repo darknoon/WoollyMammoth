@@ -27,7 +27,7 @@ NSString *const WMEngineArgumentsInterfaceOrientationKey = @"interfaceOrientatio
 NSString *const WMEngineArgumentsDocumentKey = @"document";
 
 @interface WMEngine ()
-@property (nonatomic, retain, readwrite) WMPatch *rootObject;
+@property (nonatomic, strong, readwrite) WMPatch *rootObject;
 
 @end
 

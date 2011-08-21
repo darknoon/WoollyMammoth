@@ -96,7 +96,7 @@
 		dispatch_queue_t mainQueue = dispatch_get_main_queue();
 		const MIDIPacket *packet = &packetList->packet[0];
 		for (int i=0; i<packetList->numPackets; i++) {
-			NSData *dat = [[NSData alloc] initWithBytes:packet->data length:packet->length];
+//			NSData *dat = [[NSData alloc] initWithBytes:packet->data length:packet->length];
 //		NSLog(@"midi packet: %@", dat);
 			//TODO: put in some real MIDI packet parsing here!
 			for (int byte = 0; byte < packet->length; byte++) {
