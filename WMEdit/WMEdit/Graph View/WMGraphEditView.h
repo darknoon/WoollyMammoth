@@ -16,7 +16,7 @@ static const CGFloat plugstripHeight = 22.f;
 
 @class WMEditViewController;
 
-@interface WMGraphEditView : UIView
+@interface WMGraphEditView : UIScrollView
 
 @property (nonatomic, weak) WMEditViewController *viewController;
 

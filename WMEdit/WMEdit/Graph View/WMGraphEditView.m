@@ -22,6 +22,8 @@
     WMPatchConnectionsView *patchConnectionsView;
 	WMConnectionPopover *connectionPopover;
 	
+	UIView *contentView;
+	
 	UIImageView *lighting;
 }
 @synthesize rootPatch;
@@ -34,17 +36,29 @@
 	lighting.center = (CGPoint){CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds)};
 	lighting.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
 	lighting.alpha = 0.0f;
+	
+	self.contentSize = (CGSize){.width = 2000, .height = 2000};
+	self.contentOffset = (CGPoint){.x = 500, .y = 500};
+	self.delaysContentTouches = NO;
+	
+	self.delegate = (id <UIScrollViewDelegate>)self;
 
+	self.minimumZoomScale = 0.1f;
+	self.maximumZoomScale = 1.0f;
+
+	contentView = [[UIView alloc] initWithFrame:(CGRect){.size = self.contentSize}];
+	[self addSubview:contentView];
+	
 	patchViews = [[NSMutableArray alloc] init];
-	patchConnectionsView = [[WMPatchConnectionsView alloc] initWithFrame:self.bounds];	
+	patchConnectionsView = [[WMPatchConnectionsView alloc] initWithFrame:(CGRect){.size = self.contentSize}];	
 	patchConnectionsView.rootPatch = self.rootPatch;
 	patchConnectionsView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	patchConnectionsView.graphView = self;
-	[self addSubview:patchConnectionsView];
+	[contentView addSubview:patchConnectionsView];
 	
 	connectionPopover = [[WMConnectionPopover alloc] initWithFrame:CGRectZero];
 	connectionPopover.hidden = YES;
-	[self addSubview:connectionPopover];
+	[contentView addSubview:connectionPopover];
 
 }
 
@@ -62,6 +76,19 @@
 	[self initShared];
 }
 
+
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch;
+{
+	if (gestureRecognizer == self.panGestureRecognizer) {
+		return ![self patchHit:[touch locationInView:self]];
+	} else if (gestureRecognizer == self.pinchGestureRecognizer) {
+		NSLog(@"Zoom scale: %f", self.zoomScale);
+		return YES;
+	} else {
+		return YES;
+	}
+}
 
 - (BOOL)patchHit:(CGPoint)pt {
 //    pt = [self convertPoint:pt fromView:[self superview]];
@@ -81,7 +108,7 @@
 {
 	WMPatchView *newNodeView = [[WMPatchView alloc] initWithPatch:inPatch];	
 	newNodeView.graphView = self;
-	[self addSubview:newNodeView];
+	[contentView addSubview:newNodeView];
 	[patchViews addObject:newNodeView];
 	
 	[inPatch addObserver:self forKeyPath:@"editorPosition" options:NSKeyValueObservingOptionNew context:NULL];
@@ -222,6 +249,18 @@
 - (void)showSettingsForPatchView:(WMPatchView *)inPatchView;
 {
 	[self.viewController showSettingsForPatchView:inPatchView];
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView;
+{
+	return contentView;
+}
+
+- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale;
+{
+	
 }
 
 @end
