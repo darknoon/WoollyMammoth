@@ -350,7 +350,8 @@ static const UIEdgeInsets insets = {.top = 11.f, .left = 10.f, .right = 10.f, .b
 	BOOL inInputs = [inputPlugStrip pointInside:point withEvent:nil];
 	
 	if (inInputs && patch.inputPorts.count > 0) {
-		NSUInteger portIndex = [inputPlugStrip portIndexAtPoint:point];
+		NSInteger portIndex = [inputPlugStrip portIndexAtPoint:point];
+		portIndex = MAX(0, MIN(portIndex, self.patch.inputPorts.count));
 		return [self.patch.inputPorts objectAtIndex:portIndex];
 	}
 	return nil;
@@ -363,7 +364,8 @@ static const UIEdgeInsets insets = {.top = 11.f, .left = 10.f, .right = 10.f, .b
 	BOOL inInputs = [outputPlugStrip pointInside:point withEvent:nil];
 	
 	if (inInputs && patch.outputPorts.count > 0) {
-		NSUInteger portIndex = [outputPlugStrip portIndexAtPoint:point];
+		NSInteger portIndex = [outputPlugStrip portIndexAtPoint:point];
+		portIndex = MAX(0, MIN(portIndex, self.patch.outputPorts.count));
 		return [self.patch.outputPorts objectAtIndex:portIndex];
 	}
 	return nil;

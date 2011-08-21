@@ -183,7 +183,7 @@
 {
 	WMPatch *hitPatch = [self hitPatchForConnectionWithPoint:inPoint inPatchView:inView];
 	BOOL canConnect = NO;
-	if (hitPatch) {
+	if (hitPatch != nil) {
 		WMPatchView *hitPatchView = [self patchViewForKey:hitPatch.key];
 		WMPort *hitPort = [hitPatchView inputPortAtPoint:inPoint inView:inView];
 		
@@ -208,11 +208,28 @@
 		[connectionPopover setTargetPoint: [hitPatchView pointForInputPort:hitPort]];
 		connectionPopover.canConnect = canConnect;
 		[connectionPopover refresh];
-		[self bringSubviewToFront:connectionPopover];
+		[connectionPopover.superview bringSubviewToFront:connectionPopover];
 		
 		// DLog(@"%@ touching port: %@", canConnect ? @"Y" : @"N", hitPort);
 	} else {
-		connectionPopover.hidden = YES;
+		//Are we still in the output ports?
+		//Allow switching which output port we're selecting by dragging
+		WMPort *sourcePort = [inView outputPortAtPoint:inPoint inView:inView];
+		if (sourcePort) {
+			connectionPopover.hidden = NO;
+			connectionPopover.ports = inView.patch.outputPorts;
+			connectionPopover.connectablePorts = [[NSSet alloc] initWithArray:inView.patch.outputPorts];
+			connectionPopover.connectionIndex = [inView.patch.outputPorts indexOfObject:sourcePort];
+			[connectionPopover setTargetPoint: [inView pointForOutputPort:sourcePort]];
+			connectionPopover.canConnect = canConnect;
+			[connectionPopover refresh];
+			[connectionPopover.superview bringSubviewToFront:connectionPopover];
+
+			WMConnection *connection = [patchConnectionsView draggingConnectionFromPatchView:inView];
+			connection.sourcePort = sourcePort.name;
+		} else {
+			connectionPopover.hidden = YES;
+		}
 		// DLog(@"not touching port");
 	}
 

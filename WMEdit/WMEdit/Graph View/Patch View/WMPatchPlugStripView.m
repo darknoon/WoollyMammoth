@@ -74,7 +74,7 @@
 	if (inputCount > 0) {
 		CGFloat offX = (inPoint.x - leftOffset) / offsetBetweenDots;
 		int offXi = (int)roundf(offX);
-		return MAX(0, MIN(offXi, inputCount - 1));
+		return MAX(0, MIN(offXi, (int)inputCount - 1));
 	}
 	return NSNotFound;
 }
