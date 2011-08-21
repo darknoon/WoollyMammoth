@@ -18,6 +18,8 @@
 		491D665513D630BD003C609B /* plugstrip-stretchable~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 491D665413D630BD003C609B /* plugstrip-stretchable~ipad.png */; };
 		4937415713FAFD3900ABC9BA /* DNDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4937415613FAFD3900ABC9BA /* DNDocument.m */; };
 		493A1A2B1400C1CB001BB458 /* background-tile~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 493A1A2A1400C1CB001BB458 /* background-tile~ipad.png */; };
+		493A1A2E1400E491001BB458 /* WMIndexInputPortCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 493A1A2D1400E491001BB458 /* WMIndexInputPortCell.m */; };
+		493A1A301400E4B4001BB458 /* WMIndexInputPortCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 493A1A2F1400E4B4001BB458 /* WMIndexInputPortCell.xib */; };
 		494E4D7613D24A4C00402784 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 494E4D2513D24A4C00402784 /* ASIAuthenticationDialog.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		494E4D7713D24A4C00402784 /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 494E4D2813D24A4C00402784 /* ASIDataCompressor.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		494E4D7813D24A4C00402784 /* ASIDataDecompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 494E4D2A13D24A4C00402784 /* ASIDataDecompressor.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -286,6 +288,9 @@
 		4937415513FAFD3900ABC9BA /* DNDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNDocument.h; sourceTree = "<group>"; };
 		4937415613FAFD3900ABC9BA /* DNDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNDocument.m; sourceTree = "<group>"; };
 		493A1A2A1400C1CB001BB458 /* background-tile~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-tile~ipad.png"; sourceTree = "<group>"; };
+		493A1A2C1400E491001BB458 /* WMIndexInputPortCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMIndexInputPortCell.h; sourceTree = "<group>"; };
+		493A1A2D1400E491001BB458 /* WMIndexInputPortCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMIndexInputPortCell.m; sourceTree = "<group>"; };
+		493A1A2F1400E4B4001BB458 /* WMIndexInputPortCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMIndexInputPortCell.xib; sourceTree = "<group>"; };
 		494E4D2413D24A4C00402784 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
 		494E4D2513D24A4C00402784 /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIAuthenticationDialog.m; sourceTree = "<group>"; };
 		494E4D2613D24A4C00402784 /* ASICacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASICacheDelegate.h; sourceTree = "<group>"; };
@@ -1238,6 +1243,9 @@
 				498DDF0B13DF921A00D10642 /* WMNumberInputPortCell.h */,
 				498DDF0C13DF921B00D10642 /* WMNumberInputPortCell.m */,
 				498DDF0913DF907600D10642 /* WMNumberInputPortCell.xib */,
+				493A1A2C1400E491001BB458 /* WMIndexInputPortCell.h */,
+				493A1A2D1400E491001BB458 /* WMIndexInputPortCell.m */,
+				493A1A2F1400E4B4001BB458 /* WMIndexInputPortCell.xib */,
 			);
 			path = "Ports Popover";
 			sourceTree = "<group>";
@@ -1589,6 +1597,7 @@
 				497928A913E2AA6800DDBD2A /* SnowChunk.png in Resources */,
 				49F8A94613E69778000D4A3A /* WMImageLoaderSettingsController.xib in Resources */,
 				493A1A2B1400C1CB001BB458 /* background-tile~ipad.png in Resources */,
+				493A1A301400E4B4001BB458 /* WMIndexInputPortCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1810,6 +1819,7 @@
 				4917AC9F13F9C722008AD2CB /* WMBundleDocument.m in Sources */,
 				4917ACA113F9C722008AD2CB /* WMCompositionSerialization.m in Sources */,
 				4937415713FAFD3900ABC9BA /* DNDocument.m in Sources */,
+				493A1A2E1400E491001BB458 /* WMIndexInputPortCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

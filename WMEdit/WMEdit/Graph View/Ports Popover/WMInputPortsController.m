@@ -12,6 +12,7 @@
 
 #import "WMInputPortCell.h"
 #import "WMNumberInputPortCell.h"
+#import "WMIndexInputPortCell.h"
 
 @implementation WMInputPortsController
 @synthesize ports;
@@ -26,7 +27,7 @@
 
 - (void)viewDidLoad
 {
-	for (NSString *nibName in [NSArray arrayWithObjects:@"WMNumberInputPortCell", @"WMInputPortCell", nil]) {
+	for (NSString *nibName in [NSArray arrayWithObjects:@"WMNumberInputPortCell", @"WMIndexInputPortCell", @"WMInputPortCell", nil]) {
 		[self.tableView registerNib:[UINib nibWithNibName:nibName bundle:nil] forCellReuseIdentifier:nibName];
 	}
     
@@ -82,6 +83,8 @@
 {
 	if ([inPort isKindOfClass:[WMNumberPort class]]) {
 		return [WMNumberInputPortCell class];
+	} else if ([inPort isKindOfClass:[WMIndexPort class]]) {
+		return [WMIndexInputPortCell class];
 	} else {
 		return [WMInputPortCell class];
 	}

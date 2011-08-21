@@ -12,10 +12,10 @@
 @implementation WMIndexPort
 @synthesize index;
 
-- (BOOL)setStateValue:(id)inStateValue;
+- (BOOL)setObjectValue:(id)inRuntimeValue;
 {
 	@try {
-		self.index = [inStateValue unsignedIntegerValue];
+		self.index = [inRuntimeValue unsignedIntegerValue];
 		return YES;
 	}
 	@catch (NSException *exception) {
@@ -23,7 +23,7 @@
 	}
 }
 
-- (id)stateValue;
+- (id)objectValue;
 {
 	return [NSNumber numberWithUnsignedInteger:index];
 }
