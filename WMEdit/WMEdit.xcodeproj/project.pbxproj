@@ -11,8 +11,6 @@
 		490AC1E713D8F10F005E61CD /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 490AC1E613D8F10F005E61CD /* GLKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		49174AAC13D235BD008B5B8D /* DNAssertionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174AA413D235BD008B5B8D /* DNAssertionHandler.m */; };
 		49174AAD13D235BD008B5B8D /* EAGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174AA613D235BD008B5B8D /* EAGLView.m */; };
-		49174AAE13D235BD008B5B8D /* WMDebugViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174AA813D235BD008B5B8D /* WMDebugViewController.m */; };
-		49174AAF13D235BD008B5B8D /* WMDebugViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49174AA913D235BD008B5B8D /* WMDebugViewController.xib */; };
 		49174AB013D235BD008B5B8D /* WMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174AAB13D235BD008B5B8D /* WMViewController.m */; };
 		4917AC9F13F9C722008AD2CB /* WMBundleDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917AC9C13F9C722008AD2CB /* WMBundleDocument.m */; };
 		4917ACA113F9C722008AD2CB /* WMCompositionSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917AC9E13F9C722008AD2CB /* WMCompositionSerialization.m */; };
@@ -277,9 +275,6 @@
 		49174AA413D235BD008B5B8D /* DNAssertionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNAssertionHandler.m; sourceTree = "<group>"; };
 		49174AA513D235BD008B5B8D /* EAGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLView.h; sourceTree = "<group>"; };
 		49174AA613D235BD008B5B8D /* EAGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EAGLView.m; sourceTree = "<group>"; };
-		49174AA713D235BD008B5B8D /* WMDebugViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMDebugViewController.h; sourceTree = "<group>"; };
-		49174AA813D235BD008B5B8D /* WMDebugViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMDebugViewController.m; sourceTree = "<group>"; };
-		49174AA913D235BD008B5B8D /* WMDebugViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMDebugViewController.xib; sourceTree = "<group>"; };
 		49174AAA13D235BD008B5B8D /* WMViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMViewController.h; sourceTree = "<group>"; };
 		49174AAB13D235BD008B5B8D /* WMViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMViewController.m; sourceTree = "<group>"; };
 		4917AC9B13F9C722008AD2CB /* WMBundleDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMBundleDocument.h; sourceTree = "<group>"; };
@@ -688,9 +683,6 @@
 				49174AA413D235BD008B5B8D /* DNAssertionHandler.m */,
 				49174AA513D235BD008B5B8D /* EAGLView.h */,
 				49174AA613D235BD008B5B8D /* EAGLView.m */,
-				49174AA713D235BD008B5B8D /* WMDebugViewController.h */,
-				49174AA813D235BD008B5B8D /* WMDebugViewController.m */,
-				49174AA913D235BD008B5B8D /* WMDebugViewController.xib */,
 				49174AAA13D235BD008B5B8D /* WMViewController.h */,
 				49174AAB13D235BD008B5B8D /* WMViewController.m */,
 			);
@@ -1560,7 +1552,6 @@
 				49F0595B13D15F640056C506 /* InfoPlist.strings in Resources */,
 				49A5286313D174C6004EC7F6 /* connection-white~ipad.png in Resources */,
 				49A5286513D17A03004EC7F6 /* connection-shadow~ipad.png in Resources */,
-				49174AAF13D235BD008B5B8D /* WMDebugViewController.xib in Resources */,
 				496150C013D2D807006C8B57 /* plug-popover-arrow~ipad.png in Resources */,
 				496150C113D2D807006C8B57 /* plug-popover~ipad.png in Resources */,
 				49752E9713D35C2000F20447 /* plug-popover-dot~ipad.png in Resources */,
@@ -1703,7 +1694,6 @@
 				49A5285D13D173B8004EC7F6 /* PGMidiFind.mm in Sources */,
 				49174AAC13D235BD008B5B8D /* DNAssertionHandler.m in Sources */,
 				49174AAD13D235BD008B5B8D /* EAGLView.m in Sources */,
-				49174AAE13D235BD008B5B8D /* WMDebugViewController.m in Sources */,
 				49174AB013D235BD008B5B8D /* WMViewController.m in Sources */,
 				494E4D7613D24A4C00402784 /* ASIAuthenticationDialog.m in Sources */,
 				494E4D7713D24A4C00402784 /* ASIDataCompressor.m in Sources */,
