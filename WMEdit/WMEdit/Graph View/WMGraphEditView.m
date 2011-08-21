@@ -47,6 +47,8 @@
 	self.maximumZoomScale = 1.0f;
 
 	contentView = [[UIView alloc] initWithFrame:(CGRect){.size = self.contentSize}];
+	//TODO: why doesn't this work?
+	contentView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background-tile"]];
 	[self addSubview:contentView];
 	
 	patchViews = [[NSMutableArray alloc] init];

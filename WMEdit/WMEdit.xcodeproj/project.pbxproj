@@ -17,6 +17,7 @@
 		4917ACA213F9C722008AD2CB /* WMCompositionSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917AC9E13F9C722008AD2CB /* WMCompositionSerialization.m */; };
 		491D665513D630BD003C609B /* plugstrip-stretchable~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 491D665413D630BD003C609B /* plugstrip-stretchable~ipad.png */; };
 		4937415713FAFD3900ABC9BA /* DNDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4937415613FAFD3900ABC9BA /* DNDocument.m */; };
+		493A1A2B1400C1CB001BB458 /* background-tile~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 493A1A2A1400C1CB001BB458 /* background-tile~ipad.png */; };
 		494E4D7613D24A4C00402784 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 494E4D2513D24A4C00402784 /* ASIAuthenticationDialog.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		494E4D7713D24A4C00402784 /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 494E4D2813D24A4C00402784 /* ASIDataCompressor.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		494E4D7813D24A4C00402784 /* ASIDataDecompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 494E4D2A13D24A4C00402784 /* ASIDataDecompressor.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -284,6 +285,7 @@
 		491D665413D630BD003C609B /* plugstrip-stretchable~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plugstrip-stretchable~ipad.png"; sourceTree = "<group>"; };
 		4937415513FAFD3900ABC9BA /* DNDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNDocument.h; sourceTree = "<group>"; };
 		4937415613FAFD3900ABC9BA /* DNDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNDocument.m; sourceTree = "<group>"; };
+		493A1A2A1400C1CB001BB458 /* background-tile~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-tile~ipad.png"; sourceTree = "<group>"; };
 		494E4D2413D24A4C00402784 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
 		494E4D2513D24A4C00402784 /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIAuthenticationDialog.m; sourceTree = "<group>"; };
 		494E4D2613D24A4C00402784 /* ASICacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASICacheDelegate.h; sourceTree = "<group>"; };
@@ -1280,6 +1282,7 @@
 		49A5286113D174C6004EC7F6 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				493A1A2A1400C1CB001BB458 /* background-tile~ipad.png */,
 				07C99A9013D38E8B00712EFA /* Icon-72.png */,
 				49858EB813DE85BC0061A1A8 /* Icon-Small.png */,
 				49858EB913DE85BC0061A1A8 /* Icon-Small@2x.png */,
@@ -1585,6 +1588,7 @@
 				496F554313E128A30065BB67 /* WMSetShaderSettingsController.xib in Resources */,
 				497928A913E2AA6800DDBD2A /* SnowChunk.png in Resources */,
 				49F8A94613E69778000D4A3A /* WMImageLoaderSettingsController.xib in Resources */,
+				493A1A2B1400C1CB001BB458 /* background-tile~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
