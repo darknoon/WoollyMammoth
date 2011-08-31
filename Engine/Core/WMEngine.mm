@@ -32,11 +32,16 @@ NSString *const WMEngineArgumentsDocumentKey = @"document";
 @end
 
 
-@implementation WMEngine
+@implementation WMEngine {
+	NSMutableDictionary *compositionUserData;
+}
 
 @synthesize renderContext;
 @synthesize rootObject;
 @synthesize document;
+@synthesize t;
+@synthesize previousAbsoluteTime;
+@synthesize frameNumber;
 
 - (id)initWithBundle:(WMBundleDocument *)inDocument;
 {
@@ -87,9 +92,9 @@ NSString *const WMEngineArgumentsDocumentKey = @"document";
 - (void)start;
 {
 	//Call setup on all patches
-	//TODO: support setup on sub-nodes
 	[self _setupRecursive:rootObject];
 	
+	frameNumber = 0;
 	previousAbsoluteTime = CFAbsoluteTimeGetCurrent();
 }
 
@@ -226,7 +231,7 @@ NSString *const WMEngineArgumentsDocumentKey = @"document";
 			[port takeValueFromPort:port.originalPort];
 		}
 	}
-
+	frameNumber++;
 }
 
 - (void)drawFrameInRect:(CGRect)inBounds interfaceOrientation:(UIInterfaceOrientation)inInterfaceOrientation;
@@ -257,10 +262,9 @@ NSString *const WMEngineArgumentsDocumentKey = @"document";
 	[self drawPatchRecursive:self.rootObject];
 }
 
-
-- (NSString *)title;
+- (NSString *)description
 {
-	return @"TITLE HERE";
+	return [NSString stringWithFormat:@"<%@ %p frame:%d t:%.3lf t-1:%.3lf>", [self class], self, frameNumber, t, previousAbsoluteTime];
 }
 
 @end

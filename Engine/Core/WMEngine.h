@@ -18,31 +18,27 @@
 extern NSString *const WMEngineArgumentsInterfaceOrientationKey;
 extern NSString *const WMEngineArgumentsDocumentKey;
 
-@interface WMEngine : NSObject {
-	CFAbsoluteTime previousAbsoluteTime;
-	CFAbsoluteTime t;
-	
-	NSMutableDictionary *compositionUserData;
-}
+@interface WMEngine : NSObject
 
 - (id)initWithBundle:(WMBundleDocument *)inDocument;
 
 + (GLKMatrix4)cameraMatrixWithRect:(CGRect)inBounds;
 
+@property (nonatomic, readonly) NSUInteger frameNumber;
+
+@property (nonatomic, readonly) CFAbsoluteTime previousAbsoluteTime;
+@property (nonatomic, readonly) CFAbsoluteTime t;
+
+
 @property (nonatomic, strong, readonly) WMEAGLContext *renderContext;
 @property (nonatomic, strong, readonly) WMPatch *rootObject;
 @property (nonatomic, strong) WMBundleDocument *document;
-
-
-- (NSString *)title;
 
 - (void)start;
 
 - (void)drawFrameInRect:(CGRect)inBounds interfaceOrientation:(UIInterfaceOrientation)inInterfaceOrientation;
 
-
 //For unit testing. No need to use directly!
 - (NSArray *)executionOrderingOfChildren:(WMPatch *)inPatch;
-
 
 @end
