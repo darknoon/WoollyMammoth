@@ -97,8 +97,6 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 @synthesize pixelsWide=_width;
 @synthesize pixelsHigh=_height;
 @synthesize name=_name;
-@synthesize maxS=_maxS;
-@synthesize maxT=_maxT;
 
 - (id)initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;
 {
@@ -107,8 +105,8 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 		[(WMEAGLContext *)[WMEAGLContext currentContext] bind2DTextureNameForModification:_name]; 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		//Needed by default for npot
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 		[self setData:data pixelFormat:pixelFormat pixelsWide:width pixelsHigh:height contentSize:size orientation:inOrientation];
 	}					
@@ -141,6 +139,7 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 			[NSException raise:NSInternalInconsistencyException format:@""];
 			
 	}
+
 	
 	_size = size;
 	_width = width;
@@ -181,7 +180,13 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"<%@ = %08X | Name = %i | Dimensions = %ix%i | Coordinates = (%.2f, %.2f) | orientation = %@>", [self class], self, _name, _width, _height, _maxS, _maxT, NSStringFromUIImageOrientation(orientation)];
+	return [NSString stringWithFormat:@"<%@ %i = %p>", [self class], self, _name];
+}
+
+
+- (NSString *)debugDescription
+{
+	return [NSString stringWithFormat:@"<%@ = %p | Name = %i | Dimensions = %ix%i | Coordinates = (%.2f, %.2f) | orientation = %@>", [self class], self, _name, _width, _height, self.maxS, self.maxT, NSStringFromUIImageOrientation(orientation)];
 }
 
 @end
