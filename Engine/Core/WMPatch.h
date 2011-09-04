@@ -35,8 +35,6 @@ typedef enum {
 	NSMutableDictionary *childrenByKey;
 	id userInfo;
 	
-	WMBooleanPort *_inputEnable;
-	
 	//These are set from the ivars
 	NSMutableArray *inputPorts;
 	NSMutableArray *outputPorts;
