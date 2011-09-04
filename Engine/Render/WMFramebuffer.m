@@ -213,6 +213,16 @@
 	framebufferWidth = inTexture.pixelsWide;
 	framebufferHeight = inTexture.pixelsHigh;
 	
+#if DEBUG_OPENGL
+	
+	if (inTexture) {
+		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+			NSLog(@"Failed to make complete framebuffer object (%@) with texture %@", [WMFramebuffer descriptionOfFramebufferStatus:glCheckFramebufferStatus(GL_FRAMEBUFFER)], inTexture);		
+		}
+	}
+	
+#endif
+	
 	context.boundFramebuffer = oldFrameBuffer;
 }
 

@@ -39,6 +39,7 @@
 - (BOOL)presentRenderbuffer;
 
 //Sets the color attachment mipmap level 0 to be backed by the texture
+//This works with inTexture = nil as well, to unset the texture
 - (void)setColorAttachmentWithTexture:(WMTexture2D *)inTexture;
 
 @property (weak, nonatomic, readonly) WMTexture2D *texture;
