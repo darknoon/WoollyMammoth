@@ -199,11 +199,20 @@
 - (void)captureOutput:(AVCaptureOutput *)captureOutput  didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer 
 	   fromConnection:(AVCaptureConnection *)connection;
 {	
-
+	
 	dispatch_sync(dispatch_get_main_queue(), ^{
 		if (capturing) {
 			//Get buffer info
 			CVPixelBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+			
+#if 0
+			NSDictionary *dict = (__bridge_transfer NSDictionary *)CMCopyDictionaryOfAttachments(kCFAllocatorDefault, sampleBuffer, kCMAttachmentMode_ShouldPropagate);
+			
+			CMSampleTimingInfo timing;
+			CMSampleBufferGetSampleTimingInfo(sampleBuffer, 0, &timing);
+			
+			NSLog(@"sample attachments: %@", dict);
+#endif
 			
 			//NSLog(@"Is ready: %@ samples:%uld sampleSize:%d width:%d height:%d bytes/row:%d baseAddr:%x", ready ? @"Y" : @"N", numsamples, sampleSize, width, height, bytesPerRow, baseAddress);
 			

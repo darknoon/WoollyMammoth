@@ -21,9 +21,11 @@
 	
 	CFDictionaryRef textureAttributes = NULL;
 	
+	ZAssert(inFormat == kWMTexture2DPixelFormat_BGRA8888, @"Other CV Texture formats currently unimplemented.");
+	
 	//Get width and height
 	CGSize size = CVImageBufferGetEncodedSize(inImageBuffer);
-		
+	
 	CVReturn err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault, inTextureCache, inImageBuffer, textureAttributes, GL_TEXTURE_2D, GL_RGBA, size.width, size.height, GL_BGRA, GL_UNSIGNED_BYTE, 0, &cvTexture);
 	
 	if (err == 0) {
