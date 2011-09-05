@@ -49,7 +49,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 + (void)load;
 {
 	@autoreleasepool {
-		[self registerToRepresentClassNames:[NSSet setWithObject:@"WMBillboard"]];
+		[self registerPatchClass];
 	}
 }
 

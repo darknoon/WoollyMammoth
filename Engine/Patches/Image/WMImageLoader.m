@@ -29,7 +29,7 @@ NSString *const WMImageLoaderImageResourceKey = @"imageResource";
 + (void)load;
 {
 	@autoreleasepool {
-		[self registerToRepresentClassNames:[NSSet setWithObject:NSStringFromClass([self class])]];
+		[self registerPatchClass];
 	}
 }
 

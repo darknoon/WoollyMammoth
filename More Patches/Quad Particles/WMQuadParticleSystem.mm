@@ -232,7 +232,7 @@ int particleZCompare(const void *a, const void *b) {
 + (void)load;
 {
 	@autoreleasepool {
-		[self registerToRepresentClassNames:[NSSet setWithObject:NSStringFromClass(self)]];
+		[self registerPatchClass];
 	}
 }
 

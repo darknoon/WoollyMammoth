@@ -107,17 +107,17 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 + (void)load;
 {
 	@autoreleasepool {
-		[self registerToRepresentClassNames:[NSSet setWithObject:@"QCPatch"]];
+		[self registerPatchClass];
 	}
 }
 
-+ (void)registerToRepresentClassNames:(NSSet *)inClassNames;
++ (void)registerPatchClass;
 {
 	NSAssert([NSThread currentThread] == [NSThread mainThread], @"registerToRepresentClassNames: must be called on the main thread!");
 	NSMutableDictionary *classMap = [self _classMap];
-	for (NSString *className in inClassNames) {
-		[classMap setObject:self forKey:className];
-	}
+
+	[classMap setObject:self forKey:NSStringFromClass(self)];
+
 	[[WMPatchCategories sharedInstance] addClassWithName:self key:NSStringFromClass(self)];
 }
 
@@ -261,7 +261,6 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 
 - (void)createConnectionsWithState:(NSDictionary *)state;
 {
-	//Hack for iOS 5 beta 5
 	NSDictionary *plistConnections = [state objectForKey:WMPatchConnectionsPlistName];	
 	for (NSString *connectionName in plistConnections) {
 		NSDictionary *connectionDictionary = [plistConnections objectForKey:connectionName];

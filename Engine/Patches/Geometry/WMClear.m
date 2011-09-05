@@ -17,7 +17,7 @@
 + (void)load;
 {
 	@autoreleasepool {
-		[self registerToRepresentClassNames:[NSSet setWithObject:@"QCClear"]];
+		[self registerPatchClass];
 	}
 }
 

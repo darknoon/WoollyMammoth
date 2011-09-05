@@ -54,9 +54,9 @@ typedef enum {
 - (id)initWithPlistRepresentation:(id)inPlist;
 - (id)plistRepresentation;
 
-//Call +registerToRepresentClassNames: in your subclass's +load if you want to be the decoder for a given class name
-+ (void)registerToRepresentClassNames:(NSSet *)inClassNames;
-+ (void)registerToRepresentPluginClassNames:(NSSet *)inClassNames;
+//Call in +load for any WMPatch subclass
++ (void)registerPatchClass;
+
 + (Class)findClassWithName:(NSString*)className;
 + (NSString *)humanReadableTitle;
 

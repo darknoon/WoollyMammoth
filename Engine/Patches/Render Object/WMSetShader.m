@@ -38,7 +38,7 @@ NSString *WMFragmentShaderKey = @"fragmentShader";
 + (void)load;
 {
 	@autoreleasepool {
-		[self registerToRepresentClassNames:[NSSet setWithObject:NSStringFromClass(self)]];
+		[self registerPatchClass];
 	}
 }
 

@@ -36,7 +36,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 + (void)load;
 {
 	@autoreleasepool {
-		[self registerToRepresentClassNames:[NSSet setWithObject:@"QCImageFilter"]];
+		[self registerPatchClass];
 	}
 }
 

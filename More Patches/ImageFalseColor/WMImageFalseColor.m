@@ -32,7 +32,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 + (void)load;
 {
 	@autoreleasepool {
-		[self registerToRepresentClassNames:[NSSet setWithObject:NSStringFromClass(self)]];
+		[self registerPatchClass];
 	}
 }
 

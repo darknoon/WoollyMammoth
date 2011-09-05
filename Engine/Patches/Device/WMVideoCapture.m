@@ -52,7 +52,7 @@
 + (void)load;
 {
 	@autoreleasepool {
-		[self registerToRepresentClassNames:[NSSet setWithObject:@"QCVideoInput"]];
+		[self registerPatchClass];
 	}
 }
 

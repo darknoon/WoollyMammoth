@@ -18,7 +18,7 @@
 + (void)load;
 {
 	@autoreleasepool {
-		[self registerToRepresentClassNames:[NSSet setWithObject:@"QCSplitter"]];
+		[self registerPatchClass];
 	}
 }
 

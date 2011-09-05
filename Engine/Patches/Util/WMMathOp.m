@@ -19,7 +19,7 @@
 + (void)load;
 {
 	@autoreleasepool {
-		[self registerToRepresentClassNames:[NSSet setWithObject:@"QCMath"]];
+		[self registerPatchClass];
 	}
 }
 

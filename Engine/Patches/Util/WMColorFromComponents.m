@@ -73,7 +73,7 @@ COLOUR HSL2RGB(HSL c1)
 + (void)load;
 {
 	@autoreleasepool {
-		[self registerToRepresentClassNames:[NSSet setWithObject:@"QCColorFromComponents"]];
+		[self registerPatchClass];
 	}
 }
 

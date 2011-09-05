@@ -25,7 +25,7 @@
 + (void)load;
 {
 	@autoreleasepool {
-		[self registerToRepresentClassNames:[NSSet setWithObject:@"QCRenderInImage"]];
+		[self registerPatchClass];
 	}
 }
 
@@ -70,6 +70,7 @@
 	}
 	
 	//Recreate texture each frame (fix me!)
+	//TODO: find out how we can reuse this via a texture pool in WMEAGLContext
 	texture = [[WMTexture2D alloc] initWithData:NULL
 									pixelFormat:kWMTexture2DPixelFormat_RGBA8888
 									 pixelsWide:renderWidth

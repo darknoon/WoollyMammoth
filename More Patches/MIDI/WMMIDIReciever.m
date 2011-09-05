@@ -25,7 +25,7 @@
 + (void)load;
 {
 	@autoreleasepool {
-		[self registerToRepresentClassNames:[NSSet setWithObject:@"QCMidiControllers"]];
+		[self registerPatchClass];
 	}
 }
 
