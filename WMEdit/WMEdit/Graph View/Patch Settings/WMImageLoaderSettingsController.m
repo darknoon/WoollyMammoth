@@ -68,7 +68,13 @@
 {
 	UIImagePickerController *controller = [[UIImagePickerController alloc] init];
 	controller.delegate = self;
-	[self.navigationController presentViewController:controller animated:YES completion:NULL];
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		[self.navigationController presentViewController:controller animated:YES completion:NULL];
+	} else {
+		UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:controller];
+		[popover presentPopoverFromRect:((UIButton *)sender).frame inView:((UIButton *)sender) permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	}
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;

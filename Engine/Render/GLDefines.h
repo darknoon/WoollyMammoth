@@ -16,8 +16,6 @@
 extern "C" {
 #endif
 
-void checkGLError();
-
 #ifdef __cplusplus
 }
 #endif

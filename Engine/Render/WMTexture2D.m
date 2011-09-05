@@ -186,7 +186,7 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 
 - (NSString *)debugDescription
 {
-	return [NSString stringWithFormat:@"<%@ = %p | Name = %i | Dimensions = %ix%i | Coordinates = (%.2f, %.2f) | orientation = %@>", [self class], self, _name, _width, _height, self.maxS, self.maxT, NSStringFromUIImageOrientation(orientation)];
+	return [NSString stringWithFormat:@"<%@ = %p | Name = %i | Dimensions = %ix%i | Coordinates = (%.2f, %.2f) | orientation = %@>", [self class], self, self.name, self.pixelsWide, self.pixelsHigh, self.maxS, self.maxT, NSStringFromUIImageOrientation(orientation)];
 }
 
 @end
