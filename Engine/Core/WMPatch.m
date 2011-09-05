@@ -19,7 +19,6 @@
 #import <objc/runtime.h>
 
 NSString *WMPatchClassPlistName = @"class";
-NSString *WMPatchPluginClassPlistName = @"identifier";
 NSString *WMPatchKeyPlistName = @"key";
 NSString *WMPatchStatePlistName = @"state";
 NSString *WMPatchConnectionsPlistName = @"connections";
@@ -77,17 +76,6 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	return classMap;
 }
 
-+ (NSMutableDictionary *)_pluginClassMap;
-{
-	static NSMutableDictionary *classMap;
-	@synchronized(@"WMPatchPluginClassMap") {
-		if (!classMap) {
-			classMap = [[NSMutableDictionary alloc] init];
-		}
-	}
-	return classMap;
-}
-
 + (NSString *)category;
 {
     NSLog(@"Need to override category in %@.", self);
@@ -121,15 +109,6 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	[[WMPatchCategories sharedInstance] addClassWithName:self key:NSStringFromClass(self)];
 }
 
-+ (void)registerToRepresentPluginClassNames:(NSSet *)inClassNames;
-{
-	NSAssert([NSThread currentThread] == [NSThread mainThread], @"registerToRepresentPluginClassNames: must be called on the main thread!");
-	NSMutableDictionary *classMap = [self _pluginClassMap];
-	for (NSString *className in inClassNames) {
-		[classMap setObject:self forKey:className];
-	}
-}
-
 + (Class)findClassWithName:(NSString*)className;
 {
 	NSMutableDictionary *classMap = [self _classMap];
@@ -145,19 +124,9 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 		patchClassName = NSStringFromClass([WMPatch class]);
 	}
 	
-	Class patchClass = nil;
-	if ([patchClassName isEqualToString:@"QCPlugInPatch"]) {
-		NSString *pluginClassName = [inPlist objectForKey:WMPatchPluginClassPlistName];
-		//Plugins we have to load differently
-		patchClass = [[self _pluginClassMap] objectForKey: pluginClassName];
-		if (!patchClass) {
-			patchClass = NSClassFromString(pluginClassName);
-		}
-	} else {
-		patchClass = [[self _classMap] objectForKey: patchClassName];
-		if (!patchClass) {
-			patchClass = NSClassFromString(patchClassName);
-		}		
+	Class patchClass = [[self _classMap] objectForKey: patchClassName];
+	if (!patchClass) {
+		patchClass = NSClassFromString(patchClassName);
 	}
 	
 	if (!patchClass) {
