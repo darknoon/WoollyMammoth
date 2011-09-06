@@ -13,7 +13,7 @@
     
 }
 
-+ (WMPort *)portWithKey:(NSString *)inKey;
++ (id)portWithKey:(NSString *)inKey;
 
 //Object value is the efficent representation of this port's input value. For instance, a GL texture or NSValue may be used
 - (id)objectValue;

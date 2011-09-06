@@ -14,7 +14,7 @@
 @synthesize name;
 @synthesize originalPort;
 
-+ (WMPort *)portWithKey:(NSString *)inKey;
++ (id)portWithKey:(NSString *)inKey;
 {
 	WMPort *p = [[[self class] alloc] init];
 	p.key = inKey;
