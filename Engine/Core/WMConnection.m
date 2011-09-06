@@ -31,7 +31,7 @@
 
 - (NSString *)description;
 {
-	return [NSString stringWithFormat:@"<%@: %p {%@ : %@ => %@ : %@ }>", NSStringFromClass([self class]), sourceNode, sourcePort, destinationNode, destinationPort];
+	return [NSString stringWithFormat:@"<%@: %p {%@ : %@ => %@ : %@ }>", NSStringFromClass([self class]), self, self.sourceNode, self.sourcePort, self.destinationNode, self.destinationPort];
 }
 
 @end
