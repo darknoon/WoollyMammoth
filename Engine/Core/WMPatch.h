@@ -22,6 +22,7 @@ typedef enum {
 @class WMEAGLContext;
 @class WMPort;
 @class WMNumberPort;
+@class WMBundleDocument;
 
 @interface WMPatch : NSObject {
 @protected;
@@ -105,6 +106,7 @@ typedef enum {
 - (void)addChild:(WMPatch *)inPatch;
 - (void)removeChild:(WMPatch *)inPatch;
 - (void)addConnectionFromPort:(NSString *)inPort ofPatch:(NSString *)fromPatch toPort:(NSString *)toPort ofPatch:(NSString *)toPatch;
+- (void)removeConnectionToPort:(NSString *)inPort ofPatch:(NSString *)toPatch;
 
 @end
 

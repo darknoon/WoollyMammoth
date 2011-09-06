@@ -617,6 +617,19 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 
 - (void)addConnectionFromPort:(NSString *)fromPort ofPatch:(NSString *)fromPatch toPort:(NSString *)toPort ofPatch:(NSString *)toPatch;
 {
+	[self removeConnectionToPort:toPort ofPatch:toPatch];
+	
+	WMConnection *connection = [[WMConnection alloc] init];
+	connection.sourceNode = fromPatch;
+	connection.sourcePort = fromPort;
+	connection.destinationNode = toPatch;
+	connection.destinationPort = toPort;
+
+	[_connections addObject:connection];	
+}
+
+- (void)removeConnectionToPort:(NSString *)toPort ofPatch:(NSString *)toPatch;
+{
 	//Find an existing connection
 	WMConnection *existingConnectionToInputPort = nil;
 	for (WMConnection *connection in self.connections) {
@@ -627,14 +640,6 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	if (existingConnectionToInputPort) {
 		[_connections removeObject:existingConnectionToInputPort];
 	}
-	
-	WMConnection *connection = [[WMConnection alloc] init];
-	connection.sourceNode = fromPatch;
-	connection.sourcePort = fromPort;
-	connection.destinationNode = toPatch;
-	connection.destinationPort = toPort;
-
-	[_connections addObject:connection];	
 }
 
 + (NSString *)humanReadableTitle {
