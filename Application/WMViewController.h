@@ -27,7 +27,7 @@
 //If you want to read from a file, you can load from a nib and use this:
 @property (nonatomic, copy) NSURL *compositionURL;
 
-@property (nonatomic, retain, readonly) WMBundleDocument *document;
+@property (nonatomic, retain) WMBundleDocument *document;
 @property (readonly, retain, readonly) WMEngine *engine;
 @property (readonly, nonatomic, getter=isAnimating) BOOL animating;
 @property (nonatomic) NSInteger animationFrameInterval;

@@ -100,8 +100,34 @@
 
 - (void)setup;
 {
+	//Recreate engine
 	engine = [[WMEngine alloc] initWithBundle:document];
 	[self engineDidLoad];
+}
+
+- (void)setDocument:(WMBundleDocument *)inDocument;
+{
+	if ([document.fileURL isEqual:inDocument.fileURL]) return;
+	
+	document = inDocument;
+	
+//	if (document) {
+//		[document closeWithCompletionHandler:^(BOOL success) {
+//			
+//		}];
+//	}
+	
+	if (document.documentState == UIDocumentStateClosed) {
+		[document openWithCompletionHandler:^(BOOL success) {
+			if (success) {
+				[self setup];
+			} else {
+				NSLog(@"Error loading composition");
+			}
+		}];
+	} else {
+		[self setup];
+	} 
 }
 
 - (void)viewDidLoad;
@@ -109,20 +135,7 @@
 	[super viewDidLoad];
 	
 	if (!document && self.compositionURL) {
-		document = [[WMBundleDocument alloc] initWithFileURL:self.compositionURL];
-	}
-	if (document.documentState == UIDocumentStateClosed) {
-		[document openWithCompletionHandler:^(BOOL success) {
-			dispatch_async(dispatch_get_main_queue(), ^() {
-				if (success) {
-					[self setup];
-				} else {
-					NSLog(@"Error loading composition");
-				}
-			});
-		}];
-	} else {
-		[self setup];
+		self.document = [[WMBundleDocument alloc] initWithFileURL:self.compositionURL];
 	}
 	
 	fpsLabel = [[UILabel alloc] initWithFrame:CGRectMake(74, 10, 200, 22)];
@@ -135,8 +148,8 @@
 	fpsLabel.text = @"";
 	[self.view addSubview:fpsLabel];
 	
-	UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleNavigationBar)];
-	[self.view addGestureRecognizer:tapRecognizer];
+//	UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleNavigationBar)];
+//	[self.view addGestureRecognizer:tapRecognizer];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -198,7 +211,7 @@
 {
     if (!animating)
     {
-		displayLink = [NSClassFromString(@"CADisplayLink") displayLinkWithTarget:self selector:@selector(drawFrame)];
+		displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(drawFrame)];
 		[displayLink setFrameInterval:animationFrameInterval];
 		
 		// The run loop will retain the display link on add.
