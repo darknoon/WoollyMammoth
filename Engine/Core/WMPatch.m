@@ -559,16 +559,31 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 
 - (NSString *)description;
 {
-	return [NSString stringWithFormat:@"<%@ : %p>{key: %@, connections: %u, childen: %u>}", NSStringFromClass([self class]), self, key, _connections.count, _children.count];
+	NSMutableArray *components = [NSMutableArray array];
+	[components addObject:[NSString stringWithFormat:@"key: %@", key]];
+	if (_connections.count > 0) [components addObject: [NSString stringWithFormat:@"connections: %u", _connections.count]];
+	if (_children.count > 0) [components addObject:[NSString stringWithFormat:@"childen: %u"]];
+	
+	return [NSString stringWithFormat:@"<%@: %p>{%@}", NSStringFromClass([self class]), self, [components componentsJoinedByString:@", "]];
 }
 
-- (NSString *)descriptionRecursive;
+//Provided as a debugging aid
+- (NSString *)recursiveDescription;
 {
 	NSMutableString *descriptionRecursive = [NSMutableString stringWithString:[self description]];
 	for (WMPatch *child in _children) {
-		[descriptionRecursive appendFormat:@"\n\t%@", [child descriptionRecursive]];
+		int inCount = 0;
+		int outCount = 0;
+		for (WMConnection *c in self.connections) {
+			if ([c.destinationNode isEqualToString:child.key]) {
+				inCount++;
+			}
+			if ([c.sourceNode isEqualToString:child.key]) {
+				outCount++;
+			}
+		}
+		[descriptionRecursive appendFormat:@"\n\t%@ <- %d in %d out", [child recursiveDescription], inCount, outCount];
 	}
-	[descriptionRecursive appendString:@"\n"];
 	return descriptionRecursive;
 }
 
