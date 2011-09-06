@@ -463,9 +463,9 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 
 - (void)removeOutputPort:(WMPort *)inPort;
 {
-	[self willChangeValueForKey:@"inputPorts"];
+	[self willChangeValueForKey:@"outputPorts"];
 	[outputPorts removeObject:inPort];
-	[self didChangeValueForKey:@"inputPorts"];
+	[self didChangeValueForKey:@"outputPorts"];
 }
 
 - (NSArray *)inputPorts;
