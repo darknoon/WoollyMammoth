@@ -8,6 +8,7 @@
 
 #import "WMCompositionListViewController.h"
 
+#import "WMBundleDocument.h"
 #import "WMViewController.h"
 
 @implementation WMCompositionListViewController
@@ -35,11 +36,6 @@
 	return self;
 }
 
-- (void)dealloc
-{
-    [super dealloc];
-}
-
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -51,7 +47,7 @@
 	NSMutableArray *compositionsMutable = [NSMutableArray array];
 	
 	for (NSString *composition in resources) {
-		if ([[composition pathExtension] isEqualToString:@"qtz"]) {
+		if ([[composition pathExtension] isEqualToString:@"wmbundle"]) {
 			[compositionsMutable addObject:composition];
 		}
 	}
@@ -62,7 +58,6 @@
 {
     [super viewDidUnload];
 	
-	[compositions release];
 	compositions = nil;
 }
 
@@ -110,7 +105,7 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
 	cell.textLabel.text = [compositions objectAtIndex:indexPath.row];
@@ -122,15 +117,21 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	WMViewController *viewController = [[[WMViewController alloc] initWithNibName:nil bundle:nil] autorelease];
 	
 	NSString *composition = [compositions objectAtIndex:indexPath.row];
 	NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
 	NSURL *url = [NSURL fileURLWithPath:[resourcePath stringByAppendingPathComponent:composition] isDirectory:YES];
 	
-	[viewController reloadEngineFromURL:url];
+	WMBundleDocument *document = [[WMBundleDocument alloc] initWithFileURL:url];
 	
-	[self.navigationController pushViewController:viewController animated:YES];
+	[document openWithCompletionHandler:^(BOOL success) {
+		if (success) {
+			WMViewController *viewController = [[WMViewController alloc] initWithDocument:document];
+			
+			[self.navigationController pushViewController:viewController animated:YES];
+		}
+	}];
+	
 }
 
 @end

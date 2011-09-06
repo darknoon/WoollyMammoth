@@ -17,8 +17,6 @@
 		4917AC8F13F9B6CF008AD2CB /* WMCVTexture2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917AC8E13F9B6CF008AD2CB /* WMCVTexture2D.m */; };
 		4917E4D413653F7100AA4D55 /* DNAssertionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917E34C13653F7100AA4D55 /* DNAssertionHandler.m */; };
 		4917E4D513653F7100AA4D55 /* EAGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917E34E13653F7100AA4D55 /* EAGLView.m */; };
-		4917E4D613653F7100AA4D55 /* WMDebugViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917E35013653F7100AA4D55 /* WMDebugViewController.m */; };
-		4917E4D713653F7100AA4D55 /* WMDebugViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4917E35113653F7100AA4D55 /* WMDebugViewController.xib */; };
 		4917E50A13653F7100AA4D55 /* BrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917E3B813653F7100AA4D55 /* BrowserViewController.m */; };
 		4917E56C13653F7100AA4D55 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4917E45213653F7100AA4D55 /* Random.cpp */; };
 		492483AF1270D4BD00B59759 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 492483AE1270D4BD00B59759 /* OpenGLES.framework */; };
@@ -29,11 +27,12 @@
 		4937415413FAFBF100ABC9BA /* DNDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4937415313FAFBF100ABC9BA /* DNDocument.m */; };
 		4940D0D01264F8DF007FA76C /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4940D0CF1264F8DF007FA76C /* CoreFoundation.framework */; };
 		4940D0E51264F943007FA76C /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4940D0E41264F943007FA76C /* CFNetwork.framework */; };
-		4970556313679270000110B7 /* PGMidi.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4970555E13679270000110B7 /* PGMidi.mm */; };
-		4970556413679270000110B7 /* PGMidiAllSources.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4970556013679270000110B7 /* PGMidiAllSources.mm */; };
-		4970556513679270000110B7 /* PGMidiFind.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4970556213679270000110B7 /* PGMidiFind.mm */; };
+		4970556313679270000110B7 /* PGMidi.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4970555E13679270000110B7 /* PGMidi.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		4970556413679270000110B7 /* PGMidiAllSources.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4970556013679270000110B7 /* PGMidiAllSources.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		4970556513679270000110B7 /* PGMidiFind.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4970556213679270000110B7 /* PGMidiFind.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4970556713679310000110B7 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4970556613679310000110B7 /* CoreMIDI.framework */; };
 		498FCDFA12AB234C00CF48A3 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 498FCDF912AB234C00CF48A3 /* CoreMotion.framework */; };
+		499478441415B51F008B0877 /* Feedback New.wmbundle in Resources */ = {isa = PBXBuildFile; fileRef = 499478421415B51F008B0877 /* Feedback New.wmbundle */; };
 		49A63AB51365412700A4F6D1 /* WMCompositionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A63AAF1365412700A4F6D1 /* WMCompositionListViewController.m */; };
 		49A63AB61365412700A4F6D1 /* WoollyMammothAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A63AB11365412700A4F6D1 /* WoollyMammothAppDelegate.m */; };
 		49AC787B13F1BF4200BC6584 /* WMStructuredBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AC77FE13F1BF4100BC6584 /* WMStructuredBuffer.m */; };
@@ -143,6 +142,8 @@
 		4970556213679270000110B7 /* PGMidiFind.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PGMidiFind.mm; sourceTree = "<group>"; };
 		4970556613679310000110B7 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
 		498FCDF912AB234C00CF48A3 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		499478261415B014008B0877 /* WMPrefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPrefix.pch; sourceTree = "<group>"; };
+		499478421415B51F008B0877 /* Feedback New.wmbundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Feedback New.wmbundle"; sourceTree = "<group>"; };
 		49A63AAE1365412700A4F6D1 /* WMCompositionListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMCompositionListViewController.h; sourceTree = "<group>"; };
 		49A63AAF1365412700A4F6D1 /* WMCompositionListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMCompositionListViewController.m; sourceTree = "<group>"; };
 		49A63AB01365412700A4F6D1 /* WoollyMammothAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WoollyMammothAppDelegate.h; sourceTree = "<group>"; };
@@ -310,6 +311,7 @@
 				4917E35F13653F7100AA4D55 /* Documentation */,
 				4917E3B513653F7100AA4D55 /* Externals */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				499478371415B50D008B0877 /* Examples */,
 				49E81DD912712FE400127D48 /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
@@ -442,6 +444,15 @@
 			);
 			name = MIDI;
 			path = midimonitor/Sources/MIDI;
+			sourceTree = "<group>";
+		};
+		499478371415B50D008B0877 /* Examples */ = {
+			isa = PBXGroup;
+			children = (
+				499478421415B51F008B0877 /* Feedback New.wmbundle */,
+			);
+			name = Examples;
+			path = ../Examples;
 			sourceTree = "<group>";
 		};
 		49A63AA71365412700A4F6D1 /* WMViewer */ = {
@@ -660,6 +671,7 @@
 				49AC787A13F1BF4100BC6584 /* WMMathUtil.h */,
 				4937415213FAFBF100ABC9BA /* DNDocument.h */,
 				4937415313FAFBF100ABC9BA /* DNDocument.m */,
+				499478261415B014008B0877 /* WMPrefix.pch */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -727,8 +739,8 @@
 				49E2A3AA134BE4BA006A80DC /* MainWindow.xib in Resources */,
 				49AC789E13F1BF4200BC6584 /* WMDefaultShader.fsh in Resources */,
 				49AC789F13F1BF4200BC6584 /* WMDefaultShader.vsh in Resources */,
-				4917E4D713653F7100AA4D55 /* WMDebugViewController.xib in Resources */,
 				49AC788913F1BF4200BC6584 /* WMGaussianBlur.glsl in Resources */,
+				499478441415B51F008B0877 /* Feedback New.wmbundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -742,7 +754,6 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				4917E4D413653F7100AA4D55 /* DNAssertionHandler.m in Sources */,
 				4917E4D513653F7100AA4D55 /* EAGLView.m in Sources */,
-				4917E4D613653F7100AA4D55 /* WMDebugViewController.m in Sources */,
 				4917E50A13653F7100AA4D55 /* BrowserViewController.m in Sources */,
 				4917E56C13653F7100AA4D55 /* Random.cpp in Sources */,
 				49A63AB51365412700A4F6D1 /* WMCompositionListViewController.m in Sources */,
@@ -814,7 +825,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = WoollyMammoth_Prefix.pch;
+				GCC_PREFIX_HEADER = ../Engine/Util/WMPrefix.pch;
 				GCC_THUMB_SUPPORT = NO;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
 				INFOPLIST_FILE = "Resources/SnowGlobe-Info.plist";
@@ -833,7 +844,7 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = WoollyMammoth_Prefix.pch;
+				GCC_PREFIX_HEADER = ../Engine/Util/WMPrefix.pch;
 				GCC_THUMB_SUPPORT = NO;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
 				INFOPLIST_FILE = "Resources/SnowGlobe-Info.plist";
@@ -852,6 +863,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_OBJCPP_ARC_ABI = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -867,6 +880,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_OBJCPP_ARC_ABI = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;

@@ -24,7 +24,7 @@
 	[window makeKeyWindow];
 	
 	//Set our assertion handler
-	[[[NSThread currentThread] threadDictionary] setObject:[[[DNAssertionHandler alloc] init] autorelease] forKey:NSAssertionHandlerKey];
+	[[[NSThread currentThread] threadDictionary] setObject:[[DNAssertionHandler alloc] init] forKey:NSAssertionHandlerKey];
 		
 	return YES;
 }
@@ -37,14 +37,6 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Handle any foreground procedures not related to animation here.
-}
-
-- (void)dealloc
-{
-    [viewController release];
-    [window release];
-    
-    [super dealloc];
 }
 
 @end
