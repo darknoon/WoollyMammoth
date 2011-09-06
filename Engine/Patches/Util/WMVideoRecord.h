@@ -16,6 +16,8 @@
 	
 	WMStringPort *inputTempName;
 	
+	WMBooleanPort *inputRecord;
+	
 //	WMIndexPort *inputWidth;
 //	WMIndexPort *inputHeight;
 	

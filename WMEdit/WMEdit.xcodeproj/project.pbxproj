@@ -178,6 +178,7 @@
 		49B3DB4D13E10F03002DC713 /* WMRenderObjectPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB4C13E10F03002DC713 /* WMRenderObjectPort.m */; };
 		49B3DB5B13E11039002DC713 /* WMRenderOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB5813E11039002DC713 /* WMRenderOutput.m */; };
 		49B3DB5F13E1115B002DC713 /* WMSetShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB5E13E1115B002DC713 /* WMSetShader.m */; };
+		49B9A6BD1415C473001DB45B /* WMVideoRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B9A6BC1415C473001DB45B /* WMVideoRecord.m */; };
 		49BACB4B13EB592A008ED051 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49BACB4A13EB592A008ED051 /* SenTestingKit.framework */; };
 		49BACB4C13EB592A008ED051 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595013D15F640056C506 /* UIKit.framework */; };
 		49BACB4D13EB592A008ED051 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595213D15F640056C506 /* Foundation.framework */; };
@@ -241,7 +242,6 @@
 		49BACBD913EB5BDA008ED051 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5263F13D172CF004EC7F6 /* CFNetwork.framework */; };
 		49BACBDA13EB5BDD008ED051 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5263D13D172C6004EC7F6 /* QuartzCore.framework */; };
 		49BACBDB13EB5BDF008ED051 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5263B13D172BC004EC7F6 /* CoreMIDI.framework */; };
-		49C49E5C14146FAD006C22F3 /* WMVideoRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C49E5B14146FAD006C22F3 /* WMVideoRecord.m */; };
 		49D73A8713FEE0F60028AF22 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D73A8613FEE0F60028AF22 /* AssetsLibrary.framework */; };
 		49E3145913DA44F600813CE0 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49E3145613DA44F600813CE0 /* Random.cpp */; };
 		49E3145A13DA44F600813CE0 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49E3145613DA44F600813CE0 /* Random.cpp */; };
@@ -587,14 +587,14 @@
 		49B3DB5813E11039002DC713 /* WMRenderOutput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WMRenderOutput.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		49B3DB5D13E1115B002DC713 /* WMSetShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSetShader.h; sourceTree = "<group>"; };
 		49B3DB5E13E1115B002DC713 /* WMSetShader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WMSetShader.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		49B9A6BB1415C473001DB45B /* WMVideoRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMVideoRecord.h; sourceTree = "<group>"; };
+		49B9A6BC1415C473001DB45B /* WMVideoRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMVideoRecord.m; sourceTree = "<group>"; };
 		49BACB4013EB5847008ED051 /* WMGraphTopologyTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMGraphTopologyTests.h; sourceTree = "<group>"; };
 		49BACB4113EB5847008ED051 /* WMGraphTopologyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMGraphTopologyTests.m; sourceTree = "<group>"; };
 		49BACB4913EB592A008ED051 /* WMEngineTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WMEngineTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		49BACB4A13EB592A008ED051 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		49BACB5C13EB59D4008ED051 /* WMEngineTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "WMEngineTests-Info.plist"; sourceTree = "<group>"; };
 		49BACBC913EB5B54008ED051 /* WMEngineTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMEngineTests-Prefix.pch"; sourceTree = "<group>"; };
-		49C49E5A14146FAD006C22F3 /* WMVideoRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMVideoRecord.h; sourceTree = "<group>"; };
-		49C49E5B14146FAD006C22F3 /* WMVideoRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WMVideoRecord.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		49D73A8613FEE0F60028AF22 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		49E3145613DA44F600813CE0 /* Random.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Random.cpp; sourceTree = "<group>"; };
 		49E3145713DA44F600813CE0 /* Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Random.h; sourceTree = "<group>"; };
@@ -915,6 +915,8 @@
 				49858DEF13DE4C1F0061A1A8 /* WMSplitter.m */,
 				49AD651513DE9E1200A2CC66 /* WMVectorFromComponents.h */,
 				49AD651613DE9E1200A2CC66 /* WMVectorFromComponents.m */,
+				49B9A6BB1415C473001DB45B /* WMVideoRecord.h */,
+				49B9A6BC1415C473001DB45B /* WMVideoRecord.m */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1011,7 +1013,6 @@
 				49858E5113DE4C800061A1A8 /* ImageFalseColor */,
 				49858E5713DE4C800061A1A8 /* MIDI */,
 				49858E5A13DE4C800061A1A8 /* OSC */,
-				49C49E5814146F29006C22F3 /* Record */,
 				49858E8D13DE4C800061A1A8 /* Quad Particles */,
 				49858E9013DE4C800061A1A8 /* Tweeted Photos */,
 			);
@@ -1356,16 +1357,6 @@
 				49BACB4113EB5847008ED051 /* WMGraphTopologyTests.m */,
 			);
 			path = Tests;
-			sourceTree = "<group>";
-		};
-		49C49E5814146F29006C22F3 /* Record */ = {
-			isa = PBXGroup;
-			children = (
-				49C49E5A14146FAD006C22F3 /* WMVideoRecord.h */,
-				49C49E5B14146FAD006C22F3 /* WMVideoRecord.m */,
-			);
-			name = Record;
-			path = ../WMEdit/Record;
 			sourceTree = "<group>";
 		};
 		49E3145513DA44F600813CE0 /* Math */ = {
@@ -1836,7 +1827,7 @@
 				4917ACA113F9C722008AD2CB /* WMCompositionSerialization.m in Sources */,
 				4937415713FAFD3900ABC9BA /* DNDocument.m in Sources */,
 				493A1A2E1400E491001BB458 /* WMIndexInputPortCell.m in Sources */,
-				49C49E5C14146FAD006C22F3 /* WMVideoRecord.m in Sources */,
+				49B9A6BD1415C473001DB45B /* WMVideoRecord.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
