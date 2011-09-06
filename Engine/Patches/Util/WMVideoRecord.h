@@ -16,13 +16,16 @@
 	
 	WMStringPort *inputTempName;
 	
-	WMBooleanPort *inputRecord;
+	WMBooleanPort *inputShouldRecord;
 	
 //	WMIndexPort *inputWidth;
 //	WMIndexPort *inputHeight;
 	
+	WMBooleanPort *outputRecording;
+	WMBooleanPort *outputSaving;
+	
 	//Use this to show a preview of what will be recorded. Works even when
-	WMImagePort *outputTexture;
+	WMImagePort *outputImage;
 }
 
 

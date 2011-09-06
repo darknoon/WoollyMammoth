@@ -174,7 +174,7 @@ bail:
 {
     dispatch_sync(videoProcessingQueue, ^{
         if (self.writing) {   
-            NSURL *fileURL = [_assetWriter outputURL];            
+            NSURL *fileURL = [_assetWriter outputURL];
             BOOL success = [_assetWriter finishWriting];
             NSLog(@"finishWriting %d", success);
             NSLog(@"fileURL %@", fileURL);
@@ -188,7 +188,7 @@ bail:
                                                         NSLog(@"Error: %@ %@", error, [error userInfo]);
                                                     } 
                                                     else {
-                                                        NSLog(@"Video save: %@", assetURL);
+                                                        NSLog(@"Video saved to photos: %@", assetURL);
                                                     }
 													self.savingToPhotos = NO;													 
                                                 }];
@@ -325,12 +325,12 @@ bail:
 {
 	//TODO: If output dimensions change, cancel read and re-create
 	
-	if (!self.writing && !self.savingToPhotos) {
+	BOOL shouldBeWriting = inputShouldRecord.value;
+	
+	if (shouldBeWriting && !self.writing && !self.savingToPhotos) {
 		NSLog(@"Attempting to create asset writer.");
 		[self startWriting];
-	}
-	
-	if (time > 20.0) {
+	} else if (!shouldBeWriting && self.writing) {
 		[self stopWriting];
 	}
 	
@@ -374,10 +374,14 @@ bail:
 	
 	//Write out sample buffer
 	
-	[self appendBufferToAssetWriterInput:destPixelBuffer forTime:CMTimeMake(time * 1000000000, 1000000000)];
+	if (shouldBeWriting) {
+		[self appendBufferToAssetWriterInput:destPixelBuffer forTime:CMTimeMake(time * 1000000000, 1000000000)];
+	}
+
+
+	outputImage.image = currentTexture;
 	
-	outputTexture.image = currentTexture;
-	
+	CVOpenGLESTextureCacheFlush(textureCache, 0);
 	CFRelease(destPixelBuffer);
 	
 	context.boundFramebuffer = prevBuffer;
