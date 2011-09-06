@@ -130,7 +130,7 @@
 #if USE_LOW_RES_CAMERA
 	[captureSession setSessionPreset:AVCaptureSessionPresetLow];
 #else
-	[captureSession setSessionPreset:AVCaptureSessionPreset640x480];
+	[captureSession setSessionPreset:AVCaptureSessionPresetiFrame1280x720];
 #endif	
 	NSError *error = nil;
 	
