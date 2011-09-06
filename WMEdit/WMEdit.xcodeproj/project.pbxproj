@@ -555,6 +555,7 @@
 		498DDF0E13DF952400D10642 /* WMInputPortCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMInputPortCell.xib; sourceTree = "<group>"; };
 		498E4E9313E13421003BB056 /* WMDefaultShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = WMDefaultShader.fsh; sourceTree = "<group>"; };
 		498E4E9613E1342B003BB056 /* WMDefaultShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = WMDefaultShader.vsh; sourceTree = "<group>"; };
+		4994782C1415B0EF008B0877 /* WMPrefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPrefix.pch; sourceTree = "<group>"; };
 		49A5263B13D172BC004EC7F6 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
 		49A5263D13D172C6004EC7F6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		49A5263F13D172CF004EC7F6 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -975,6 +976,7 @@
 		49858E1213DE4C1F0061A1A8 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				4994782C1415B0EF008B0877 /* WMPrefix.pch */,
 				4937415513FAFD3900ABC9BA /* DNDocument.h */,
 				4937415613FAFD3900ABC9BA /* DNDocument.m */,
 				49858E1313DE4C1F0061A1A8 /* EAGLContext+Extensions.h */,
@@ -1973,7 +1975,7 @@
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "WMEdit/WMEdit-Prefix.pch";
+				GCC_PREFIX_HEADER = ../Engine/Util/WMPrefix.pch;
 				INFOPLIST_FILE = "WMEdit/WMEdit-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1988,7 +1990,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "WMEdit/WMEdit-Prefix.pch";
+				GCC_PREFIX_HEADER = ../Engine/Util/WMPrefix.pch;
 				INFOPLIST_FILE = "WMEdit/WMEdit-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
