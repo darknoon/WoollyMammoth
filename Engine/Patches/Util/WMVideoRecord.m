@@ -254,19 +254,11 @@ bail:
 		timingInfo.decodeTimeStamp = (CMTime){};
 		timingInfo.presentationTimeStamp = inTime;
 		
-		//        status = CMSampleBufferGetSampleTimingInfo(inputBuffer, 0, &timingInfo);
-		//        if (status) {
-		//            NSLog(@"appendVideoToAssetWriterInput, CMSampleBufferGetSampleTimingInfo failure.");
-		//            goto bail;           
-		//        }        
-		
 		status = CMSampleBufferCreateForImageBuffer(kCFAllocatorDefault, pixelBuffer, TRUE, NULL, NULL, formatDescription, &timingInfo, &resultBuffer);
 		if (status) {
 			NSLog(@"appendVideoToAssetWriterInput, CMSampleBufferCreateForImageBuffer failure.");
 			goto bail;           
 		}    
-		
-		//CMPropagateAttachments(inputBuffer, resultBuffer);
 		
 		success = [_assetWriterVideoInput appendSampleBuffer:resultBuffer];
 	}
@@ -288,9 +280,9 @@ bail:
 
 - (BOOL)setup:(WMEAGLContext *)context;
 {
-	videoDimensions.width = 1024;
-	videoDimensions.height = 768;
-	videoBufferPool = CreatePixelBufferPool(1024, 768, kCVPixelFormatType_32BGRA);
+	videoDimensions.width = 512;
+	videoDimensions.height = 512;
+	videoBufferPool = CreatePixelBufferPool(videoDimensions.width, videoDimensions.height, kCVPixelFormatType_32BGRA);
     if (!videoBufferPool) {
         NSLog(@"Couldn't create a pixel buffer pool.");
         return NO;
@@ -353,6 +345,9 @@ bail:
 	
 	context.boundFramebuffer = framebuffer;
 	
+//	[context clearToColor:(GLKVector4){0, 0, 0, 1}];
+//	[context clearDepth];
+	
     if (!currentTexture || err) {
         NSLog(@"displayAndRenderPixelBuffer error"); 
     }
@@ -370,15 +365,16 @@ bail:
 		[context renderObject:inputRenderable4.object];
 	}
 	
-	glFinish();
+	//glFinish();
 	
 	//Write out sample buffer
 	
 	if (shouldBeWriting) {
 		[self appendBufferToAssetWriterInput:destPixelBuffer forTime:CMTimeMake(time * 1000000000, 1000000000)];
 	}
-
-
+	
+	[framebuffer setColorAttachmentWithTexture:nil];
+	
 	outputImage.image = currentTexture;
 	
 	CVOpenGLESTextureCacheFlush(textureCache, 0);
