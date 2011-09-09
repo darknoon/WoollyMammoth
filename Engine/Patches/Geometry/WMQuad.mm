@@ -37,6 +37,14 @@ static WMStructureField WMQuadVertex_fields[] = {
 	WMRenderObject *renderObject;
 }
 
+@synthesize inputImage;
+@synthesize inputPosition;
+@synthesize inputScale;
+@synthesize inputRotation;
+@synthesize inputColor;
+@synthesize inputBlending;
+@synthesize outputObject;
+
 + (NSString *)category;
 {
     return WMPatchCategoryGeometry;

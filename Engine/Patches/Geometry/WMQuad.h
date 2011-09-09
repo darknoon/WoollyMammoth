@@ -19,13 +19,6 @@
 @class WMStructuredBuffer;
 
 @interface WMQuad : WMPatch {
-	WMImagePort *inputImage;
-	WMVector3Port *inputPosition;
-	WMNumberPort *inputScale;
-	WMNumberPort *inputRotation;
-	WMColorPort *inputColor;
-	
-	WMIndexPort *inputBlending;
 	WMShader *shader;
 	
 	//The vertex buffer is cached for a given size/orientation pair. If either changes, it is regenerated.
@@ -33,7 +26,17 @@
 	UIImageOrientation vertexBufferOrientation;
 	WMStructuredBuffer *vertexBuffer;
 	
-	WMRenderObjectPort *outputObject;
 }
+
+@property (nonatomic, strong, readonly) WMImagePort *inputImage;
+@property (nonatomic, strong, readonly) WMVector3Port *inputPosition;
+@property (nonatomic, strong, readonly) WMNumberPort *inputScale;
+@property (nonatomic, strong, readonly) WMNumberPort *inputRotation;
+@property (nonatomic, strong, readonly) WMColorPort *inputColor;
+
+@property (nonatomic, strong, readonly) WMIndexPort *inputBlending;
+
+@property (nonatomic, strong, readonly) WMRenderObjectPort *outputObject;
+
 
 @end
