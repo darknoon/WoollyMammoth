@@ -31,7 +31,7 @@
 @synthesize document;
 @synthesize engine;
 @synthesize animating;
-@synthesize debugViewController;
+@synthesize eaglView;
 @synthesize animationFrameInterval;
 @synthesize compositionURL;
 
@@ -80,9 +80,11 @@
 	}
 	if (![self isViewLoaded]) {
 		CGRect defaultFrame = [[UIScreen mainScreen] applicationFrame];
-		EAGLView *view = [[EAGLView alloc] initWithFrame:defaultFrame];
-		view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		self.view = view;
+
+		self.eaglView = [[EAGLView alloc] initWithFrame:defaultFrame];
+		eaglView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
+		self.view = eaglView;
 	}
 }
 
@@ -93,9 +95,9 @@
 	[engine start];
 	GL_CHECK_ERROR;
 	
-	[(EAGLView *)self.view setContext:engine.renderContext];
+	[eaglView setContext:engine.renderContext];
 	//This will create a framebuffer and set it on the context
-	[(EAGLView *)self.view setFramebuffer];
+	[eaglView setFramebuffer];
 }
 
 - (void)setup;
@@ -110,12 +112,6 @@
 	if ([document.fileURL isEqual:inDocument.fileURL]) return;
 	
 	document = inDocument;
-	
-//	if (document) {
-//		[document closeWithCompletionHandler:^(BOOL success) {
-//			
-//		}];
-//	}
 	
 	if (document.documentState == UIDocumentStateClosed) {
 		[document openWithCompletionHandler:^(BOOL success) {
@@ -134,6 +130,10 @@
 {
 	[super viewDidLoad];
 	
+	if ([self.view isKindOfClass:[EAGLView class]]) {
+		self.eaglView = (EAGLView *)self.view;
+	}
+	
 	if (!document && self.compositionURL) {
 		self.document = [[WMBundleDocument alloc] initWithFileURL:self.compositionURL];
 	}
@@ -147,9 +147,6 @@
 	fpsLabel.alpha = 0.8f;
 	fpsLabel.text = @"";
 	[self.view addSubview:fpsLabel];
-	
-//	UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleNavigationBar)];
-//	[self.view addGestureRecognizer:tapRecognizer];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -166,7 +163,7 @@
 {
     [self stopAnimation];
     
-	document.preview = [(EAGLView *)self.view screenshotImage];
+	document.preview = [eaglView screenshotImage];
 	
 	[[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 	
@@ -235,13 +232,13 @@
 
 - (void)drawFrame
 {
-    [(EAGLView *)self.view setFramebuffer];
+    [eaglView setFramebuffer];
  
 	
 	
 	NSTimeInterval frameStartTime = CFAbsoluteTimeGetCurrent();
 	
-	[engine drawFrameInRect:self.view.bounds interfaceOrientation:self.interfaceOrientation];
+	[engine drawFrameInRect:eaglView.bounds interfaceOrientation:self.interfaceOrientation];
 	
 	NSTimeInterval frameEndTime = CFAbsoluteTimeGetCurrent();
 	
@@ -261,7 +258,7 @@
 	
 	lastFrameEndTime = frameEndTime;
 
-    [(EAGLView *)self.view presentFramebuffer];
+    [eaglView presentFramebuffer];
 	
 	glFlush();
 }
@@ -270,7 +267,7 @@
 
 - (UIImage *)screenshotImage;
 {
-	return [(EAGLView *)self.view screenshotImage];
+	return [eaglView screenshotImage];
 }
 
 

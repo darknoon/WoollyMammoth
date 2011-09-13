@@ -15,9 +15,9 @@
 #import <OpenGLES/ES2/glext.h>
 
 @class WMEngine;
-@class WMDebugViewController;
 @class WMPatch;
 @class WMBundleDocument;
+@class EAGLView;
 
 @interface WMViewController : UIViewController <UIActionSheetDelegate>
 
@@ -27,11 +27,12 @@
 //If you want to read from a file, you can load from a nib and use this:
 @property (nonatomic, copy) NSURL *compositionURL;
 
+@property (nonatomic, weak) IBOutlet EAGLView *eaglView;
+
 @property (nonatomic, retain) WMBundleDocument *document;
 @property (readonly, retain, readonly) WMEngine *engine;
 @property (readonly, nonatomic, getter=isAnimating) BOOL animating;
 @property (nonatomic) NSInteger animationFrameInterval;
-@property (nonatomic, strong) IBOutlet WMDebugViewController *debugViewController;
 
 - (UIImage *)screenshotImage;
 
