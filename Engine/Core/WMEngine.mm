@@ -73,6 +73,7 @@ NSString *const WMEngineArgumentsDocumentKey = @"document";
 {
 	//TODO: expose the idea of cleanup outside of -dealloc
 	//Call cleanup on all patches
+	[WMEAGLContext setCurrentContext:renderContext];
 	[self _cleanupRecursive:rootObject];
 }
 
@@ -91,6 +92,7 @@ NSString *const WMEngineArgumentsDocumentKey = @"document";
 
 - (void)start;
 {
+	[WMEAGLContext setCurrentContext:self.renderContext];
 	//Call setup on all patches
 	[self _setupRecursive:rootObject];
 	

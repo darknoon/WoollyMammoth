@@ -7,6 +7,7 @@
 //
 
 #import "WMShader.h"
+#import "WMEAGLContext.h"
 
 NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
 
@@ -25,7 +26,11 @@ NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
 
 @end
 
-@implementation WMShader
+@implementation WMShader {
+	NSMutableDictionary *uniformLocations;
+	__weak EAGLContext *owningContext;
+}
+
 
 @synthesize uniformNames;
 @synthesize uniformTypes;
@@ -44,12 +49,15 @@ NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
 	
 	uniformLocations = [[NSMutableDictionary alloc] init];
 	
+	owningContext = [EAGLContext currentContext];
+	
 	self.vertexShader = inVertexShader;
 	self.fragmentShader = inPixelShader;
 	
 	if (![self loadShadersWithError:outError]) {
 		return nil;
 	}
+	
 	
 	//TODO: roll this check into the out error!
 	GL_CHECK_ERROR;		
@@ -61,14 +69,14 @@ NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
 
 - (void)dealloc
 {
-
-	if (program)
-    {
-        glDeleteProgram(program);
-        program = 0;
-    }
-
-
+	if (owningContext) {
+		[EAGLContext setCurrentContext:owningContext];
+		if (program)
+		{
+			glDeleteProgram(program);
+			program = 0;
+		}
+	}
 }
 
 + (NSString *)nameOfShaderType:(GLenum)inType;

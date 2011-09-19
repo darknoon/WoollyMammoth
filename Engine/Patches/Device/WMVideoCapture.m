@@ -106,11 +106,9 @@
 {
 	[self stopCapture];
 #if TARGET_OS_EMBEDDED
-	if (textureCache)
-		CFRelease(textureCache);
-	
 	if (videoCaptureQueue)
 		dispatch_release(videoCaptureQueue);
+	videoCaptureQueue = NULL;
 #endif
 	
 	mostRecentTexture = nil;
@@ -186,6 +184,15 @@
 	[captureSession stopRunning];
 	captureSession = nil;
 	captureInput = nil;
+	dataOutput = nil;
+	cameraDevice = nil;
+	
+	mostRecentTexture = nil;
+
+	if (textureCache)
+		CFRelease(textureCache);
+	textureCache = NULL;
+	
 #else
 	[simulatorDebugTimer invalidate];
 	simulatorDebugTimer = nil;

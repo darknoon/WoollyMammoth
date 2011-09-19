@@ -77,7 +77,9 @@
 {
 	//Don't delete the texture name
 	_name = 0;
-	CFRelease(cvTexture);
+	if (cvTexture)
+		CFRelease(cvTexture);
+	cvTexture = NULL;
 }
 
 @end

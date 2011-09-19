@@ -12,10 +12,7 @@
 
 //ASSUME: Shader must be used in only one GL context.
 
-@interface WMShader : NSObject {
-	NSMutableDictionary *uniformLocations;
-}
-
+@interface WMShader : NSObject
 //TODO: - (id)initWithDualShaderText:(NSString *)inString;
 
 - (id)initWithVertexShader:(NSString *)inVertexShader fragmentShader:(NSString *)inPixelShader error:(NSError **)outError;

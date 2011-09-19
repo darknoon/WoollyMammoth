@@ -110,8 +110,9 @@
 - (void)setDocument:(WMBundleDocument *)inDocument;
 {
 	if ([document.fileURL isEqual:inDocument.fileURL]) return;
-	
+
 	document = inDocument;
+	engine = nil;
 	
 	if (document.documentState == UIDocumentStateClosed) {
 		[document openWithCompletionHandler:^(BOOL success) {
