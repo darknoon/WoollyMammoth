@@ -80,11 +80,12 @@
 	}
 	if (![self isViewLoaded]) {
 		CGRect defaultFrame = [[UIScreen mainScreen] applicationFrame];
+		
+		EAGLView *newView = [[EAGLView alloc] initWithFrame:defaultFrame];
+		newView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
-		self.eaglView = [[EAGLView alloc] initWithFrame:defaultFrame];
-		eaglView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-
-		self.view = eaglView;
+		self.view = newView;
+		self.eaglView = newView;
 	}
 }
 
