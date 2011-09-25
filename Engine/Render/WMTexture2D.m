@@ -46,7 +46,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 */
 
 #if TARGET_OS_IPHONE
-#import <OpenGLES/ES1/glext.h>
+#import <OpenGLES/ES2/glext.h>
 #else
 #import <OpenGL/glext.h>
 #endif
