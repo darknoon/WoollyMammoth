@@ -9,19 +9,11 @@
 #import <Foundation/Foundation.h>
 
 #import "WMStructureDefinition.h"
-#import "WMRenderCommon.h"
 
 //Represents a contiguous buffer with associated type information about its contents.
 //Generally, something like array{{float position[4], char color[4]}, {float position[4], char color[4]}, ... count - 1 }
 
-@interface WMStructuredBuffer : NSObject {
-	NSMutableData *data;
-	
-	//For the WMEAGLContext's use
-	//TODO: expose this in a nicer safer way :)
-	NSMutableIndexSet *dirtySet;
-	GLuint bufferObject;
-}
+@interface WMStructuredBuffer : NSObject 
 
 - (id)initWithDefinition:(WMStructureDefinition *)inDefinition;
 
@@ -42,9 +34,8 @@
 //-(void)beginUpdates
 //-(void)endUpdates
 
-//Read-only
 - (NSUInteger)dataSize;
-- (const void *)dataPointer;
+- (void *)dataPointer;
 - (const void *)pointerToField:(NSString *)inField atIndex:(NSUInteger)inIndex;
 
 @end
