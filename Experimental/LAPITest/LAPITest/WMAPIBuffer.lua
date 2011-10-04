@@ -46,9 +46,15 @@ function WMStructure:fieldWithName (name)
 	end
 end
 
+-- Either use fields if multiple or field if singular
 vec4Buffer = {
 	fields    = {{name="position", type=WMBuffer.Type.Float, count=4}},
-	totalSize = 4*4};
+	totalSize = 4 * WMBuffer.TypeSize[WMBuffer.Type.Float]};
+
+shortIndexBuffer = {
+	uniformType = WMBuffer.Type.UnsignedInt,
+	totalSize   = WMBuffer.TypeSize[WMBuffer.Type.UnsignedInt]};
+
 
 --print(vec4Buffer);
 --print(buffer); 
@@ -62,7 +68,7 @@ To write through the C API into the structured buffer, use this pseudo-method
 -- This returns a pointer to a userdata whose metatable specifies an __index function and a __newindex function.
 
 -- The __newindex function looks for fields corresponding to the pushed buffer and writes to them
-buffer[0] = {position = {0, 1, 2, 3}}
+buffer[0] = {position = vec4(0, 1, 2, 3)}
 
 -- The __index function returns an object whose values are tables with names and values corresponding to the fields of the buffer's structure
 

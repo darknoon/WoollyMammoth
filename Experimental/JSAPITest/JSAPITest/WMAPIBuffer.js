@@ -117,7 +117,7 @@ WMBuffer.prototype = {
 		for (var i=0; i<rawBuf.length; i++) {
 			data += String.fromCharCode(rawBuf[i]);
 		}
-		return btoa(data);
+		return data;
 	},
 	
 	toJSON : function() {

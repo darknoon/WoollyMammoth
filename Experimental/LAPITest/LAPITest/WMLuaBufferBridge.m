@@ -16,6 +16,9 @@ NSString *const WMStructuredBufferLibraryLuaName = @"WMBuffer";
 const char *WMLuaBufferBridgeBufferMetatable = "com.darknoon.WMBuffer";
 const char *WMLuaBufferBridgeBufferInstanceMetatable = "com.darknoon.WMBuffer.instance";
 
+
+const char *WMLuaBufferBridgeVectorInstanceMetatable = "com.darknoon.WMVector";
+
 // A buffer is a userdata containing a pointer to the actual buffer. The metatable has a reference to the structure_buffer_release function for the __gc entry
 
 /*
@@ -197,10 +200,10 @@ static int WMLuaBufferBridge_getBufferCount(lua_State *L) {
 // buffer[1] = {.position = {0, 1, 2, 3}}
 // -3, +0
 static int WMLuaBufferBridge_setBufferEntry (lua_State *L) {
-	luaL_checkudata(L, 1, WMLuaBufferBridgeBufferInstanceMetatable);
+	//luaL_checkudata(L, 1, WMLuaBufferBridgeBufferInstanceMetatable);
 
 	const void **bufferPointer = (const void **)lua_topointer(L, 1);
-	WMStructuredBuffer *buffer = (__bridge WMStructuredBuffer *)(*bufferPointer);
+	__unsafe_unretained WMStructuredBuffer *buffer = (__bridge WMStructuredBuffer *)(*bufferPointer);
 	WMStructureDefinition *structure = buffer.definition;
 	
 	//TODO: eliminate the need to malloc here
@@ -225,17 +228,15 @@ static int WMLuaBufferBridge_setBufferEntry (lua_State *L) {
 				luaL_checkstring(L, -2);
 				WMStructureField field = {};
 				if ([structure getFieldNamedUTF8:lua_tostring(L, -2) outField:&field]) { //If this field exists in the structure
-					//Get the input array as floats
-					size_t inputCount = lua_objlen(L, -1);
-
-					//Iterate over the passed-in table until we have filled in our array for this field or we hit the field's count
-					lua_pushnil(L); //the table is now at -2
+					//Get the input array as vec4
+					//Assume light userdata with metatable..
+					float *vec4Ptr = lua_touserdata(L, -1);
 					
+					//Iterate over the passed-in table until we have filled in our array for this field or we hit the field's count					
 					void *basePtr = data + field.offset;
 					
-					for (int i=0; i<field.count && lua_next(L, -2); i++) {
-						
-						lua_Number value = lua_tonumber(L, -1);
+					for (int i=0; i < MIN(field.count, 4); i++) {
+						float value = vec4Ptr[i];
 						switch (field.type) {
 							case WMStructureTypeByte:
 								*(char *)(basePtr + sizeof(char) * i) = value;
@@ -253,9 +254,7 @@ static int WMLuaBufferBridge_setBufferEntry (lua_State *L) {
 								break;
 						}
 						
-						lua_pop(L, 1);
 					}
-					lua_pop(L, 1);
 					
 				} else {
 					NSString *fieldName = [[NSString alloc] initWithUTF8String:lua_tostring(L, -2)];
@@ -284,7 +283,7 @@ static int WMLuaBufferBridge_description (lua_State *L) {
 	luaL_checkudata(L, 1, WMLuaBufferBridgeBufferInstanceMetatable);
 
 	const void **bufferPointer = (const void **)lua_topointer(L, 1);
-	WMStructuredBuffer *buffer = (__bridge WMStructuredBuffer *)(*bufferPointer);
+	__unsafe_unretained WMStructuredBuffer *buffer = (__bridge WMStructuredBuffer *)(*bufferPointer);
 	//pop the buffer off
 	lua_pop(L, 1);
 	//put the string on
@@ -312,6 +311,46 @@ static int WMLuaBufferBridge_releaseBuffer(lua_State *L) {
 	return 0;
 }
 
+// -4, +1
+// Creates a vector from the arguments on the stack
+static int WMLua_createVector(lua_State *L) {
+	const int n_arg = lua_gettop(L);
+	const int max_count = 4;
+	
+	float vec [4] = {};
+	for (int i=0; i<max_count; i++) {
+		vec[i] = i<n_arg ? lua_tonumber(L, 1+i) : 0.0f;
+	}
+
+	lua_pop(L, n_arg);
+	
+	float *userVec = (float *)lua_newuserdata(L, sizeof(float[max_count]));
+	for (int i=0; i<max_count; i++) {
+		userVec[i] = vec[i];
+	}
+	
+	luaL_getmetatable(L, WMLuaBufferBridgeVectorInstanceMetatable);
+	lua_setmetatable(L, -2);
+	
+	return 1;
+}
+
+// -5, +0
+static int WMLua_setVector(lua_State *L) {
+	float *userVec = (float *)lua_touserdata(L, 1);
+	
+	const int n_arg = lua_gettop(L);
+	const int max_count = 4;
+	
+	for (int i=0; i<max_count; i++) {
+		//account for 1 index and user vec at position 0
+		userVec[i] = i < (n_arg - 1) ? lua_tonumber(L, 1 + 1 + i) : 0.0f;
+	}
+	lua_pop(L, n_arg);
+	
+	return 0;
+}
+
 // These get added to WMBuffer
 static const luaL_Reg buffer_f[] = {
 	{"new", WMLuaBufferBridge_createBuffer},
@@ -330,6 +369,16 @@ static const luaL_Reg buffer_m[] = {
 };
 
 
+static const luaL_Reg vec_f[] = {
+	{"new", WMLua_createVector},
+	{NULL, NULL}
+};
+
+static const luaL_Reg vec_m[] = {
+	{"set", WMLua_setVector},
+	{NULL, NULL}
+};
+
 
 int WMLuaBufferBridge_register(lua_State *L) {
 	//Create the metatable that provides the WMBuffer:new() method
@@ -338,11 +387,24 @@ int WMLuaBufferBridge_register(lua_State *L) {
 	lua_pushstring(L, "__index");
 	lua_pushvalue(L, -2);  //pushes the metatable
 	lua_settable(L, -3);   //metatable.__index = metatable
+	lua_pop(L, 1);
         
 	luaL_openlib(L, "WMBuffer", buffer_f, 0);
+	lua_pop(L, 1);
 	
 	luaL_newmetatable(L, WMLuaBufferBridgeBufferInstanceMetatable);
 	luaL_openlib(L, NULL, buffer_m, 0);
+	lua_pop(L, 1);
 	
-	return 1;
+	luaL_openlib(L, "WMVec4", vec_f, 0);
+	lua_pop(L, 1);
+
+	luaL_newmetatable(L, WMLuaBufferBridgeVectorInstanceMetatable);
+	lua_pushvalue(L, -1);  //pushes the metatable
+	lua_setfield(L, -1, "__index");
+	
+	luaL_openlib(L, NULL, vec_m, 0);
+	lua_pop(L, 1);
+
+	return 0;
 }

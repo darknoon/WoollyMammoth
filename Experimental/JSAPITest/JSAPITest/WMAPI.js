@@ -12,7 +12,7 @@ function WM_loadScriptNamed(name, mainFunction, setupFunction) {
 }
 
 function WM_runScriptNamed(name) {
-	return JSON.stringify(__WM_scripts[name]());
+	return __WM_scripts[name]();
 }
 
 function WM_clearScriptNamed(name) {
