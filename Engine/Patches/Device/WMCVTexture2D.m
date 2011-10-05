@@ -31,20 +31,23 @@
 	if (err == 0) {
 		ZAssert(cvTexture, @"Texture null");
 		ZAssert(CVOpenGLESTextureGetName(cvTexture) != 0, @"Texture has 0 name!");
+		ZAssert(CVOpenGLESTextureGetTarget(cvTexture) == GL_TEXTURE_2D, @"Got a rect texture :(");
 
 		GLKVector2 lowerLeft;
 		GLKVector2 lowerRight;
 		GLKVector2 upperLeft;
 		GLKVector2 upperRight;
 		
+		
 		CVOpenGLESTextureGetCleanTexCoords(cvTexture, lowerLeft.v, lowerRight.v, upperRight.v, upperLeft.v);
 		
-		_size.width = fabsf(lowerRight.x - lowerLeft.x);
-		_size.height = fabsf(upperLeft.y - lowerLeft.y);
+		ZAssert(fabsf(lowerRight.x - lowerLeft.x) > 0.1f && fabsf(upperLeft.y - lowerLeft.y) > 0.1f, @"Unexpected texture coordinate rotation!");
 		
 		_width = CVPixelBufferGetWidth(inImageBuffer);
 		_height = CVPixelBufferGetHeight(inImageBuffer);
-		
+
+		_size.width = fabsf(lowerRight.x - lowerLeft.x) * _width;
+		_size.height = fabsf(upperLeft.y - lowerLeft.y) * _height;
 		
 		glBindTexture(GL_TEXTURE_2D, CVOpenGLESTextureGetName(cvTexture));
 

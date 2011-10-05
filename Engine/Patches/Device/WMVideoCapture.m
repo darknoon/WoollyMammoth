@@ -264,7 +264,7 @@
 	}
 	ppp++;
 	
-	mostRecentTexture = [[WMTexture2D alloc] initWithData:buffer pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height} orientation:UIImageOrientationUp];
+	mostRecentTexture = [[WMTexture2D alloc] initWithData:buffer pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height} orientation:currentVideoOrientation];
 	
 	free(buffer);
 }
@@ -284,30 +284,25 @@
 	
 	UIInterfaceOrientation interfaceOrientation = [[args objectForKey:WMEngineArgumentsInterfaceOrientationKey] intValue];
 	
-	BOOL isIPad2 = YES;
-	
-	if (isIPad2) {
-		
-		if (useFrontCamera) {
-			//TODO: this :)
-		} else {
-			//TODO: determine the correct values here
-			switch (interfaceOrientation) {
-				case UIInterfaceOrientationPortrait:
-					currentVideoOrientation = UIImageOrientationLeft;
-					break;
-				case UIInterfaceOrientationPortraitUpsideDown:
-					currentVideoOrientation = UIImageOrientationRight;
-					break;
-				case UIInterfaceOrientationLandscapeLeft:
-					currentVideoOrientation = UIImageOrientationDown;
-					break;
-				case UIInterfaceOrientationLandscapeRight:
-					currentVideoOrientation = UIImageOrientationUp;
-					break;
-				default:
-					break;
-			}
+	if (useFrontCamera) {
+		//TODO: this :)
+	} else {
+		//TODO: determine the correct values here
+		switch (interfaceOrientation) {
+			case UIInterfaceOrientationPortrait:
+				currentVideoOrientation = UIImageOrientationLeft;
+				break;
+			case UIInterfaceOrientationPortraitUpsideDown:
+				currentVideoOrientation = UIImageOrientationRight;
+				break;
+			case UIInterfaceOrientationLandscapeLeft:
+				currentVideoOrientation = UIImageOrientationDown;
+				break;
+			case UIInterfaceOrientationLandscapeRight:
+				currentVideoOrientation = UIImageOrientationUp;
+				break;
+			default:
+				break;
 		}
 	}
 	
@@ -321,7 +316,7 @@
 	outputImage.image = [self getVideoTexture];
 	
 	GL_CHECK_ERROR;
-
+	
 #if TARGET_OS_EMBEDDED
 	CVOpenGLESTextureCacheFlush(textureCache, 0);
 #endif
