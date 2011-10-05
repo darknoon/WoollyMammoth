@@ -13,6 +13,7 @@
 #import "WMCVTexture2D.h"
 #import "WMEAGLContext.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+#import "WMEngine.h"
 
 static CVPixelBufferPoolRef CreatePixelBufferPool( int32_t width, int32_t height, OSType pixelFormat);
 static CVPixelBufferPoolRef CreatePixelBufferPool( int32_t width, int32_t height, OSType pixelFormat)
@@ -280,8 +281,8 @@ bail:
 
 - (BOOL)setup:(WMEAGLContext *)context;
 {
-	videoDimensions.width = 512;
-	videoDimensions.height = 512;
+	videoDimensions.width = 480;
+	videoDimensions.height = 640;
 	videoBufferPool = CreatePixelBufferPool(videoDimensions.width, videoDimensions.height, kCVPixelFormatType_32BGRA);
     if (!videoBufferPool) {
         NSLog(@"Couldn't create a pixel buffer pool.");
@@ -342,11 +343,13 @@ bail:
 	}
 	
 	WMFramebuffer *prevBuffer = context.boundFramebuffer;
+	GLKMatrix4 prevModelViewMatrix = context.modelViewMatrix;
 	
 	context.boundFramebuffer = framebuffer;
+	context.modelViewMatrix = [WMEngine cameraMatrixWithRect:(CGRect){.size.width = videoDimensions.width, .size.height = videoDimensions.height}];
 	
-//	[context clearToColor:(GLKVector4){0, 0, 0, 1}];
-//	[context clearDepth];
+	[context clearToColor:(GLKVector4){0, 0, 0, 1}];
+	[context clearDepth];
 	
     if (!currentTexture || err) {
         NSLog(@"displayAndRenderPixelBuffer error"); 
@@ -375,12 +378,14 @@ bail:
 	
 	[framebuffer setColorAttachmentWithTexture:nil];
 	
+	currentTexture.orientation = UIImageOrientationUpMirrored;
 	outputImage.image = currentTexture;
 	
 	CVOpenGLESTextureCacheFlush(textureCache, 0);
 	CFRelease(destPixelBuffer);
 	
 	context.boundFramebuffer = prevBuffer;
+	context.modelViewMatrix = prevModelViewMatrix;
 	
 	return YES;
 	
