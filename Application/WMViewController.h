@@ -27,8 +27,8 @@
 
 @property (nonatomic, weak) IBOutlet EAGLView *eaglView;
 
-@property (nonatomic, retain) WMBundleDocument *document;
-@property (readonly, retain, readonly) WMEngine *engine;
+@property (nonatomic, strong) WMBundleDocument *document;
+@property (readonly, strong, readonly) WMEngine *engine;
 @property (readonly, nonatomic, getter=isAnimating) BOOL animating;
 @property (nonatomic) NSInteger animationFrameInterval;
 

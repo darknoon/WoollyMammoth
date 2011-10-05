@@ -108,13 +108,8 @@
 	[self engineDidLoad];
 }
 
-- (void)setDocument:(WMBundleDocument *)inDocument;
+- (void)openDocumentAndSetupIfNecessary;
 {
-	if ([document.fileURL isEqual:inDocument.fileURL]) return;
-
-	document = inDocument;
-	engine = nil;
-	
 	if (document.documentState == UIDocumentStateClosed) {
 		[document openWithCompletionHandler:^(BOOL success) {
 			if (success) {
@@ -123,10 +118,21 @@
 				NSLog(@"Error loading composition");
 			}
 		}];
-	} else {
+	} else if (!engine) {
 		[self setup];
-	} 
+	} 	
 }
+
+- (void)setDocument:(WMBundleDocument *)inDocument;
+{
+	if ([document.fileURL isEqual:inDocument.fileURL]) return;
+
+	document = inDocument;
+	engine = nil;
+	
+	[self openDocumentAndSetupIfNecessary];
+}
+
 
 - (void)viewDidLoad;
 {
@@ -138,6 +144,8 @@
 	
 	if (!document && self.compositionURL) {
 		self.document = [[WMBundleDocument alloc] initWithFileURL:self.compositionURL];
+	} else {
+		[self openDocumentAndSetupIfNecessary];
 	}
 	
 	fpsLabel = [[UILabel alloc] initWithFrame:CGRectMake(74, 10, 200, 22)];
