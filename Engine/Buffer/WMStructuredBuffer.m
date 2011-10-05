@@ -11,7 +11,20 @@
 #import "WMEAGLContext.h"
 #import "WMStructuredBuffer_WMEAGLContext_Private.h"
 
-@implementation WMStructuredBuffer
+@implementation WMStructuredBuffer {
+	void *data;
+	size_t dataSize;	
+}
+
+static inline unsigned int nextPowerOf2(unsigned int v) {
+	v--;
+	v |= v >> 1;
+	v |= v >> 2;
+	v |= v >> 4;
+	v |= v >> 8;
+	v |= v >> 16;
+	return v+1;
+};
 
 @synthesize definition;
 @synthesize count;
@@ -20,12 +33,7 @@
 {
     self = [super init];
     if (!self) return nil;
-	
-	data = [[NSMutableData alloc] init];
-	if (!data) {
-		return nil;
-	}
-	
+		
 	definition = inDefinition;
     
 	dirtySet = [[NSMutableIndexSet alloc] init];
@@ -39,7 +47,22 @@
 
 - (void)setCount:(NSUInteger)inCount;
 {
-	[data setLength:definition.size * inCount];
+	if (dataSize < definition.size * inCount) {
+		dataSize = nextPowerOf2(definition.size * inCount);
+		data = realloc(data, dataSize);
+	} else if (dataSize > nextPowerOf2(definition.size * inCount) ) {
+		dataSize = nextPowerOf2(definition.size * inCount);
+		if (inCount == 0) {
+			if (data)
+				free(data);
+			data = NULL;
+		} else {
+			data = realloc(data, nextPowerOf2(definition.size * inCount));
+			if (!data) {
+				dataSize = 0;
+			}
+		}
+	}
 	//ZAssert(data.length == inCount * definition.size, @"Didn't set data size");
 	count = inCount;
 }
@@ -52,8 +75,9 @@
 
 - (void)appendData:(const void *)inData withStructure:(WMStructureDefinition *)inStructure count:(NSUInteger)inCount;
 {
-	count += inCount;
-	[data appendBytes:inData length:inStructure.size * inCount];
+	NSUInteger prevCount = count;
+	self.count += inCount;
+	memcpy(data + prevCount * definition.size, inData, inCount * definition.size);
 	[dirtySet addIndexesInRange:(NSRange){count - inCount, inCount}];
 }
 
@@ -64,7 +88,7 @@
 		self.count = MAX(inIndex + 1, count);
 	}
 	NSRange replacementRange = NSMakeRange(inIndex * definition.size, 1 * definition.size);
-	[data replaceBytesInRange:replacementRange withBytes:inData];
+	memcpy(data + replacementRange.location, inData, replacementRange.length);
 	[dirtySet addIndex:inIndex];
 }
 
@@ -75,7 +99,7 @@
 		self.count = MAX(NSMaxRange(inRange), count);
 	}
 	NSRange replacementRange = NSMakeRange(inRange.location * definition.size, inRange.length * definition.size);
-	[data replaceBytesInRange:replacementRange withBytes:inData];
+	memcpy(data + replacementRange.location, inData, replacementRange.length);
 	[dirtySet addIndexesInRange:inRange];
 }
 
@@ -84,9 +108,9 @@
 	return count * definition.size;
 }
 
-- (const void *)dataPointer;
+- (void *)dataPointer;
 {
-	if (data.length > 0) return [data bytes];
+	if (dataSize > 0) return data;
 	return NULL;
 }
 
@@ -95,7 +119,7 @@
 	if (self.count < inIndex) {
 		NSInteger offset = [definition offsetOfField:inField];
 		if (offset != -1) {
-			return [data bytes] + offset;
+			return data + offset;
 		}
 	}
 	return NULL;
