@@ -26,7 +26,9 @@
 @end
 
 
-@implementation WMImageLoaderSettingsController
+@implementation WMImageLoaderSettingsController {
+	UIPopoverController *imagePickerPopover;
+}
 @synthesize patch;
 @synthesize imageView;
 @synthesize editViewController;
@@ -70,10 +72,10 @@
 	controller.delegate = self;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		[self.navigationController presentViewController:controller animated:YES completion:NULL];
+		imagePickerPopover = [[UIPopoverController alloc] initWithContentViewController:controller];
+		[imagePickerPopover presentPopoverFromRect:((UIButton *)sender).frame inView:((UIButton *)sender) permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 	} else {
-		UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:controller];
-		[popover presentPopoverFromRect:((UIButton *)sender).frame inView:((UIButton *)sender) permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		[self.navigationController presentViewController:controller animated:YES completion:NULL];
 	}
 }
 
@@ -84,6 +86,8 @@
 	ALAssetsLibraryAccessFailureBlock fail = ^(NSError *error) {
 		[[[UIAlertView alloc] initWithTitle:@"Unable to load image" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"Close" otherButtonTitles:nil] show];
 		[picker dismissViewControllerAnimated:YES completion:NULL];
+		[imagePickerPopover dismissPopoverAnimated:YES];
+		imagePickerPopover = nil;
 	};
 	
 	ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
