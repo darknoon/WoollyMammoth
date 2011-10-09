@@ -9,6 +9,7 @@
 #import "WMRenderObject.h"
 
 #import "WMStructuredBuffer.h"
+#import "WMRenderObject_WMEAGLContext_Private.h"
 
 @interface WMRenderObject()
 //Private state for WMEAGLContext
@@ -49,6 +50,9 @@
     return self;
 }
 
+- (void)dealloc {
+	[self releaseVAO];
+}
 
 - (void)setVertexBuffer:(WMStructuredBuffer *)inVertexBuffer;
 {

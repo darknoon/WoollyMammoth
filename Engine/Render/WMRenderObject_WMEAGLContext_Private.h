@@ -7,5 +7,6 @@
 
 
 - (void)createVAOIfNecessary;
+- (void)releaseVAO;
 
 @end
