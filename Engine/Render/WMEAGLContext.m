@@ -516,6 +516,15 @@
 	}
 }
 
+- (void)releaseVAO;
+{
+	GLuint vertexArrayObject = self.vertexArrayObject;
+	if (vertexArrayObject) {
+		glDeleteVertexArraysOES(1, &vertexArrayObject);
+		self.vertexArrayObject = 0;
+	}
+}
+
 @end
 
 @implementation WMShader (WMShader_Uniform_State)
