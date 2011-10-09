@@ -20,6 +20,8 @@
 #import "WMPatch+SettingsControllerClass.h"
 #import "WMBundleDocument.h"
 
+#import "DNMemoryInfo.h"
+
 #import "WMCompositionLibrary.h"
 
 const CGSize previewSize = (CGSize){.width = 300, .height = 200};
@@ -40,6 +42,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	WMCustomPopover *inputPortsPopover;
 	UIPopoverController *patchSettingsPopover;
 
+	dispatch_source_t updateMemoryTimer;
 	
 	UIWindow *previewWindow;
 	BOOL previewFullScreen;
@@ -298,6 +301,21 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 {
 	[super viewWillAppear:inAnimated];
 	[previewController viewWillAppear:inAnimated];
+	
+#if DEBUG
+	if (!updateMemoryTimer) {
+		updateMemoryTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
+		//Every 1.0s +- 0.1s
+		dispatch_source_set_timer(updateMemoryTimer, DISPATCH_TIME_NOW, NSEC_PER_SEC, NSEC_PER_SEC / 10);
+		dispatch_source_set_event_handler(updateMemoryTimer, ^ {
+			DNMemoryInfo info;
+			if (DNMemoryGetInfo(&info)) {
+				NSLog(@"memory free:%lld used:%lld", info.free, info.used);
+			}
+		});
+	}
+	dispatch_resume(updateMemoryTimer);
+#endif
 }
 
 - (void)viewDidAppear:(BOOL)inAnimated;
@@ -308,6 +326,11 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 
 - (void)viewWillDisappear:(BOOL)inAnimated;
 {
+#if DEBUG
+	if (updateMemoryTimer) {
+		dispatch_suspend(updateMemoryTimer);
+	}
+#endif
 	[super viewWillDisappear:inAnimated];
 	[previewController viewWillDisappear:inAnimated];
 	[[UIMenuController sharedMenuController] setMenuVisible:NO];

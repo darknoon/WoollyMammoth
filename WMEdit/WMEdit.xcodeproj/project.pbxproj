@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		07C99A9113D38E8B00712EFA /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 07C99A9013D38E8B00712EFA /* Icon-72.png */; };
 		490AC1E713D8F10F005E61CD /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 490AC1E613D8F10F005E61CD /* GLKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		4910A273144104620088CD7E /* DNMemoryInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4910A272144104620088CD7E /* DNMemoryInfo.m */; };
 		49174AAC13D235BD008B5B8D /* DNAssertionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174AA413D235BD008B5B8D /* DNAssertionHandler.m */; };
 		49174AAD13D235BD008B5B8D /* EAGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174AA613D235BD008B5B8D /* EAGLView.m */; };
 		49174AB013D235BD008B5B8D /* WMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174AAB13D235BD008B5B8D /* WMViewController.m */; };
@@ -275,6 +276,8 @@
 /* Begin PBXFileReference section */
 		07C99A9013D38E8B00712EFA /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
 		490AC1E613D8F10F005E61CD /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		4910A271144104620088CD7E /* DNMemoryInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNMemoryInfo.h; sourceTree = "<group>"; };
+		4910A272144104620088CD7E /* DNMemoryInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNMemoryInfo.m; sourceTree = "<group>"; };
 		49174AA313D235BD008B5B8D /* DNAssertionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNAssertionHandler.h; sourceTree = "<group>"; };
 		49174AA413D235BD008B5B8D /* DNAssertionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNAssertionHandler.m; sourceTree = "<group>"; };
 		49174AA513D235BD008B5B8D /* EAGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLView.h; sourceTree = "<group>"; };
@@ -1002,6 +1005,8 @@
 				B405C68C13EB99B000BD062D /* NSString+URLEncoding.m */,
 				49858E2413DE4C1F0061A1A8 /* WMMathUtil.c */,
 				49858E2513DE4C1F0061A1A8 /* WMMathUtil.h */,
+				4910A271144104620088CD7E /* DNMemoryInfo.h */,
+				4910A272144104620088CD7E /* DNMemoryInfo.m */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1828,6 +1833,7 @@
 				4937415713FAFD3900ABC9BA /* DNDocument.m in Sources */,
 				493A1A2E1400E491001BB458 /* WMIndexInputPortCell.m in Sources */,
 				49B9A6BD1415C473001DB45B /* WMVideoRecord.m in Sources */,
+				4910A273144104620088CD7E /* DNMemoryInfo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
