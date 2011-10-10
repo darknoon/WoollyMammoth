@@ -63,11 +63,6 @@
 	[contentView addSubview:connectionPopover];
 
 }
-//TODO: replace these with an undo manager
-- (void)pingUpdateCount;
-{
-	[(UIDocument *)self.viewController.document updateChangeCount:UIDocumentChangeDone];
-}
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -128,7 +123,7 @@
 	newNodeView.frame = CGRectIntegral(newNodeView.frame);
 
 	[self updateConnectionPositions];
-	[self pingUpdateCount];
+	[viewController markDocumentDirty];
 }
 
 - (void)removePatch:(WMPatch *)inPatch;
@@ -141,7 +136,7 @@
 	[patchViews removeObject:patchView];
 	[patchView removeFromSuperview];
 	[self updateConnectionPositions];
-	[self pingUpdateCount];
+	[viewController markDocumentDirty];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context;
@@ -255,7 +250,7 @@
 		BOOL canConnect = [hitPort canTakeValueFromPort:sourcePort];
 		if (hitPatch && hitPort && canConnect) {
 			[rootPatch addConnectionFromPort:sourcePort.key ofPatch:inView.patch.key toPort:hitPort.key ofPatch:hitPatch.key];
-			[self pingUpdateCount];
+			[viewController markDocumentDirty];
 		}
 	}
 	[patchConnectionsView removeDraggingConnectionFromPatchView:inView];

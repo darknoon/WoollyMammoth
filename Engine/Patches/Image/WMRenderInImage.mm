@@ -11,6 +11,7 @@
 #import "WMFramebuffer.h"
 #import "WMTexture2D.h"
 #import "WMEAGLContext.h"
+#import "WMRenderObject.h"
 
 //use for +cameraMatrixWithRect:
 #import "WMEngine.h"
@@ -41,6 +42,17 @@
 	return self;
 }
 
+- (WMPatchExecutionMode)executionMode;
+{
+	return kWMPatchExecutionModeRII;
+}
+
+- (void)renderObject:(WMRenderObject *)inObject withTransform:(GLKMatrix4)inMatrix inContext:(WMEAGLContext *)inContext;
+{
+	[inObject postmultiplyTransform:inMatrix];
+	[inContext renderObject:inObject];
+}
+
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
 	if (!inputObject1.object && !inputObject2.object && !inputObject3.object && !inputObject4.object) {
@@ -66,18 +78,26 @@
 	}
 	
 	WMTexture2D *texture = [context renderToTextureWithWidth:renderWidth height:renderHeight depthBufferDepth:useDepthBuffer ? GL_DEPTH_COMPONENT16 : 0 block:^{
-		context.modelViewMatrix = [WMEngine cameraMatrixWithRect:(CGRect){0, 0, renderWidth, renderHeight}];
+		GLKMatrix4 transform = [WMEngine cameraMatrixWithRect:(CGRect){0, 0, renderWidth, renderHeight}];
 
 		[context clearToColor:inputClearColor.v];
 		[context clearDepth];
 		
-		if (inputObject1.object) [context renderObject:inputObject1.object];
-		if (inputObject2.object) [context renderObject:inputObject2.object];
-		if (inputObject3.object) [context renderObject:inputObject3.object];
-		if (inputObject4.object) [context renderObject:inputObject4.object];
+		if (inputObject1.object) {
+			[self renderObject:inputObject1.object withTransform:transform inContext:context];
+		}
+		if (inputObject2.object) {
+			[self renderObject:inputObject2.object withTransform:transform inContext:context];
+		}
+		if (inputObject3.object) {
+			[self renderObject:inputObject3.object withTransform:transform inContext:context];
+		}
+		if (inputObject4.object) {
+			[self renderObject:inputObject4.object withTransform:transform inContext:context];
+		}
 
 	}];
-
+	texture.orientation = UIImageOrientationDownMirrored;
 	outputImage.image = texture;
 	
 	return YES;

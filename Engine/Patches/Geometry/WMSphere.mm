@@ -198,11 +198,8 @@ static WMStructureField WMQuadVertex_fields[] = {
 
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
+	//TODO: replace radius with a transformation matrix!
 	BOOL dirty = radius != inputRadius.value || unum != inputUCount.index || vnum != inputVCount.index || radius != inputRadius.value;
-	
-	GLKMatrix4 transform = context.modelViewMatrix;
-
-	[outputSphere.object setValue:[NSValue valueWithBytes:&transform objCType:@encode(GLKMatrix4)] forUniformWithName:@"modelViewProjectionMatrix"];
 	
 	if (dirty) {
 		return [self recreateVertexData];

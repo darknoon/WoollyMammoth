@@ -63,21 +63,21 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 	switch (orientation) {
 		default:
 		case UIImageOrientationUp:
-			return @"default orientation";
+			return @"default orientation (up)";
 		case UIImageOrientationDown:
-			return @"180 deg rotation";
+			return @"180 deg rotation (down)";
 		case UIImageOrientationLeft:
-			return @"90 deg CCW";
+			return @"90 deg CCW (left)";
 		case UIImageOrientationRight:
-			return @"90 deg CW";
+			return @"90 deg CW (right)";
 		case UIImageOrientationUpMirrored:
-			return @"90 deg CW, image mirrored along other axis. horizontal flip";
+			return @"horizontal flip (up mirror)";
 		case UIImageOrientationDownMirrored:
-			return @"horizontal flip";
+			return @"vertical flip (down mirror)";
 		case UIImageOrientationLeftMirrored:
-			return @"vertical flip";
+			return @"90 deg CW, flipped (left mirror)";
 		case UIImageOrientationRightMirrored:
-			return @"vertical flip";
+			return @"90 deg CCW, flipped (right mirror)";
 	}
 }
 

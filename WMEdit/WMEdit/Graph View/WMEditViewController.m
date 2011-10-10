@@ -171,6 +171,10 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
      // give me ARC - I love it so much now and can't stand this bs anymore!
 }
 
+- (void)markDocumentDirty;
+{
+	[self.document updateChangeCount:UIDocumentChangeDone];
+}
 
 - (void)togglePreviewFullscreen:(UITapGestureRecognizer *)inR;
 {

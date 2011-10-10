@@ -19,7 +19,15 @@
  * Other rendering types and configurations are supported, however, and YMMV.
  */
 
+extern NSString *const WMRenderObjectTransformUniformName; // wm_T is selected for brevity
+// was modelViewProjectionMatrix
+
 #import "WMGLStateObject.h"
+
+//TODO: implement  <NSCopying>
+//This will require having some definition of the VAO state that can persist between different copies of a parent WMRenderObject.
+//Perhaps that means making a pool of VAOs associated with the relevant structured buffers / parameters and then associating the correct one as necessary
+//Without copying, if we don't execute
 
 @interface WMRenderObject : WMGLStateObject
 
@@ -44,6 +52,11 @@
 
 @property (nonatomic) DNGLStateBlendMask renderBlendState;
 @property (nonatomic) DNGLStateDepthMask renderDepthState;
+
+//These are applied to the WMRenderObjectTransformUniformName key, ie the transformation from VBO coords to world coords, performed in the vertex shader
+//The transform can also be set directly to a specific value if that is of use
+- (void)premultiplyTransform:(GLKMatrix4)inMatrix;
+- (void)postmultiplyTransform:(GLKMatrix4)inMatrix;
 
 - (NSArray *)uniformKeys;
 - (void)setValue:(id)inValue forUniformWithName:(NSString *)inUniformName;

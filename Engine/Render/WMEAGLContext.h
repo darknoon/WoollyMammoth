@@ -72,12 +72,6 @@ typedef int DNGLStateDepthMask;
 //Clears the depth buffer to the default depth (+inf?)
 - (void)clearDepth;
 
-////// DEPRECATED, grr must remove ///////
-
-//This is not GL state in GLES 2.0
-//TODO: Move to another part of the render engine.
-@property (nonatomic) GLKMatrix4 modelViewMatrix;
-
 ////// Implementation information ///////
 
 @property (nonatomic, readonly) int maxTextureSize;

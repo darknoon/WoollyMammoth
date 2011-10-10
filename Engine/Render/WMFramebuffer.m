@@ -86,7 +86,7 @@
 		
 		return nil;
 	} else {
-		DLog(@"Created framebuffer %@ from texture: %@", self, inTexture);
+		//DLog(@"Created framebuffer %@ from texture: %@", self, inTexture);
 	}
 	
 	
@@ -142,7 +142,7 @@
 		
 		return nil;
 	} else {
-		NSLog(@"Created framebuffer %@ from layer: %@", self, inLayer);
+		//NSLog(@"Created framebuffer %@ from layer: %@", self, inLayer);
 	}
 	
 
