@@ -77,12 +77,6 @@ static WMStructureField WMQuadVertex_fields[] = {
 	return self;
 }
 
-
-- (WMPatchExecutionMode)executionMode;
-{
-	return kWMPatchExecutionModeConsumer;
-}
-
 - (void)updateVertexBufferForImageIfNecessary:(WMTexture2D *)inImage;
 {
 	if (!vertexBuffer) {

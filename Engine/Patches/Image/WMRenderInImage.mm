@@ -41,11 +41,6 @@
 	return self;
 }
 
-- (WMPatchExecutionMode)executionMode;
-{
-	return kWMPatchExecutionModeRII;
-}
-
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
 	if (!inputObject1.object && !inputObject2.object && !inputObject3.object && !inputObject4.object) {

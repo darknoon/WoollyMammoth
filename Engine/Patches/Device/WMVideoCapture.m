@@ -72,12 +72,6 @@
 	return nil;
 }
 
-- (WMPatchExecutionMode)executionMode;
-{
-	return kWMPatchExecutionModeProvider;
-}
-
-
 + (NSString *)category;
 {
     return WMPatchCategoryDevice;

@@ -12,13 +12,6 @@
 
 #import "WMPatchCategories.h"
 
-typedef enum {
-	kWMPatchExecutionModeProcessor = 0, // 0 (e.g., "Math", "Image With String")
-	kWMPatchExecutionModeConsumer,      // 1 (e.g., "Clear", "Billboard", "Lighting")
-	kWMPatchExecutionModeProvider,	    // 2 (e.g., "Mouse", "Interaction", "XML", "Directory Scanner", "Host Info")
-	kWMPatchExecutionModeRII,	        // 3 RII
-} WMPatchExecutionMode;
-
 @class WMEAGLContext;
 @class WMPort;
 @class WMNumberPort;
@@ -81,8 +74,6 @@ typedef enum {
 @property (nonatomic, copy) NSString *key;
 @property (nonatomic, readonly) NSArray *children;
 @property (nonatomic, readonly) NSArray *connections;
-
-@property (nonatomic, readonly) WMPatchExecutionMode executionMode;
 
 //For now just find in children (not sub-children)
 - (WMPatch *)patchWithKey:(NSString *)inKey;
