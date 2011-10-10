@@ -25,6 +25,7 @@
 
 NSString *const WMEngineArgumentsInterfaceOrientationKey = @"interfaceOrientation";
 NSString *const WMEngineArgumentsDocumentKey = @"document";
+NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 
 @interface WMEngine ()
 @property (nonatomic, strong, readwrite) WMPatch *rootObject;
@@ -245,6 +246,7 @@ NSString *const WMEngineArgumentsDocumentKey = @"document";
 		[compositionUserData setObject:document forKey:WMEngineArgumentsDocumentKey];
 	}
 	
+	[compositionUserData setObject:[NSValue valueWithCGSize:inBounds.size] forKey:WMEngineArgumentsOutputDimensionsKey];
 	
 	//Make sure we have set up all new node
 	[self _setupRecursive:self.rootObject];

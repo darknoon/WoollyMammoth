@@ -21,18 +21,18 @@
 // The view content is basically an EAGL surface you render your OpenGL scene into.
 // Note that setting the view non-opaque will only work if the EAGL surface has an alpha channel.
 @interface EAGLView : UIView
-{
-@private
-    WMEAGLContext *context;
-    
-	WMFramebuffer *framebuffer;
-	
-    // The pixel dimensions of the CAEAGLLayer.
-}
 
 @property (nonatomic, strong) WMEAGLContext *context;
 
-- (void)setFramebuffer;
+//Render into this framebuffer to output to the screen
+//Accessing this property will create a framebuffer if necessary to match the current view bounds
+@property (nonatomic, strong, readonly) WMFramebuffer *framebuffer;
+
+//You can use this in cases where you want to reclaim the memory being used by the framebuffer, such as going into the background, etc
+//The framebuffer will be recreated if necessary
+- (void)deleteFramebuffer;
+
+//When you're done rendering, make sure to call -presentRenderbuffer
 - (BOOL)presentFramebuffer;
 
 - (UIImage *)screenshotImage;

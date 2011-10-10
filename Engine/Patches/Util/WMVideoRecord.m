@@ -342,31 +342,32 @@ bail:
 		[framebuffer setColorAttachmentWithTexture:currentTexture];
 	}
 	
-	WMFramebuffer *prevBuffer = context.boundFramebuffer;
 	GLKMatrix4 prevModelViewMatrix = context.modelViewMatrix;
-	
-	context.boundFramebuffer = framebuffer;
 	context.modelViewMatrix = [WMEngine cameraMatrixWithRect:(CGRect){.size.width = videoDimensions.width, .size.height = videoDimensions.height}];
-	
-	[context clearToColor:(GLKVector4){0, 0, 0, 1}];
-	[context clearDepth];
-	
-    if (!currentTexture || err) {
-        NSLog(@"displayAndRenderPixelBuffer error"); 
-    }
-	
-	if (inputRenderable1.object) {
-		[context renderObject:inputRenderable1.object];
-	}
-	if (inputRenderable2.object) {
-		[context renderObject:inputRenderable2.object];
-	}
-	if (inputRenderable3.object) {
-		[context renderObject:inputRenderable3.object];
-	}
-	if (inputRenderable4.object) {
-		[context renderObject:inputRenderable4.object];
-	}
+
+	[context renderToFramebuffer:framebuffer block:^{
+				
+		[context clearToColor:(GLKVector4){0, 0, 0, 1}];
+		[context clearDepth];
+		
+		if (!currentTexture || err) {
+			NSLog(@"displayAndRenderPixelBuffer error"); 
+		}
+		
+		if (inputRenderable1.object) {
+			[context renderObject:inputRenderable1.object];
+		}
+		if (inputRenderable2.object) {
+			[context renderObject:inputRenderable2.object];
+		}
+		if (inputRenderable3.object) {
+			[context renderObject:inputRenderable3.object];
+		}
+		if (inputRenderable4.object) {
+			[context renderObject:inputRenderable4.object];
+		}
+
+	}];
 	
 	//glFinish();
 	
@@ -384,7 +385,6 @@ bail:
 	CVOpenGLESTextureCacheFlush(textureCache, 0);
 	CFRelease(destPixelBuffer);
 	
-	context.boundFramebuffer = prevBuffer;
 	context.modelViewMatrix = prevModelViewMatrix;
 	
 	return YES;

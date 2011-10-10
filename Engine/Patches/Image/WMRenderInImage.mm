@@ -15,7 +15,9 @@
 //use for +cameraMatrixWithRect:
 #import "WMEngine.h"
 
-@implementation WMRenderInImage
+@implementation WMRenderInImage {	
+	BOOL useDepthBuffer;
+}
 
 + (NSString *)category;
 {
@@ -51,60 +53,37 @@
 		return YES;
 	}
 	
-	//If no size is specified use the width / height of the current framebuffer (presumably the size of main output)
-	//TODO: more strictly define this behavior and pass through
-	WMFramebuffer *oldFramebuffer = context.boundFramebuffer;
-	NSUInteger renderWidth = inputWidth.index;
-	NSUInteger renderHeight = inputHeight.index;
+	CGSize outputSize = [[args objectForKey:WMEngineArgumentsOutputDimensionsKey] CGSizeValue];
+	
+	unsigned int renderWidth = inputWidth.index;
+	unsigned int renderHeight = inputHeight.index;
 	if (renderWidth == 0) {
-		renderWidth = oldFramebuffer.framebufferWidth;
+		renderWidth = (NSUInteger)outputSize.width;
 	}
 	if (renderHeight == 0) {
-		renderHeight = oldFramebuffer.framebufferHeight;
+		renderHeight = (NSUInteger)outputSize.height;
 	}
-	
+
 	if (renderWidth == 0 || renderHeight == 0) {
 		//Can't render because we have no idea about output size
-		NSLog(@"unable to render because we couldn't infer RII size from bound framebuffer.");
+		DLog(@"unable to render because we couldn't infer RII size from bound framebuffer.");
 		return YES;
 	}
 	
-	//Recreate texture each frame (fix me!)
-	//TODO: find out how we can reuse this via a texture pool in WMEAGLContext
-	texture = [[WMTexture2D alloc] initWithData:NULL
-									pixelFormat:kWMTexture2DPixelFormat_RGBA8888
-									 pixelsWide:renderWidth
-									 pixelsHigh:renderHeight
-									contentSize:(CGSize){renderWidth, renderHeight}
-									orientation:UIImageOrientationUpMirrored];
-	
-	if (!framebuffer || framebuffer.framebufferWidth != renderWidth || framebuffer.framebufferHeight != renderHeight) {
-		//Re-create framebuffer and texture
-		
-		framebuffer = [[WMFramebuffer alloc] initWithTexture:texture depthBufferDepth:useDepthBuffer ? GL_DEPTH_COMPONENT16 : 0];
-		
-		if (!texture || !framebuffer) {
-			return NO;
-		}
-		NSLog(@"Created framebuffer: %@", framebuffer);
-	}
-	
-	[framebuffer setColorAttachmentWithTexture:texture];
+	WMTexture2D *texture = [context renderToTextureWithWidth:renderWidth height:renderHeight depthBufferDepth:useDepthBuffer ? GL_DEPTH_COMPONENT16 : 0 block:^{
+		context.modelViewMatrix = [WMEngine cameraMatrixWithRect:(CGRect){0, 0, renderWidth, renderHeight}];
 
-	context.modelViewMatrix = [WMEngine cameraMatrixWithRect:(CGRect){0, 0, renderWidth, renderHeight}];
-	context.boundFramebuffer = framebuffer;
-	
-	[context clearToColor:inputClearColor.v];
-	[context clearDepth];
+		[context clearToColor:inputClearColor.v];
+		[context clearDepth];
+		
+		if (inputObject1.object) [context renderObject:inputObject1.object];
+		if (inputObject2.object) [context renderObject:inputObject2.object];
+		if (inputObject3.object) [context renderObject:inputObject3.object];
+		if (inputObject4.object) [context renderObject:inputObject4.object];
 
-	if (inputObject1.object) [context renderObject:inputObject1.object];
-	if (inputObject2.object) [context renderObject:inputObject2.object];
-	if (inputObject3.object) [context renderObject:inputObject3.object];
-	if (inputObject4.object) [context renderObject:inputObject4.object];
-	
+	}];
+
 	outputImage.image = texture;
-	
-	context.boundFramebuffer = oldFramebuffer;
 	
 	return YES;
 }

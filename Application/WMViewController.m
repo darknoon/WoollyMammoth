@@ -97,8 +97,6 @@
 	GL_CHECK_ERROR;
 	
 	[eaglView setContext:engine.renderContext];
-	//This will create a framebuffer and set it on the context
-	[eaglView setFramebuffer];
 }
 
 - (void)setup;
@@ -242,35 +240,32 @@
 
 - (void)drawFrame
 {
-    [eaglView setFramebuffer];
- 
-	
-	
-	NSTimeInterval frameStartTime = CFAbsoluteTimeGetCurrent();
-	
-	[engine drawFrameInRect:eaglView.bounds interfaceOrientation:self.interfaceOrientation];
-	
-	NSTimeInterval frameEndTime = CFAbsoluteTimeGetCurrent();
-	
-	NSTimeInterval timeToDrawFrame = frameEndTime - frameStartTime;
-	
-	framesSinceLastFPSUpdate++;
-	if (frameEndTime - lastFPSUpdate > 1.0) {
-		float fps = framesSinceLastFPSUpdate;
-		framesSinceLastFPSUpdate = 0;
+	[engine.renderContext renderToFramebuffer:eaglView.framebuffer block:^{
+		NSTimeInterval frameStartTime = CFAbsoluteTimeGetCurrent();
 		
-//TODO: if not release...
-		fpsLabel.text = [NSString stringWithFormat:@"%.0lf fps (%.0lf ms)", fps, timeToDrawFrame * 1000.0];		
+		[engine drawFrameInRect:eaglView.bounds interfaceOrientation:self.interfaceOrientation];
+		
+		NSTimeInterval frameEndTime = CFAbsoluteTimeGetCurrent();
+		
+		NSTimeInterval timeToDrawFrame = frameEndTime - frameStartTime;
+		
+		framesSinceLastFPSUpdate++;
+		if (frameEndTime - lastFPSUpdate > 1.0) {
+			float fps = framesSinceLastFPSUpdate;
+			framesSinceLastFPSUpdate = 0;
+			
+			//TODO: if not release...
+			fpsLabel.text = [NSString stringWithFormat:@"%.0lf fps (%.0lf ms)", fps, timeToDrawFrame * 1000.0];		
+			
+			lastFPSUpdate = frameEndTime;
+		}
+		
+		
+		lastFrameEndTime = frameEndTime;
 
-		lastFPSUpdate = frameEndTime;
-	}
-	
-	
-	lastFrameEndTime = frameEndTime;
+	}];	
 
-    [eaglView presentFramebuffer];
-	
-	glFlush();
+	[eaglView presentFramebuffer];
 }
 
 #pragma mark -

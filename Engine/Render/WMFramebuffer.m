@@ -12,6 +12,9 @@
 //This gives us access to the "name" attribute
 #import "WMTexture2D_RenderPrivate.h"
 
+//This allows us to modify the bound framebuffer
+#import "WMFramebuffer_WMEAGLContext_Private.h"
+
 #import "WMEAGLContext.h"
 
 
@@ -184,19 +187,21 @@
 {
 	WMEAGLContext *context = (WMEAGLContext *)[EAGLContext currentContext];
 	
-	context.boundFramebuffer = self;
-
+	__block BOOL success = NO;
+	[context renderToFramebuffer:self block:^{
 #if 0
-	const GLenum discards[]  = {GL_DEPTH_ATTACHMENT};
-	glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, discards);
+		const GLenum discards[]  = {GL_DEPTH_ATTACHMENT};
+		glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, discards);
 #endif 
-	
-	glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer);
-	BOOL success = [context presentRenderbuffer:GL_RENDERBUFFER];
+		
+		glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer);
+		success = [context presentRenderbuffer:GL_RENDERBUFFER];
+		
+		if (!success) {
+			DLog(@"Unable to present renderbuffer");
+		}
 
-	if (!success) {
-		DLog(@"Unable to present renderbuffer");
-	}
+	}];
 	
 	return success;
 }

@@ -19,7 +19,7 @@
     GLint framebufferHeight;
 	
 	//If rendering to a texture
-	WMTexture2D *__weak texture;
+	__weak WMTexture2D *texture;
 	
 	GLuint colorRenderbuffer;
 	GLuint depthRenderbuffer;

@@ -127,81 +127,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 - (void)cleanup:(WMEAGLContext *)context;
 {
 	   shader = nil;
-	      fbo = nil;
-	  texMono = nil;
 	   texPal = nil;
-}
-
-- (void)renderFromTexture:(WMTexture2D *)inSourceTexture 
-                toTexture:(WMTexture2D *)inDestinationTexture 
-                   atSize:(CGSize)inSize 
-                inContext:(WMEAGLContext *)inContext;
-{		
-	
-	GL_CHECK_ERROR;
-	
-	//Set dest fbo
-	inContext.boundFramebuffer = fbo;
-	
-	WMRenderObject *ro = [[WMRenderObject alloc] init];
-	
-	ro.vertexBuffer = vertexBuffer;
-	ro.indexBuffer = indexBuffer;
-	ro.shader = shader;
-
-	//Resize out output texture to the correct size (power of two, to contain the size)
-	NSUInteger destTextureWidth = nextPowerOf2(inSize.width);
-	NSUInteger destTextureHeight = nextPowerOf2(inSize.height);
-	[inDestinationTexture setData:NULL pixelFormat:inDestinationTexture.pixelFormat pixelsWide:destTextureWidth pixelsHigh:destTextureHeight contentSize:inSize];
-	
-	[fbo setColorAttachmentWithTexture:inDestinationTexture];
-	//Make sure framebuffer has this texture
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-		NSLog(@"Failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
-	}
-	
-	//Set uniform values
-	[ro setValue:[NSNumber numberWithFloat:inputOffset.value] forUniformWithName:@"u_offset"];
-	[ro setValue:inSourceTexture forUniformWithName:@"s_texMono"];
-	[ro setValue:texPal forUniformWithName:@"s_texPal"];
-	
-#if DEBUG
-	if (![shader validateProgram])
-	{
-		NSLog(@"Failed to validate program in shader: %@", shader);
-		return /*NO*/;
-	}
-#endif
-
-	[inContext clearToColor:(GLKVector4){0,0,0,0}];
-	[inContext renderObject:ro];
-
-}
-
-- (void)assureFramebuffer:(WMFramebuffer **)inoutFramebuffer isOfWidth:(NSUInteger)inWidth height:(NSUInteger)inHeight;
-{
-	WMFramebuffer *framebuffer = *inoutFramebuffer;
-	
-	NSUInteger pixelsWide = inWidth;
-	NSUInteger pixelsHigh = inHeight;
-
-	if (!framebuffer || framebuffer.framebufferWidth != pixelsWide || framebuffer.framebufferHeight != pixelsHigh) {
-		//Re-create framebuffer and texture
-				
-		WMTexture2D *texture = [[WMTexture2D alloc] initWithData:NULL
-													 pixelFormat:kWMTexture2DPixelFormat_RGBA8888
-													  pixelsWide:pixelsWide
-													  pixelsHigh:pixelsHigh
-													 contentSize:(CGSize){inWidth, inHeight}];
-		framebuffer = [[WMFramebuffer alloc] initWithTexture:texture depthBufferDepth:0];
-		
-		if (!texture || !framebuffer) {
-		} else {
-			NSLog(@"Created framebuffer: %@", framebuffer);
-		}
-	}
-	*inoutFramebuffer = framebuffer;
-
 }
 
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
@@ -214,33 +140,29 @@ static WMStructureField WMQuadVertex_fields[] = {
 		return YES;
 	}
 	
-	if (!texMono) {
-		texMono = [[WMTexture2D alloc] initWithData:NULL pixelFormat:kWMTexture2DPixelFormat_RGBA8888 pixelsWide:64 pixelsHigh:64 contentSize:CGSizeZero];
-	}
 	if (!texPal) {
 		texPal = [[WMTexture2D alloc] initWithData:NULL pixelFormat:kWMTexture2DPixelFormat_RGBA8888 pixelsWide:64 pixelsHigh:64 contentSize:CGSizeZero];
 	}
 	if (!fbo) {
 		fbo = [[WMFramebuffer alloc] initWithTexture:texMono depthBufferDepth:0];
 	}
-	
-	//Bind this fbo for rendering
-	WMFramebuffer *prevFramebuffer = context.boundFramebuffer;
-		
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
 
-	//	NSLog(@"Render false pal %@ => %@", inputImage, texture);
-	[self renderFromTexture:inputImage.image toTexture:texMono atSize:inputImage.image.contentSize inContext:context];
-	
-	//Restore previous settings
-	context.boundFramebuffer = prevFramebuffer;
-	
-	texMono.orientation = inputImage.image.orientation;
-	outputImage.image = texMono;
-	
-	//Discard temp texture content
-	//[texMono discardData];
+	outputImage.image = [context renderToTextureWithWidth:renderWidth height:renderHeight block:^{
+		WMRenderObject *ro = [[WMRenderObject alloc] init];
+		
+		ro.vertexBuffer = vertexBuffer;
+		ro.indexBuffer = indexBuffer;
+		ro.shader = shader;
+		
+		//Set uniform values
+		[ro setValue:[NSNumber numberWithFloat:inputOffset.value] forUniformWithName:@"u_offset"];
+		[ro setValue:inputImage.image forUniformWithName:@"s_texMono"];
+		[ro setValue:texPal forUniformWithName:@"s_texPal"];
+		
+		[context clearToColor:(GLKVector4){0,0,0,0}];
+		[context renderObject:ro];
+	}];
+	outputImage.image.orientation = inputImage.image.orientation;
 
 	return YES;
 	

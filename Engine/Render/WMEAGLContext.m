@@ -37,6 +37,8 @@
 @property (nonatomic) DNGLStateBlendMask blendState;
 @property (nonatomic) DNGLStateDepthMask depthState;
 
+@property (nonatomic, strong) WMFramebuffer *boundFramebuffer;
+
 @end
 
 @implementation WMEAGLContext {
@@ -181,6 +183,33 @@
 		}
 	}
 }
+
+- (void)renderToFramebuffer:(WMFramebuffer *)inFramebuffer block:(void (^)())renderingOperations;
+{
+	if (!inFramebuffer || !renderingOperations) return;
+	
+	WMFramebuffer *prev = self.boundFramebuffer;
+	self.boundFramebuffer = inFramebuffer;
+	renderingOperations();
+	self.boundFramebuffer = prev;
+}
+
+//Perform the following render operations in a RTT framebuffer, resulting in an output texture
+- (WMTexture2D *)renderToTextureWithWidth:(GLuint)width height:(GLuint)height block:(void (^)())renderingOperations;
+{
+	return [self renderToTextureWithWidth:width height:height depthBufferDepth:0 block:renderingOperations];
+}
+
+- (WMTexture2D *)renderToTextureWithWidth:(GLuint)width height:(GLuint)height depthBufferDepth:(GLuint)depth block:(void (^)())renderingOperations;
+{
+	//TODO: we can probably pool textures somehow, right?
+	WMTexture2D *texture = [[WMTexture2D alloc] initWithData:NULL pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height}];
+	//TODO: pull framebuffer from a pool or always reuse one (with the caveat being of course that popping the stack should work)
+	WMFramebuffer *framebuffer = [[WMFramebuffer alloc] initWithTexture:texture depthBufferDepth:0];
+	[self renderToFramebuffer:framebuffer block:renderingOperations];
+	return texture;
+}
+
 
 - (void)renderObject:(WMRenderObject *)inObject;
 {
@@ -472,16 +501,17 @@
 #endif
 }
 
-//Assigns a random texture unit for temporary use
+//Assigns a texture unit for temporary use, returning if one bound to that texture. The current texture unit is set to whichever is used
 - (void)bind2DTextureNameForModification:(GLuint)inTextureName;
 {
 	//Find a texture unit on which this texture is already bound.
 	for (int i=0; i<maxTextureUnits; i++) {
 		if ([self bound2DTextureNameOnTextureUnit:i] == inTextureName) {
-			return;			
+			[self setActiveTextureUnit:i];
+			return;	
 		}
 	}
-	//Otherwise, use texture unit 0
+	//Otherwise, use texture unit 0 I guess
 	[self setBound2DTextureName:inTextureName onTextureUnit:0];
 }
 

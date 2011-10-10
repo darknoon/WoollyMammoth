@@ -21,13 +21,49 @@ enum {
 typedef int DNGLStateDepthMask;
 
 @class WMFramebuffer;
+@class WMTexture2D;
 @class WMRenderObject;
+@class WMVertexArrayObject;
+@class CAEAGLLayer;
 
 @interface WMEAGLContext : EAGLContext
 
-//This also controls glViewport at the moment. Perhaps this will change in the future.
-@property (nonatomic, strong) WMFramebuffer *boundFramebuffer;
+//Some objects should have gl state backing, some not
+//ie WMStructuredBuffer only has gl backing when actually being used to render, transparent to the user
+//ie WMRenderObject only has a VAO backing when actually going to be rendered to the screen
 
+/////// State object factory methods ///////
+
+//Create a framebuffer to draw out to screen
+#if 0
+- (WMFramebuffer *)newFramebufferFromLayer:(CAEAGLLayer *)inLayer;
+
+//Texture must be associated with this GL context
+- (WMFramebuffer *)newFramebufferFromTexture:(WMTexture2D *)inTexture;
+
+//Creates a new texture.
+//Binding of textures is controlled exclusively by the render object system and glsl uniforms
+- (WMTexture2D *)newTexture;
+
+//Creates a new VAO
+//Binding of VAOs is controlled
+- (WMVertexArrayObject *)newVertexArrayObject;
+
+//Create a new shader
+- (WMShader *)newShaderWithVertexProgram:(NSString *)inVertexProgram fragmentProgram:(NSString *)inFragmentProgram error:(NSError **)outError;
+#endif
+
+////// Rendering functions ///////
+
+- (void)renderToFramebuffer:(WMFramebuffer *)inFramebuffer block:(void (^)())renderingOperations;
+
+//Perform the following render operations in a RTT framebuffer, resulting in an output texture
+- (WMTexture2D *)renderToTextureWithWidth:(GLuint)width height:(GLuint)height block:(void (^)())renderingOperations;
+- (WMTexture2D *)renderToTextureWithWidth:(GLuint)width height:(GLuint)height depthBufferDepth:(GLuint)depth block:(void (^)())renderingOperations;
+
+//The following functions must be nested within a previous call to renderToFramebuffer or renderToTexture...
+
+//Main rendering function, draws to the current framebuffer
 - (void)renderObject:(WMRenderObject *)inObject;
 
 //Clears the color buffer to the given color
@@ -36,9 +72,13 @@ typedef int DNGLStateDepthMask;
 //Clears the depth buffer to the default depth (+inf?)
 - (void)clearDepth;
 
+////// DEPRECATED, grr must remove ///////
+
 //This is not GL state in GLES 2.0
 //TODO: Move to another part of the render engine.
 @property (nonatomic) GLKMatrix4 modelViewMatrix;
+
+////// Implementation information ///////
 
 @property (nonatomic, readonly) int maxTextureSize;
 @property (nonatomic, readonly) int maxVertexAttributes;

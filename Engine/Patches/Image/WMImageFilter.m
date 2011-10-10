@@ -112,10 +112,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 }
 
 - (void)renderBlurPassFromTexture:(WMTexture2D *)inSourceTexture toTexture:(WMTexture2D *)inDestinationTexture atSize:(CGSize)inSize amountX:(float)inAmountX amountY:(float)inAmountY inContext:(WMEAGLContext *)inContext;
-{
-	//Set dest fbo
-	inContext.boundFramebuffer = fbo;
-	
+{	
 	//Resize out output texture to the correct size
 	NSUInteger destTextureWidth = inSize.width;
 	NSUInteger destTextureHeight = inSize.height;
@@ -198,32 +195,6 @@ static WMStructureField WMQuadVertex_fields[] = {
 	}
 }
 
-- (void)assureFramebuffer:(WMFramebuffer **)inoutFramebuffer isOfWidth:(NSUInteger)inWidth height:(NSUInteger)inHeight;
-{
-	WMFramebuffer *framebuffer = *inoutFramebuffer;
-	
-	NSUInteger pixelsWide = nextPowerOf2(inWidth);
-	NSUInteger pixelsHigh = nextPowerOf2(inHeight);
-
-	if (!framebuffer || framebuffer.framebufferWidth != pixelsWide || framebuffer.framebufferHeight != pixelsHigh) {
-		//Re-create framebuffer and texture
-				
-		WMTexture2D *texture = [[WMTexture2D alloc] initWithData:NULL
-													 pixelFormat:kWMTexture2DPixelFormat_RGBA8888
-													  pixelsWide:pixelsWide
-													  pixelsHigh:pixelsHigh
-													 contentSize:(CGSize){inWidth, inHeight}];
-		framebuffer = [[WMFramebuffer alloc] initWithTexture:texture depthBufferDepth:0];
-		
-		if (!texture || !framebuffer) {
-		} else {
-			NSLog(@"Created framebuffer: %@", framebuffer);
-		}
-	}
-	*inoutFramebuffer = framebuffer;
-
-}
-
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
 	NSUInteger renderWidth = inputImage.image.pixelsWide;
@@ -246,15 +217,10 @@ static WMStructureField WMQuadVertex_fields[] = {
 	}
 	
 	//Bind this fbo for rendering
-	WMFramebuffer *prevFramebuffer = context.boundFramebuffer;
-		
-//	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-//	glClear(GL_COLOR_BUFFER_BIT);
-//	NSLog(@"Render blur %@ => %@", inputImage, texture);
-	[self renderBlurFromTexture:inputImage.image toTexture:texture1 atSize:inputImage.image.contentSize withIntermediateTexture:texture0 inContext:context];
-	
-	//Restore previous settings
-	context.boundFramebuffer = prevFramebuffer;
+	[context renderToFramebuffer:fbo block:^{
+		//	NSLog(@"Render blur %@ => %@", inputImage, texture);
+		[self renderBlurFromTexture:inputImage.image toTexture:texture1 atSize:inputImage.image.contentSize withIntermediateTexture:texture0 inContext:context];
+	}];
 
 	texture1.orientation = inputImage.image.orientation;
 	

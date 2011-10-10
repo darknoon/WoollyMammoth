@@ -28,10 +28,6 @@
 	WMIndexPort *inputHeight;
 	
 	WMImagePort *outputImage;
-
-	BOOL useDepthBuffer;
-    WMFramebuffer *framebuffer;
-	WMTexture2D *texture;
 }
 
 @end

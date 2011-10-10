@@ -16,6 +16,7 @@
 @class WMBundleDocument;
 
 extern NSString *const WMEngineArgumentsInterfaceOrientationKey;
+extern NSString *const WMEngineArgumentsOutputDimensionsKey;
 extern NSString *const WMEngineArgumentsDocumentKey;
 
 @interface WMEngine : NSObject

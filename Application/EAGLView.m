@@ -22,7 +22,15 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
 - (void)deleteFramebuffer;
 @end
 
-@implementation EAGLView
+@implementation EAGLView {
+@private
+    WMEAGLContext *context;
+    
+	WMFramebuffer *framebuffer;
+	
+    // The pixel dimensions of the CAEAGLLayer.
+
+}
 
 @dynamic context;
 
@@ -72,6 +80,19 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
     
 }
 
+- (WMFramebuffer *)framebuffer;
+{
+    if (context)
+    {
+        [EAGLContext setCurrentContext:context];
+        
+        if (!framebuffer) {
+			framebuffer = [[WMFramebuffer alloc] initWithLayerRenderbufferStorage:(CAEAGLLayer *)self.layer];
+		}
+    }
+	return framebuffer;
+}
+
 - (WMEAGLContext *)context
 {
     return context;
@@ -91,42 +112,17 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
 
 - (void)deleteFramebuffer
 {
-    if (context)
-    {
-        [EAGLContext setCurrentContext:context];
-     
-		if (context.boundFramebuffer == framebuffer)
-		{
-			context.boundFramebuffer = nil;
-		}
-		
-		framebuffer = nil;		
-    }
-}
-
-- (void)setFramebuffer
-{
-    if (context)
-    {
-        [EAGLContext setCurrentContext:context];
-        
-        if (!framebuffer) {
-			framebuffer = [[WMFramebuffer alloc] initWithLayerRenderbufferStorage:(CAEAGLLayer *)self.layer];
-		}
-        
-		context.boundFramebuffer = framebuffer;		
-    }
+	framebuffer = nil;		
 }
 
 - (BOOL)presentFramebuffer
 {
     BOOL success = FALSE;
     
-    if (context && framebuffer)
-    {
+    if (context && framebuffer) {
         [EAGLContext setCurrentContext:context];
         
-		[framebuffer presentRenderbuffer];
+		success = [framebuffer presentRenderbuffer];
     }
     
     return success;
@@ -144,10 +140,12 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
 	
 	// allocate array and read pixels into it.
 	GLuint *buffer = (GLuint *) malloc(myDataLength);
-	glReadPixels(0, 0, framebufferWidth, framebufferHeight, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-
 	
-	// gl renders "upside down" so swap top to bottom into new array.
+	[context renderToFramebuffer:framebuffer block:^{
+		glReadPixels(0, 0, framebufferWidth, framebufferHeight, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+	}];
+	
+	// gl renders "upside down" so swap top to bottom
 	for(int y = 0; y < framebufferHeight / 2; y++) {
 		for(int x = 0; x < framebufferWidth; x++) {
 			//Swap top and bottom bytes
@@ -157,8 +155,6 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
 			buffer[y * framebufferWidth + x] = bottom;
 		}
 	}
-	
-	
 	
 	// prep the ingredients
 	const int bitsPerComponent = 8;
@@ -172,10 +168,6 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
 												   bitsPerComponent,
 												   bytesPerRow,
 												   colorSpaceRef, bitmapInfo);
-	
-	//Draw the image on top
-	UIImage *image = [UIImage imageNamed:@"UIOverlay.png"];
-	CGContextDrawImage(cgcontext, (CGRect) {.size.width = framebufferWidth, .size.height = framebufferHeight}, [image CGImage]);
 	
 	// make the cgimage
 	CGImageRef imageRef = CGBitmapContextCreateImage(cgcontext);
@@ -194,7 +186,7 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
 - (void)layoutSubviews
 {
     // The framebuffer will be re-created at the beginning of the next setFramebuffer method call.
-	[self deleteFramebuffer];
+	framebuffer = nil;
 }
 
 @end
