@@ -399,18 +399,6 @@
 	glClear(GL_DEPTH_BUFFER_BIT);
 }
 
-- (GLuint)genBuffer;
-{
-	GLuint obj = 0;
-	glGenBuffers(1, &obj);
-	return obj;
-}
-
-- (void)destroyBuffer:(GLuint)inBufferObject;
-{
-	glDeleteBuffers(1, &inBufferObject);
-}
-
 @end
 
 
@@ -419,7 +407,7 @@
 - (BOOL)uploadToBufferObjectIfNecessaryOfType:(GLenum)inBufferType inContext:(WMEAGLContext *)inContext;
 {
 	if (bufferObject == 0) {
-		bufferObject = [inContext genBuffer];
+		glGenBuffers(1, &bufferObject);
 	}
 	
 	//TODO: use glBufferSubData() only on the dirty indices
@@ -441,10 +429,10 @@
 	return YES;
 }
 
-- (void)releaseBufferObject;
+- (void)deleteInternalState;
 {
 	if (bufferObject != 0) {
-		[(WMEAGLContext *)[WMEAGLContext currentContext] destroyBuffer:bufferObject];
+		glDeleteBuffers(1, &bufferObject);
 		bufferObject = 0;
 	}
 }

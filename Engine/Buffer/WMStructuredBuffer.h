@@ -10,16 +10,12 @@
 
 #import "WMStructureDefinition.h"
 #import "WMRenderCommon.h"
+#import "WMGLStateObject.h"
 
 //Represents a contiguous buffer with associated type information about its contents.
 //Generally, something like array{{float position[4], char color[4]}, {float position[4], char color[4]}, ... count - 1 }
 
-@interface WMStructuredBuffer : NSObject {
-	//For the WMEAGLContext's use
-	//TODO: expose this in a nicer safer way :)
-	NSMutableIndexSet *dirtySet;
-	unsigned int bufferObject;
-}
+@interface WMStructuredBuffer : WMGLStateObject
 
 - (id)initWithDefinition:(WMStructureDefinition *)inDefinition;
 

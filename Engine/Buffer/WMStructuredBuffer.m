@@ -42,7 +42,6 @@ static inline unsigned int nextPowerOf2(unsigned int v) {
 }
 
 - (void)dealloc {
-	[self releaseBufferObject];
 	if (data) {
 		free(data);
 	}
