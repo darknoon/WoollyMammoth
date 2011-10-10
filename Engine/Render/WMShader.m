@@ -12,33 +12,24 @@
 
 NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
 
-@interface WMShader()
-//Then load the shaders, compile and link into a program in the current context
-- (BOOL)loadShadersWithError:(NSError **)outError;
-
-@property (nonatomic, copy) NSArray *uniformNames;
-@property (nonatomic, copy) NSArray *vertexAttributeNames;
-
-@property (nonatomic, copy) NSArray *uniformTypes;
-@property (nonatomic, copy) NSArray *vertexAttributeTypes;
-
-@property (nonatomic, copy) NSString *vertexShader;
-@property (nonatomic, copy) NSString *fragmentShader;
-
-@end
+#import "WMShader_WMEAGLContext_Private.h"
 
 @implementation WMShader {
 	NSMutableDictionary *uniformLocations;
+	
+	NSArray *uniformTypes;
+	NSArray *uniformNames;
+	NSArray *uniformSizes;
+	
+	NSArray *vertexAttributeTypes;
+	NSArray *vertexAttributeNames;
+	NSArray *vertexAttributeSizes;
 }
-
-
-@synthesize uniformNames;
-@synthesize uniformTypes;
-@synthesize vertexAttributeNames;
-@synthesize vertexAttributeTypes;
 
 @synthesize vertexShader;
 @synthesize fragmentShader;
+@synthesize uniformNames;
+@synthesize vertexAttributeNames;
 @synthesize program;
 
 
@@ -121,11 +112,24 @@ NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
 	return uniformTypeNumber ? [uniformTypeNumber unsignedIntValue] : 0;
 }
 
-- (GLenum)vertexTypeForName:(NSString *)inAttributeName;
+- (GLenum)attributeTypeForName:(NSString *)inAttributeName;
 {
 	NSNumber *vertexTypeNumber = [vertexAttributeTypes objectAtIndex:[vertexAttributeNames indexOfObject:inAttributeName]];
 	return vertexTypeNumber ? [vertexTypeNumber unsignedIntValue] : 0;
 }
+
+- (int)attributeSizeForName:(NSString *)inAttributeName;
+{
+	NSNumber *vertexSizeNumber = [vertexAttributeTypes objectAtIndex:[vertexAttributeNames indexOfObject:inAttributeName]];
+	return vertexSizeNumber ? [vertexSizeNumber intValue] : 0;
+}
+
+- (int)uniformSizeForName:(NSString *)inUniformName;
+{
+	NSNumber *uniformSizeNumber = [uniformSizes objectAtIndex:[uniformNames indexOfObject:inUniformName]];
+	return uniformSizeNumber ? [uniformSizeNumber intValue] : 0;
+}
+
 
 - (BOOL)compileShaderSource:(NSString *)inSourceString toShader:(GLuint *)shader type:(GLenum)type error:(NSError **)outError;
 {
@@ -292,28 +296,32 @@ NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
 	//Get attributes
 	GLint activeAttributes = 0;
 	glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &activeAttributes);
-	NSMutableArray *attributeNamesMutable = [NSMutableArray arrayWithCapacity:activeAttributes];
-	NSMutableArray *attributeTypesMutable = [NSMutableArray arrayWithCapacity:activeAttributes];
+	NSMutableArray *attributeNamesMutable = [[NSMutableArray alloc] initWithCapacity:activeAttributes];
+	NSMutableArray *attributeTypesMutable = [[NSMutableArray alloc] initWithCapacity:activeAttributes];
+	NSMutableArray *attributeSizesMutable = [[NSMutableArray alloc] initWithCapacity:activeAttributes];
 	for (int i=0; i<activeAttributes; i++) {
 		char nameBuf[1024];
 		GLsizei nameLength = 0;
 		GLint attributeSize = 0;
 		GLenum attributeType = 0;
 		glGetActiveAttrib(program, i, sizeof(nameBuf), &nameLength, &attributeSize, &attributeType, nameBuf);
-	//	NSLog(@"gl attribute: %s type(%@) size:%d", nameBuf, [WMShader nameOfShaderType:attributeType], attributeSize);
+		NSLog(@"gl attribute: %s type(%@) size:%d", nameBuf, [WMShader nameOfShaderType:attributeType], attributeSize);
 		
 		NSString *attributeName = [NSString stringWithCString:nameBuf encoding:NSASCIIStringEncoding];
 		[attributeNamesMutable addObject:attributeName];
 		[attributeTypesMutable addObject:[NSNumber numberWithUnsignedInt:attributeType]];
+		[attributeSizesMutable addObject:[NSNumber numberWithInt:attributeSize]];
 	}
-	self.vertexAttributeNames = attributeNamesMutable;
-	self.vertexAttributeTypes = attributeTypesMutable;
+	vertexAttributeNames = [attributeNamesMutable copy];
+	vertexAttributeTypes = [attributeTypesMutable copy];
+	vertexAttributeSizes = [attributeSizesMutable copy];
 	
 	//Get uniform locations
 	GLint uniformCount = 0;
 	glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &uniformCount);
-	NSMutableArray *uniformNamesMutable = [NSMutableArray arrayWithCapacity:uniformCount];
-	NSMutableArray *uniformTypesMutable = [NSMutableArray arrayWithCapacity:uniformCount];
+	NSMutableArray *uniformNamesMutable = [[NSMutableArray alloc] initWithCapacity:uniformCount];
+	NSMutableArray *uniformTypesMutable = [[NSMutableArray alloc] initWithCapacity:uniformCount];
+	NSMutableArray *uniformSizesMutable = [[NSMutableArray alloc] initWithCapacity:uniformCount];
 	for (int i=0; i<uniformCount; i++) {
 		char nameBuf[1024];
 		GLsizei nameLength = 0;
@@ -326,9 +334,11 @@ NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
 		int uniformLocation = glGetUniformLocation(program, nameBuf);
 		[uniformLocations setObject:[NSNumber numberWithInt:uniformLocation] forKey:uniformName];
 		[uniformTypesMutable addObject:[NSNumber numberWithUnsignedInt:uniformType]];
+		[uniformSizesMutable addObject:[NSNumber numberWithInt:uniformSize]];
 	}
-	self.uniformNames = uniformNamesMutable;
-	self.uniformTypes = uniformTypesMutable;
+	uniformNames = [uniformNamesMutable copy];
+	uniformTypes = [uniformTypesMutable copy];
+	uniformSizes = [uniformSizesMutable copy];
 	
 	// Release vertex and fragment shaders.
 	if (vertShader)

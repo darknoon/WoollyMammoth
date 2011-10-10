@@ -18,6 +18,7 @@
 #import "WMTexture2D_WMEAGLContext_Private.h"
 #import "WMRenderObject_WMEAGLContext_Private.h"
 #import "WMGLStateObject_WMEAGLContext_Private.h"
+#import "WMShader_WMEAGLContext_Private.h"
 
 //TODO: where should this live?
 @interface WMShader (WMShader_Uniform_State)
@@ -554,8 +555,8 @@
 
 @implementation WMShader (WMShader_Uniform_State)
 
-//TODO: save type information so we can typecheck these
 //TODO: make this less verbose
+//TODO: support attribute & uniform sizes
 
 - (BOOL)setIntValue:(int)inValue forUniform:(NSString *)inUniform;
 {

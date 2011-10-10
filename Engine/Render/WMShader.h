@@ -25,19 +25,15 @@
 
 //TODO: @property (nonatomic) BOOL vertexShaderCompatibleWithPointRendering;
 
-//TODO: make these more private
-@property (nonatomic, readonly) GLuint program;
-- (int)attributeLocationForName:(NSString *)inName;
-- (int)uniformLocationForName:(NSString *)inName;
-
 + (NSString *)nameOfShaderType:(GLenum)inType;
 
 - (GLenum)attributeTypeForName:(NSString *)inAttributeName;
 - (GLenum)uniformTypeForName:(NSString *)inUniformName;
 
-- (int)attributeCountForName:(NSString *)inAttributeName;
-- (int)uniformForName:(NSString *)inUniformName;
-
+// for an vec3[2], this would be 2. Most commonly, this will be 1.
+// Currently, attributes and uniforms of this type are UNSUPPORTED by WMEAGLContext's rendering API
+- (int)attributeSizeForName:(NSString *)inAttributeName;
+- (int)uniformSizeForName:(NSString *)inUniformName;
 
 @end
 

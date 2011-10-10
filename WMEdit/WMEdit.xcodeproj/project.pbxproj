@@ -425,7 +425,7 @@
 		49858E0A13DE4C1F0061A1A8 /* WMRenderObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMRenderObject.m; sourceTree = "<group>"; };
 		49858E0B13DE4C1F0061A1A8 /* WMShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMShader.h; sourceTree = "<group>"; };
 		49858E0C13DE4C1F0061A1A8 /* WMShader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMShader.m; sourceTree = "<group>"; };
-		49858E0D13DE4C1F0061A1A8 /* WMStructuredBuffer_WMEAGLContext_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMStructuredBuffer_WMEAGLContext_Private.h; sourceTree = "<group>"; };
+		49858E0D13DE4C1F0061A1A8 /* WMStructuredBuffer_WMEAGLContext_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WMStructuredBuffer_WMEAGLContext_Private.h; path = ../Render/WMStructuredBuffer_WMEAGLContext_Private.h; sourceTree = "<group>"; };
 		49858E0E13DE4C1F0061A1A8 /* WMTexture2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMTexture2D.h; sourceTree = "<group>"; };
 		49858E0F13DE4C1F0061A1A8 /* WMTexture2D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMTexture2D.m; sourceTree = "<group>"; };
 		49858E1013DE4C1F0061A1A8 /* WMTextureCubeMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMTextureCubeMap.h; sourceTree = "<group>"; };
@@ -584,6 +584,7 @@
 		49AA853B1442B227005BC6F7 /* WMGLStateObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMGLStateObject.h; sourceTree = "<group>"; };
 		49AA853C1442B227005BC6F7 /* WMGLStateObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMGLStateObject.m; sourceTree = "<group>"; };
 		49AA853E1442B2F7005BC6F7 /* WMGLStateObject_WMEAGLContext_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMGLStateObject_WMEAGLContext_Private.h; sourceTree = "<group>"; };
+		49AA853F1442D3AC005BC6F7 /* WMShader_WMEAGLContext_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMShader_WMEAGLContext_Private.h; sourceTree = "<group>"; };
 		49AC77F613F19E9000BC6584 /* WMRenderObject_WMEAGLContext_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMRenderObject_WMEAGLContext_Private.h; sourceTree = "<group>"; };
 		49AD650A13DE8FF600A2CC66 /* WMVectorPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMVectorPort.h; sourceTree = "<group>"; };
 		49AD650B13DE8FF600A2CC66 /* WMVectorPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMVectorPort.m; sourceTree = "<group>"; };
@@ -833,6 +834,7 @@
 			children = (
 				49858DC113DE4C1F0061A1A8 /* WMStructuredBuffer.h */,
 				49858DC213DE4C1F0061A1A8 /* WMStructuredBuffer.m */,
+				49858E0D13DE4C1F0061A1A8 /* WMStructuredBuffer_WMEAGLContext_Private.h */,
 				49858DC313DE4C1F0061A1A8 /* WMStructureDefinition.h */,
 				49858DC413DE4C1F0061A1A8 /* WMStructureDefinition.m */,
 			);
@@ -974,7 +976,7 @@
 				49AC77F613F19E9000BC6584 /* WMRenderObject_WMEAGLContext_Private.h */,
 				49858E0B13DE4C1F0061A1A8 /* WMShader.h */,
 				49858E0C13DE4C1F0061A1A8 /* WMShader.m */,
-				49858E0D13DE4C1F0061A1A8 /* WMStructuredBuffer_WMEAGLContext_Private.h */,
+				49AA853F1442D3AC005BC6F7 /* WMShader_WMEAGLContext_Private.h */,
 				49858E0E13DE4C1F0061A1A8 /* WMTexture2D.h */,
 				49858E0F13DE4C1F0061A1A8 /* WMTexture2D.m */,
 				49F425BA13EE14B40093EE5F /* WMTexture2D_RenderPrivate.h */,
