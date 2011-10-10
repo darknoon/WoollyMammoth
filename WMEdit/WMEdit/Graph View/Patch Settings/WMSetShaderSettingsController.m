@@ -10,6 +10,7 @@
 
 #import "WMSetShader.h"
 #import "WMPatch+SettingsControllerClass.h"
+#import "WMEditViewController.h"
 
 @implementation WMSetShader (WMPatch_SettingsControllerClass)
 
@@ -97,6 +98,7 @@
 	} else if (segmentIndex == 1) {
 		self.patch.fragmentShader = self.textView.text;
 	}
+	[editViewController markDocumentDirty];
 }
 
 @end
