@@ -42,11 +42,6 @@
 	return self;
 }
 
-- (WMPatchExecutionMode)executionMode;
-{
-	return kWMPatchExecutionModeRII;
-}
-
 - (void)renderObject:(WMRenderObject *)inObject withTransform:(GLKMatrix4)inMatrix inContext:(WMEAGLContext *)inContext;
 {
 	[inObject postmultiplyTransform:inMatrix];
