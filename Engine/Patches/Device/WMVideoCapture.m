@@ -146,6 +146,8 @@
 	}
 	
 	dataOutput = [[AVCaptureVideoDataOutput alloc] init];
+	DLog(@"Capture pixel formats in order of decreasing efficency: %@", [[dataOutput availableVideoCVPixelFormatTypes] componentsJoinedByString:@", "]);
+	
 	if (!dataOutput) {
 		NSLog(@"Error making output.");
 		return;
