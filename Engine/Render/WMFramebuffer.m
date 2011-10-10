@@ -151,7 +151,7 @@
 	return self;
 }
 
-- (void)deleteFramebuffer;
+- (void)deleteInternalState;
 {
 	if (framebufferObject)
 	{
@@ -171,11 +171,6 @@
 	}
 	GL_CHECK_ERROR;
 	
-}
-
-- (void)dealloc;
-{
-	[self deleteFramebuffer];
 }
 
 - (void)bind;

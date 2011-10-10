@@ -5,8 +5,6 @@
 
 @property (nonatomic) BOOL vertexArrayObjectDirty;
 
-
 - (void)createVAOIfNecessary;
-- (void)releaseVAO;
 
 @end

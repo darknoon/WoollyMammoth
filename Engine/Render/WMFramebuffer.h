@@ -12,15 +12,14 @@
 
 #import <QuartzCore/CAEAGLLayer.h>
 
+#import "WMGLStateObject.h"
+
 @class WMTexture2D;
 
-@interface WMFramebuffer : NSObject {
+@interface WMFramebuffer : WMGLStateObject {
 	GLint framebufferWidth;
     GLint framebufferHeight;
-	
-	//If rendering to a texture
-	__weak WMTexture2D *texture;
-	
+		
 	GLuint colorRenderbuffer;
 	GLuint depthRenderbuffer;
 	GLuint framebufferObject;

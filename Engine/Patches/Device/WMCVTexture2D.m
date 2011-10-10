@@ -38,7 +38,6 @@
 		GLKVector2 upperLeft;
 		GLKVector2 upperRight;
 		
-		
 		CVOpenGLESTextureGetCleanTexCoords(cvTexture, lowerLeft.v, lowerRight.v, upperRight.v, upperLeft.v);
 		
 		ZAssert(fabsf(lowerRight.x - lowerLeft.x) > 0.1f && fabsf(upperLeft.y - lowerLeft.y) > 0.1f, @"Unexpected texture coordinate rotation!");
@@ -49,14 +48,13 @@
 		_size.width = fabsf(lowerRight.x - lowerLeft.x) * _width;
 		_size.height = fabsf(upperLeft.y - lowerLeft.y) * _height;
 		
-		glBindTexture(GL_TEXTURE_2D, CVOpenGLESTextureGetName(cvTexture));
-
-		[(WMEAGLContext *)[WMEAGLContext currentContext] bind2DTextureNameForModification:CVOpenGLESTextureGetName(cvTexture)]; 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		
+		//TODO: is this actually necessary?
+		[self.context bind2DTextureNameForModification:CVOpenGLESTextureGetName(cvTexture) inBlock:^{
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		}];
 	} else {
 		NSLog(@"couldn't create gl texture!");
 		return nil;
@@ -76,10 +74,16 @@
 	ZAssert(0, @"Should not call -setData:… on WMCVTexture2D. The whole point of WMCVTexture2D is not to use pointers to data on the CPU!");
 }
 
+- (void)deleteInternalState;
+{
+	//CVOpenGLESTextureCache is responsible for deleting the texture, so just forget about it here
+	//instead of super's implementation, which would actually delete the texture
+	_name = 0;
+}
+
 - (void)dealloc;
 {
-	//Don't delete the texture name
-	_name = 0;
+	//Even if our context has gone away, presumably we should still free the cvTexture...
 	if (cvTexture)
 		CFRelease(cvTexture);
 	cvTexture = NULL;

@@ -9,6 +9,13 @@
 #ifndef WMEdit_WMFramebuffer_WMEAGLContext_Private_h
 #define WMEdit_WMFramebuffer_WMEAGLContext_Private_h
 
+#import "WMEAGLContext.h"
+#import "WMFramebuffer.h"
 
+@interface WMEAGLContext (FramebufferPrivate)
+//This also controls glViewport at the moment. Perhaps this will change in the future.
+@property (nonatomic, strong) WMFramebuffer *boundFramebuffer;
+
+@end
 
 #endif

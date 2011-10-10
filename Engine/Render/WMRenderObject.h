@@ -19,8 +19,9 @@
  * Other rendering types and configurations are supported, however, and YMMV.
  */
 
+#import "WMGLStateObject.h"
 
-@interface WMRenderObject : NSObject
+@interface WMRenderObject : WMGLStateObject
 
 //Create an object that can be rendered to a WMEAGLContext
 - (id)init;

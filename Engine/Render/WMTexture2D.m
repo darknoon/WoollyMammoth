@@ -54,6 +54,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #import "WMTexture2D.h"
 
 #import "WMTexture2D_WMEAGLContext_Private.h"
+#import "WMGLStateObject_WMEAGLContext_Private.h"
 
 
 NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation);
@@ -101,13 +102,14 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 - (id)initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;
 {
 	if((self = [super init])) {
+		ZAssert(self.context, @"Weird! No context in which to create texture!");
 		glGenTextures(1, &_name);
-		[(WMEAGLContext *)[WMEAGLContext currentContext] bind2DTextureNameForModification:_name]; 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		//Needed by default for npot
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
+		[self.context bind2DTextureNameForModification:_name inBlock:^{
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			//Needed by default for npot
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		}];
 		[self setData:data pixelFormat:pixelFormat pixelsWide:width pixelsHigh:height contentSize:size orientation:inOrientation];
 	}					
 	return self;
@@ -120,26 +122,27 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 
 - (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;
 {
-	[(WMEAGLContext *)[WMEAGLContext currentContext] bind2DTextureNameForModification:self.name];
-	switch(pixelFormat) {
-			
-		case kWMTexture2DPixelFormat_RGBA8888:
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-			break;
-		case kWMTexture2DPixelFormat_BGRA8888:
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, data);
-			break;
-		case kWMTexture2DPixelFormat_RGB565:
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, data);
-			break;
-		case kWMTexture2DPixelFormat_A8:
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, width, height, 0, GL_ALPHA, GL_UNSIGNED_BYTE, data);
-			break;
-		default:
-			[NSException raise:NSInternalInconsistencyException format:@""];
-			
-	}
-
+	ZAssert(self.context, @"Weird! No context in which to set data!");
+	[self.context bind2DTextureNameForModification:_name inBlock:^{
+		switch(pixelFormat) {
+				
+			case kWMTexture2DPixelFormat_RGBA8888:
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+				break;
+			case kWMTexture2DPixelFormat_BGRA8888:
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, data);
+				break;
+			case kWMTexture2DPixelFormat_RGB565:
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, data);
+				break;
+			case kWMTexture2DPixelFormat_A8:
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, width, height, 0, GL_ALPHA, GL_UNSIGNED_BYTE, data);
+				break;
+			default:
+				[NSException raise:NSInternalInconsistencyException format:@""];
+				
+		}
+	}];
 	
 	_size = size;
 	_width = width;
@@ -169,13 +172,13 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 	return _size.height / (float)_height;
 }
 
-- (void)dealloc
+- (void)deleteInternalState;
 {
 	if(_name) {
 		glDeleteTextures(1, &_name);
-		[(WMEAGLContext *)[WMEAGLContext currentContext] forgetTexture2DName:_name];
+		[self.context forgetTexture2DName:_name];
+		_name = 0;
 	}
-	
 }
 
 - (NSString *)description
@@ -230,7 +233,7 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 	WMTexture2DPixelFormat    pixelFormat;
 	CGImageRef				image;
 	BOOL					sizeToFit = NO;
-	int                     maxTextureSize = [(WMEAGLContext *)[WMEAGLContext currentContext] maxTextureSize];
+	int                     maxTextureSize = [self.context maxTextureSize];
 	
 	image = [uiImage CGImage];
 	

@@ -174,6 +174,7 @@
 		49A5285D13D173B8004EC7F6 /* PGMidiFind.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49A5285A13D173B8004EC7F6 /* PGMidiFind.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		49A5286313D174C6004EC7F6 /* connection-white~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49A5286213D174C6004EC7F6 /* connection-white~ipad.png */; };
 		49A5286513D17A03004EC7F6 /* connection-shadow~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49A5286413D17A03004EC7F6 /* connection-shadow~ipad.png */; };
+		49AA853D1442B228005BC6F7 /* WMGLStateObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AA853C1442B227005BC6F7 /* WMGLStateObject.m */; };
 		49AD650C13DE8FF600A2CC66 /* WMVectorPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD650B13DE8FF600A2CC66 /* WMVectorPort.m */; };
 		49AD651713DE9E1200A2CC66 /* WMVectorFromComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD651613DE9E1200A2CC66 /* WMVectorFromComponents.m */; };
 		49B3DB4D13E10F03002DC713 /* WMRenderObjectPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB4C13E10F03002DC713 /* WMRenderObjectPort.m */; };
@@ -580,6 +581,9 @@
 		49A5286213D174C6004EC7F6 /* connection-white~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "connection-white~ipad.png"; sourceTree = "<group>"; };
 		49A5286413D17A03004EC7F6 /* connection-shadow~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "connection-shadow~ipad.png"; sourceTree = "<group>"; };
 		49AA853914428B0F005BC6F7 /* WMFramebuffer_WMEAGLContext_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMFramebuffer_WMEAGLContext_Private.h; sourceTree = "<group>"; };
+		49AA853B1442B227005BC6F7 /* WMGLStateObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMGLStateObject.h; sourceTree = "<group>"; };
+		49AA853C1442B227005BC6F7 /* WMGLStateObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMGLStateObject.m; sourceTree = "<group>"; };
+		49AA853E1442B2F7005BC6F7 /* WMGLStateObject_WMEAGLContext_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMGLStateObject_WMEAGLContext_Private.h; sourceTree = "<group>"; };
 		49AC77F613F19E9000BC6584 /* WMRenderObject_WMEAGLContext_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMRenderObject_WMEAGLContext_Private.h; sourceTree = "<group>"; };
 		49AD650A13DE8FF600A2CC66 /* WMVectorPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMVectorPort.h; sourceTree = "<group>"; };
 		49AD650B13DE8FF600A2CC66 /* WMVectorPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMVectorPort.m; sourceTree = "<group>"; };
@@ -958,6 +962,9 @@
 				49858E0213DE4C1F0061A1A8 /* GLDefines.m */,
 				49858E0313DE4C1F0061A1A8 /* WMEAGLContext.h */,
 				49858E0413DE4C1F0061A1A8 /* WMEAGLContext.m */,
+				49AA853B1442B227005BC6F7 /* WMGLStateObject.h */,
+				49AA853C1442B227005BC6F7 /* WMGLStateObject.m */,
+				49AA853E1442B2F7005BC6F7 /* WMGLStateObject_WMEAGLContext_Private.h */,
 				49858E0513DE4C1F0061A1A8 /* WMFramebuffer.h */,
 				49858E0613DE4C1F0061A1A8 /* WMFramebuffer.m */,
 				49AA853914428B0F005BC6F7 /* WMFramebuffer_WMEAGLContext_Private.h */,
@@ -1836,6 +1843,7 @@
 				493A1A2E1400E491001BB458 /* WMIndexInputPortCell.m in Sources */,
 				49B9A6BD1415C473001DB45B /* WMVideoRecord.m in Sources */,
 				4910A273144104620088CD7E /* DNMemoryInfo.m in Sources */,
+				49AA853D1442B228005BC6F7 /* WMGLStateObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

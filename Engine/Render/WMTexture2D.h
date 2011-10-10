@@ -48,6 +48,8 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #import <Foundation/Foundation.h>
 #import "WMRenderCommon.h"
 
+#import "WMGLStateObject.h"
+
 //CONSTANTS:
 
 typedef enum {
@@ -66,7 +68,7 @@ The created WMTexture2D object will always have power-of-two dimensions.
 Depending on how you create the WMTexture2D object, the actual image area of the texture might be smaller than the texture dimensions i.e. "contentSize" != (pixelsWide, pixelsHigh) and (maxS, maxT) != (1.0, 1.0).
 Be aware that the content of the generated textures will be upside-down!
 */
-@interface WMTexture2D : NSObject
+@interface WMTexture2D : WMGLStateObject
 {
 	//For subclassers
 @protected

@@ -17,6 +17,7 @@
 #import "WMStructuredBuffer_WMEAGLContext_Private.h"
 #import "WMTexture2D_WMEAGLContext_Private.h"
 #import "WMRenderObject_WMEAGLContext_Private.h"
+#import "WMGLStateObject_WMEAGLContext_Private.h"
 
 //TODO: where should this live?
 @interface WMShader (WMShader_Uniform_State)
@@ -186,6 +187,9 @@
 
 - (void)renderToFramebuffer:(WMFramebuffer *)inFramebuffer block:(void (^)())renderingOperations;
 {
+	//Make sure we are the current context, then nobody needs to worry about that :)
+	[WMEAGLContext setCurrentContext:self];
+	
 	if (!inFramebuffer || !renderingOperations) return;
 	
 	WMFramebuffer *prev = self.boundFramebuffer;
@@ -502,17 +506,20 @@
 }
 
 //Assigns a texture unit for temporary use, returning if one bound to that texture. The current texture unit is set to whichever is used
-- (void)bind2DTextureNameForModification:(GLuint)inTextureName;
+- (void)bind2DTextureNameForModification:(GLuint)inTextureName inBlock:(void (^)())blockWithGLOperations;
 {
+	if (!blockWithGLOperations) return;
 	//Find a texture unit on which this texture is already bound.
 	for (int i=0; i<maxTextureUnits; i++) {
 		if ([self bound2DTextureNameOnTextureUnit:i] == inTextureName) {
 			[self setActiveTextureUnit:i];
+			blockWithGLOperations();
 			return;	
 		}
 	}
 	//Otherwise, use texture unit 0 I guess
 	[self setBound2DTextureName:inTextureName onTextureUnit:0];
+	blockWithGLOperations();
 }
 
 - (void)forgetTexture2DName:(GLuint)inTextureName;
@@ -546,7 +553,7 @@
 	}
 }
 
-- (void)releaseVAO;
+- (void)deleteInternalState;
 {
 	GLuint vertexArrayObject = self.vertexArrayObject;
 	if (vertexArrayObject) {
