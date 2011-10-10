@@ -69,14 +69,6 @@ Depending on how you create the WMTexture2D object, the actual image area of the
 Be aware that the content of the generated textures will be upside-down!
 */
 @interface WMTexture2D : WMGLStateObject
-{
-	//For subclassers
-@protected
-	GLuint						_name;
-	CGSize						_size;
-	NSUInteger					_width,
-								_height;
-}
 
 //Designated initializer
 - (id)initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;

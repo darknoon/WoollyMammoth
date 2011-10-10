@@ -7,7 +7,7 @@
 //
 
 #import "WMTextureCubeMap.h"
-
+#import "WMTexture2D_RenderPrivate.h"
 
 @implementation WMTextureCubeMap
 

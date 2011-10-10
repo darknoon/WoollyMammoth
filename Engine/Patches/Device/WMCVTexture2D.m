@@ -9,6 +9,7 @@
 #import "WMCVTexture2D.h"
 #import "WMEAGLContext.h"
 #import "WMTexture2D_WMEAGLContext_Private.h"
+#import "WMTexture2D_RenderPrivate.h"
 
 @implementation WMCVTexture2D {
 	CVOpenGLESTextureRef cvTexture;
