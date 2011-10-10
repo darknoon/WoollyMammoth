@@ -97,7 +97,7 @@
 		}
 
 	}];
-
+	texture.orientation = UIImageOrientationDownMirrored;
 	outputImage.image = texture;
 	
 	return YES;
