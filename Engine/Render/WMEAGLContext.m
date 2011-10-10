@@ -65,7 +65,6 @@
 @synthesize blendState;
 @synthesize depthState;
 @synthesize boundFramebuffer;
-@synthesize modelViewMatrix;
 @synthesize maxTextureSize;
 @synthesize maxTextureUnits;
 @synthesize maxVertexAttributes;
@@ -89,9 +88,6 @@
 		
 		//Assume an source-over mode to start
 		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-		
-		//Set matrix to identity
-		modelViewMatrix = GLKMatrix4Identity;
 		
 		glGetIntegerv(GL_ACTIVE_TEXTURE, &activeTexture);
 		activeTexture -= GL_TEXTURE0;

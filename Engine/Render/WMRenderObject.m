@@ -18,6 +18,8 @@
 @property (nonatomic) BOOL vertexArrayObjectDirty;
 @end
 
+NSString *const WMRenderObjectTransformUniformName = @"wm_T";
+
 @implementation WMRenderObject {
 	NSMutableDictionary *uniformValues;
 	BOOL _wmeaglcontextprivate_vaoDirty;
@@ -96,6 +98,36 @@
 - (id)valueForUniformWithName:(NSString *)inUniformName;
 {
 	return [uniformValues objectForKey:inUniformName];
+}
+
+- (void)premultiplyTransform:(GLKMatrix4)inMatrix;
+{
+	GLKMatrix4 matrix = GLKMatrix4Identity;
+	NSValue *transformValue = (NSValue *)[self valueForUniformWithName:WMRenderObjectTransformUniformName];
+	BOOL isMatrix = transformValue && strcmp([transformValue objCType], @encode(GLKMatrix4)) == 0;
+	if (isMatrix) {
+		[transformValue getValue:&matrix];
+		matrix = GLKMatrix4Multiply(inMatrix, matrix);
+	} else {
+		matrix = inMatrix;
+	}
+	transformValue = [NSValue valueWithBytes:&matrix objCType:@encode(GLKMatrix4)];
+	[self setValue:transformValue forUniformWithName:WMRenderObjectTransformUniformName];
+}
+
+- (void)postmultiplyTransform:(GLKMatrix4)inMatrix;
+{
+	GLKMatrix4 matrix = GLKMatrix4Identity;
+	NSValue *transformValue = (NSValue *)[self valueForUniformWithName:WMRenderObjectTransformUniformName];
+	BOOL isMatrix = transformValue && strcmp([transformValue objCType], @encode(GLKMatrix4)) == 0;
+	if (isMatrix) {
+		[transformValue getValue:&matrix];
+		matrix = GLKMatrix4Multiply(matrix, inMatrix);
+	} else {
+		matrix = inMatrix;
+	}
+	transformValue = [NSValue valueWithBytes:&matrix objCType:@encode(GLKMatrix4)];
+	[self setValue:transformValue forUniformWithName:WMRenderObjectTransformUniformName];
 }
 
 @end

@@ -254,8 +254,6 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 	//Clear out the rendering context
 	[renderContext clearToColor:(GLKVector4){0, 0, 0, 1}];
 	[renderContext clearDepth];
-
-	renderContext.modelViewMatrix = [WMEngine cameraMatrixWithRect:inBounds];
 	
 	//// Time         ////
 	//TODO: support pause / resume

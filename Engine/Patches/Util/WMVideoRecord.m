@@ -14,6 +14,7 @@
 #import "WMEAGLContext.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "WMEngine.h"
+#import "WMRenderObject.h"
 
 static CVPixelBufferPoolRef CreatePixelBufferPool( int32_t width, int32_t height, OSType pixelFormat);
 static CVPixelBufferPoolRef CreatePixelBufferPool( int32_t width, int32_t height, OSType pixelFormat)
@@ -314,6 +315,13 @@ bail:
 	dispatch_release(videoProcessingQueue);
 }
 
+
+- (void)renderObject:(WMRenderObject *)inObject withTransform:(GLKMatrix4)inMatrix inContext:(WMEAGLContext *)inContext;
+{
+	[inObject postmultiplyTransform:inMatrix];
+	[inContext renderObject:inObject];
+}
+
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
 	//TODO: If output dimensions change, cancel read and re-create
@@ -342,8 +350,6 @@ bail:
 		[framebuffer setColorAttachmentWithTexture:currentTexture];
 	}
 	
-	GLKMatrix4 prevModelViewMatrix = context.modelViewMatrix;
-	context.modelViewMatrix = [WMEngine cameraMatrixWithRect:(CGRect){.size.width = videoDimensions.width, .size.height = videoDimensions.height}];
 
 	[context renderToFramebuffer:framebuffer block:^{
 				
@@ -354,17 +360,19 @@ bail:
 			NSLog(@"displayAndRenderPixelBuffer error"); 
 		}
 		
+		GLKMatrix4 transform = [WMEngine cameraMatrixWithRect:(CGRect){.size.width = videoDimensions.width, .size.height = videoDimensions.height}];
+
 		if (inputRenderable1.object) {
-			[context renderObject:inputRenderable1.object];
+			[self renderObject:inputRenderable1.object withTransform:transform inContext:context];
 		}
 		if (inputRenderable2.object) {
-			[context renderObject:inputRenderable2.object];
+			[self renderObject:inputRenderable2.object withTransform:transform inContext:context];
 		}
 		if (inputRenderable3.object) {
-			[context renderObject:inputRenderable3.object];
+			[self renderObject:inputRenderable3.object withTransform:transform inContext:context];
 		}
 		if (inputRenderable4.object) {
-			[context renderObject:inputRenderable4.object];
+			[self renderObject:inputRenderable4.object withTransform:transform inContext:context];
 		}
 
 	}];
@@ -384,9 +392,7 @@ bail:
 	
 	CVOpenGLESTextureCacheFlush(textureCache, 0);
 	CFRelease(destPixelBuffer);
-	
-	context.modelViewMatrix = prevModelViewMatrix;
-	
+		
 	return YES;
 	
 }

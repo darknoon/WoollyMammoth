@@ -90,10 +90,10 @@ typedef struct {
 	NSString *vertexShader = @"\
 	attribute vec4 position;\
 	attribute vec4 color;\
-	uniform mat4 modelViewProjectionMatrix;\
+	uniform mat4 wm_T;\
 	varying lowp vec4 v_color;\
 	void main() {\
-    	gl_Position = modelViewProjectionMatrix * vec4(position.x, position.y, position.z, 1.0);\
+    	gl_Position = wm_T * vec4(position.x, position.y, position.z, 1.0);\
 		gl_PointSize = 480.0 * position.w;\
 		v_color = color;\
 	}";
@@ -233,7 +233,7 @@ typedef struct {
 	glVertexAttribPointer(colorLocation, 4, GL_FLOAT, GL_FALSE, stride, (GLvoid *)offsetof(WMParticle, c));
 	GL_CHECK_ERROR;
 
-	int matrixUniform = [shader uniformLocationForName:@"modelViewProjectionMatrix"];
+	int matrixUniform = [shader uniformLocationForName:@"wm_T"];
 	if (matrixUniform != -1) {
 		glUniformMatrix4fv(matrixUniform, 1, NO, context.modelViewMatrix.m);
 	}

@@ -465,9 +465,6 @@ int particleZCompare(const void *a, const void *b) {
 		[renderObject setValue:defaultTexture forUniformWithName:@"texture"];
 	}
 	GL_CHECK_ERROR;
-
-	GLKMatrix4 m = context.modelViewMatrix;
-	[renderObject setValue:[NSValue valueWithBytes:&m objCType:@encode(GLKMatrix4)] forUniformWithName:@"modelViewProjectionMatrix"];
 	
 	renderObject.shader = shader;
 	

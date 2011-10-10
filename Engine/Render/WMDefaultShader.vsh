@@ -1,12 +1,12 @@
 attribute vec4 position;
 attribute vec2 texCoord0;
 
-uniform mat4 modelViewProjectionMatrix;
+uniform mat4 wm_T;
 
-varying highp vec2 v_textureCoordinate;
+varying highp vec2 v_tc;
 
 void main()
 {
-    gl_Position = modelViewProjectionMatrix * position;
-	v_textureCoordinate = texCoord0;
+    gl_Position = wm_T * position;
+	v_tc = texCoord0;
 }
