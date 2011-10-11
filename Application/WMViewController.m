@@ -20,6 +20,8 @@
 @implementation WMViewController {
     CADisplayLink *displayLink;
 	
+	BOOL openingDocument;
+	
 	UILabel *fpsLabel;
 	
 	//Used to calculate actual FPS
@@ -108,17 +110,21 @@
 
 - (void)openDocumentAndSetupIfNecessary;
 {
-	if (document.documentState == UIDocumentStateClosed) {
-		[document openWithCompletionHandler:^(BOOL success) {
-			if (success) {
-				[self setup];
-			} else {
-				NSLog(@"Error loading composition");
-			}
-		}];
-	} else if (!engine) {
-		[self setup];
-	} 	
+	if (!openingDocument) {
+		if (document.documentState == UIDocumentStateClosed) {
+			[document openWithCompletionHandler:^(BOOL success) {
+				if (success) {
+					[self setup];
+				} else {
+					NSLog(@"Error loading composition");
+				}
+				openingDocument = NO;
+			}];
+			openingDocument = YES;
+		} else if (!engine) {
+			[self setup];
+		} 
+	}
 }
 
 - (void)setDocument:(WMBundleDocument *)inDocument;
