@@ -18,4 +18,5 @@
 - (IBAction)toggleEditingVertexOrFragmentShader:(UISegmentedControl *)sender;
 @property (strong, nonatomic) IBOutlet UITextView *textView;
 
+@property (strong, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
 @end

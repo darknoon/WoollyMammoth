@@ -417,11 +417,12 @@ static const UIEdgeInsets insets = {.top = 11.f, .left = 10.f, .right = 10.f, .b
 {
 	UIMenuItem *settingsItem = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Settings…", nil) action:@selector(showSettings:)];
 	
+	[self becomeFirstResponder];
+
 	[UIMenuController sharedMenuController].menuItems = [NSArray arrayWithObject:settingsItem];
 	[[UIMenuController sharedMenuController] setTargetRect:label.frame inView:self];
+	[[UIMenuController sharedMenuController] update];
 	[[UIMenuController sharedMenuController] setMenuVisible:YES animated:YES];
-	
-	[self becomeFirstResponder];
 	
 }
 

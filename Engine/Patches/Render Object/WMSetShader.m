@@ -127,7 +127,9 @@ NSString *WMFragmentShaderKey = @"fragmentShader";
 //Can only execute this in a gl state
 - (void)compileShaderIfNecessary;
 {
-	if (shaderDirty) {
+	WMEAGLContext *currentContext = (WMEAGLContext *)[WMEAGLContext currentContext];
+	//TODO: some sort of sanity checking about the current context? Ie, don't compile it in some stupid one...
+	if (currentContext && shaderDirty) {
 		NSError *error = nil;
 		shader = [[WMShader alloc] initWithVertexShader:self.vertexShader fragmentShader:self.fragmentShader error:&error];
 		if (error) {

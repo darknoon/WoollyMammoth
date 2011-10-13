@@ -19,6 +19,7 @@
 #import "WMInputPortsController.h"
 #import "WMPatch+SettingsControllerClass.h"
 #import "WMBundleDocument.h"
+#import "WMEngine.h"
 
 #import "DNMemoryInfo.h"
 
@@ -301,11 +302,23 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 		UIViewController<WMPatchSettingsController> *settingsController = [inPatchView.patch settingsController];
 		settingsController.editViewController = self;
 		
-		UINavigationController *wrapper = [[UINavigationController alloc] initWithRootViewController:settingsController];
+		WMPatchSettingsPresentationStyle settingsPresentationStyle = WMPatchSettingsPresentationStylePopover;
+		if ([settingsController respondsToSelector:@selector(settingsPresentationStyle)]) {
+			settingsPresentationStyle = settingsController.settingsPresentationStyle;
+		}
 		
-		patchSettingsPopover = [[UIPopoverController alloc] initWithContentViewController:wrapper];
-		patchSettingsPopover.delegate = (id<UIPopoverControllerDelegate>)self;
-		[patchSettingsPopover presentPopoverFromRect:inPatchView.frame inView:inPatchView.superview permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		UINavigationController *wrapper = [[UINavigationController alloc] initWithRootViewController:settingsController];
+
+		if (settingsPresentationStyle == WMPatchSettingsPresentationStylePopover) {
+			
+			patchSettingsPopover = [[UIPopoverController alloc] initWithContentViewController:wrapper];
+			patchSettingsPopover.delegate = (id<UIPopoverControllerDelegate>)self;
+			[patchSettingsPopover presentPopoverFromRect:inPatchView.frame inView:inPatchView.superview permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		} else {
+			
+			[self presentViewController:wrapper animated:YES completion:NULL];
+			
+		}
 	}
 }
 

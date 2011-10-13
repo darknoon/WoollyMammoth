@@ -76,6 +76,8 @@
 		4979F36814478B3C00D25116 /* popoverArrowUpSimple.png in Resources */ = {isa = PBXBuildFile; fileRef = 4979F35C14478B3C00D25116 /* popoverArrowUpSimple.png */; };
 		4979F36B14478B8600D25116 /* popoverBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 4979F36914478B8600D25116 /* popoverBg.png */; };
 		4979F36C14478B8600D25116 /* popoverBg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4979F36A14478B8600D25116 /* popoverBg@2x.png */; };
+		4979F38814479E7100D25116 /* CKVOBlockNotificationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4979F37314479E7100D25116 /* CKVOBlockNotificationHelper.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		4979F38A14479E7100D25116 /* NSObject_KVOBlockNotificationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4979F37614479E7100D25116 /* NSObject_KVOBlockNotificationExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		49858E2613DE4C1F0061A1A8 /* WMStructuredBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC213DE4C1F0061A1A8 /* WMStructuredBuffer.m */; };
 		49858E2713DE4C1F0061A1A8 /* WMStructureDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC413DE4C1F0061A1A8 /* WMStructureDefinition.m */; };
 		49858E2913DE4C1F0061A1A8 /* WMConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC913DE4C1F0061A1A8 /* WMConnection.m */; };
@@ -401,6 +403,11 @@
 		4979F35C14478B3C00D25116 /* popoverArrowUpSimple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = popoverArrowUpSimple.png; path = "../../../ Others/WEPopover/popoverArrowUpSimple.png"; sourceTree = "<group>"; };
 		4979F36914478B8600D25116 /* popoverBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = popoverBg.png; path = ../../Externals/WEPopover/popoverBg.png; sourceTree = "<group>"; };
 		4979F36A14478B8600D25116 /* popoverBg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popoverBg@2x.png"; path = "../../Externals/WEPopover/popoverBg@2x.png"; sourceTree = "<group>"; };
+		4979F37214479E7100D25116 /* CKVOBlockNotificationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CKVOBlockNotificationHelper.h; sourceTree = "<group>"; };
+		4979F37314479E7100D25116 /* CKVOBlockNotificationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CKVOBlockNotificationHelper.m; sourceTree = "<group>"; };
+		4979F37514479E7100D25116 /* NSObject_KVOBlockNotificationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSObject_KVOBlockNotificationExtensions.h; sourceTree = "<group>"; };
+		4979F37614479E7100D25116 /* NSObject_KVOBlockNotificationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSObject_KVOBlockNotificationExtensions.m; sourceTree = "<group>"; };
+		4979F39814479EE100D25116 /* DNKVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNKVC.h; sourceTree = "<group>"; };
 		49858DC113DE4C1F0061A1A8 /* WMStructuredBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMStructuredBuffer.h; sourceTree = "<group>"; };
 		49858DC213DE4C1F0061A1A8 /* WMStructuredBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMStructuredBuffer.m; sourceTree = "<group>"; };
 		49858DC313DE4C1F0061A1A8 /* WMStructureDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMStructureDefinition.h; sourceTree = "<group>"; };
@@ -892,6 +899,17 @@
 			name = "WEPopover-Sucky";
 			sourceTree = "<group>";
 		};
+		4979F37114479E7100D25116 /* KVO-Notification-Manager */ = {
+			isa = PBXGroup;
+			children = (
+				4979F37214479E7100D25116 /* CKVOBlockNotificationHelper.h */,
+				4979F37314479E7100D25116 /* CKVOBlockNotificationHelper.m */,
+				4979F37514479E7100D25116 /* NSObject_KVOBlockNotificationExtensions.h */,
+				4979F37614479E7100D25116 /* NSObject_KVOBlockNotificationExtensions.m */,
+			);
+			path = "KVO-Notification-Manager";
+			sourceTree = "<group>";
+		};
 		49858DBF13DE4C1F0061A1A8 /* Engine */ = {
 			isa = PBXGroup;
 			children = (
@@ -1071,6 +1089,7 @@
 		49858E1213DE4C1F0061A1A8 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				4979F39814479EE100D25116 /* DNKVC.h */,
 				4994782C1415B0EF008B0877 /* WMPrefix.pch */,
 				4937415513FAFD3900ABC9BA /* DNDocument.h */,
 				4937415613FAFD3900ABC9BA /* DNDocument.m */,
@@ -1355,6 +1374,7 @@
 		49A5264D13D17330004EC7F6 /* Externals */ = {
 			isa = PBXGroup;
 			children = (
+				4979F37114479E7100D25116 /* KVO-Notification-Manager */,
 				4979F33D144783A400D25116 /* WEPopover */,
 				494E4EAF13D24A6E00402784 /* TouchJSON */,
 				494E4D2313D24A4C00402784 /* ASIHTTPRequest */,
@@ -1945,6 +1965,8 @@
 				4979F348144783A400D25116 /* WEPopoverContainerView.m in Sources */,
 				4979F349144783A400D25116 /* WEPopoverController.m in Sources */,
 				4979F34A144783A400D25116 /* WETouchableView.m in Sources */,
+				4979F38814479E7100D25116 /* CKVOBlockNotificationHelper.m in Sources */,
+				4979F38A14479E7100D25116 /* NSObject_KVOBlockNotificationExtensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
