@@ -15,7 +15,7 @@
 #import "WMGraphEditView.h"
 #import "WMPatch.h"
 #import "WMViewController.h"
-#import "WMCustomPopover.h"
+#import "WEPopoverController.h"
 #import "WMInputPortsController.h"
 #import "WMPatch+SettingsControllerClass.h"
 #import "WMBundleDocument.h"
@@ -39,7 +39,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	
 	CGPoint addLocation;
 	UIPopoverController *addNodePopover;	
-	WMCustomPopover *inputPortsPopover;
+	WEPopoverController *inputPortsPopover;
 	UIPopoverController *patchSettingsPopover;
 
 	dispatch_source_t updateMemoryTimer;
@@ -244,6 +244,41 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 }
 
 
+- (WEPopoverContainerViewProperties *)sucktasticContainerViewProperties {
+	
+	WEPopoverContainerViewProperties *props = [[WEPopoverContainerViewProperties alloc] init];
+	NSString *bgImageName = nil;
+	CGFloat bgMargin = 0.0;
+	CGFloat bgCapSize = 0.0;
+	CGFloat contentMargin = 4.0;
+	
+	bgImageName = @"popoverBg.png";
+	
+	// These constants are determined by the popoverBg.png image file and are image dependent
+	bgMargin = 13; // margin width of 13 pixels on all sides popoverBg.png (62 pixels wide - 36 pixel background) / 2 == 26 / 2 == 13 
+	bgCapSize = 31; // ImageSize/2  == 62 / 2 == 31 pixels
+	
+	props.leftBgMargin = bgMargin;
+	props.rightBgMargin = bgMargin;
+	props.topBgMargin = bgMargin;
+	props.bottomBgMargin = bgMargin;
+	props.leftBgCapSize = bgCapSize;
+	props.topBgCapSize = bgCapSize;
+	props.bgImageName = bgImageName;
+	props.leftContentMargin = contentMargin;
+	props.rightContentMargin = contentMargin - 1; // Need to shift one pixel for border to look correct
+	props.topContentMargin = contentMargin; 
+	props.bottomContentMargin = contentMargin;
+	
+	props.arrowMargin = 4.0;
+	
+	props.upArrowImageName = @"popoverArrowUp.png";
+	props.downArrowImageName = @"popoverArrowDown.png";
+	props.leftArrowImageName = @"popoverArrowLeft.png";
+	props.rightArrowImageName = @"popoverArrowRight.png";
+	return props;	
+}
+
 
 - (void)inputPortStripTappedWithRect:(CGRect)inInputPortsRect patchView:(WMPatchView *)inPatchView;
 {	
@@ -253,8 +288,10 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	WMInputPortsController *content = [[WMInputPortsController alloc] initWithNibName:@"WMInputPortsController" bundle:nil];
 	content.ports = inPatchView.patch.inputPorts;
 
-	inputPortsPopover = [[WMCustomPopover alloc] initWithContentViewController:content];
-	inputPortsPopover.delegate = (id<WMCustomPopoverDelegate>)self;
+	inputPortsPopover = [[WEPopoverController alloc] initWithContentViewController:content];
+	inputPortsPopover.containerViewProperties = [self sucktasticContainerViewProperties];
+	
+	inputPortsPopover.delegate = (id<WEPopoverControllerDelegate>)self;
 	[inputPortsPopover presentPopoverFromRect:[self.view convertRect:inInputPortsRect fromView:inPatchView] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
@@ -272,20 +309,14 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	}
 }
 
-- (void)customPopoverControllerDidDismissPopover:(WMCustomPopover *)inPopoverController;
-{
-	ZAssert(inputPortsPopover == inPopoverController, @"Wrong popover dismissed!");
-	if (inputPortsPopover == inPopoverController) {
-		inputPortsPopover = nil;
-	}
-}
-
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)inPopoverController;
 {
 	if (inPopoverController == patchSettingsPopover) {
 		patchSettingsPopover = nil;
 	} else if (inPopoverController == addNodePopover) {
 		addNodePopover = nil;
+	} else if (inPopoverController == (UIPopoverController *)inputPortsPopover) {
+		inputPortsPopover = nil;
 	} else {
 		NSLog(@"Unknown popover controller closed: %@", inPopoverController);
 	}
