@@ -29,7 +29,7 @@ typedef enum {
 
 // to compile on 4.2, llvm 3.0 lion, 'const' had to be removed - acs
 typedef struct {
-	char const name[256];  //Name must be less than 256 bytes ASCII
+	char name[256];  //Name must be less than 256 bytes ASCII
 	WMStructureType type;  //The underlying data type of the data GLKVector3 = WMStructureTypeFloat
 	unsigned int count;    //The count of this underlying type    GLKVector3 = 3
 	size_t offset;         //The offset in the input data. If you have a c struct, use offsetof(struct, name) to get this
@@ -67,5 +67,7 @@ extern size_t WMStructureTypeSize(WMStructureType inType);
 - (NSString *)descriptionOfData:(const void *)inData;
 
 - (BOOL)getFieldNamed:(NSString *)inField outField:(WMStructureField *)outField;
+- (BOOL)getFieldNamedUTF8:(const char *)inFieldName outField:(WMStructureField *)outField;
+
 
 @end

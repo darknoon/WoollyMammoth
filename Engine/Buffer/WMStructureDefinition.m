@@ -199,13 +199,19 @@ size_t WMStructureTypeSize(WMStructureType inType) {
 - (BOOL)getFieldNamed:(NSString *)inField outField:(WMStructureField *)outField;
 {
 	char inName[256];
-	BOOL ok = [inField getCString:inName maxLength:255 encoding:NSASCIIStringEncoding];
+	BOOL ok = [inField getCString:inName maxLength:255 encoding:NSASCIIStringEncoding];	
 	if (ok) {
-		for (int i=0; i<fieldCount; i++) {
-			if (strncmp(inName, fields[i].name, 255) == 0) {
-				if (outField)  *outField = fields[i];
-				return YES;
-			}
+		return [self getFieldNamedUTF8:inName outField:outField];
+	}
+	return NO;
+}
+
+- (BOOL)getFieldNamedUTF8:(const char *)inFieldName outField:(WMStructureField *)outField;
+{
+	for (int i=0; i<fieldCount; i++) {
+		if (strncmp(inFieldName, fields[i].name, 255) == 0) {
+			if (outField)  *outField = fields[i];
+			return YES;
 		}
 	}
 	return NO;
