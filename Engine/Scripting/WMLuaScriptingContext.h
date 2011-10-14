@@ -22,6 +22,9 @@
 
 @property (weak, nonatomic) id<WMLuaScriptingContextDelegate> delegate;
 
+//TODO: make this not necessary. Currently used by the patch bridge.
+@property (nonatomic) lua_State *lua;
+
 - (void)doScript:(NSString *)inScript;
 - (void)importBuiltinScript:(NSString *)resourceName;
 - (void)callGlobalFunction:(NSString *)inFunctionName;

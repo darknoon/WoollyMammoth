@@ -70,6 +70,7 @@ static int WMScriptingContextErrorHandler(lua_State *lua) {
 @implementation WMLuaScriptingContext
 
 @synthesize delegate;
+@synthesize lua;
 
 - (id)init;
 {
@@ -125,13 +126,15 @@ static int WMScriptingContextErrorHandler(lua_State *lua) {
 
 - (void)callGlobalFunction:(NSString *)inFunctionName;
 {
+	//Add error handler to caputure stack BT
+	lua_pushcfunction(lua, WMScriptingContextErrorHandler);
+
 	lua_getglobal(lua, [inFunctionName UTF8String]);
 	
 	//TODO: check to make sure value on the stack is actually a function!
 	if(lua_isfunction(lua, -1)) {
-		
 		//Call inFunctionName() with no return args
-		lua_call(lua, 0, 0);
+		lua_pcall(lua, 0, 0, -2);
 	}
 }
 

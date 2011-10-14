@@ -758,6 +758,7 @@
 		49D530381447AC9000739E84 /* WMLuaSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMLuaSettingsController.m; sourceTree = "<group>"; };
 		49D530391447AC9100739E84 /* WMLuaSettingsController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMLuaSettingsController.xib; sourceTree = "<group>"; };
 		49D5303C1447CF4C00739E84 /* WMPatchLuaBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPatchLuaBridge.m; sourceTree = "<group>"; };
+		49D5303E144809C400739E84 /* WMPatchLuaBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; path = WMPatchLuaBridge.h; sourceTree = "<group>"; };
 		49D73A8613FEE0F60028AF22 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		49E3145613DA44F600813CE0 /* Random.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Random.cpp; sourceTree = "<group>"; };
 		49E3145713DA44F600813CE0 /* Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Random.h; sourceTree = "<group>"; };
@@ -1598,6 +1599,7 @@
 				49D52FCB1447A93C00739E84 /* WMLuaBufferBridge.m */,
 				49D52FCC1447A93C00739E84 /* WMLuaScriptingContext.h */,
 				49D52FCD1447A93C00739E84 /* WMLuaScriptingContext.m */,
+				49D5303E144809C400739E84 /* WMPatchLuaBridge.h */,
 				49D5303C1447CF4C00739E84 /* WMPatchLuaBridge.m */,
 			);
 			path = Scripting;

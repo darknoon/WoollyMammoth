@@ -9,6 +9,7 @@
 #import "WMLua.h"
 
 #import "WMLuaScriptingContext.h"
+#import "WMPatchLuaBridge.h"
 
 #import "DNTimingMacros.h"
 
@@ -65,6 +66,8 @@ NSString *WMLuaProgramTextKey = @"text";
 		luaContext = inProgramText ? [[WMLuaScriptingContext alloc] init] : nil;
 		luaContext.delegate = (id<WMLuaScriptingContextDelegate>)self;
 		
+		WMPatch_luaBridge_register(luaContext.lua, self);
+		
 		[luaContext importBuiltinScript:@"WMAPIBuffer"];
 		[luaContext importBuiltinScript:@"WMAPI"];
 		
@@ -84,6 +87,7 @@ NSString *WMLuaProgramTextKey = @"text";
 - (void)luaContext:(WMLuaScriptingContext *)context didEncounterError:(NSError *)inError;
 {
 	[consoleOutputMutable appendFormat:@"ERROR: %@", [inError localizedDescription]];
+	self.consoleOutput = consoleOutputMutable;
 }
 
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary*)args;
@@ -98,7 +102,7 @@ NSString *WMLuaProgramTextKey = @"text";
 		[luaContext callGlobalFunction:@"main"];
 		DNTimerEnd(luaTimer);
 		
-		NSLog(@"Lua: %@", DNTimerGetStringMS(luaTimer));
+		//NSLog(@"Lua: %@", DNTimerGetStringMS(luaTimer));
 		
 		//This is triggering segfaults. Find out why!
 		//[luaContext collectGarbage];
