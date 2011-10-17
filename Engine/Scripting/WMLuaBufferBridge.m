@@ -255,7 +255,7 @@ static int WMLuaBufferBridge_setBufferEntry (lua_State *L) {
 						}
 						
 					}
-					
+					[buffer markRangeDirty:(NSRange){.location = idx, .length = 1}];
 				} else {
 					NSString *fieldName = [[NSString alloc] initWithUTF8String:lua_tostring(L, -2)];
 					NSLog(@"Lua bridge: Attempt to set field not in structure: %@", fieldName);
@@ -349,6 +349,52 @@ static int WMLua_setVector(lua_State *L) {
 	lua_pop(L, n_arg);
 	
 	return 0;
+}
+
+BOOL WMLuaBufferBridge_isBuffer(lua_State *L, int idx) {
+	if (!lua_isuserdata(L, idx)) return NO;
+	
+	//Get the metatable and compare to the expected metatable
+	int hasMetatable = lua_getmetatable(L, idx);
+	if (hasMetatable) {
+		luaL_getmetatable(L, WMLuaBufferBridgeBufferInstanceMetatable);
+		BOOL equal = lua_equal(L, -2, -1);
+		//Pop off both metatables
+		lua_pop(L, 2);
+		
+		return equal;
+	} else {
+		return NO;
+	}
+}
+
+WMStructuredBuffer *WMLuaBufferBridge_toBuffer(lua_State *L, int idx) {
+	if (WMLuaBufferBridge_isBuffer(L, idx)) {
+		const void **bufferPointer = (const void **)lua_topointer(L, idx);
+		__unsafe_unretained WMStructuredBuffer *buffer = (__bridge WMStructuredBuffer *)(*bufferPointer);
+		return buffer;
+	} else {
+		return nil;
+	}
+}
+
+// -0, +1
+int WMLuaBufferBridge_pushBuffer(lua_State *L, WMStructuredBuffer *buffer) {
+	if (buffer) {
+		//Transfer ownership of the buffer to the Lua garbage collector
+		const void *bufferUserData = (__bridge_retained const void *)buffer;
+		
+		const void** userData = (const void**)lua_newuserdata(L, sizeof(const WMStructuredBuffer *));
+		*userData = bufferUserData;
+		
+		//Put the metatable for WMBuffer from the registry on the stack and set it on the userdata
+		luaL_getmetatable(L, WMLuaBufferBridgeBufferInstanceMetatable);
+		lua_setmetatable(L, -2);
+		
+		return 1;
+	} else {
+		return 0;
+	}
 }
 
 // These get added to WMBuffer

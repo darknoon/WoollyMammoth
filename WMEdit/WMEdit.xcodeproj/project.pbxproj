@@ -45,6 +45,9 @@
 		494E4EF213D25D2B00402784 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494E4EF113D25D2B00402784 /* CoreMedia.framework */; };
 		496150C013D2D807006C8B57 /* plug-popover-arrow~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 496150BE13D2D807006C8B57 /* plug-popover-arrow~ipad.png */; };
 		496150C113D2D807006C8B57 /* plug-popover~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 496150BF13D2D807006C8B57 /* plug-popover~ipad.png */; };
+		496AF5F8144A127600082FBD /* WMBufferPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 496AF5F7144A127600082FBD /* WMBufferPort.m */; };
+		496AF5F9144A127600082FBD /* WMBufferPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 496AF5F7144A127600082FBD /* WMBufferPort.m */; };
+		496AF5FD144A169900082FBD /* WMSetRenderObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 496AF5FC144A169900082FBD /* WMSetRenderObject.m */; };
 		496F554213E128A30065BB67 /* WMSetShaderSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 496F554013E128A30065BB67 /* WMSetShaderSettingsController.m */; };
 		496F554313E128A30065BB67 /* WMSetShaderSettingsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 496F554113E128A30065BB67 /* WMSetShaderSettingsController.xib */; };
 		496F554613E12D2E0065BB67 /* WMPatch+SettingsControllerClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 496F554513E12D2E0065BB67 /* WMPatch+SettingsControllerClass.m */; };
@@ -404,6 +407,10 @@
 		494E4EF113D25D2B00402784 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		496150BE13D2D807006C8B57 /* plug-popover-arrow~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plug-popover-arrow~ipad.png"; sourceTree = "<group>"; };
 		496150BF13D2D807006C8B57 /* plug-popover~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plug-popover~ipad.png"; sourceTree = "<group>"; };
+		496AF5F6144A127600082FBD /* WMBufferPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMBufferPort.h; sourceTree = "<group>"; };
+		496AF5F7144A127600082FBD /* WMBufferPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMBufferPort.m; sourceTree = "<group>"; };
+		496AF5FB144A169900082FBD /* WMSetRenderObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WMSetRenderObject.h; path = "../Render Object/WMSetRenderObject.h"; sourceTree = "<group>"; };
+		496AF5FC144A169900082FBD /* WMSetRenderObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WMSetRenderObject.m; path = "../Render Object/WMSetRenderObject.m"; sourceTree = "<group>"; };
 		496F553F13E128A30065BB67 /* WMSetShaderSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSetShaderSettingsController.h; sourceTree = "<group>"; };
 		496F554013E128A30065BB67 /* WMSetShaderSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSetShaderSettingsController.m; sourceTree = "<group>"; };
 		496F554113E128A30065BB67 /* WMSetShaderSettingsController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSetShaderSettingsController.xib; sourceTree = "<group>"; };
@@ -758,7 +765,7 @@
 		49D530381447AC9000739E84 /* WMLuaSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMLuaSettingsController.m; sourceTree = "<group>"; };
 		49D530391447AC9100739E84 /* WMLuaSettingsController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMLuaSettingsController.xib; sourceTree = "<group>"; };
 		49D5303C1447CF4C00739E84 /* WMPatchLuaBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPatchLuaBridge.m; sourceTree = "<group>"; };
-		49D5303E144809C400739E84 /* WMPatchLuaBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; path = WMPatchLuaBridge.h; sourceTree = "<group>"; };
+		49D5303E144809C400739E84 /* WMPatchLuaBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchLuaBridge.h; sourceTree = "<group>"; };
 		49D73A8613FEE0F60028AF22 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		49E3145613DA44F600813CE0 /* Random.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Random.cpp; sourceTree = "<group>"; };
 		49E3145713DA44F600813CE0 /* Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Random.h; sourceTree = "<group>"; };
@@ -1133,6 +1140,8 @@
 				49AD651613DE9E1200A2CC66 /* WMVectorFromComponents.m */,
 				49B9A6BB1415C473001DB45B /* WMVideoRecord.h */,
 				49B9A6BC1415C473001DB45B /* WMVideoRecord.m */,
+				496AF5FB144A169900082FBD /* WMSetRenderObject.h */,
+				496AF5FC144A169900082FBD /* WMSetRenderObject.m */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1159,6 +1168,8 @@
 				49AD650B13DE8FF600A2CC66 /* WMVectorPort.m */,
 				49B3DB4B13E10F03002DC713 /* WMRenderObjectPort.h */,
 				49B3DB4C13E10F03002DC713 /* WMRenderObjectPort.m */,
+				496AF5F6144A127600082FBD /* WMBufferPort.h */,
+				496AF5F7144A127600082FBD /* WMBufferPort.m */,
 			);
 			path = Ports;
 			sourceTree = "<group>";
@@ -2034,6 +2045,7 @@
 				49BACB5E13EB59D9008ED051 /* WMGraphTopologyTests.m in Sources */,
 				49791BC813EB9C45003B20EA /* WMPatch+GraphAlgorithms.m in Sources */,
 				4917ACA213F9C722008AD2CB /* WMCompositionSerialization.m in Sources */,
+				496AF5F9144A127600082FBD /* WMBufferPort.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2206,6 +2218,8 @@
 				49D530351447AB4C00739E84 /* print.c in Sources */,
 				49D5303A1447AC9100739E84 /* WMLuaSettingsController.m in Sources */,
 				49D5303D1447CF4C00739E84 /* WMPatchLuaBridge.m in Sources */,
+				496AF5F8144A127600082FBD /* WMBufferPort.m in Sources */,
+				496AF5FD144A169900082FBD /* WMSetRenderObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

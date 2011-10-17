@@ -15,3 +15,4 @@
 #import "WMStringPort.h"
 #import "WMVectorPort.h"
 #import "WMRenderObjectPort.h"
+#import "WMBufferPort.h"

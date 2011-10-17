@@ -152,6 +152,8 @@ int WMPatch_lua_addPort(lua_State *L, BOOL isInput) {
 				//((WMNumberPort *)port).value = ;
 			} else if ([type isEqualToString:@"vec4"]) {
 				port = [WMVector4Port portWithKey:portKey];
+			} else if ([type isEqualToString:@"buffer"]) {
+				port = [WMBufferPort portWithKey:portKey];
 			}
 			
 			isInput ? [patch addInputPort:port] : [patch addOutputPort:port];
@@ -206,7 +208,11 @@ int WMPatch_lua_WMPort_getValue(lua_State *L) {
 	} else if ([port isKindOfClass:[WMVector4Port class]]) {
 		//TODO: implement this port type
 		return 0;
+	} else if ([port isKindOfClass:[WMBufferPort class]]) {
+		WMStructuredBuffer *buffer = ((WMBufferPort *)port).object;
+		return WMLuaBufferBridge_pushBuffer(L, buffer);
 	} else {
+		//Can't handle this type
 		return 0;
 	}
 }
@@ -228,12 +234,14 @@ int WMPatch_lua_WMPort_setValue(lua_State *L) {
 	} else if ([port isKindOfClass:[WMIndexPort class]]) {
 		if (lua_isnumber(L, 3)) {
 			int idx = lua_tointeger(L, 3);
-			((WMIndexPort *) port).index = idx;
+			((WMIndexPort *)port).index = idx;
 		}
 	} else if ([port isKindOfClass:[WMVector4Port class]]) {
 		//TODO: implement this port type
-	} else {
-		
+	} else if ([port isKindOfClass:[WMBufferPort class]]) {
+		//Check if it has the correct metatable for a buffer and get the buffer
+		WMStructuredBuffer *buffer = WMLuaBufferBridge_toBuffer(L, 3);
+		((WMBufferPort *)port).object = buffer;
 	}
 
 	lua_pop(L, 3);
