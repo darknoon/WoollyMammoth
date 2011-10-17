@@ -212,11 +212,6 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	
 }
 
-- (WMPatchExecutionMode)executionMode;
-{
-	return kWMPatchExecutionModeProcessor;
-}
-
 - (void)createChildrenWithState:(NSDictionary *)state;
 {
 	NSArray *plistChildren = [state objectForKey:WMPatchChildrenPlistName];
