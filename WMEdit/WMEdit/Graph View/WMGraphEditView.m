@@ -13,6 +13,8 @@
 #import "WMConnectionPopover.h"
 #import "WMCustomPopover.h"
 #import "WMEditViewController.h"
+#import "NSObject_KVOBlockNotificationExtensions.h"
+#import "DNKVC.h"
 
 #import "WMPatch.h"
 #import "WMConnection.h"
@@ -78,7 +80,13 @@
 	[self initShared];
 }
 
-
+- (void)dealloc;
+{
+	//Un-observe patches
+	for (WMPatch *patch in rootPatch.children) {
+		[patch removeObserver:self forKeyPath:KVC(patch, editorPosition) identifier:nil];
+	}
+}
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch;
 {
@@ -113,7 +121,10 @@
 	[contentView addSubview:newNodeView];
 	[patchViews addObject:newNodeView];
 	
-	[inPatch addObserver:self forKeyPath:@"editorPosition" options:NSKeyValueObservingOptionNew context:NULL];
+	__weak WMGraphEditView *weakSelf = self;
+	[inPatch addObserver:self handler:^(NSString *keyPath, id object, NSDictionary *change, id identifier) {
+		[weakSelf updateConnectionPositions];
+	} forKeyPath:KVC(inPatch, editorPosition) options:0 identifier:nil];
 	
 	//Make sure setup gets called before we decide on the node size
 	[rootPatch addChild:inPatch];
@@ -130,20 +141,13 @@
 {
 	WMPatchView *patchView = [self patchViewForKey:inPatch.key];
 
-	[inPatch removeObserver:self forKeyPath:@"editorPosition"];
+	[inPatch removeObserver:self forKeyPath:KVC(inPatch, editorPosition) identifier:nil];
 	[rootPatch removeChild:inPatch];
 	
 	[patchViews removeObject:patchView];
 	[patchView removeFromSuperview];
 	[self updateConnectionPositions];
 	[viewController markDocumentDirty];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context;
-{
-	if ([keyPath isEqualToString:@"editorPosition"]) {
-		[self updateConnectionPositions];
-	}
 }
 
 - (WMPatchView *)patchViewForKey:(NSString *)inKey;

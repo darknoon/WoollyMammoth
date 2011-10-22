@@ -79,6 +79,11 @@
 	return ports.count;
 }
 
+- (CGSize)contentSizeForViewInPopover;
+{
+	return (CGSize){.width = 400, .height = self.ports.count * (self.tableView ? self.tableView.rowHeight : 44.f)};
+}
+
 - (Class)portCellClassForPort:(WMPort *)inPort;
 {
 	if ([inPort isKindOfClass:[WMNumberPort class]]) {

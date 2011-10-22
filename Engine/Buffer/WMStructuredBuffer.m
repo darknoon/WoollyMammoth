@@ -132,6 +132,11 @@ static inline unsigned int nextPowerOf2(unsigned int v) {
 	return self.dataPointer + inIndex * definition.size;
 }
 
+- (void)markRangeDirty:(NSRange)inRange;
+{
+	[dirtySet addIndexesInRange:inRange];
+}
+
 - (NSString *)description;
 {
 	NSString *bufferObjectString = bufferObject ? [NSString stringWithFormat:@" bufferObject: %d", bufferObject] : @"";

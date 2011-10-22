@@ -39,5 +39,6 @@
 - (NSUInteger)dataSize;
 - (void *)dataPointer;
 - (const void *)pointerToField:(NSString *)inField atIndex:(NSUInteger)inIndex;
+- (void)markRangeDirty:(NSRange)inRange;
 
 @end

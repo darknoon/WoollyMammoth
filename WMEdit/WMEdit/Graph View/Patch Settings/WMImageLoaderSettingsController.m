@@ -43,6 +43,10 @@
 	return self;
 }
 
+- (WMPatchSettingsPresentationStyle)settingsPresentationStyle;
+{
+	return WMPatchSettingsPresentationStylePopover;
+}
 
 - (void)refreshImageFromPatch;
 {

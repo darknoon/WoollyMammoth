@@ -20,6 +20,9 @@
 @property (nonatomic, readonly) BOOL shaderIsCompiled;
 @property (nonatomic, copy, readonly) NSString *shaderCompileLog;
 
+//For the editor.
+- (void)compileShaderIfNecessary;
+
 @property (nonatomic, copy) NSString *vertexShader;
 @property (nonatomic, copy) NSString *fragmentShader;
 	

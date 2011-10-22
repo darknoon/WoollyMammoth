@@ -7,3 +7,9 @@
 [submodule "Externals/TouchJSON"]
 	path = Externals/TouchJSON
 	url = git://github.com/TouchCode/TouchJSON.git
+[submodule "Externals/WEPopover"]
+	path = Externals/WEPopover
+	url = git@github.com:darknoon/WEPopover.git
+[submodule "Externals/KVO-Notification-Manager"]
+	path = Externals/KVO-Notification-Manager
+	url = https://github.com/schwa/KVO-Notification-Manager.git

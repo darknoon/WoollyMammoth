@@ -1,0 +1,67 @@
+So, seems that TTT is getting away with a lua interpreter. :/
+
+Obviously there are a lot of great ways with a real interpreter to make performance acceptable, ie expose APIs that don't need to handle all of the data directly in JS
+
+Upsides:
+- We can multithread lua code for iPad 2, iPhone 5, or just for wm_dispatch
+- Performance is acceptable
+
+Downsides:
+- WM could be rejected by the App Store review team
+- WM would have to keep its use of lua on the down-low, and thus couldn't be easily licensed to other parties, in fear that it would not be applicable.
+
+
+Javascript performance:
+
+Implementation is
+Native js byte / float / etc types => Uint8Array => pack into string => base 64 encode => JSON |=> return to cocoa| JSON Decode => Unpack
+
+
+output vertex count (4x 32-bit float) = 100 = 1600 bytes
+2011-09-27 19:28:58.924 JSAPITest[2039:707] Javascript timing:[3.844 4.457 7.590 n=100]ms decode:[0.086 0.123 0.938 n=100]ms output:
+
+output vertex count (4x 32-bit float) = 1000 = 16000 bytes
+2011-09-27 19:21:36.245 JSAPITest[2005:707] Javascript timing:[33.979 36.469 58.274 n=47]ms decode:[0.088 0.118 0.729 n=47]ms output:
+
+This kinda sucks balls, hmm.
+Let's try packing into shorts...
+
+output vertex count (4x 16-bit unsigned int) = 1 = 8 bytes
+2011-09-27 19:35:53.059 JSAPITest[2115:707] Javascript timing:[0.848 1.367 11.044 n=100]ms decode:[0.083 0.122 0.985 n=100]ms output:
+
+
+output vertex count (4x 16-bit unsigned int) = 100 = 800 bytes
+2011-09-27 19:37:31.260 JSAPITest[2130:707] Javascript timing:[3.846 4.797 8.806 n=40]ms decode:[0.085 0.107 0.434 n=40]ms output:
+
+
+output vertex count (4x 16-bit unsigned int) = 1000 = 8000 bytes
+
+
+
+Lua performance:
+
+first try: slower
+output vertex count (4x 16-bit float) = 100 = 800 bytes <<WTFF?
+2011-09-29 18:38:11.257 LAPITest[1219:707] Lua: [5.497 6.275 7.301 n=100]ms
+
+second try: better
+output vertex count (4x 16-bit unsigned int) = 1000 = 800 bytes <<WTFF?
+2011-09-29 19:02:12.390 LAPITest[1288:707] Lua: [367.436 386.432 419.292 n=38]ms
+
+third try: no NSMutableData
+2011-09-29 20:00:22.498 LAPITest[104:707] Lua: [369.650 377.287 386.435 n=14]ms
+
+fourth try: less allocation in lua program
+2011-09-29 20:08:13.959 LAPITest[148:707] Lua: [265.490 285.308 316.513 n=100]ms
+
+fifth try: don't memcpy or allocate when setting buffer index
+2011-09-29 20:13:39.442 LAPITest[177:707] Lua: [195.042 206.394 219.279 n=100]ms
+
+sixth try: set release mode... oops
+2011-10-02 16:37:49.533 LAPITest[127:707] Lua: [83.510 86.343 94.991 n=100]ms
+
+using raw get
+2011-10-02 16:46:54.476 LAPITest[152:707] Lua: [79.462 83.686 100.416 n=100]ms
+
+using vec types
+2011-10-03 16:23:14.521 LAPITest[360:707] Lua: [61.010 64.807 69.889 n=120]ms

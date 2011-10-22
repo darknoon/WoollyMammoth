@@ -10,13 +10,24 @@
 
 @class WMEditViewController;
 
+typedef enum {
+	WMPatchSettingsPresentationStyleFullScreen, //Use this for text editing, other situations where you need lots of space
+	WMPatchSettingsPresentationStylePopover, //Use this for text editing, other situations where you need lots of space
+} WMPatchSettingsPresentationStyle;
+
 @protocol WMPatchSettingsController <NSObject>
 
 - (id)initWithPatch:(WMPatch *)inPatch;
 
 @property (nonatomic, retain) WMPatch *patch;
 
-@property (nonatomic, assign) WMEditViewController *editViewController;
+@property (nonatomic, weak) WMEditViewController *editViewController;
+
+@optional
+
+//Default is WMPatchSettingsPresentationStylePopover
+@property (nonatomic) WMPatchSettingsPresentationStyle settingsPresentationStyle;
+
 
 @end
 
