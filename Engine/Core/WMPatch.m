@@ -56,8 +56,7 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 @end
 
 @interface WMPatch ()
-
-
+- (void)_initializeStateForInputPort:(WMPort *)inPort;
 @end
 
 @implementation WMPatch  {
@@ -65,6 +64,9 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	//These don't have input at the beginning
 	WMNumberPort *system_inputTime;
 	//TODO: QCBooleanPort system_inputEnable;
+	
+	//Keep around a dictionary of formerly-used input values in order to correctly restore state for dynamic ports that don't exist before -setup
+	NSDictionary *storedInputPortValues;
 	
 	NSString *key;
     NSMutableArray *_connections;
@@ -325,16 +327,8 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 			
 		//Set state of ivar ports
 		[self setPlistState:state];
-		if (!state) {
-			for (WMPort *port in inputPorts) {
-				id value = [[self class] defaultValueForInputPortKey:port.key];
-				if (value) {
-					BOOL ok = [port setStateValue:value];
-					if (!ok) {
-						NSLog(@"Could not set default value for port key: %@", port.key);
-					}
-				}
-			}
+		for (WMPort *port in inputPorts) {
+			[self _initializeStateForInputPort:port];
 		}
 				
 		//Set position
@@ -345,6 +339,28 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 		
 		
 		return self;
+	}
+}
+
+//This will make sure values are preserved
+- (void)_initializeStateForInputPort:(WMPort *)inPort;
+{
+	NSDictionary *state = [storedInputPortValues objectForKey:inPort.key];
+	id value = [state objectForKey:@"value"];
+	BOOL done = NO;
+	//Set the state to the stored value
+	if (value) {
+		done = [inPort setStateValue:value];
+	}
+	//Set the state to the default value
+	if (!done) {
+		value = [[self class] defaultValueForInputPortKey:inPort.key];
+		if (value) {
+			done = [inPort setStateValue:value];
+		}
+	}
+	if (!done) {
+		NSLog(@"Couldn't properly initialize the state of port: %@", inPort);
 	}
 }
 
@@ -370,16 +386,6 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 
 - (BOOL)setPlistState:(id)inPlist;
 {
-	//Create children
-	[self createChildrenWithState:inPlist];
-	
-	//Create connections among children
-	[self createConnectionsWithState:inPlist];
-	
-	//Create published input and output ports (use the type of child's port to make our port type)
-	[self createPublishedInputPortsWithState:inPlist];
-	[self createPublishedOutputPortsWithState:inPlist];
-
 	//Combine "customInputPortStates" and "ivarInputPortStates"
 	NSDictionary *ivarInputPortStates = [inPlist objectForKey:@"ivarInputPortStates"];
 	ZAssert(!ivarInputPortStates || [ivarInputPortStates isKindOfClass:[NSDictionary class]], @"ivarInputPortStates must be a dictionary!");
@@ -392,17 +398,18 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	if (customInputPortStates) {
 		[inputPortStates addEntriesFromDictionary:customInputPortStates];
 	}
-	for (WMPort *inputPort in [self inputPorts]) {
-		NSDictionary *state = [inputPortStates objectForKey:inputPort.key];
-		id value = [state objectForKey:@"value"];
-		if (value) {
-			BOOL ok = [inputPort setStateValue:value];
-			if (!ok) {
-				NSLog(@"Couldn't set state %@ on input port %@ of patch %@", state, inputPort.name, self.key);
-			}
-		}
-	}
+	storedInputPortValues = inputPortStates;
+
+	//Create children
+	[self createChildrenWithState:inPlist];
 	
+	//Create connections among children
+	[self createConnectionsWithState:inPlist];
+	
+	//Create published input and output ports (use the type of child's port to make our port type)
+	[self createPublishedInputPortsWithState:inPlist];
+	[self createPublishedOutputPortsWithState:inPlist];
+
 	return YES;
 }
 
@@ -459,6 +466,8 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	[self willChangeValueForKey:@"inputPorts"];
 	[inputPorts addObject:inPort];
 	[self didChangeValueForKey:@"inputPorts"];
+	
+	[self _initializeStateForInputPort:inPort];
 }
 
 - (void)addOutputPort:(WMPort *)inPort;
