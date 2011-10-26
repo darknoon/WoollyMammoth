@@ -167,7 +167,7 @@ NSString *WMFragmentShaderKey = @"fragmentShader";
 	outputObject.object = object;
 	
 	//Set shader uniforms from our input ports
-	for (WMPort *port in inputPorts) {
+	for (WMPort *port in self.inputPorts) {
 		if (port != inputObject) {
 			id value = nil;
 			if ([port isKindOfClass:[WMNumberPort class]]) {

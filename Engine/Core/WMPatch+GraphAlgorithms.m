@@ -52,7 +52,7 @@
 	// Consider successors of v
 	for (WMConnection *connection in self.connections) {
 		if ([connection.sourceNode isEqualToString:inV.key]) {
-			WMPatch *w = [childrenByKey objectForKey:connection.destinationNode];
+			WMPatch *w = [self patchWithKey:connection.destinationNode];
 			if (w && [inOutVertexIndices objectForKey:w.key] == nil) {
 				// Successor w has not yet been visited; recurse on it
 				[self _searchForStronglyConnectedComponentsWithVertex:w

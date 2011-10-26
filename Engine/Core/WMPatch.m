@@ -60,7 +60,26 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 
 @end
 
-@implementation WMPatch
+@implementation WMPatch  {
+@protected;
+	//These don't have input at the beginning
+	WMNumberPort *system_inputTime;
+	//TODO: QCBooleanPort system_inputEnable;
+	
+	NSString *key;
+    NSMutableArray *_connections;
+	NSMutableArray *_children;
+	NSMutableDictionary *childrenByKey;
+	id userInfo;
+	
+	//These are set from the ivars
+	NSMutableArray *inputPorts;
+	NSMutableArray *outputPorts;
+	
+	//Render
+	CFAbsoluteTime lastExecutionTime;
+}
+
 @synthesize key;
 @synthesize editorPosition;
 @synthesize hasSetup;
