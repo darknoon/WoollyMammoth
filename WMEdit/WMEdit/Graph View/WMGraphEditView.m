@@ -120,11 +120,20 @@
 	newNodeView.graphView = self;
 	[contentView addSubview:newNodeView];
 	[patchViews addObject:newNodeView];
-	
+		
 	__weak WMGraphEditView *weakSelf = self;
 	[inPatch addObserver:self handler:^(NSString *keyPath, id object, NSDictionary *change, id identifier) {
 		[weakSelf updateConnectionPositions];
 	} forKeyPath:KVC(inPatch, editorPosition) options:0 identifier:nil];
+	
+	__weak WMPatchView *weakNodeView = newNodeView;
+	KVOBlock portsChanged = ^(NSString *keyPath, id object, NSDictionary *change, id identifier) {
+		[weakNodeView setNeedsLayout];
+		[weakSelf updateConnectionPositions];
+	};
+	
+	[inPatch addObserver:self handler:portsChanged forKeyPath:KVC(inPatch, inputPorts) options:0 identifier:nil];
+	[inPatch addObserver:self handler:portsChanged forKeyPath:KVC(inPatch, outputPorts) options:0 identifier:nil];
 	
 	//Make sure setup gets called before we decide on the node size
 	[rootPatch addChild:inPatch];
@@ -132,6 +141,8 @@
 	newNodeView.center = inPatch.editorPosition;
 	[newNodeView sizeToFit];
 	newNodeView.frame = CGRectIntegral(newNodeView.frame);
+	//This is required so that we know the position of the connections so we can draw the connections properly
+	[newNodeView layoutIfNeeded];
 
 	[self updateConnectionPositions];
 	[viewController markDocumentDirty];
@@ -142,6 +153,8 @@
 	WMPatchView *patchView = [self patchViewForKey:inPatch.key];
 
 	[inPatch removeObserver:self forKeyPath:KVC(inPatch, editorPosition) identifier:nil];
+	[inPatch removeObserver:self forKeyPath:KVC(inPatch, inputPorts) identifier:nil];
+	[inPatch removeObserver:self forKeyPath:KVC(inPatch, outputPorts) identifier:nil];
 	[rootPatch removeChild:inPatch];
 	
 	[patchViews removeObject:patchView];

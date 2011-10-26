@@ -12,6 +12,8 @@
 #import "WMPatch.h"
 #import "WMGraphEditView.h"
 #import "WMPatch+SettingsControllerClass.h"
+#import "NSObject_KVOBlockNotificationExtensions.h"
+#import "DNKVC.h"
 
 static const CGFloat bodyRadius = 9.f;
 static const CGFloat bodyHeight = 45.f;
@@ -85,16 +87,17 @@ static const UIEdgeInsets insets = {.top = 11.f, .left = 10.f, .right = 10.f, .b
 
 - (void)layoutSubviews;
 {
+	inputPlugStrip.inputCount = patch.inputPorts.count;
+	outputPlugStrip.inputCount = patch.outputPorts.count;
+
 	const CGSize topPlugsSize = [inputPlugStrip sizeThatFits:CGSizeZero];
 	const CGSize bottomPlugsSize = [outputPlugStrip sizeThatFits:CGSizeZero];
 	
 	CGRect bounds = self.bounds;
 
-	inputPlugStrip.inputCount = patch.inputPorts.count;
 	inputPlugStrip.frame = (CGRect){.origin.x = CGRectGetMidX(bounds) - topPlugsSize.width/2, .origin.y = 0, .size = topPlugsSize};
 	[inputPlugStrip sizeToFit];
 
-	outputPlugStrip.inputCount = patch.outputPorts.count;
 	outputPlugStrip.frame = (CGRect){.origin.x = CGRectGetMidX(bounds) - bottomPlugsSize.width/2, .origin.y = self.bounds.size.height - plugstripHeight, .size = bottomPlugsSize};
 	[outputPlugStrip sizeToFit];
 	
