@@ -39,13 +39,14 @@
 	lighting.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
 	lighting.alpha = 0.0f;
 	
-	self.contentSize = (CGSize){.width = 2000, .height = 2000};
-	self.contentOffset = (CGPoint){.x = 500, .y = 500};
+	CGSize contentSize = (CGSize){.width = 20000, .height = 20000};
+	self.contentSize = contentSize;
+	self.contentOffset = (CGPoint){.x = contentSize.width/2, .y = contentSize.width/2};
 	self.delaysContentTouches = NO;
 	
 	self.delegate = (id <UIScrollViewDelegate>)self;
 
-	self.minimumZoomScale = 0.1f;
+	self.minimumZoomScale = 0.3f;
 	self.maximumZoomScale = 1.0f;
 
 	contentView = [[UIView alloc] initWithFrame:(CGRect){.size = self.contentSize}];
@@ -138,7 +139,7 @@
 	//Make sure setup gets called before we decide on the node size
 	[rootPatch addChild:inPatch];
 
-	newNodeView.center = inPatch.editorPosition;
+	newNodeView.center = [self pointForEditorPosition:inPatch.editorPosition];
 	[newNodeView sizeToFit];
 	newNodeView.frame = CGRectIntegral(newNodeView.frame);
 	//This is required so that we know the position of the connections so we can draw the connections properly
@@ -171,6 +172,19 @@
 		}
 	}
 	return nil;
+}
+
+#pragma mark - 
+
+
+- (CGPoint)editorPositionForPoint:(CGPoint)inPoint;
+{
+	return (CGPoint){inPoint.x - (self.contentSize.width / 2), inPoint.y - (self.contentSize.height / 2)};
+}
+
+- (CGPoint)pointForEditorPosition:(CGPoint)inEditorPosition;
+{
+	return (CGPoint){inEditorPosition.x + (self.contentSize.width / 2), inEditorPosition.y + (self.contentSize.height / 2)};
 }
 
 #pragma mark - Connection dragging

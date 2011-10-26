@@ -200,12 +200,13 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	}
 }
 
+
 - (void)addNodeAtLocation:(CGPoint)inPoint class:(NSString *)inClass;
 {	
 	Class patchClass = NSClassFromString(inClass);
 	if (patchClass) {
 		WMPatch *patch = [[patchClass alloc] initWithPlistRepresentation:nil];
-		patch.editorPosition = inPoint;
+		patch.editorPosition = [graphView editorPositionForPoint:[graphView convertPoint:inPoint fromView:nil]];
 		
 		[graphView addPatch:patch];
 	} else {

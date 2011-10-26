@@ -27,6 +27,10 @@ static const CGFloat plugstripHeight = 22.f;
 
 - (WMPatchView *)patchViewForKey:(NSString *)inKey;
 
+
+- (CGPoint)editorPositionForPoint:(CGPoint)inPoint;
+- (CGPoint)pointForEditorPosition:(CGPoint)inEditorPosition;
+
 - (void)beginDraggingConnectionFromLocation:(CGPoint)inPoint inPatchView:(WMPatchView *)inView;
 - (void)continueDraggingConnectionWithLocation:(CGPoint)inPoint inPatchView:(WMPatchView *)inView;
 - (void)endDraggingConnectionWithLocation:(CGPoint)inPoint inPatchView:(WMPatchView *)inView;

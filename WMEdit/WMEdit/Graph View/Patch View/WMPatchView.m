@@ -103,6 +103,8 @@ static const UIEdgeInsets insets = {.top = 11.f, .left = 10.f, .right = 10.f, .b
 	
 	CGRect labelFrame = UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){.top = 28.f, .bottom = 28.f});
 	label.frame = labelFrame;
+	
+	[self setNeedsDisplay];
 }
 
 - (CGSize)sizeThatFits:(CGSize)size;
@@ -309,7 +311,7 @@ static const UIEdgeInsets insets = {.top = 11.f, .left = 10.f, .right = 10.f, .b
 		
 		self.center = center;
 		[self sizeToFit];
-		self.patch.editorPosition = center;
+		self.patch.editorPosition = [graphView editorPositionForPoint:center];
 		self.frame = CGRectIntegral(self.frame);
 	}
 }
