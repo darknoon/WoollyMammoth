@@ -21,8 +21,6 @@ NSString *WMFragmentShaderKey = @"fragmentShader";
 @end
 
 @implementation WMSetShader {
-	//Save these incase we get our ports later...
-	NSMutableDictionary *savedDynamicPortStates;
 }
 @synthesize vertexShader;
 @synthesize fragmentShader;
@@ -76,8 +74,6 @@ NSString *WMFragmentShaderKey = @"fragmentShader";
 		}
 	}
 	
-	savedDynamicPortStates = [[inPlist objectForKey:@"ivarInputPortStates"] mutableCopy];
-
 	return [super setPlistState:inPlist];
 }
 
@@ -105,7 +101,6 @@ NSString *WMFragmentShaderKey = @"fragmentShader";
 			[self removeInputPort:port];
 		}
 	}
-	[savedDynamicPortStates addEntriesFromDictionary:[[self plistState] objectForKey:@"ivarInputPortStates"]];
 	
 	//Add new input ports
 	for (NSString *uniformName in shader.uniformNames) {
@@ -124,7 +119,6 @@ NSString *WMFragmentShaderKey = @"fragmentShader";
 		}
 		if (uniformPort) {
 			[self addInputPort:uniformPort];
-			[uniformPort setStateValue:[[savedDynamicPortStates objectForKey:uniformName] objectForKey:@"value"]];
 		} else {
 			NSLog(@"Couldn't make uniform port for %@ %@", [WMShader nameOfShaderType:type], uniformName);
 		}
