@@ -8,6 +8,7 @@
 
 #import "WMBundleDocument.h"
 #import "WMCompositionSerialization.h"
+#import "WMRenderOutput.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
 NSString *WMBundleDocumentErrorDomain = @"com.darknoon.WMBundleDocument";
@@ -40,6 +41,10 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 	//Start off with a default patch. Can replace later by -loadFromContents..
 	rootPatch = [[WMPatch alloc] initWithPlistRepresentation:nil];
 	rootPatch.key = @"root";
+	
+	//Add a render output patch
+	WMRenderOutput *output = [[WMRenderOutput alloc] initWithPlistRepresentation:nil];
+	[rootPatch addChild:output];
 		
 	return self;
 }
