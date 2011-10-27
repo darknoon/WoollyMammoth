@@ -21,6 +21,7 @@ extern NSString *const WMEngineArgumentsDocumentKey;
 
 @interface WMEngine : NSObject
 
+- (id)initWithRootPatch:(WMPatch *)inPatch;
 - (id)initWithBundle:(WMBundleDocument *)inDocument;
 
 + (GLKMatrix4)cameraMatrixWithRect:(CGRect)inBounds;

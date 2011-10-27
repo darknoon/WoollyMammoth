@@ -203,6 +203,7 @@
 		49B3DB4D13E10F03002DC713 /* WMRenderObjectPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB4C13E10F03002DC713 /* WMRenderObjectPort.m */; };
 		49B3DB5B13E11039002DC713 /* WMRenderOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB5813E11039002DC713 /* WMRenderOutput.m */; };
 		49B3DB5F13E1115B002DC713 /* WMSetShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB5E13E1115B002DC713 /* WMSetShader.m */; };
+		49B9900E1459E436009F3CBD /* WMGLStateObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AA853C1442B227005BC6F7 /* WMGLStateObject.m */; };
 		49B9A6BD1415C473001DB45B /* WMVideoRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B9A6BC1415C473001DB45B /* WMVideoRecord.m */; };
 		49BACB4B13EB592A008ED051 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49BACB4A13EB592A008ED051 /* SenTestingKit.framework */; };
 		49BACB4C13EB592A008ED051 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595013D15F640056C506 /* UIKit.framework */; };
@@ -2046,6 +2047,7 @@
 				49791BC813EB9C45003B20EA /* WMPatch+GraphAlgorithms.m in Sources */,
 				4917ACA213F9C722008AD2CB /* WMCompositionSerialization.m in Sources */,
 				496AF5F9144A127600082FBD /* WMBufferPort.m in Sources */,
+				49B9900E1459E436009F3CBD /* WMGLStateObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

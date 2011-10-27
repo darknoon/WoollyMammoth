@@ -55,7 +55,7 @@
 - (void)setUp;
 {
 	root = [self patchWithKey:@"_root" inputPorts:nil outputPorts:nil];
-	e = [[WMEngine alloc] initWithRootObject:root userData:nil];
+	e = [[WMEngine alloc] initWithRootPatch:root];
 }
 
 - (void)tearDown;

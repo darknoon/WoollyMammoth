@@ -44,18 +44,27 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 @synthesize previousAbsoluteTime;
 @synthesize frameNumber;
 
-- (id)initWithBundle:(WMBundleDocument *)inDocument;
+- (id)initWithRootPatch:(WMPatch *)inPatch;
 {
 	self = [super init];
 	if (self == nil) return self; 
+
+	renderContext = [[WMEAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+	self.rootObject = inPatch;
 	
+	return self;
+}
+
+- (id)initWithBundle:(WMBundleDocument *)inDocument;
+{
 	if (!inDocument) {
 		return nil;
 	}
 	
-	renderContext = [[WMEAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+	self = [self initWithRootPatch:inDocument.rootPatch];
+	if (self == nil) return self; 
+	
 	self.document = inDocument;
-	self.rootObject = document.rootPatch;
 	compositionUserData = document.userDictionary ? [document.userDictionary mutableCopy] : [[NSMutableDictionary alloc] init];
 	
 	return self;
@@ -234,7 +243,6 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 			[port takeValueFromPort:port.originalPort];
 		}
 	}
-	frameNumber++;
 }
 
 - (void)drawFrameInRect:(CGRect)inBounds interfaceOrientation:(UIInterfaceOrientation)inInterfaceOrientation;
@@ -262,6 +270,7 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 	previousAbsoluteTime = currentAbsoluteTime;
 	
 	[self drawPatchRecursive:self.rootObject];
+	frameNumber++;
 }
 
 - (NSString *)description
