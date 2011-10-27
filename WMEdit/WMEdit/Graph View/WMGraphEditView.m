@@ -24,6 +24,8 @@
     WMPatchConnectionsView *patchConnectionsView;
 	WMConnectionPopover *connectionPopover;
 	
+	CGPoint editorScrollPosition;
+	
 	UIView *contentView;
 	
 	UIImageView *lighting;
@@ -41,13 +43,14 @@
 	
 	CGSize contentSize = (CGSize){.width = 20000, .height = 20000};
 	self.contentSize = contentSize;
-	self.contentOffset = (CGPoint){.x = contentSize.width/2, .y = contentSize.width/2};
+	editorScrollPosition = (CGPoint){.x = contentSize.width/2, .y = contentSize.width/2};
 	self.delaysContentTouches = NO;
 	
 	self.delegate = (id <UIScrollViewDelegate>)self;
 
 	self.minimumZoomScale = 0.3f;
 	self.maximumZoomScale = 1.0f;
+	self.decelerationRate = UIScrollViewDecelerationRateFast;
 
 	contentView = [[UIView alloc] initWithFrame:(CGRect){.size = self.contentSize}];
 	//TODO: why doesn't this work?
@@ -87,6 +90,12 @@
 	for (WMPatch *patch in rootPatch.children) {
 		[patch removeObserver:self forKeyPath:KVC(patch, editorPosition) identifier:nil];
 	}
+}
+
+- (void)didMoveToWindow;
+{
+	CGRect frame = self.frame;
+	self.contentOffset = (CGPoint){.x = editorScrollPosition.x - frame.size.width / 2, .y = editorScrollPosition.y - frame.size.height / 2};
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch;
