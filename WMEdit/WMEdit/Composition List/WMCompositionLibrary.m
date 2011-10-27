@@ -10,6 +10,7 @@
 #import "WMPatch.h"
 #import "NSString+URLEncoding.h"
 #import "WMBundleDocument.h"
+#import "DNKVC.h"
 
 NSString *CompositionsChangedNotification = @"CompositionsChangedNotification";
 
@@ -165,13 +166,46 @@ NSString *base62FromBase10(int num)
     return [[inFileURL path] stringByAppendingPathComponent:@"preview.png"];
 }
 
-- (UIImage *)imageForCompositionPath:(NSURL *)fullComposition {
+- (UIImage *)imageForCompositionPath:(NSURL *)fullComposition;
+{
     NSString *path = [self pathForThumbOfComposition:fullComposition];
     NSData *d = [NSData dataWithContentsOfFile:path];
     if (d) return [UIImage imageWithData:d];
     return [UIImage imageNamed:@"missing_effect_thumb.jpg"];
 }
 
+
+#pragma mark -
+
+- (NSUInteger)countOfCompositions;
+{
+	return compositions.count;
+}
+
+- (void)insertCompositions:(NSArray *)array atIndexes:(NSIndexSet *)indexes;
+{
+	[compositions insertObjects:array atIndexes:indexes];
+}
+
+- (void)insertObject:(NSURL *)inObject inCompositionsAtIndex:(NSUInteger)idx
+{
+	[compositions insertObject:inObject atIndex:idx];
+}
+
+- (void)removeCompositionsObject:(NSURL *)object;
+{
+	[compositions removeObject:object];
+}
+
+- (void)addCompositionURL:(NSURL *)inFileURL;
+{
+	[[self mutableArrayValueForKey:KVC(self, compositions)] addObject:inFileURL];
+}
+
+- (void)removeCompositionURL:(NSURL *)inFileURL;
+{
+	[[self mutableArrayValueForKey:KVC(self, compositions)] removeObject:inFileURL];
+}
 
 
 @end

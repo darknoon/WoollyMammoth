@@ -18,7 +18,10 @@
 - (NSURL *)URLForResourceShortName:(NSString *)shortName;
 - (NSString *)shortNameFromURL:(NSURL *)url;
 
-- (UIImage *)imageForCompositionPath:(NSString *)fullCompositionPath;
+- (UIImage *)imageForCompositionPath:(NSURL *)fullComposition;
+
+- (void)addCompositionURL:(NSURL *)inFileURL;
+- (void)removeCompositionURL:(NSURL *)inFileURL;
 
 @end
 

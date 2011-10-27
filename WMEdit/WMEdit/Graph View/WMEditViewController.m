@@ -143,11 +143,16 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 {
     NSString *shortName = textField.text;
     if (shortName.length > 0) {
+		NSURL *oldFileURL = document.fileURL;
 		NSURL *newFileURL = [[WMCompositionLibrary compositionLibrary] URLForResourceShortName:shortName];
+		//TODO: should we duplicate document here?
 		[document saveToURL:newFileURL forSaveOperation:UIDocumentSaveForCreating completionHandler:^(BOOL success) {
 			if (success) {
 				titleLabel.text = document.localizedName;
 			}
+			//Now let the composition library know
+			[[WMCompositionLibrary compositionLibrary] removeCompositionURL:oldFileURL];
+			[[WMCompositionLibrary compositionLibrary] addCompositionURL:newFileURL];
 		}];
     }
     [textField removeFromSuperview];
@@ -169,7 +174,6 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
     tf.delegate = self;
     [[titleLabel superview] addSubview:tf];
     [tf becomeFirstResponder];
-     // give me ARC - I love it so much now and can't stand this bs anymore!
 }
 
 - (void)markDocumentDirty;

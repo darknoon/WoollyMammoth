@@ -11,33 +11,25 @@
 
 #import "WMBundleDocument.h"
 #import "WMEditViewController.h"
+#import "NSObject_KVOBlockNotificationExtensions.h"
+#import "DNKVC.h"
 
-@implementation WMCompositionLibraryViewController
-
-
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
+@implementation WMCompositionLibraryViewController {
+	NSMutableArray *compositions;
 }
+
+
 
 #pragma mark - View lifecycle
 
-- (NSArray *)compositionsAsPaths {
-    return [[[WMCompositionLibrary compositionLibrary] compositions] valueForKey:@"path"];
-}
-
-
-- (void)compositionsChanged:(NSNotification *)note {
-    [self.tableView reloadData];
+- (NSIndexPath *)indexPathForCompositionIndex:(NSUInteger)inIndex;
+{
+	return [NSIndexPath indexPathForRow:inIndex inSection:0];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(compositionsChanged:) name:CompositionsChangedNotification object:nil];
 }
 
 - (void)viewDidUnload
@@ -51,8 +43,39 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+	compositions = [[[WMCompositionLibrary compositionLibrary] compositions] mutableCopy];
+	
+	__weak WMCompositionLibraryViewController *weakSelf = self;
+	[[WMCompositionLibrary compositionLibrary] addObserver:self handler:^(NSString *keyPath, id object, NSDictionary *change, id identifier) {
+		WMCompositionLibraryViewController *self = weakSelf;
+		
+		NSIndexSet *indexes = [change objectForKey:NSKeyValueChangeIndexesKey];
+		if (indexes) {
+			NSMutableArray *indexPathArray = [[NSMutableArray alloc] initWithCapacity:indexes.count];
+			[indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+				[indexPathArray addObject:[NSIndexPath indexPathForRow:idx inSection:0]];
+			}];
+			
+			
+			[self.tableView beginUpdates];
+			//Either insert or remove table rows corresponding to the type of change that occurred
+			NSNumber *kind = [change objectForKey:NSKeyValueChangeKindKey];
+			if ([kind unsignedIntegerValue] == NSKeyValueChangeInsertion) {
+				[self->compositions insertObjects:[change objectForKey:NSKeyValueChangeNewKey] atIndexes:indexes];
+				[self.tableView insertRowsAtIndexPaths:indexPathArray withRowAnimation:UITableViewRowAnimationFade];
+			} else if ([kind unsignedIntegerValue] == NSKeyValueChangeRemoval) {
+				[self->compositions removeObjectsAtIndexes:indexes];
+				[self.tableView deleteRowsAtIndexPaths:indexPathArray withRowAnimation:UITableViewRowAnimationFade];
+			}
+			[self.tableView endUpdates];
+		} else {
+			self->compositions = [[[WMCompositionLibrary compositionLibrary] compositions] mutableCopy];
+			[self.tableView reloadData];
+		}
+	} forKeyPath:KVC([WMCompositionLibrary compositionLibrary], compositions) options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld identifier:nil];
+    
 	[self.tableView reloadData];
-    [super viewWillAppear:animated];
+	[super viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -63,6 +86,8 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+	compositions = nil;
+	[[WMCompositionLibrary compositionLibrary] removeObserver:self forKeyPath:KVC([WMCompositionLibrary compositionLibrary], compositions) identifier:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -85,7 +110,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[self compositionsAsPaths] count] + 1;
+    return compositions.count + 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)inTableView cellForRowAtIndexPath:(NSIndexPath *)inIndexPath
@@ -97,12 +122,12 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    BOOL notNewCompostion = inIndexPath.row < [self compositionsAsPaths].count;
+    BOOL notNewCompostion = inIndexPath.row < compositions.count;
     
-    NSString *path = notNewCompostion ? (NSString *)[[self compositionsAsPaths] objectAtIndex:inIndexPath.row]: nil;
-    UIImage *image = path ? [[WMCompositionLibrary compositionLibrary] imageForCompositionPath:[NSURL fileURLWithPath:path]] : nil;
+    NSURL *url = notNewCompostion ? [compositions objectAtIndex:inIndexPath.row]: nil;
+    UIImage *image = url ? [[WMCompositionLibrary compositionLibrary] imageForCompositionPath:url] : nil;
     
-    cell.textLabel.text = notNewCompostion ? [[path lastPathComponent] stringByDeletingPathExtension] : NSLocalizedString(@"New Composition", nil);
+    cell.textLabel.text = notNewCompostion ? [[url lastPathComponent] stringByDeletingPathExtension] : NSLocalizedString(@"New Composition", nil);
     cell.imageView.image = image;
     
     return cell;
@@ -114,8 +139,8 @@
 {
 	NSURL *fileURL = nil;
 	WMBundleDocument *document = nil;
-	if (inIndexPath.row < [self compositionsAsPaths].count) {
-		fileURL = [[[WMCompositionLibrary compositionLibrary] compositions] objectAtIndex:inIndexPath.row];
+	if (inIndexPath.row < compositions.count) {
+		fileURL = [compositions objectAtIndex:inIndexPath.row];
 		document = [[WMBundleDocument alloc] initWithFileURL:fileURL];
 		
 		NSLog(@"opening document %@", document);
@@ -151,10 +176,6 @@
 
 		}];
 	}
-	
-	
-	
-	
 }
 
 @end
