@@ -23,18 +23,29 @@
 
 struct WMQuadVertex {
 	GLKVector3 p;
-	char tc[2];
+	unsigned short tc[2];
 };
 
 static WMStructureField WMQuadVertex_fields[] = {
-	{.name = "position",  .type = WMStructureTypeFloat,        .count = 3, .normalized = NO,  .offset = offsetof(WMQuadVertex, p)},
-	{.name = "texCoord0", .type = WMStructureTypeUnsignedByte, .count = 2, .normalized = YES, .offset = offsetof(WMQuadVertex, tc)},
+	{.name = "position",  .type = WMStructureTypeFloat,         .count = 3, .normalized = NO,  .offset = offsetof(WMQuadVertex, p)},
+	{.name = "texCoord0", .type = WMStructureTypeUnsignedShort, .count = 2, .normalized = YES, .offset = offsetof(WMQuadVertex, tc)},
 };
 
 
 @implementation WMQuad {
 	WMStructureDefinition *quadDef;
 	WMRenderObject *renderObject;
+	
+	WMShader *shader;
+	
+	//The vertex buffer is cached for a given size/orientation pair. If either changes, it is regenerated.
+	CGSize vertexBufferSize;
+	UIImageOrientation vertexBufferOrientation;
+	NSUInteger vertexBufferU;
+	NSUInteger vertexBufferV;
+	WMStructuredBuffer *vertexBuffer;
+	WMStructuredBuffer *indexBuffer;
+
 }
 
 @synthesize inputImage;
@@ -43,6 +54,8 @@ static WMStructureField WMQuadVertex_fields[] = {
 @synthesize inputRotation;
 @synthesize inputColor;
 @synthesize inputBlending;
+@synthesize inputSubU;
+@synthesize inputSubV;
 @synthesize outputObject;
 
 + (NSString *)category;
@@ -83,8 +96,11 @@ static WMStructureField WMQuadVertex_fields[] = {
 		vertexBuffer = [[WMStructuredBuffer alloc] initWithDefinition:quadDef];
 	}
 	
+	NSUInteger uCount = MIN(MAX(1u, inputSubU.index), 256u) + 1;
+	NSUInteger vCount = MIN(MAX(1u, inputSubV.index), 256u) + 1;
+
 	//If the buffer doesn't need update, return
-	if (CGSizeEqualToSize(inImage.contentSize, vertexBufferSize) && inImage.orientation == vertexBufferOrientation) {
+	if (CGSizeEqualToSize(inImage.contentSize, vertexBufferSize) && inImage.orientation == vertexBufferOrientation && vertexBufferU == uCount && vertexBufferV == vCount) {
 		return;
 	}
 	
@@ -136,20 +152,38 @@ static WMStructureField WMQuadVertex_fields[] = {
 	
 	//Delete existing vertex buffer data
 	vertexBuffer.count = 0;
-	
+		
 	//Add vertices
-	for (int v=0, i=0; v<2; v++) {
-		for (int u=0; u<2; u++, i++) {
+	for (int v=0, i=0; v<vCount; v++) {
+		for (int u=0; u<uCount; u++, i++) {
 			
-			GLKVector3 point = ((float)u - 0.5f) * 2.0f * basisU + ((float)v - 0.5f) * 2.0f * basisV;
+			float uf = (float)u / (uCount - 1);
+			float vf = (float)v / (vCount - 1);
+			
+			GLKVector3 point = (uf - 0.5f) * 2.0f * basisU + (vf - 0.5f) * 2.0f * basisV;
 			
 			const struct WMQuadVertex vertex = {
 				.p = point,
-				.tc = {u * 255, 255 - v * 255} //Flip y coord to account for differing coord systems
+				.tc = {uf * USHRT_MAX, USHRT_MAX - vf * USHRT_MAX} //Flip y coord to account for differing coord systems
 			};
+			
 			
 			//Append to vertex buffer
 			[vertexBuffer appendData:&vertex withStructure:quadDef count:1];
+		}
+	}
+	
+	//Create index data
+	WMStructureDefinition *indexDef  = [[WMStructureDefinition alloc] initWithAnonymousFieldOfType:WMStructureTypeUnsignedShort];
+	indexBuffer = [[WMStructuredBuffer alloc] initWithDefinition:indexDef];
+	for (int v=0; v<vCount-1; v++) {
+		for (int u=0; u<uCount-1; u++) {
+			const int i = u + v * uCount;
+			const int next_i = i + uCount; //Next row
+			const unsigned short twoTris[] = {
+				i + 0, i + 1,       next_i + 0,
+				i + 1, next_i + 0 , next_i + 1};
+			[indexBuffer appendData:twoTris withStructure:indexDef count:6];
 		}
 	}
 	
@@ -191,13 +225,6 @@ static WMStructureField WMQuadVertex_fields[] = {
 		
 	GL_CHECK_ERROR;
 
-	//Create index data
-	WMStructureDefinition *indexDef  = [[WMStructureDefinition alloc] initWithAnonymousFieldOfType:WMStructureTypeUnsignedShort];
-	WMStructuredBuffer *indexBuffer = [[WMStructuredBuffer alloc] initWithDefinition:indexDef];
-	[indexBuffer appendData:(unsigned short[]){0,1,2, 1,2,3} withStructure:indexDef count:6];
-	
-	renderObject.indexBuffer = indexBuffer;
-
 	NSLog(@"render object: %@", renderObject);
 
 	GL_CHECK_ERROR;
@@ -223,7 +250,8 @@ static WMStructureField WMQuadVertex_fields[] = {
 		
 		[self updateVertexBufferForImageIfNecessary:inputImage.image];
 		
-		renderObject.vertexBuffer = vertexBuffer;		
+		renderObject.vertexBuffer = vertexBuffer;
+		renderObject.indexBuffer = indexBuffer;
 		
 		switch (inputBlending.index) {
 			default:
