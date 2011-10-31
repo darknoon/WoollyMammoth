@@ -11,6 +11,7 @@
 @interface WMNumberInputPortCell : WMInputPortCell
 
 @property (nonatomic, strong) IBOutlet UISlider *valueSlider;
+@property (nonatomic, strong) IBOutlet UITextField *textField;
 
 - (IBAction)changeValue:(id)sender;
 

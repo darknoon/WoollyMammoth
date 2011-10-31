@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1280</int>
-		<string key="IBDocument.SystemVersion">11B26</string>
-		<string key="IBDocument.InterfaceBuilderVersion">1923</string>
-		<string key="IBDocument.AppKitVersion">1138</string>
-		<string key="IBDocument.HIToolboxVersion">566.00</string>
+		<string key="IBDocument.SystemVersion">11C73</string>
+		<string key="IBDocument.InterfaceBuilderVersion">1938</string>
+		<string key="IBDocument.AppKitVersion">1138.23</string>
+		<string key="IBDocument.HIToolboxVersion">567.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">919</string>
+			<string key="NS.object.0">933</string>
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -86,7 +86,7 @@
 							<object class="IBUITextField" id="281698285">
 								<reference key="NSNextResponder" ref="357389099"/>
 								<int key="NSvFlags">289</int>
-								<string key="NSFrame">{{219, 7}, {137, 31}}</string>
+								<string key="NSFrame">{{273, 7}, {94, 31}}</string>
 								<reference key="NSSuperview" ref="357389099"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView"/>
@@ -125,7 +125,7 @@
 								</object>
 							</object>
 						</object>
-						<string key="NSFrameSize">{320, 45}</string>
+						<string key="NSFrameSize">{374, 45}</string>
 						<reference key="NSSuperview" ref="536207696"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="660607014"/>
@@ -384,6 +384,6 @@
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<string key="IBCocoaTouchPluginVersion">919</string>
+		<string key="IBCocoaTouchPluginVersion">933</string>
 	</data>
 </archive>

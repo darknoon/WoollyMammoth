@@ -11,6 +11,18 @@
 
 @implementation WMNumberPort
 @synthesize value;
+@synthesize minValue;
+@synthesize maxValue;
+
+- (id)init;
+{
+	self = [super init];
+	if (!self) return nil;
+	
+	maxValue = 1.0f;
+	
+	return self;
+}
 
 - (id)objectValue;
 {

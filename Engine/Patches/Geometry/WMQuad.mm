@@ -23,12 +23,12 @@
 
 struct WMQuadVertex {
 	GLKVector3 p;
-	unsigned short tc[2];
+	GLKVector2 tc;
 };
 
 static WMStructureField WMQuadVertex_fields[] = {
-	{.name = "position",  .type = WMStructureTypeFloat,         .count = 3, .normalized = NO,  .offset = offsetof(WMQuadVertex, p)},
-	{.name = "texCoord0", .type = WMStructureTypeUnsignedShort, .count = 2, .normalized = YES, .offset = offsetof(WMQuadVertex, tc)},
+	{.name = "position",  .type = WMStructureTypeFloat, .count = 3, .normalized = NO,  .offset = offsetof(WMQuadVertex, p)},
+	{.name = "texCoord0", .type = WMStructureTypeFloat, .count = 2, .normalized = NO, .offset = offsetof(WMQuadVertex, tc)},
 };
 
 
@@ -164,7 +164,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 			
 			const struct WMQuadVertex vertex = {
 				.p = point,
-				.tc = {uf * USHRT_MAX, USHRT_MAX - vf * USHRT_MAX} //Flip y coord to account for differing coord systems
+				.tc = {uf, 1.0 - vf} //Flip y coord to account for differing coord systems
 			};
 			
 			
@@ -222,7 +222,10 @@ static WMStructureField WMQuadVertex_fields[] = {
 	
 	quadDef = [[WMStructureDefinition alloc] initWithFields:WMQuadVertex_fields count:sizeof(WMQuadVertex_fields) / sizeof(WMStructureField) totalSize:sizeof(WMQuadVertex)];
 	quadDef.shouldAlignTo4ByteBoundary = YES;
-		
+	
+	inputRotation.minValue = -180.f;
+	inputRotation.maxValue = 180.f;
+	
 	GL_CHECK_ERROR;
 
 	NSLog(@"render object: %@", renderObject);

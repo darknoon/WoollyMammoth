@@ -39,6 +39,14 @@
 	return nil;
 }
 
+- (BOOL)setup:(WMEAGLContext *)context;
+{
+	inputPeriod.minValue = 0.01f;
+	inputPeriod.maxValue = 10.0f;
+	return YES;
+}
+	
+
 - (BOOL)execute:(WMEAGLContext *)inContext time:(CFTimeInterval)time arguments:(NSDictionary *)args;
 {
 	//Calculate the output value;

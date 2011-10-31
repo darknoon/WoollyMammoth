@@ -14,5 +14,8 @@
 }
 @property (nonatomic) float value;
 
+//Suggested min/max, not hard limits
+@property (nonatomic) float minValue;
+@property (nonatomic) float maxValue;
 
 @end
