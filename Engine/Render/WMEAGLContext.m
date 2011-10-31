@@ -19,6 +19,7 @@
 #import "WMRenderObject_WMEAGLContext_Private.h"
 #import "WMGLStateObject_WMEAGLContext_Private.h"
 #import "WMShader_WMEAGLContext_Private.h"
+#import "WMVertexArrayObject.h"
 
 //TODO: where should this live?
 @interface WMShader (WMShader_Uniform_State)
@@ -44,12 +45,13 @@
 @end
 
 @implementation WMEAGLContext {
+@public
 	DNGLStateBlendMask blendState;
 	DNGLStateDepthMask depthState;
 	WMFramebuffer *boundFramebuffer;
 	CGRect viewport;
 	
-	GLuint boundVAO;
+	WMVertexArrayObject *boundVAO;
 	
 	GLKVector4 clearColor;
 	
@@ -223,7 +225,6 @@
 	}
 	
 	WMShader *shader = inObject.shader;
-	WMStructureDefinition *vertexDefinition = inObject.vertexBuffer.definition;
 	
 	//Make sure we have a VBO or EBO for the object in the GL state
 	
@@ -238,44 +239,10 @@
 	ZAssert(inObject.vertexArrayObject, @"No VAO set!");
 
 	//Bind it
-	if (boundVAO != inObject.vertexArrayObject) {
+	if (![boundVAO isEqualToVertexArrayObject:inObject.vertexArrayObject]) {
 		boundVAO = inObject.vertexArrayObject;
-		glBindVertexArrayOES(boundVAO);
+		glBindVertexArrayOES(inObject.vertexArrayObject.glObject);
 		GL_CHECK_ERROR;
-	}
-
-	//Find each relevant thing in the shader, attempt to bind to a part of the buffer
-	if (shader && inObject.vertexArrayObjectDirty) {
-		for (NSString *attribute in inObject.shader.vertexAttributeNames) {
-			int location = [shader attributeLocationForName:attribute];
-			if (location != -1 && [vertexDefinition getFieldNamed:attribute outField:NULL]) {
-				glEnableVertexAttribArray(location);
-			}
-		}
-	} else if (!shader) {
-		NSLog(@"TODO: no shader defined");
-	}
-
-	//Update vertex state in the VAO if necessary
-	if (inObject.vertexArrayObjectDirty) {
-		//TODO: keep track of bound buffer state to eleminate redundant binds / unbinds here
-		glBindBuffer(GL_ARRAY_BUFFER, inObject.vertexBuffer.bufferObject);
-		
-		//Set up vertex state. 
-		//TODO: use vao
-		for (NSString *attribute in shader.vertexAttributeNames) {
-			int location = [shader attributeLocationForName:attribute];
-			ZAssert(location != -1, @"Couldn't fined attribute: %@", attribute);
-			if (location != -1) {
-				WMStructureField f;
-				if ([vertexDefinition getFieldNamed:attribute outField:&f]) {
-					glVertexAttribPointer(location, f.count, f.type, f.normalized, vertexDefinition.size, (void *)f.offset);
-				} else {
-					//Couldn't bind anything to this.
-					NSLog(@"Couldn't find data for attribute: %@", attribute);
-				}
-			}
-		}
 	}
 
 	GL_CHECK_ERROR;
@@ -352,16 +319,20 @@
 	if (inObject.indexBuffer) {
 		last = MIN(last, (NSInteger)inObject.indexBuffer.count - 1);
 		
-		if (inObject.vertexArrayObjectDirty) {
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, inObject.indexBuffer.bufferObject);
-		}
-		
 		//Get element buffer type
 		WMStructureField f;
 		BOOL found = [inObject.indexBuffer.definition getFieldNamed:@"" outField:&f];
 		ZAssert(found, @"Couldn't get the element buffer description!");
 		GLenum elementBufferType = f.type;
-				
+		
+#if DEBUG_OPENGL
+		{
+			GLint elementBufferBinding;
+			glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING, &elementBufferBinding);
+			ZAssert(elementBufferBinding == inObject.indexBuffer.bufferObject, @"Incorrect element buffer binding");
+		}
+#endif
+		
 		glDrawElements(inObject.renderType, last - first + 1, elementBufferType, 0x0 /*indicies from bound index buffer*/);
 		GL_CHECK_ERROR;
 				
@@ -370,8 +341,7 @@
 		glDrawArrays(inObject.renderType, first, last - first + 1);
 		
 	}
-	inObject.vertexArrayObjectDirty = NO;
-		
+	
 	//Unbind or can we leave it bound?
 	glBindVertexArrayOES(0);
 	boundVAO = 0;
@@ -525,25 +495,37 @@
 
 - (void)createVAOIfNecessary;
 {
-	if (self.vertexArrayObjectDirty && self.vertexArrayObject) {
-		//Delete any existing vao
-		glDeleteVertexArraysOES(1, &(GLuint){self.vertexArrayObject});
-		self.vertexArrayObject = 0;
-	}
-	
-	if (self.vertexArrayObject == 0) {
-		GLuint vao = 0;
-		glGenVertexArraysOES(1, &vao);
-		self.vertexArrayObject = vao;
-	}
-}
+	WMEAGLContext *context = self.context;
 
-- (void)deleteInternalState;
-{
-	GLuint vertexArrayObject = self.vertexArrayObject;
-	if (vertexArrayObject) {
-		glDeleteVertexArraysOES(1, &vertexArrayObject);
-		self.vertexArrayObject = 0;
+	WMStructureDefinition *vertexDefinition = self.vertexBuffer.definition;
+	//Find each relevant thing in the shader, attempt to bind to a part of the buffer
+	if (self.shader && self.vertexArrayObjectDirty) {
+		NSMutableArray *buffers = [[NSMutableArray alloc] init];
+		NSMutableOrderedSet *attributeNames = [[NSMutableOrderedSet alloc] init];
+		NSMutableOrderedSet *attributeLocations = [[NSMutableOrderedSet alloc] init];
+		
+		for (NSString *attribute in self.shader.vertexAttributeNames) {
+			int location = [self.shader attributeLocationForName:attribute];
+			if (location != -1 && [vertexDefinition getFieldNamed:attribute outField:NULL]) {
+				[buffers addObject:self.vertexBuffer];
+				[attributeNames addObject:attribute];
+				[attributeLocations addObject:[[NSNumber alloc] initWithInteger:location]];				
+			}
+		}
+		self.vertexArrayObject = [[WMVertexArrayObject alloc] initWithVertexBuffers:buffers attributeNames:attributeNames attributeLocations:attributeLocations indexBuffer:self.indexBuffer];
+		
+		//Bind it
+		if (![context->boundVAO isEqualToVertexArrayObject:self.vertexArrayObject]) {
+			context->boundVAO = self.vertexArrayObject;
+			glBindVertexArrayOES(self.vertexArrayObject.glObject);
+			GL_CHECK_ERROR;
+		}
+		
+		[self.vertexArrayObject refreshGLObject];
+		self.vertexArrayObjectDirty = NO;
+		
+	} else if (!self.shader) {
+		NSLog(@"TODO: no shader defined");
 	}
 }
 

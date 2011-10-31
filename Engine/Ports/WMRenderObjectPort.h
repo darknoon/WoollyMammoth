@@ -11,9 +11,7 @@
 @class WMRenderObject;
 @interface WMRenderObjectPort : WMPort
 
-//TODO: this should really be copy, as we need to move its value over
-//TODO: we shouldn't be hanging onto this value.
-//Maybe we could use nilling weak references here to get rid of the object when it's no longer relevant?
-@property (nonatomic, strong) WMRenderObject *object;
+//TODO: we shouldn't be hanging onto this value, ie the port should be marked transient and that defined
+@property (nonatomic, copy) WMRenderObject *object;
 
 @end

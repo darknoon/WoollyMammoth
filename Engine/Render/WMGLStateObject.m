@@ -16,10 +16,16 @@
 
 - (id)init;
 {
+	WMEAGLContext *currentContext = (WMEAGLContext *)[WMEAGLContext currentContext];
+	if (!currentContext) {
+		NSLog(@"Can't create a %@ without a current WMEAGLContext", [self class]);
+		return nil;
+	}
+	
 	self = [super init];
 	if (!self) return nil;
 	
-	self.context = (WMEAGLContext *)[WMEAGLContext currentContext];
+	self.context = currentContext;
 	
 	return self;
 }

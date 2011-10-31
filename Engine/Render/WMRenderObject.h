@@ -29,7 +29,7 @@ extern NSString *const WMRenderObjectTransformUniformName; // wm_T is selected f
 //Perhaps that means making a pool of VAOs associated with the relevant structured buffers / parameters and then associating the correct one as necessary
 //Without copying, if we don't execute
 
-@interface WMRenderObject : WMGLStateObject
+@interface WMRenderObject : WMGLStateObject <NSCopying>
 
 //Create an object that can be rendered to a WMEAGLContext
 - (id)init;

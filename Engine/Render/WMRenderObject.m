@@ -11,10 +11,11 @@
 #import "WMStructuredBuffer.h"
 #import "WMRenderObject_WMEAGLContext_Private.h"
 #import "WMGLStateObject_WMEAGLContext_Private.h"
+#import "WMVertexArrayObject.h"
 
 @interface WMRenderObject()
 //Private state for WMEAGLContext
-@property (nonatomic) GLenum vertexArrayObject;
+@property (nonatomic, strong) WMVertexArrayObject *vertexArrayObject;
 @property (nonatomic) BOOL vertexArrayObjectDirty;
 @end
 
@@ -22,7 +23,6 @@ NSString *const WMRenderObjectTransformUniformName = @"wm_T";
 
 @implementation WMRenderObject {
 	NSMutableDictionary *uniformValues;
-	BOOL _wmeaglcontextprivate_vaoDirty;
 }
 
 @synthesize vertexBuffer;
@@ -34,8 +34,8 @@ NSString *const WMRenderObjectTransformUniformName = @"wm_T";
 @synthesize renderBlendState;
 @synthesize renderDepthState;
 
-@synthesize vertexArrayObject = _wmeaglcontextprivate_vertexArrayObject;
-@synthesize vertexArrayObjectDirty = _wmeaglcontextprivate_vaoDirty;
+@synthesize vertexArrayObject;
+@synthesize vertexArrayObjectDirty;
 
 - (id)init;
 {
@@ -53,10 +53,31 @@ NSString *const WMRenderObjectTransformUniformName = @"wm_T";
     return self;
 }
 
+- (id)copyWithZone:(NSZone *)zone;
+{
+	WMRenderObject *copy = [[WMRenderObject allocWithZone:zone] init];
+	
+	copy->vertexBuffer = vertexBuffer;
+	copy->indexBuffer = indexBuffer;
+	copy->shader = shader;
+
+	copy->renderType = renderType;
+	copy->renderRange = renderRange;
+	copy->renderBlendState = renderBlendState;
+	copy->renderDepthState = renderDepthState;
+	
+	copy->vertexArrayObject = vertexArrayObject;
+	copy->vertexArrayObjectDirty = vertexArrayObjectDirty;
+
+	copy->uniformValues = [uniformValues mutableCopy];
+	
+	return copy;
+}
+
 - (void)setVertexBuffer:(WMStructuredBuffer *)inVertexBuffer;
 {
 	if (vertexBuffer != inVertexBuffer) {
-		_wmeaglcontextprivate_vaoDirty = YES;
+		vertexArrayObjectDirty = YES;
 		vertexBuffer = inVertexBuffer;
 	}
 }
@@ -64,8 +85,16 @@ NSString *const WMRenderObjectTransformUniformName = @"wm_T";
 - (void)setIndexBuffer:(WMStructuredBuffer *)inIndexBuffer;
 {
 	if (indexBuffer != inIndexBuffer) {
-		_wmeaglcontextprivate_vaoDirty = YES;
+		vertexArrayObjectDirty = YES;
 		indexBuffer = inIndexBuffer;
+	}
+}
+
+- (void)setShader:(WMShader *)inShader;
+{
+	if (shader != inShader) {
+		vertexArrayObjectDirty = YES;
+		shader = inShader;
 	}
 }
 
@@ -81,8 +110,8 @@ NSString *const WMRenderObjectTransformUniformName = @"wm_T";
 
 - (NSString *)description;
 {
-	return [NSString stringWithFormat:@"<%@ %p vb:%@ ib:%@ shader:%@ renderType:%@ range:%@ renderBlendState:%d renderDepthState:%d vao:%d>",
-			[self class], self, vertexBuffer, indexBuffer, shader, [WMRenderObject stringFromGLRenderType:renderType], NSStringFromRange(renderRange), renderBlendState, renderDepthState, _wmeaglcontextprivate_vertexArrayObject];
+	return [NSString stringWithFormat:@"<%@ %p vb:%@ ib:%@ shader:%@ renderType:%@ range:%@ renderBlendState:%d renderDepthState:%d vao:%@>",
+			[self class], self, vertexBuffer, indexBuffer, shader, [WMRenderObject stringFromGLRenderType:renderType], NSStringFromRange(renderRange), renderBlendState, renderDepthState, vertexArrayObject];
 }
 
 - (NSArray *)uniformKeys;

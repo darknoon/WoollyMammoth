@@ -204,6 +204,7 @@
 		49B3DB5B13E11039002DC713 /* WMRenderOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB5813E11039002DC713 /* WMRenderOutput.m */; };
 		49B3DB5F13E1115B002DC713 /* WMSetShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB5E13E1115B002DC713 /* WMSetShader.m */; };
 		49B9900E1459E436009F3CBD /* WMGLStateObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AA853C1442B227005BC6F7 /* WMGLStateObject.m */; };
+		49B99014145E4634009F3CBD /* WMVertexArrayObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B99013145E4634009F3CBD /* WMVertexArrayObject.m */; };
 		49B9A6BD1415C473001DB45B /* WMVideoRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B9A6BC1415C473001DB45B /* WMVideoRecord.m */; };
 		49BACB4B13EB592A008ED051 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49BACB4A13EB592A008ED051 /* SenTestingKit.framework */; };
 		49BACB4C13EB592A008ED051 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595013D15F640056C506 /* UIKit.framework */; };
@@ -691,6 +692,8 @@
 		49B3DB5813E11039002DC713 /* WMRenderOutput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WMRenderOutput.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		49B3DB5D13E1115B002DC713 /* WMSetShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSetShader.h; sourceTree = "<group>"; };
 		49B3DB5E13E1115B002DC713 /* WMSetShader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WMSetShader.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		49B99012145E4633009F3CBD /* WMVertexArrayObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMVertexArrayObject.h; sourceTree = "<group>"; };
+		49B99013145E4634009F3CBD /* WMVertexArrayObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMVertexArrayObject.m; sourceTree = "<group>"; };
 		49B9A6BB1415C473001DB45B /* WMVideoRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMVideoRecord.h; sourceTree = "<group>"; };
 		49B9A6BC1415C473001DB45B /* WMVideoRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMVideoRecord.m; sourceTree = "<group>"; };
 		49BACB4013EB5847008ED051 /* WMGraphTopologyTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMGraphTopologyTests.h; sourceTree = "<group>"; };
@@ -1203,6 +1206,8 @@
 				49858E1113DE4C1F0061A1A8 /* WMTextureCubeMap.m */,
 				498E4E9613E1342B003BB056 /* WMDefaultShader.vsh */,
 				498E4E9313E13421003BB056 /* WMDefaultShader.fsh */,
+				49B99012145E4633009F3CBD /* WMVertexArrayObject.h */,
+				49B99013145E4634009F3CBD /* WMVertexArrayObject.m */,
 			);
 			path = Render;
 			sourceTree = "<group>";
@@ -2222,6 +2227,7 @@
 				49D5303D1447CF4C00739E84 /* WMPatchLuaBridge.m in Sources */,
 				496AF5F8144A127600082FBD /* WMBufferPort.m in Sources */,
 				496AF5FD144A169900082FBD /* WMSetRenderObject.m in Sources */,
+				49B99014145E4634009F3CBD /* WMVertexArrayObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
