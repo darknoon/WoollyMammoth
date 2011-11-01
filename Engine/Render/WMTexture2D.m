@@ -99,19 +99,29 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 @synthesize pixelsHigh=_height;
 @synthesize name=_name;
 
+
+- (void)createDefaultTexture;
+{
+	glGenTextures(1, &_name);
+	[self.context bind2DTextureNameForModification:_name inBlock:^{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		//Needed by default for npot
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	}];
+
+}
+
 - (id)initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;
 {
-	if((self = [super init])) {
-		ZAssert(self.context, @"Weird! No context in which to create texture!");
-		glGenTextures(1, &_name);
-		[self.context bind2DTextureNameForModification:_name inBlock:^{
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			//Needed by default for npot
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		}];
-		[self setData:data pixelFormat:pixelFormat pixelsWide:width pixelsHigh:height contentSize:size orientation:inOrientation];
-	}					
+	self = [self init];
+	if (!self) return nil;
+
+	[self createDefaultTexture];
+	
+	ZAssert(self.context, @"Weird! No context in which to create texture!");
+	[self setData:data pixelFormat:pixelFormat pixelsWide:width pixelsHigh:height contentSize:size orientation:inOrientation];
+	
 	return self;
 }
 
@@ -219,9 +229,18 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 
 - (id)initWithImage:(UIImage *)uiImage
 {
-	NSUInteger				width,
-	height,
-	i;
+	CGImageRef image = [uiImage CGImage];
+	
+	if(image == NULL) {
+		NSLog(@"Could not create texture: UIImage is null.");
+		return nil;
+	}
+	
+	self = [self init];
+
+	[self createDefaultTexture];
+
+	NSUInteger i;
 	CGContextRef			context = nil;
 	void*					data = nil;;
 	CGColorSpaceRef			colorSpace;
@@ -231,16 +250,8 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 	CGAffineTransform		transform;
 	CGSize					imageSize;
 	WMTexture2DPixelFormat    pixelFormat;
-	CGImageRef				image;
 	BOOL					sizeToFit = NO;
 	int                     maxTextureSize = [self.context maxTextureSize];
-	
-	image = [uiImage CGImage];
-	
-	if(image == NULL) {
-		NSLog(@"Could not create texture: UIImage is null.");
-		return nil;
-	}
 	
 	
 	info = CGImageGetAlphaInfo(image);
@@ -256,17 +267,16 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 	
 	imageSize = CGSizeMake(CGImageGetWidth(image), CGImageGetHeight(image));
 	transform = CGAffineTransformIdentity;
-	
-    image = [uiImage CGImage];
-	width = imageSize.width;
-	
+		
+	//Constrain loaded image into the maximum texture size
+	NSUInteger width = imageSize.width;
 	if((width != 1) && (width & (width - 1))) {
 		i = 1;
 		while((sizeToFit ? 2 * i : i) < width)
 			i *= 2;
 		width = i;
 	}
-	height = imageSize.height;
+	NSUInteger height = imageSize.height;
 	if((height != 1) && (height & (height - 1))) {
 		i = 1;
 		while((sizeToFit ? 2 * i : i) < height)
@@ -328,7 +338,7 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 		data = tempData;
 	}
 	
-	self = [self initWithData:data pixelFormat:pixelFormat pixelsWide:width pixelsHigh:height contentSize:imageSize orientation:uiImage.imageOrientation];
+	[self setData:data pixelFormat:pixelFormat pixelsWide:width pixelsHigh:height contentSize:imageSize orientation:uiImage.imageOrientation];
 	
 	CGContextRelease(context);
 	free(data);
