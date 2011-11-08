@@ -227,7 +227,7 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 
 @implementation WMTexture2D (Image)
 
-- (id)initWithImage:(UIImage *)uiImage
+- (id)initWithImage:(UIImage *)uiImage scale:(CGFloat)inScale
 {
 	CGImageRef image = [uiImage CGImage];
 	
@@ -249,8 +249,7 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 	CGImageAlphaInfo		info;
 	CGAffineTransform		transform;
 	CGSize					imageSize;
-	WMTexture2DPixelFormat    pixelFormat;
-	BOOL					sizeToFit = NO;
+	WMTexture2DPixelFormat  pixelFormat;
 	int                     maxTextureSize = [self.context maxTextureSize];
 	
 	
@@ -269,20 +268,9 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 	transform = CGAffineTransformIdentity;
 		
 	//Constrain loaded image into the maximum texture size
-	NSUInteger width = imageSize.width;
-	if((width != 1) && (width & (width - 1))) {
-		i = 1;
-		while((sizeToFit ? 2 * i : i) < width)
-			i *= 2;
-		width = i;
-	}
-	NSUInteger height = imageSize.height;
-	if((height != 1) && (height & (height - 1))) {
-		i = 1;
-		while((sizeToFit ? 2 * i : i) < height)
-			i *= 2;
-		height = i;
-	}
+	NSUInteger width = imageSize.width / inScale;
+	NSUInteger height = imageSize.height / inScale;
+	
 	while((width > maxTextureSize) || (height > maxTextureSize)) {
 		width /= 2;
 		height /= 2;
@@ -344,6 +332,11 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 	free(data);
 	
 	return self;
+}
+
+- (id)initWithImage:(UIImage *)uiImage
+{
+	return [self initWithImage:uiImage scale:1.0f];
 }
 
 @end

@@ -110,7 +110,8 @@ Extensions to make it easy to create a WMTexture2D object from an image file.
 Note that RGBA type textures will have their alpha premultiplied - use the blending mode (GL_ONE, GL_ONE_MINUS_SRC_ALPHA).
 */
 @interface WMTexture2D (Image)
-- (id) initWithImage:(UIImage *)uiImage;
+- (id)initWithImage:(UIImage *)uiImage;
+- (id)initWithImage:(UIImage *)uiImage scale:(CGFloat)inScale;
 @end
 
 /*
