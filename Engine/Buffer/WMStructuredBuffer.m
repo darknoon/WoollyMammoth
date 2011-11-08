@@ -31,9 +31,11 @@ static inline unsigned int nextPowerOf2(unsigned int v) {
 
 - (id)initWithDefinition:(WMStructureDefinition *)inDefinition;
 {
+	if (!inDefinition) return nil;
+
     self = [super init];
     if (!self) return nil;
-		
+	
 	definition = inDefinition;
     
 	dirtySet = [[NSMutableIndexSet alloc] init];
