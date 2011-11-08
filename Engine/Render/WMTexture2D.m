@@ -56,7 +56,6 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #import "WMTexture2D_WMEAGLContext_Private.h"
 #import "WMGLStateObject_WMEAGLContext_Private.h"
 
-
 NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation);
 
 NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
@@ -191,6 +190,17 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 	}
 }
 
+- (void)moveToContext:(WMEAGLContext *)inContext;
+{
+	if (inContext.sharegroup == self.context.sharegroup) {
+		if (self.context) {		
+			[self.context forgetTexture2DName:_name];
+		}
+		self.context = inContext;
+	} else {
+		DLog(@"Cannot move texture %@ to context %@ because they do not have the same sharegroup!");
+	}
+}
 - (NSString *)description
 {
 	return [NSString stringWithFormat:@"<%@ %p = %i>", [self class], self, _name];

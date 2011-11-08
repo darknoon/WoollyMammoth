@@ -81,8 +81,8 @@ Be aware that the content of the generated textures will be upside-down!
 
 - (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
 
-
-//TODO: 
+//Get a texture in the current context from another context's texture (changes the current texture, as you need to keep the texture name alive)
+- (void)moveToContext:(WMEAGLContext *)inContext;
 
 //Equivalent to binding the texture and glTexImage2D with NULL data
 - (void)discardData;
