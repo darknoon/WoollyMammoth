@@ -274,12 +274,12 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 		pixelFormat = kWMTexture2DPixelFormat_A8;
 	
 	
-	imageSize = CGSizeMake(CGImageGetWidth(image), CGImageGetHeight(image));
+	imageSize = CGSizeMake(CGImageGetWidth(image) / inScale, CGImageGetHeight(image) / inScale);
 	transform = CGAffineTransformIdentity;
 		
 	//Constrain loaded image into the maximum texture size
-	NSUInteger width = imageSize.width / inScale;
-	NSUInteger height = imageSize.height / inScale;
+	NSUInteger width = imageSize.width;
+	NSUInteger height = imageSize.height;
 	
 	while((width > maxTextureSize) || (height > maxTextureSize)) {
 		width /= 2;
