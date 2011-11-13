@@ -12,11 +12,6 @@
 
 #import "WMFramebuffer.h"
 
-void releaseScreenshotData(void *info, const void *data, size_t size) {
-	free((void *)data);
-};
-
-
 @interface EAGLView (PrivateMethods)
 - (void)createFramebuffer;
 - (void)deleteFramebuffer;
