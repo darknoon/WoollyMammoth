@@ -27,6 +27,7 @@
 
 //Use this initializer when being used for display
 - (id)initWithLayerRenderbufferStorage:(CAEAGLLayer *)inLayer;
+- (id)initWithLayerRenderbufferStorage:(CAEAGLLayer *)inLayer depthBufferDepth:(GLuint)inDepthBufferDepth;
 
 //Init for rendering to the color attachment, mipmap 0 of a WMTexture2D, with an optional depth buffer
 //Pass in depthBufferDepth = GL_DEPTH_COMPONENT16 or GL_DEPTH_COMPONENT32_OES for a depth buffer, 0 otherwise

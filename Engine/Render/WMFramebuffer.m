@@ -44,6 +44,18 @@
 	}
 }
 
+- (void)createAndAttachDepthBufferOfDepth:(GLuint)inDepthBufferDepth;
+{
+	if (inDepthBufferDepth > 0) {
+		//Create depth buffer
+		glGenRenderbuffersOES(1, &depthRenderbuffer);
+		glBindRenderbufferOES(GL_RENDERBUFFER_OES, depthRenderbuffer); 
+		glRenderbufferStorageOES(GL_RENDERBUFFER_OES, inDepthBufferDepth, framebufferWidth, framebufferHeight); 
+		//Attach depth buffer
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
+	}	
+}
+
 - (id)initWithTexture:(WMTexture2D *)inTexture depthBufferDepth:(GLuint)inDepthBufferDepth;
 {
 	if (!inTexture) return nil;
@@ -69,14 +81,7 @@
 	framebufferWidth = inTexture.pixelsWide;
 	framebufferHeight = inTexture.pixelsHigh;
 	
-	if (inDepthBufferDepth > 0) {
-		//Create depth buffer
-		glGenRenderbuffersOES(1, &depthRenderbuffer);
-		glBindRenderbufferOES(GL_RENDERBUFFER_OES, depthRenderbuffer); 
-		glRenderbufferStorageOES(GL_RENDERBUFFER_OES, inDepthBufferDepth, framebufferWidth, framebufferHeight); 
-		//Attach depth buffer
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
-	}
+	[self createAndAttachDepthBufferOfDepth:inDepthBufferDepth];
 	
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
 		
@@ -96,7 +101,7 @@
 }
 
 
-- (id)initWithLayerRenderbufferStorage:(CAEAGLLayer *)inLayer;
+- (id)initWithLayerRenderbufferStorage:(CAEAGLLayer *)inLayer depthBufferDepth:(GLuint)inDepthBufferDepth;
 {
 	self = [super init];
 	if (!self) return nil;
@@ -123,13 +128,8 @@
 		//Attach color buffer
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorRenderbuffer);
 		
-		//Create depth buffer
-		glGenRenderbuffers(1, &depthRenderbuffer);
-		glBindRenderbuffer(GL_RENDERBUFFER_OES, depthRenderbuffer); 
-		glRenderbufferStorage(GL_RENDERBUFFER_OES, GL_DEPTH_COMPONENT16_OES, framebufferWidth, framebufferHeight); 
-		//Attach depth buffer
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
-
+		[self createAndAttachDepthBufferOfDepth:inDepthBufferDepth];
+		
 		GL_CHECK_ERROR;
 	}
 	
@@ -149,6 +149,12 @@
 	[oldFrameBuffer bind];
 	
 	return self;
+}
+
+
+- (id)initWithLayerRenderbufferStorage:(CAEAGLLayer *)inLayer;
+{
+	return [self initWithLayerRenderbufferStorage:inLayer depthBufferDepth:GL_DEPTH_COMPONENT16_OES];
 }
 
 - (void)deleteInternalState;

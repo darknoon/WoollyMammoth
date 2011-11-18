@@ -28,6 +28,8 @@
 //Accessing this property will create a framebuffer if necessary to match the current view bounds
 @property (nonatomic, strong, readonly) WMFramebuffer *framebuffer;
 
+@property (nonatomic) GLuint depthBufferDepth;
+
 //You can use this in cases where you want to reclaim the memory being used by the framebuffer, such as going into the background, etc
 //The framebuffer will be recreated if necessary
 - (void)deleteFramebuffer;

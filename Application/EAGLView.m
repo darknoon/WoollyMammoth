@@ -27,7 +27,7 @@
 
 }
 
-@dynamic context;
+@synthesize depthBufferDepth;
 
 // You must implement this method
 + (Class)layerClass
@@ -43,6 +43,9 @@
 	if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
 		eaglLayer.contentsScale = [UIScreen mainScreen].scale;
 	}
+	
+	depthBufferDepth = GL_DEPTH_COMPONENT16_OES;
+	
 	eaglLayer.opaque = TRUE;
 	eaglLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
 									[NSNumber numberWithBool:FALSE], kEAGLDrawablePropertyRetainedBacking,
@@ -82,7 +85,7 @@
         [EAGLContext setCurrentContext:context];
         
         if (!framebuffer) {
-			framebuffer = [[WMFramebuffer alloc] initWithLayerRenderbufferStorage:(CAEAGLLayer *)self.layer];
+			framebuffer = [[WMFramebuffer alloc] initWithLayerRenderbufferStorage:(CAEAGLLayer *)self.layer depthBufferDepth:depthBufferDepth];
 		}
     }
 	return framebuffer;
