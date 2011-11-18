@@ -147,11 +147,12 @@ static inline unsigned int nextPowerOf2(unsigned int v) {
 
 - (NSString *)debugDescription;
 {
-	NSMutableString *dataDesc = [NSMutableString stringWithFormat:@"<%@ : %p = %d @ %d bytes = %d [", [self class], self, count, definition.size, self.dataSize];
+	NSMutableString *dataDesc = [NSMutableString stringWithFormat:@"<%@ : %p = %d @ %d bytes = %d [\n", [self class], self, count, definition.size, self.dataSize];
 	
 	const NSUInteger maxDescription = 102;
 	
 	for (int i=0; i<count; i++) {
+		[dataDesc appendFormat:@"%d = ", i];
 		[dataDesc appendString:[definition descriptionOfData:[self pointerToStructureAtIndex:i]]];
 		[dataDesc appendString:@",\n"];
 		if (i > maxDescription) {
