@@ -257,7 +257,6 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 	void*					tempData;
 	BOOL					hasAlpha;
 	CGImageAlphaInfo		info;
-	CGAffineTransform		transform;
 	CGSize					imageSize;
 	WMTexture2DPixelFormat  pixelFormat;
 	int                     maxTextureSize = [self.context maxTextureSize];
@@ -265,17 +264,17 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 	
 	info = CGImageGetAlphaInfo(image);
 	hasAlpha = ((info == kCGImageAlphaPremultipliedLast) || (info == kCGImageAlphaPremultipliedFirst) || (info == kCGImageAlphaLast) || (info == kCGImageAlphaFirst) ? YES : NO);
-	if(CGImageGetColorSpace(image)) {
-		if(hasAlpha)
-			pixelFormat = kWMTexture2DPixelFormat_RGBA8888;
-		else
-			pixelFormat = kWMTexture2DPixelFormat_RGB565;
-	} else  //NOTE: No colorspace means a mask image
-		pixelFormat = kWMTexture2DPixelFormat_A8;
+//	if(CGImageGetColorSpace(image)) {
+//		if(hasAlpha)
+//			pixelFormat = kWMTexture2DPixelFormat_RGBA8888;
+//		else
+//			pixelFormat = kWMTexture2DPixelFormat_RGB565;
+//	} else  //NOTE: No colorspace means a mask image
+//		pixelFormat = kWMTexture2DPixelFormat_A8;
+	pixelFormat = kWMTexture2DPixelFormat_RGBA8888;
 	
 	
 	imageSize = CGSizeMake(CGImageGetWidth(image) * inScale, CGImageGetHeight(image) * inScale);
-	transform = CGAffineTransformIdentity;
 		
 	//Constrain loaded image into the maximum texture size
 	NSUInteger width = imageSize.width;
@@ -284,7 +283,6 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 	while((width > maxTextureSize) || (height > maxTextureSize)) {
 		width /= 2;
 		height /= 2;
-		transform = CGAffineTransformScale(transform, 0.5, 0.5);
 		imageSize.width *= 0.5;
 		imageSize.height *= 0.5;
 	}
@@ -318,9 +316,7 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 	CGContextClearRect(context, CGRectMake(0, 0, width, height));
 	CGContextTranslateCTM(context, 0, height - imageSize.height);
 	
-	if(!CGAffineTransformIsIdentity(transform))
-		CGContextConcatCTM(context, transform);
-	CGContextDrawImage(context, CGRectMake(0, 0, CGImageGetWidth(image), CGImageGetHeight(image)), image);
+	CGContextDrawImage(context, CGRectMake(0, 0, imageSize.width, imageSize.height), image);
 
 	if(pixelFormat == kWMTexture2DPixelFormat_RGB565) {
 		//Convert "RRRRRRRRRGGGGGGGGBBBBBBBBAAAAAAAA" to "RRRRRGGGGGGBBBBB"
