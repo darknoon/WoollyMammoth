@@ -336,8 +336,8 @@
 			ZAssert(elementBufferBinding == inObject.indexBuffer.bufferObject, @"Incorrect element buffer binding");
 		}
 #endif
-		
-		glDrawElements(inObject.renderType, last - first + 1, elementBufferType, 0x0 /*indicies from bound index buffer*/);
+		const void *offset = (void *)(first * inObject.indexBuffer.definition.size);
+		glDrawElements(inObject.renderType, last - first + 1, elementBufferType, offset /*indicies from bound index buffer*/);
 		GL_CHECK_ERROR;
 				
 	} else {
