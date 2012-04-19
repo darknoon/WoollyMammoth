@@ -13,19 +13,22 @@
 /* EAGL rendering API */
 enum
 {
-	kEAGLRenderingAPIOpenGLES1 = 1,
 	kEAGLRenderingAPIOpenGLES2 = 2
 };
-typedef NSUInteger EAGLRenderingAPI;
+typedef int EAGLRenderingAPI;
 
+@class EAGLSharegroup;
 
 @interface EAGLContext : NSOpenGLContext {
 	int simulatedAPI;
 }
 
 - (id)initWithAPI:(int)inSimulatedAPI;
+- (id)initWithAPI:(int)inSimulatedAPI sharegroup:(EAGLSharegroup *)sharegroup;
 
 @property (readonly) int API;
+
+@property (readonly) EAGLSharegroup *sharegroup;
 
 + (BOOL)setCurrentContext:(EAGLContext *)inCurrentContext;
 + (EAGLContext *)currentContext;

@@ -9,31 +9,59 @@
 #import "EAGLContextMac.h"
 
 
+@interface EAGLSharegroup 
+@property NSOpenGLContext *context;
+
+@end
+
+@implementation EAGLSharegroup
+@synthesize context = _context;
+@end
+
 @implementation EAGLContext
 
-@synthesize API = simulatedAPI;
+@synthesize API = _API;
+@synthesize sharegroup = _sharegroup;
 
 - (id)initWithAPI:(int)inSimulatedAPI;
 {
-	NSOpenGLPixelFormatAttribute attrs[] =
+	return [self initWithAPI:inSimulatedAPI sharegroup:nil];
+}
+
+- (id)initWithAPI:(int)inSimulatedAPI sharegroup:(EAGLSharegroup *)sharegroup;
+{
+    NSOpenGLPixelFormatAttribute attrs[] =
 	{
 		NSOpenGLPFADoubleBuffer,
-		NSOpenGLPFADepthSize, 32,
+		NSOpenGLPFADepthSize, 24,
+		// Must specify the 3.2 Core Profile to use OpenGL 3.2
+#if USE_MODERN_API 
+		NSOpenGLPFAOpenGLProfile,
+		NSOpenGLProfileVersion3_2Core,
+#endif
 		0
 	};
 	
-	NSOpenGLPixelFormat *format = [[[NSOpenGLPixelFormat alloc] initWithAttributes:attrs] autorelease];
-	self = [super initWithFormat:format shareContext:NULL];
-	if (!self) return nil;
 	
-	simulatedAPI = inSimulatedAPI;
+	NSOpenGLPixelFormat *pf = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
+	
+	if (!pf)
+	{
+		NSLog(@"No OpenGL pixel format");
+	}
+    
+	self = [super initWithFormat:pf shareContext:sharegroup.context];
+	if (!self) return nil;
+
+	_sharegroup = sharegroup;
+	_API = inSimulatedAPI;
 	
 	return self;
 }
 
-+ (BOOL)setCurrentContext:(EAGLContext *)inCurrentContext;
++ (BOOL)setCurrentContext:(EAGLContext *)context;
 {
-	[inCurrentContext makeCurrentContext];
+	[context makeCurrentContext];
 	return YES;
 }
 
@@ -43,3 +71,4 @@
 }
 
 @end
+

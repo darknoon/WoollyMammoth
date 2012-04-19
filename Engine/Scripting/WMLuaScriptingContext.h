@@ -46,3 +46,7 @@ enum {
 	//Error handling an error
 	WMLuaScriptingContextErrorError = LUA_ERRERR,
 };
+
+
+//PRIVATE
+int WMScriptingContextErrorHandler(lua_State *lua);

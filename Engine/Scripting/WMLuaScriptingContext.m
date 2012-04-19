@@ -5,8 +5,6 @@
 
 #import "WMLuaScriptingContext.h"
 
-#import "WMLuaBufferBridge.h"
-
 NSString *WMLuaScriptingContextErrorDomain = @"com.darknoon.wm.lua";
 
 @interface WMLuaScriptingContext () {	
@@ -48,7 +46,7 @@ static int WMScriptingContextPrint(lua_State *lua) {
 	return 0;
 }
 
-static int WMScriptingContextErrorHandler(lua_State *lua) {
+int WMScriptingContextErrorHandler(lua_State *lua) {
 	if (!lua_isstring(lua, 1))  /* 'message' not a string? */
 		return 1;  /* keep it intact */
 	lua_getfield(lua, LUA_GLOBALSINDEX, "debug");
@@ -64,6 +62,7 @@ static int WMScriptingContextErrorHandler(lua_State *lua) {
 	lua_pushvalue(lua, 1);  /* pass error message */
 	lua_pushinteger(lua, 2);  /* skip this function and traceback */
 	lua_call(lua, 2, 1);  /* call debug.traceback */
+	
 	return 1;
 }
 
@@ -87,8 +86,6 @@ static int WMScriptingContextErrorHandler(lua_State *lua) {
 	//TODO: convert this to use the registry instead!!
 	lua_pushnumber(lua, (int)self);
 	lua_setglobal(lua, "WMScriptingContext");
-	
-	WMLuaBufferBridge_register(lua);
 	
 	return self;
 }
@@ -136,6 +133,8 @@ static int WMScriptingContextErrorHandler(lua_State *lua) {
 		//Call inFunctionName() with no return args
 		lua_pcall(lua, 0, 0, -2);
 	}
+	
+	lua_pop(lua, 1);
 }
 
 - (void)outputLuaError:(int)status errString:(const char *)errString;
@@ -164,6 +163,7 @@ static int WMScriptingContextErrorHandler(lua_State *lua) {
 	if (status != 0) {
 		[self outputLuaError:status errString:lua_tostring(lua, -1)];
 	}
+	lua_pop(lua, 1);
 }
 
 - (void)collectGarbage;

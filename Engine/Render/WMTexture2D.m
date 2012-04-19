@@ -45,11 +45,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 */
 
-#if TARGET_OS_IPHONE
-#import <OpenGLES/ES2/glext.h>
-#else
-#import <OpenGL/glext.h>
-#endif
+#import "WMRenderCommon.h"
 
 #import "WMTexture2D.h"
 
@@ -139,7 +135,11 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 				break;
 			case kWMTexture2DPixelFormat_BGRA8888:
+#if GL_APPLE_texture_format_BGRA8888
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, data);
+#else
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+#endif
 				break;
 			case kWMTexture2DPixelFormat_RGB565:
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, data);

@@ -21,6 +21,10 @@
 #import "WMShader_WMEAGLContext_Private.h"
 #import "WMVertexArrayObject.h"
 
+#if TARGET_OS_IPHONE && GL_OES_vertex_array_object
+#define glBindVertexArray glBindVertexArrayOES
+#endif
+
 //TODO: where should this live?
 @interface WMShader (WMShader_Uniform_State)
 
@@ -241,7 +245,7 @@
 	//Bind it
 	if (![boundVAO isEqualToVertexArrayObject:inObject.vertexArrayObject]) {
 		boundVAO = inObject.vertexArrayObject;
-		glBindVertexArrayOES(inObject.vertexArrayObject.glObject);
+		glBindVertexArray(inObject.vertexArrayObject.glObject);
 		GL_CHECK_ERROR;
 	}
 
@@ -347,7 +351,7 @@
 	}
 	
 	//Unbind or can we leave it bound?
-	glBindVertexArrayOES(0);
+	glBindVertexArray(0);
 	boundVAO = 0;
 	
 	//TODO: unbind unused textures, but keep used ones bound?
@@ -521,7 +525,7 @@
 		//Bind it
 		if (![context->boundVAO isEqualToVertexArrayObject:self.vertexArrayObject]) {
 			context->boundVAO = self.vertexArrayObject;
-			glBindVertexArrayOES(self.vertexArrayObject.glObject);
+			glBindVertexArray(self.vertexArrayObject.glObject);
 			GL_CHECK_ERROR;
 		}
 		

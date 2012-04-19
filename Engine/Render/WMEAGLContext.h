@@ -5,8 +5,9 @@
 
 #import <Foundation/Foundation.h>
 
+#import "WMRenderCommon.h"
 #import "WMShader.h"
-#import <GLKit/GLKit.h>
+#import <GLKit/GLKMath.h>
 
 enum {
 	DNGLStateBlendEnabled = 1 << 0,

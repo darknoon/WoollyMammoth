@@ -31,26 +31,35 @@
 			return @"Incomplete attachment";
 		case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
 			return @"Missing attachment";
-		case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
-			return @"Incomplete Dimensions";
-		case GL_FRAMEBUFFER_UNSUPPORTED:
-			return @"Unsupported";
-		case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE_APPLE:
-			return @"Incomplete multisample";
 		case GL_FRAMEBUFFER_COMPLETE:
 			return @"Complete!";
 		default:
 			return @"??";
-	}
+
+			//These symbols are ES only (ios)
+#ifdef GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS
+		case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
+			return @"Incomplete Dimensions";
+#endif
+#ifdef GL_FRAMEBUFFER_UNSUPPORTED
+		case GL_FRAMEBUFFER_UNSUPPORTED:
+			return @"Unsupported";
+#endif
+#ifdef GL_APPLE_framebuffer_multisample
+		case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE_APPLE:
+			return @"Incomplete multisample";
+#endif
+			
+}
 }
 
 - (void)createAndAttachDepthBufferOfDepth:(GLuint)inDepthBufferDepth;
 {
 	if (inDepthBufferDepth > 0) {
 		//Create depth buffer
-		glGenRenderbuffersOES(1, &depthRenderbuffer);
-		glBindRenderbufferOES(GL_RENDERBUFFER_OES, depthRenderbuffer); 
-		glRenderbufferStorageOES(GL_RENDERBUFFER_OES, inDepthBufferDepth, framebufferWidth, framebufferHeight); 
+		glGenRenderbuffers(1, &depthRenderbuffer);	
+		glBindRenderbuffer(GL_RENDERBUFFER, depthRenderbuffer);
+		glRenderbufferStorage(GL_RENDERBUFFER, inDepthBufferDepth, framebufferWidth, framebufferHeight);
 		//Attach depth buffer
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
 	}	
@@ -100,6 +109,7 @@
 	return self;
 }
 
+#if TARGET_OS_IPHONE
 
 - (id)initWithLayerRenderbufferStorage:(CAEAGLLayer *)inLayer depthBufferDepth:(GLuint)inDepthBufferDepth;
 {
@@ -157,6 +167,21 @@
 	return [self initWithLayerRenderbufferStorage:inLayer depthBufferDepth:GL_DEPTH_COMPONENT16_OES];
 }
 
+#elif TARGET_OS_MAC
+
+- (id)initWithNSOpenGLContext:(NSOpenGLContext *)nsOGLContext;
+{
+	self = [super init];
+	if (!self) return nil;
+	
+	//yay, we're a fake framebuffer
+	
+	return self;
+
+}
+
+#endif
+
 - (void)deleteInternalState;
 {
 	if (framebufferObject)
@@ -186,6 +211,9 @@
 
 - (BOOL)presentRenderbuffer;
 {
+	
+#if TARGET_OS_IPHONE
+	
 	WMEAGLContext *context = (WMEAGLContext *)[EAGLContext currentContext];
 	
 	__block BOOL success = NO;
@@ -203,8 +231,11 @@
 		}
 
 	}];
-	
 	return success;
+
+#endif
+	
+	return 1;
 }
 
 - (void)setColorAttachmentWithTexture:(WMTexture2D *)inTexture;

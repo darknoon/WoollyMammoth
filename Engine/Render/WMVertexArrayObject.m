@@ -39,7 +39,11 @@
 	attributeLocations = [inAttributeLocations copy];
 	indexBuffer = inIndexBuffer;
 
+#if GL_OES_vertex_array_object
 	glGenVertexArraysOES(1, &vao);
+#else
+	glGenVertexArrays(1, &vao);
+#endif
 	ZAssert(vao, @"couldn't create vao");
 
 	return self;
@@ -47,7 +51,7 @@
 
 - (void)refreshGLObject;
 {
-#if DEBUG_OPENGL
+#if DEBUG_OPENGL && GL_OES_vertex_array_object
 	{
 		GLint oi;
 		glGetIntegerv(GL_VERTEX_ARRAY_BINDING_OES, &oi);
@@ -83,7 +87,11 @@
 - (void)deleteInternalState;
 {
 	if (vao) {
+#if GL_OES_vertex_array_object
 		glDeleteVertexArraysOES(1, &vao);
+#else
+		glDeleteVertexArrays(1, &vao);
+#endif
 	}
 }
 

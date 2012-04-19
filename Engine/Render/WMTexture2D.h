@@ -48,6 +48,10 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #import <Foundation/Foundation.h>
 #import "WMRenderCommon.h"
 
+#if TARGET_OS_MAC
+#import "WMCompatibilityMac.h"
+#endif
+
 #import "WMGLStateObject.h"
 
 //CONSTANTS:

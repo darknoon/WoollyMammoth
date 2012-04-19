@@ -10,6 +10,8 @@
 #elif TARGET_OS_MAC
 
 #import <OpenGL/OpenGL.h>
+#import <OpenGL/gl3.h>
+#import <OpenGL/gl3ext.h>
 #import "EAGLContextMac.h"
 
 #endif

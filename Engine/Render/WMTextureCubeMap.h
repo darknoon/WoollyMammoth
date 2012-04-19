@@ -10,6 +10,8 @@
 
 #import "WMTexture2D.h"
 
+#if TARGET_OS_IPHONE
+
 @interface WMTextureCubeMap : WMTexture2D {
 
 }
@@ -18,3 +20,5 @@
 - (id)initWithCubeMapImages:(NSArray *)inImages;
 
 @end
+
+#endif
