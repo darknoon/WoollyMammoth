@@ -108,16 +108,19 @@ Be aware that the content of the generated textures will be upside-down!
 @end
 
 
-#if TARGET_OS_IPHONE
 /*
 Extensions to make it easy to create a WMTexture2D object from an image file.
 Note that RGBA type textures will have their alpha premultiplied - use the blending mode (GL_ONE, GL_ONE_MINUS_SRC_ALPHA).
 */
 @interface WMTexture2D (Image)
+#if TARGET_OS_IPHONE
 - (id)initWithImage:(UIImage *)uiImage;
 - (id)initWithImage:(UIImage *)uiImage scale:(CGFloat)inScale;
+#endif
+- (id)initWithCGImage:(CGImageRef)image scale:(CGFloat)inScale orientation:(UIImageOrientation)inOrientation;
 @end
 
+#if TARGET_OS_IPHONE
 /*
 Extensions to make it easy to create a WMTexture2D object from a string of text.
 Note that the generated textures are of type A8 - use the blending mode (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA).

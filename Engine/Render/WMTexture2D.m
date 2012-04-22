@@ -232,14 +232,27 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 @end
 
 
-#if TARGET_OS_IPHONE
 
 
 @implementation WMTexture2D (Image)
 
+#if TARGET_OS_IPHONE
+
 - (id)initWithImage:(UIImage *)uiImage scale:(CGFloat)inScale
 {
-	CGImageRef image = [uiImage CGImage];
+	return [self initWithCGImage:uiImage.CGImage scale:inScale orientation:uiImage.imageOrientation];
+}
+
+
+- (id)initWithImage:(UIImage *)uiImage
+{
+	return [self initWithImage:uiImage scale:1.0f];
+}
+
+#endif
+
+- (id)initWithCGImage:(CGImageRef)image scale:(CGFloat)inScale orientation:(UIImageOrientation)inOrientation;
+{
 	
 	if(image == NULL) {
 		NSLog(@"Could not create texture: UIImage is null.");
@@ -247,6 +260,7 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 	}
 	
 	self = [self init];
+	if (!self) return nil;
 
 	[self createDefaultTexture];
 
@@ -332,7 +346,7 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 		data = tempData;
 	}
 	
-	[self setData:data pixelFormat:pixelFormat pixelsWide:width pixelsHigh:height contentSize:imageSize orientation:uiImage.imageOrientation];
+	[self setData:data pixelFormat:pixelFormat pixelsWide:width pixelsHigh:height contentSize:imageSize orientation:inOrientation];
 	
 	CGContextRelease(context);
 	free(data);
@@ -340,17 +354,15 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 	return self;
 }
 
-- (id)initWithImage:(UIImage *)uiImage
-{
-	return [self initWithImage:uiImage scale:1.0f];
-}
 
 @end
 
 
 @implementation WMTexture2D (Text)
 
-- (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions alignment:(UITextAlignment)alignment fontName:(NSString*)name fontSize:(CGFloat)size
+#if TARGET_OS_IPHONE
+
+- (id)initWithString:(NSString*)string dimensions:(CGSize)dimensions alignment:(UITextAlignment)alignment fontName:(NSString*)name fontSize:(CGFloat)size
 {
 	NSUInteger				width,
 							height,
@@ -398,6 +410,7 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 	return self;
 }
 
+#endif
+
 @end
 
-#endif
