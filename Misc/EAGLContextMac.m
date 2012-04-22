@@ -67,7 +67,7 @@
 
 + (EAGLContext *)currentContext;
 {
-	return [EAGLContext currentContext];
+	return (EAGLContext *)[NSOpenGLContext currentContext];
 }
 
 @end
