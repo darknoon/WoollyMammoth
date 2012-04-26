@@ -135,20 +135,41 @@ NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
 {
 	if (!inSourceString) inSourceString = @"";
 	NSMutableString *defsString = [NSMutableString stringWithCapacity:inSourceString.length + 100];
-
+	
+	//Split off any existing #version xxxx so we don't put our custom definitions before it...
+	__block NSString *versionString = @"";
+	__block NSString *sourceString = inSourceString;
+	
+	NSError *regexError = nil;
+	NSRegularExpression *versionRegex = [[NSRegularExpression alloc] initWithPattern:@"#version [0-9;]*" options:NSRegularExpressionAnchorsMatchLines error:&regexError];
+	[versionRegex enumerateMatchesInString:inSourceString options:NSMatchingAnchored range:(NSRange){.length = 50} usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+		NSRange matchedRange = result.range;
+		versionString = [sourceString substringWithRange:matchedRange];
+		sourceString = [sourceString substringFromIndex:matchedRange.length];
+		*stop = YES;
+	}];
+	
 	NSDictionary *defs = [NSDictionary dictionaryWithObjectsAndKeys:
 						  @"1", (type == GL_VERTEX_SHADER) ? @"VERTEX_SHADER" : @"FRAGMENT_SHADER",
-						  @"1", @"TARGET_OS_IPHONE", nil];
+#if TARGET_OS_IPHONE
+						  @"1", @"TARGET_OS_IPHONE",
+						  @"0", @"TARGET_OS_MAC",
+#elif TARGET_OS_MAC
+						  @"0", @"TARGET_OS_IPHONE",
+						  @"1", @"TARGET_OS_MAC",
+#endif
+						  nil];
 	[defs enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 		[defsString appendFormat:@"#define %@ %@\n", key, obj];
 	}];
 	
+	NSString *finalString = [[NSString alloc] initWithFormat:@"%@\n%@\n%@", versionString, defsString, sourceString];
 	
     GLint status;
-    const GLchar *glstrs[] = {[defsString UTF8String], [inSourceString UTF8String]};
+    const GLchar *glstrs[] = {[finalString UTF8String]};
 	
     *shader = glCreateShader(type);
-    glShaderSource(*shader, 2, glstrs, NULL);
+    glShaderSource(*shader, sizeof(glstrs) / sizeof(GLchar **), glstrs, NULL);
     glCompileShader(*shader);
         
     glGetShaderiv(*shader, GL_COMPILE_STATUS, &status);
@@ -268,7 +289,7 @@ NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
 	
 	// Attach fragment shader to program.
 	glAttachShader(program, fragShader);
-	
+		
 	// Link program.
 	if (![self linkProgram:program error:&error])
 	{
