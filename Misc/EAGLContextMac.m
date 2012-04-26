@@ -9,14 +9,16 @@
 #import "EAGLContextMac.h"
 
 
-@interface EAGLSharegroup 
-@property NSOpenGLContext *context;
+@interface EAGLSharegroup : NSObject
+@property (nonatomic, weak) NSOpenGLContext *context;
 
 @end
 
 @implementation EAGLSharegroup
 @synthesize context = _context;
 @end
+
+
 
 @implementation EAGLContext
 
@@ -35,10 +37,8 @@
 		NSOpenGLPFADoubleBuffer,
 		NSOpenGLPFADepthSize, 24,
 		// Must specify the 3.2 Core Profile to use OpenGL 3.2
-#if USE_MODERN_API 
 		NSOpenGLPFAOpenGLProfile,
 		NSOpenGLProfileVersion3_2Core,
-#endif
 		0
 	};
 	
@@ -54,6 +54,11 @@
 	if (!self) return nil;
 
 	_sharegroup = sharegroup;
+	if (!_sharegroup) {
+		_sharegroup = [[EAGLSharegroup alloc] init];
+		_sharegroup.context = self;
+	}
+	
 	_API = inSimulatedAPI;
 	
 	return self;
