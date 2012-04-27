@@ -61,10 +61,13 @@
 - (void)_displayLinkCallback:(CADisplayLink *)displayLink;
 {
 	//dispatch_sync to ensure that callbacks don't back up in the queue
-	dispatch_sync(_targetQueue, ^{
+	if (dispatch_get_current_queue() != _targetQueue) {
+		dispatch_sync(_targetQueue, ^{
+			_callback(displayLink.timestamp, displayLink.duration);
+		});
+	} else {
 		_callback(displayLink.timestamp, displayLink.duration);
-	});
-	
+	}
 }
 
 - (void)invalidate;
