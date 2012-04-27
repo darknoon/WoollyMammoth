@@ -8,11 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "WMRenderCommon.h"
+#import "WMGLStateObject.h"
 
-//ASSUME: Shader must be used in only one GL context.
-
-@interface WMShader : NSObject
+@interface WMShader : WMGLStateObject
 //TODO: - (id)initWithDualShaderText:(NSString *)inString;
 
 - (id)initWithVertexShader:(NSString *)inVertexShader fragmentShader:(NSString *)inPixelShader error:(NSError **)outError;
@@ -22,6 +20,8 @@
 
 //Is this program configured correctly for drawing?
 - (BOOL)validateProgram;
+//TODO:
+- (BOOL)validateProgramWithError:(NSError *)errorDescription;
 
 //TODO: @property (nonatomic) BOOL vertexShaderCompatibleWithPointRendering;
 
