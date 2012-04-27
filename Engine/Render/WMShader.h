@@ -20,8 +20,7 @@
 
 //Is this program configured correctly for drawing?
 - (BOOL)validateProgram;
-//TODO:
-- (BOOL)validateProgramWithError:(NSError *)errorDescription;
+//TODO:- (BOOL)validateProgramWithError:(NSError *)errorDescription;
 
 //TODO: @property (nonatomic) BOOL vertexShaderCompatibleWithPointRendering;
 
