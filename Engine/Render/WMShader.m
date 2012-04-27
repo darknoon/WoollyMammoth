@@ -152,10 +152,9 @@ NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
 	//If no version specified, use the runtime's version
 	
 	if (!versionString) {
-		float glLanguageVersion;
+		float glLanguageVersion = 1.0f;
 		
-		//TODO: review this code more
-		
+		//TODO: make sure a version is actually found!
 #ifdef GL_ES_VERSION_2_0
 		sscanf((char *)glGetString(GL_SHADING_LANGUAGE_VERSION), "OpenGL ES GLSL ES %f", &glLanguageVersion);
 #else
