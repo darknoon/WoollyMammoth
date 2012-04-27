@@ -137,7 +137,7 @@ NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
 	NSMutableString *defsString = [NSMutableString stringWithCapacity:inSourceString.length + 100];
 	
 	//Split off any existing #version xxxx so we don't put our custom definitions before it...
-	__block NSString *versionString = @"";
+	__block NSString *versionString = nil;
 	__block NSString *sourceString = inSourceString;
 	
 	NSError *regexError = nil;
@@ -148,6 +148,29 @@ NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
 		sourceString = [sourceString substringFromIndex:matchedRange.length];
 		*stop = YES;
 	}];
+	
+	//If no version specified, use the runtime's version
+	
+	if (!versionString) {
+		float glLanguageVersion;
+		
+		//TODO: review this code more
+		
+#ifdef GL_ES_VERSION_2_0
+		sscanf((char *)glGetString(GL_SHADING_LANGUAGE_VERSION), "OpenGL ES GLSL ES %f", &glLanguageVersion);
+#else
+		sscanf((char *)glGetString(GL_SHADING_LANGUAGE_VERSION), "%f", &glLanguageVersion);	
+#endif
+		
+		// GL_SHADING_LANGUAGE_VERSION returns the version standard version form 
+		//  with decimals, but the GLSL version preprocessor directive simply
+		//  uses integers (thus 1.10 should 110 and 1.40 should be 140, etc.)
+		//  We multiply the floating point number by 100 to get a proper
+		//  number for the GLSL preprocessor directive
+		GLuint version = 100 * glLanguageVersion;
+		
+		versionString = [[NSString alloc] initWithFormat:@"#version %u", version];
+	}
 	
 	NSDictionary *defs = [NSDictionary dictionaryWithObjectsAndKeys:
 						  @"1", (type == GL_VERTEX_SHADER) ? @"VERTEX_SHADER" : @"FRAGMENT_SHADER",
