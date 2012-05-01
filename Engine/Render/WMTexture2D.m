@@ -193,9 +193,11 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 - (void)moveToContext:(WMEAGLContext *)inContext;
 {
 	if (inContext.sharegroup == self.context.sharegroup) {
+		[EAGLContext setCurrentContext:self.context];
 		if (self.context) {		
 			[self.context forgetTexture2DName:_name];
 		}
+		glFlush();
 		self.context = inContext;
 	} else {
 		DLog(@"Cannot move texture %@ to context %@ because they do not have the same sharegroup!");
