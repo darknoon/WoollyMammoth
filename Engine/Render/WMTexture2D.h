@@ -48,7 +48,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #import <Foundation/Foundation.h>
 #import "WMRenderCommon.h"
 
-#if TARGET_OS_MAC
+#if !TARGET_OS_IPHONE
 #import "WMCompatibilityMac.h"
 #endif
 
