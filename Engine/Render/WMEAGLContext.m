@@ -318,14 +318,13 @@
 	self.blendState = inObject.renderBlendState;
 	self.depthState = inObject.renderDepthState;
 	
-	NSInteger first = inObject.renderRange.location;
-	NSInteger last = NSMaxRange(inObject.renderRange);
 	
 	GL_CHECK_ERROR;
 
 	
 	if (inObject.indexBuffer) {
-		last = MIN(last, (NSInteger)inObject.indexBuffer.count - 1);
+		NSRange safeRange = inObject.renderRange;
+		safeRange.length = MIN(safeRange.length, inObject.indexBuffer.count - safeRange.location);
 		
 		//Get element buffer type
 		WMStructureField f;
@@ -340,13 +339,17 @@
 			ZAssert(elementBufferBinding == inObject.indexBuffer.bufferObject, @"Incorrect element buffer binding");
 		}
 #endif
-		const void *offset = (void *)(first * inObject.indexBuffer.definition.size);
-		glDrawElements(inObject.renderType, last - first + 1, elementBufferType, offset /*indicies from bound index buffer*/);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, inObject.indexBuffer.bufferObject);
+		
+		const void *offset = (void *)(safeRange.location * inObject.indexBuffer.definition.size);
+		glDrawElements(inObject.renderType, safeRange.length, elementBufferType, offset /*indicies from bound index buffer*/);
 		GL_CHECK_ERROR;
 				
 	} else {
-		last = MIN(last, inObject.vertexBuffer.count - 1);
-		glDrawArrays(inObject.renderType, first, last - first + 1);
+		NSRange safeRange = inObject.renderRange;
+		safeRange.length = MIN(safeRange.length, inObject.vertexBuffer.count - safeRange.location);
+
+		glDrawArrays(inObject.renderType, safeRange.location, safeRange.length);
 		
 	}
 	
