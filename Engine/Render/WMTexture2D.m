@@ -233,7 +233,39 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 
 @end
 
+@implementation WMTexture2D (CGBitmapContext)
 
+- (id)initWithBitmapSize:(CGSize)size block:(void(^)(CGContextRef ctx))block;
+{
+	self = [self init];
+	if (!self) return nil;
+
+	[self createDefaultTexture];
+	
+	ZAssert(self.context, @"Weird! No context in which to create texture!");
+	
+	int width = floorf(size.width), height = floorf(size.height);
+	
+	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+	
+	void *data = malloc(height * width * 4);
+	CGContextRef context = CGBitmapContextCreate(data, width, height, 8, 4 * width, colorSpace, kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big);
+	CGContextSetFillColorSpace(context, colorSpace);
+	CGContextSetStrokeColorSpace(context, colorSpace);
+	CGColorSpaceRelease(colorSpace);
+	
+	CGContextClearRect(context, (CGRect){.size = size});
+	block(context);
+	CGContextRelease(context);
+	
+	[self setData:data pixelFormat:kWMTexture2DPixelFormat_RGBA8888 pixelsWide:width pixelsHigh:height contentSize:size orientation:UIImageOrientationUp];
+
+	free(data);
+	
+	return self;
+}
+
+@end
 
 
 @implementation WMTexture2D (Image)

@@ -107,6 +107,12 @@ Be aware that the content of the generated textures will be upside-down!
 - (id)initWithContentsOfFile:(NSString *)inFilePath;
 @end
 
+@interface WMTexture2D (CGBitmapContext)
+//For now, this is restricted to kWMTexture2DPixelFormat_BGRA8888
+//Use this to draw arbitrary CPU graphics into a texture
+- (id)initWithBitmapSize:(CGSize)size block:(void(^)(CGContextRef ctx))block;
+@end
+
 
 /*
 Extensions to make it easy to create a WMTexture2D object from an image file.
