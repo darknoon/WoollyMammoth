@@ -44,6 +44,9 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 
 - (void)dealloc
 {
+	CVDisplayLinkRelease(_displayLink);
+	_displayLink = nil;
+
 	dispatch_release(_targetQueue);
 }
 
