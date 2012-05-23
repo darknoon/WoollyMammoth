@@ -12,10 +12,12 @@
 #import "WMRenderCommon.h"
 #import "WMGLStateObject.h"
 
-//Represents a contiguous buffer with associated type information about its contents.
+//WMStructuredBuffer Represents a contiguous buffer with associated type information about its contents.
 //Generally, something like array{{float position[4], char color[4]}, {float position[4], char color[4]}, ... count - 1 }
+//May be resident on the GPU as a Vertex Array Object (VAO), but this state is private to the render system.
+//Generally, upload occurs when you use one of these to render.
 
-@interface WMStructuredBuffer : WMGLStateObject
+@interface WMStructuredBuffer : WMGLStateObject <NSCopying>
 
 - (id)initWithDefinition:(WMStructureDefinition *)inDefinition;
 

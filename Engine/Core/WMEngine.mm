@@ -217,9 +217,16 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 			//TODO: keep a record of what connections are connected to what ports for efficency here
 			//Find a connection to this input port
 			WMConnection *connection = [self connectionToInputPort:inputPort ofNode:patch inParent:inPatch];
-			if (!connection) continue;
+			if (!connection) {
+				inputPort.connectedPort = nil;
+				if (inputPort.isInputValueTransient) {
+					inputPort.objectValue = nil;
+				}
+				continue;
+			}
 			WMPatch *sourcePatch = [inPatch patchWithKey:connection.sourceNode];
 			WMPort *sourcePort = [sourcePatch outputPortWithKey:connection.sourcePort];
+			inputPort.connectedPort = sourcePort;
 			[inputPort takeValueFromPort:sourcePort];
 		}
 

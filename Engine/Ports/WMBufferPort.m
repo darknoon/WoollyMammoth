@@ -30,6 +30,11 @@
 	return NO;
 }
 
+- (BOOL)isInputValueTransient;
+{
+	return YES;
+}
+
 - (BOOL)setObjectValue:(id)inRuntimeValue;
 {
 	if ([inRuntimeValue isKindOfClass:[WMStructuredBuffer class]]) {

@@ -14,6 +14,6 @@
 	WMRenderObjectPort *inputRenderable3;
 	WMRenderObjectPort *inputRenderable4;
 }
-//TODO: add inputs as inputs are connected to
+//TODO: add inputs as inputs are connected to this patch
 
 @end

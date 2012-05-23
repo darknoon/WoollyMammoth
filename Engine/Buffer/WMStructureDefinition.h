@@ -33,7 +33,7 @@ typedef struct {
 	WMStructureType type;  //The underlying data type of the data GLKVector3 = WMStructureTypeFloat
 	unsigned int count;    //The count of this underlying type    GLKVector3 = 3
 	size_t offset;         //The offset in the input data. If you have a c struct, use offsetof(struct, name) to get this
-	BOOL normalized;       //Normalized = map the interval 0..<maximum of this type> to 0..1 Used to pack eg a texture coord into a byte
+	BOOL normalized;       //Normalized = map the interval [<minimum of this type>, <maximum of this type>] to [0, 1]. For example, a texture coord can be packed into a byte
 } WMStructureField;
 
 //Size of the data backing this field ie 4 x float = 4 x 4 bytes = 16

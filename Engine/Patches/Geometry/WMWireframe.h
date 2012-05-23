@@ -8,6 +8,11 @@
 
 #import "WMPatch.h"
 
+
 @interface WMWireframe : WMPatch
+
+@property (nonatomic, strong, readonly) WMRenderObjectPort *inputObject;
+
+@property (nonatomic, strong, readonly) WMRenderObjectPort *outputObject;
 
 @end

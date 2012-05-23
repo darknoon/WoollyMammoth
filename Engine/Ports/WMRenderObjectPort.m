@@ -26,9 +26,14 @@
 	return NO;
 }
 
+- (BOOL)isInputValueTransient;
+{
+	return YES;
+}
+
 - (BOOL)setObjectValue:(id)inRuntimeValue;
 {
-	if ([inRuntimeValue isKindOfClass:[WMRenderObject class]]) {
+	if (!inRuntimeValue || [inRuntimeValue isKindOfClass:[WMRenderObject class]]) {
 		self.object = inRuntimeValue;
 		return YES;
 	}

@@ -13,6 +13,7 @@
 @synthesize key;
 @synthesize name;
 @synthesize originalPort;
+@synthesize connectedPort;
 
 + (id)portWithKey:(NSString *)inKey;
 {
@@ -52,6 +53,11 @@
 	return YES;
 }
 
+- (BOOL)isInputValueTransient;
+{
+	return NO;
+}
+
 - (BOOL)canTakeValueFromPort:(WMPort *)inPort;
 {
 	return [[inPort class] isEqual:[self class]];
@@ -60,7 +66,7 @@
 - (NSString *)description;
 {
 	NSString *origStr = originalPort ? [NSString stringWithFormat:@" orig:%@", originalPort.name] : @"";
-	return [NSString stringWithFormat:@"<%@ : %p>{key: %@, state:%@%@}", NSStringFromClass([self class]), self, self.key, [self stateValue], origStr];
+	return [NSString stringWithFormat:@"<%@ : %p>{key: %@, object:%@ state:%@%@}", NSStringFromClass([self class]), self, self.key, self.objectValue, self.stateValue, origStr];
 }
 
 @end

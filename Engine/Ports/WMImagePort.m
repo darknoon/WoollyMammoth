@@ -24,6 +24,25 @@
 	return NO;
 }
 
+- (BOOL)isInputValueTransient;
+{
+	return YES;
+}
+
+- (BOOL)setObjectValue:(id)inRuntimeValue;
+{
+	if (!inRuntimeValue || [inRuntimeValue isKindOfClass:[WMTexture2D class]]) {
+		self.image = inRuntimeValue;
+		return YES;
+	}
+	return NO;
+}
+
+- (id)objectValue;
+{
+	return image;
+}
+
 - (BOOL)takeValueFromPort:(WMPort *)inPort;
 {
 	if ([inPort isKindOfClass:[WMImagePort class]]) {
