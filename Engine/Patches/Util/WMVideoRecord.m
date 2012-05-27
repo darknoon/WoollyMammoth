@@ -361,7 +361,10 @@ bail:
 		}
 		
 		GLKMatrix4 transform = [WMEngine cameraMatrixWithRect:(CGRect){.size.width = videoDimensions.width, .size.height = videoDimensions.height}];
-
+		
+		//Invert y-axis
+		transform = GLKMatrix4Scale(transform, 1.0f, -1.0f, 1.0f);
+		
 		if (inputRenderable1.object) {
 			[self renderObject:inputRenderable1.object withTransform:transform inContext:context];
 		}
@@ -377,7 +380,7 @@ bail:
 
 	}];
 	
-	//glFinish();
+	glFinish();
 	
 	//Write out sample buffer
 	
@@ -387,7 +390,7 @@ bail:
 	
 	[framebuffer setColorAttachmentWithTexture:nil];
 	
-	currentTexture.orientation = UIImageOrientationUpMirrored;
+	currentTexture.orientation = UIImageOrientationUp;
 	outputImage.image = currentTexture;
 	
 	CVOpenGLESTextureCacheFlush(textureCache, 0);
