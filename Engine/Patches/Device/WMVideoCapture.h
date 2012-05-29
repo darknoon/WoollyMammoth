@@ -25,12 +25,13 @@
 
 @interface WMVideoCapture : WMPatch
 #if TARGET_OS_EMBEDDED
-<AVCaptureVideoDataOutputSampleBufferDelegate> 
+<AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate> 
 #endif
 {
 	WMBooleanPort *inputCapture;
 	
 	WMImagePort *outputImage;
+	WMAudioPort *outputAudio;
 }
 
 @property (nonatomic, readonly) BOOL capturing;

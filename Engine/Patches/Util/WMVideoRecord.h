@@ -21,6 +21,8 @@
 //	WMIndexPort *inputWidth;
 //	WMIndexPort *inputHeight;
 	
+	WMAudioPort *inputAudio;
+	
 	WMBooleanPort *outputRecording;
 	WMBooleanPort *outputSaving;
 	

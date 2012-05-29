@@ -300,6 +300,8 @@
 		49F0597B13D15F640056C506 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49F0597913D15F640056C506 /* InfoPlist.strings */; };
 		49F0597E13D15F640056C506 /* WMEditTests.h in Resources */ = {isa = PBXBuildFile; fileRef = 49F0597D13D15F640056C506 /* WMEditTests.h */; };
 		49F0598013D15F640056C506 /* WMEditTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F0597F13D15F640056C506 /* WMEditTests.m */; };
+		49F638C5157414AF00BA9C39 /* WMAudioPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F638C4157414AF00BA9C39 /* WMAudioPort.m */; };
+		49F638CA15741AD000BA9C39 /* WMAudioBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F638C915741AD000BA9C39 /* WMAudioBuffer.m */; };
 		49F8A94513E69778000D4A3A /* WMImageLoaderSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F8A94313E69778000D4A3A /* WMImageLoaderSettingsController.m */; };
 		49F8A94613E69778000D4A3A /* WMImageLoaderSettingsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49F8A94413E69778000D4A3A /* WMImageLoaderSettingsController.xib */; };
 		B43F38BD13D358B4004A6A47 /* missing_effect_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B43F38BC13D358B4004A6A47 /* missing_effect_thumb.jpg */; };
@@ -734,6 +736,10 @@
 		49F0597F13D15F640056C506 /* WMEditTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WMEditTests.m; sourceTree = "<group>"; };
 		49F425B413EE07D00093EE5F /* WMTexture2D_WMEAGLContext_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMTexture2D_WMEAGLContext_Private.h; sourceTree = "<group>"; };
 		49F425BA13EE14B40093EE5F /* WMTexture2D_RenderPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMTexture2D_RenderPrivate.h; sourceTree = "<group>"; };
+		49F638C3157414AF00BA9C39 /* WMAudioPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMAudioPort.h; sourceTree = "<group>"; };
+		49F638C4157414AF00BA9C39 /* WMAudioPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMAudioPort.m; sourceTree = "<group>"; };
+		49F638C815741AD000BA9C39 /* WMAudioBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMAudioBuffer.h; sourceTree = "<group>"; };
+		49F638C915741AD000BA9C39 /* WMAudioBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMAudioBuffer.m; sourceTree = "<group>"; };
 		49F8A94213E69778000D4A3A /* WMImageLoaderSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMImageLoaderSettingsController.h; sourceTree = "<group>"; };
 		49F8A94313E69778000D4A3A /* WMImageLoaderSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMImageLoaderSettingsController.m; sourceTree = "<group>"; };
 		49F8A94413E69778000D4A3A /* WMImageLoaderSettingsController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMImageLoaderSettingsController.xib; sourceTree = "<group>"; };
@@ -920,6 +926,7 @@
 		49858DBF13DE4C1F0061A1A8 /* Engine */ = {
 			isa = PBXGroup;
 			children = (
+				49F638C715741AAD00BA9C39 /* Audio */,
 				49858DC513DE4C1F0061A1A8 /* Core */,
 				4917AC9A13F9C722008AD2CB /* Bundle */,
 				49858DD013DE4C1F0061A1A8 /* Patches */,
@@ -1063,6 +1070,8 @@
 				49B3DB4C13E10F03002DC713 /* WMRenderObjectPort.m */,
 				496AF5F6144A127600082FBD /* WMBufferPort.h */,
 				496AF5F7144A127600082FBD /* WMBufferPort.m */,
+				49F638C3157414AF00BA9C39 /* WMAudioPort.h */,
+				49F638C4157414AF00BA9C39 /* WMAudioPort.m */,
 			);
 			path = Ports;
 			sourceTree = "<group>";
@@ -1665,6 +1674,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		49F638C715741AAD00BA9C39 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				49F638C815741AD000BA9C39 /* WMAudioBuffer.h */,
+				49F638C915741AD000BA9C39 /* WMAudioBuffer.m */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2071,6 +2089,8 @@
 				499C9176156C7D6100EC8895 /* NSString+URLEncoding.m in Sources */,
 				499C9177156C7D6100EC8895 /* SimplexNoise.c in Sources */,
 				499C9178156C7D6100EC8895 /* WMMathUtil.c in Sources */,
+				49F638C5157414AF00BA9C39 /* WMAudioPort.m in Sources */,
+				49F638CA15741AD000BA9C39 /* WMAudioBuffer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -15,6 +15,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "WMEngine.h"
 #import "WMRenderObject.h"
+#import "WMAudioBuffer.h"
 
 static CVPixelBufferPoolRef CreatePixelBufferPool( int32_t width, int32_t height, OSType pixelFormat);
 static CVPixelBufferPoolRef CreatePixelBufferPool( int32_t width, int32_t height, OSType pixelFormat)
@@ -72,6 +73,7 @@ static CVPixelBufferPoolRef CreatePixelBufferPool( int32_t width, int32_t height
 	BOOL                        _writingDidStart;        
 	AVAssetWriter               *_assetWriter;
 	AVAssetWriterInput          *_assetWriterVideoInput;
+	AVAssetWriterInput          *_assetWriterAudioInput;
 }
 @synthesize writing = _writing;
 @synthesize savingToPhotos;
@@ -105,7 +107,6 @@ static CVPixelBufferPoolRef CreatePixelBufferPool( int32_t width, int32_t height
 
 - (BOOL)createVideoAssetWriter 
 {
-	BOOL succeeded = NO; 
 	NSURL *fileURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), @"WMVideoRecord.mov"] isDirectory:NO];
 	[self removeFileURL:fileURL];
 	NSLog(@"fileURL %@", fileURL);
@@ -115,7 +116,8 @@ static CVPixelBufferPoolRef CreatePixelBufferPool( int32_t width, int32_t height
 		NSLog(@"Couldn't create AVAssetWriter (%@ %@)", error, [error userInfo]);
 		goto bail;
 	}
-
+	
+	//Video output setting / creation
 	{
 		
 		int bitsPerSecond = 1312500 * 8;
@@ -145,21 +147,47 @@ static CVPixelBufferPoolRef CreatePixelBufferPool( int32_t width, int32_t height
 			NSLog(@"Couldn't apply video output settings.");
 			goto bail;
 		}
-		if ([_assetWriter canAddInput:_assetWriterVideoInput])
+		if ([_assetWriter canAddInput:_assetWriterVideoInput]) {
 			[_assetWriter addInput:_assetWriterVideoInput];
-		else {
+		} else {
 			NSLog(@"Couldn't add video asset writer input.");
 			goto bail;
 		}    
 	}
 	
-	succeeded = YES; 
-bail:
-	if (!succeeded) {
-		_assetWriter = nil;
-		_assetWriterVideoInput = nil; 
+	{
+		double preferredHardwareSampleRate = [[AVAudioSession sharedInstance] currentHardwareSampleRate];
+		
+		AudioChannelLayout acl;
+		bzero( &acl, sizeof(acl));
+		acl.mChannelLayoutTag = kAudioChannelLayoutTag_Mono;
+		
+		NSDictionary *audioCompressionSettings = [NSDictionary dictionaryWithObjectsAndKeys:
+												  [ NSNumber numberWithInt: kAudioFormatMPEG4AAC], AVFormatIDKey,
+												  [ NSNumber numberWithInt: 1 ], AVNumberOfChannelsKey,
+												  [ NSNumber numberWithFloat: preferredHardwareSampleRate ], AVSampleRateKey,
+												  [ NSData dataWithBytes: &acl length: sizeof( acl ) ], AVChannelLayoutKey,
+												  //[ NSNumber numberWithInt:AVAudioQualityLow], AVEncoderAudioQualityKey,
+												  [ NSNumber numberWithInt: 64000 ], AVEncoderBitRateKey,
+												  nil];
+
+		_assetWriterAudioInput = [[AVAssetWriterInput alloc] initWithMediaType:AVMediaTypeAudio outputSettings:audioCompressionSettings];
+		if ([_assetWriter canAddInput:_assetWriterAudioInput]) {
+			[_assetWriter addInput:_assetWriterAudioInput];
+		} else {
+			NSLog(@"Couldn't add audio asset writer input.");
+			goto bail;
+		}    
+
 	}
-	return succeeded;
+	
+	return YES;
+	
+bail:
+	_assetWriter = nil;
+	_assetWriterVideoInput = nil; 
+	_assetWriterAudioInput = nil;
+	return NO;
 }
 
 - (void)startWriting 
@@ -178,8 +206,8 @@ bail:
         if (self.writing) {   
             NSURL *fileURL = [_assetWriter outputURL];
             BOOL success = [_assetWriter finishWriting];
-            NSLog(@"finishWriting %d", success);
-            NSLog(@"fileURL %@", fileURL);
+            DLog(@"finishWriting %d", success);
+            DLog(@"fileURL %@", fileURL);
             if (success) {
                 ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
                 if ([library videoAtPathIsCompatibleWithSavedPhotosAlbum:fileURL]) {
@@ -187,23 +215,24 @@ bail:
                     [library writeVideoAtPathToSavedPhotosAlbum:fileURL
                                                 completionBlock:^(NSURL *assetURL, NSError *error){
                                                     if (error) {
-                                                        NSLog(@"Error: %@ %@", error, [error userInfo]);
-                                                    } 
-                                                    else {
-                                                        NSLog(@"Video saved to photos: %@", assetURL);
+                                                        DLog(@"Error: %@ %@", error, [error userInfo]);
+                                                    } else {
+                                                        DLog(@"Video saved to photos: %@", assetURL);
                                                     }
 													self.savingToPhotos = NO;													 
                                                 }];
-                }
+                } else {
+					DLog(@"Created a video not compatible with the photo library :(");
+				}
             }
             else {
-                NSLog(@"finishWriting failed");
+                DLog(@"finishWriting failed");
             }   
             
             _assetWriter = nil;
             _assetWriterVideoInput = nil;  
 			self.writing = NO;
-        }	                
+        }
     });
 }
 
@@ -218,6 +247,7 @@ bail:
             
             _assetWriter = nil;
             _assetWriterVideoInput = nil;
+			_assetWriterAudioInput = nil;
             
             self.writing = NO; 
         }
@@ -279,7 +309,6 @@ bail:
 }
 
 
-
 - (BOOL)setup:(WMEAGLContext *)context;
 {
 	videoDimensions.width = 480;
@@ -312,7 +341,10 @@ bail:
 
 	if (textureCache) CFRelease(textureCache);
 	
-	dispatch_release(videoProcessingQueue);
+	if (videoProcessingQueue) {
+		dispatch_release(videoProcessingQueue);
+		videoProcessingQueue = NULL;
+	}
 }
 
 
@@ -385,7 +417,29 @@ bail:
 	//Write out sample buffer
 	
 	if (shouldBeWriting) {
-		[self appendBufferToAssetWriterInput:destPixelBuffer forTime:CMTimeMake(time * 1000000000, 1000000000)];
+		CMTime timeStamp = CMTimeMake(time * 1000000000, 1000000000);
+		if (inputAudio.objectValue) {
+			WMAudioBuffer *firstAudioBuffer = (WMAudioBuffer *)inputAudio.objectValue;
+			CMSampleBufferRef sampleBuffer = (__bridge CMSampleBufferRef)[firstAudioBuffer.sampleBuffers objectAtIndex:0];
+			timeStamp = CMSampleBufferGetPresentationTimeStamp( sampleBuffer );
+		}
+		
+		dispatch_sync(videoProcessingQueue, ^{
+			[self appendBufferToAssetWriterInput:destPixelBuffer forTime:timeStamp];
+			
+			if (inputAudio.objectValue) {
+				for (id sampleBuffer in ((WMAudioBuffer *)inputAudio.objectValue).sampleBuffers) {
+					if (_assetWriterAudioInput.readyForMoreMediaData) {       
+						[_assetWriterAudioInput appendSampleBuffer:(__bridge CMSampleBufferRef)sampleBuffer];
+					} else {
+						NSLog(@"Dropping audio data");
+					}
+				}
+			}
+
+		});
+		
+		
 	}
 	
 	[framebuffer setColorAttachmentWithTexture:nil];

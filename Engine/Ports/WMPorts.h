@@ -16,3 +16,4 @@
 #import "WMVectorPort.h"
 #import "WMRenderObjectPort.h"
 #import "WMBufferPort.h"
+#import "WMAudioPort.h"

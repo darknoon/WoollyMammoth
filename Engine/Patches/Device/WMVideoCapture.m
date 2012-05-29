@@ -15,8 +15,11 @@
 #import "WMTexture2D.h"
 #import "WMCVTexture2D.h"
 
+#import "WMAudioBuffer.h"
+
 #import "WMBooleanPort.h"
 #import "WMImagePort.h"
+#import "WMAudioPort.h"
 
 //For the interfaceOrientation argument
 #import "WMEngine.h"
@@ -28,17 +31,25 @@
 	
 	UIImageOrientation currentVideoOrientation;
 	
+	//TODO: yeah, this is dumb, use the camera as an event source and only process each frame once...
 	WMTexture2D *mostRecentTexture;
-
+	WMAudioBuffer *mostRecentAudioBuffer;
+	
+	
 #if TARGET_OS_EMBEDDED
 	
 	dispatch_queue_t videoCaptureQueue;
-	
+	dispatch_queue_t audioCaptureQueue;
 
 	AVCaptureSession *captureSession;
-	AVCaptureInput  *captureInput;
-	AVCaptureVideoDataOutput  *dataOutput;
+	AVCaptureInput *captureVideoInput;
+	AVCaptureInput *captureAudioInput;
+
 	AVCaptureDevice *cameraDevice;
+	AVCaptureDevice *microphoneDevice;
+
+	AVCaptureVideoDataOutput *videoDataOutput;
+	AVCaptureAudioDataOutput *audioDataOutput;
 	
 	CVOpenGLESTextureCacheRef textureCache;
 #else			
@@ -82,10 +93,12 @@
 	GL_CHECK_ERROR;
 	
 #if TARGET_OS_EMBEDDED
-	NSString *str = [NSString stringWithFormat:@"com.darknoon.%@.videoCaptureQueue", [self class]];
-	videoCaptureQueue = dispatch_queue_create([str UTF8String], DISPATCH_QUEUE_SERIAL);
+	videoCaptureQueue = dispatch_queue_create([[NSString stringWithFormat:@"com.darknoon.%@.videoCaptureQueue", [self class]] UTF8String], DISPATCH_QUEUE_SERIAL);
 	dispatch_set_target_queue(videoCaptureQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0));
-
+	
+	audioCaptureQueue = dispatch_queue_create([[NSString stringWithFormat:@"com.darknoon.%@.audioCaptureQueue", [self class]] UTF8String], DISPATCH_QUEUE_SERIAL);
+	dispatch_set_target_queue(audioCaptureQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0));
+	
 	CVReturn result = CVOpenGLESTextureCacheCreate(NULL, NULL, (__bridge void *)context, NULL, &textureCache);
 	if (result != kCVReturnSuccess) {
 		NSLog(@"Error creating CVOpenGLESTextureCache");
@@ -103,6 +116,9 @@
 	if (videoCaptureQueue)
 		dispatch_release(videoCaptureQueue);
 	videoCaptureQueue = NULL;
+	if (audioCaptureQueue)
+		dispatch_release(audioCaptureQueue);
+	audioCaptureQueue = NULL;
 #endif
 	
 	mostRecentTexture = nil;
@@ -138,32 +154,51 @@
 		}
 	}
 	
-	captureInput = [[AVCaptureDeviceInput alloc] initWithDevice:cameraDevice error:&error];
+	microphoneDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio];
+	if (!microphoneDevice) {
+		NSLog(@"Error getting microphone. Continuing...");
+	}
 	
-	if (!captureInput) {
-		NSLog(@"Error making an input from device. %@", error);
+	captureVideoInput = [[AVCaptureDeviceInput alloc] initWithDevice:cameraDevice error:&error];
+	if (!captureVideoInput) {
+		NSLog(@"Error making a video input from device. %@", error);
 		return;
 	}
 	
-	dataOutput = [[AVCaptureVideoDataOutput alloc] init];
-	DLog(@"Capture pixel formats in order of decreasing efficency: %@", [[dataOutput availableVideoCVPixelFormatTypes] componentsJoinedByString:@", "]);
+	captureAudioInput = [[AVCaptureDeviceInput alloc] initWithDevice:microphoneDevice error:&error];
+	if (!captureAudioInput) {
+		NSLog(@"Error making an audio input from device. %@", error);
+		return;
+	}
 	
-	if (!dataOutput) {
-		NSLog(@"Error making output.");
+	videoDataOutput = [[AVCaptureVideoDataOutput alloc] init];
+	DLog(@"Capture pixel formats in order of decreasing efficency: %@", [[videoDataOutput availableVideoCVPixelFormatTypes] componentsJoinedByString:@", "]);
+	
+	if (!videoDataOutput) {
+		NSLog(@"Error making video output.");
 		return;
 	}
 	NSDictionary* videoSettings = [NSDictionary dictionaryWithObjectsAndKeys:
 								   [NSNumber numberWithUnsignedInt:kCVPixelFormatType_32BGRA], (id)kCVPixelBufferPixelFormatTypeKey,
 								   [NSNumber numberWithBool:YES], (id)kCVPixelBufferOpenGLCompatibilityKey, nil];
 	
-	[dataOutput setVideoSettings:videoSettings];	
-	[dataOutput setAlwaysDiscardsLateVideoFrames:YES];
+	[videoDataOutput setVideoSettings:videoSettings];	
+	[videoDataOutput setAlwaysDiscardsLateVideoFrames:YES];
 	//1.0 / 60.0 seconds
-
-	[dataOutput setSampleBufferDelegate:self queue:videoCaptureQueue];
 	
-	[captureSession addInput:captureInput];
-	[captureSession addOutput:dataOutput];
+	[videoDataOutput setSampleBufferDelegate:self queue:videoCaptureQueue];
+	
+	audioDataOutput = [[AVCaptureAudioDataOutput alloc] init];
+	[audioDataOutput setSampleBufferDelegate:self queue:audioCaptureQueue];
+	if (!audioDataOutput) {
+		NSLog(@"Error making audio output.");
+		return;
+	}
+
+	[captureSession addInput:captureVideoInput];
+	[captureSession addInput:captureAudioInput];
+	[captureSession addOutput:videoDataOutput];
+	[captureSession addOutput:audioDataOutput];
 	[captureSession startRunning];
 #else
 	if (!simulatorDebugTimer)
@@ -179,8 +214,8 @@
 #if TARGET_OS_EMBEDDED
 	[captureSession stopRunning];
 	captureSession = nil;
-	captureInput = nil;
-	dataOutput = nil;
+	captureVideoInput = nil;
+	videoDataOutput = nil;
 	cameraDevice = nil;
 	
 	mostRecentTexture = nil;
@@ -201,42 +236,51 @@
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput  didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer 
 	   fromConnection:(AVCaptureConnection *)connection;
-{	
-	
+{		
 	dispatch_sync(dispatch_get_main_queue(), ^{
 		if (capturing) {
-			//Get buffer info
-			CVPixelBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
 			
+			if (captureOutput == audioDataOutput) {
+				
+				mostRecentAudioBuffer = mostRecentAudioBuffer ? [mostRecentAudioBuffer bufferByAppendingSampleBuffer:sampleBuffer] : [[WMAudioBuffer alloc] initWithCMSampleBuffer:sampleBuffer];
+				
+			} else if (captureOutput == videoDataOutput) {
+				//Get buffer info
+				CVPixelBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+				
 #if 0
-			NSDictionary *dict = (__bridge_transfer NSDictionary *)CMCopyDictionaryOfAttachments(kCFAllocatorDefault, sampleBuffer, kCMAttachmentMode_ShouldPropagate);
-			
-			CMSampleTimingInfo timing;
-			CMSampleBufferGetSampleTimingInfo(sampleBuffer, 0, &timing);
-			
-			NSLog(@"sample attachments: %@", dict);
+				NSDictionary *dict = (__bridge_transfer NSDictionary *)CMCopyDictionaryOfAttachments(kCFAllocatorDefault, sampleBuffer, kCMAttachmentMode_ShouldPropagate);
+				
+				CMSampleTimingInfo timing;
+				CMSampleBufferGetSampleTimingInfo(sampleBuffer, 0, &timing);
+				
+				NSLog(@"sample attachments: %@", dict);
 #endif
-			
-			//NSLog(@"Is ready: %@ samples:%uld sampleSize:%d width:%d height:%d bytes/row:%d baseAddr:%x", ready ? @"Y" : @"N", numsamples, sampleSize, width, height, bytesPerRow, baseAddress);
-			
-			//Copy buffer contents into vram
-			GL_CHECK_ERROR;
-			//[textures[currentTexture] setData:baseAddress pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height} orientation:currentVideoOrientation];
-			
-			//Create a BGRA texture
-			
-			WMCVTexture2D *texture = [[WMCVTexture2D alloc] initWithCVImageBuffer:imageBuffer inTextureCache:textureCache format:kWMTexture2DPixelFormat_BGRA8888];
-			texture.orientation = currentVideoOrientation;
-			
-			GL_CHECK_ERROR;
-			
-			//TODO: Pass this texture back to main thread from bg thread.
-			mostRecentTexture = texture;
-			
-			GL_CHECK_ERROR;
-		}
+				
+				//NSLog(@"Is ready: %@ samples:%uld sampleSize:%d width:%d height:%d bytes/row:%d baseAddr:%x", ready ? @"Y" : @"N", numsamples, sampleSize, width, height, bytesPerRow, baseAddress);
+				
+				//Copy buffer contents into vram
+				GL_CHECK_ERROR;
+				//[textures[currentTexture] setData:baseAddress pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height} orientation:currentVideoOrientation];
+				
+				//Create a BGRA texture
+				
+				WMCVTexture2D *texture = [[WMCVTexture2D alloc] initWithCVImageBuffer:imageBuffer inTextureCache:textureCache format:kWMTexture2DPixelFormat_BGRA8888];
+				texture.orientation = currentVideoOrientation;
+				
+				GL_CHECK_ERROR;
+				
+				//TODO: Pass this texture back to main thread from bg thread.
+				mostRecentTexture = texture;
+				
+				GL_CHECK_ERROR;
+			}
+
+			}
+
 	});
 }
+
 #else
 
 - (void)simulatorUploadTexture;
@@ -280,26 +324,53 @@
 	
 	UIInterfaceOrientation interfaceOrientation = [[args objectForKey:WMEngineArgumentsInterfaceOrientationKey] intValue];
 	
-	if (useFrontCamera) {
-		//TODO: this :)
-	} else {
-		//TODO: determine the correct values here
-		switch (interfaceOrientation) {
-			case UIInterfaceOrientationPortrait:
-				currentVideoOrientation = UIImageOrientationLeft;
-				break;
-			case UIInterfaceOrientationPortraitUpsideDown:
-				currentVideoOrientation = UIImageOrientationRight;
-				break;
-			case UIInterfaceOrientationLandscapeLeft:
-				currentVideoOrientation = UIImageOrientationDown;
-				break;
-			case UIInterfaceOrientationLandscapeRight:
-				currentVideoOrientation = UIImageOrientationUp;
-				break;
-			default:
-				break;
+	BOOL isPhone = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone;
+	
+	if (isPhone) {
+		if (useFrontCamera) {
+			//TODO: this :)
+		} else {
+			//TODO: determine the correct values here
+			switch (interfaceOrientation) {
+				case UIInterfaceOrientationPortrait:
+					currentVideoOrientation = UIImageOrientationLeft;
+					break;
+				case UIInterfaceOrientationPortraitUpsideDown:
+					currentVideoOrientation = UIImageOrientationRight;
+					break;
+				case UIInterfaceOrientationLandscapeLeft:
+					currentVideoOrientation = UIImageOrientationDown;
+					break;
+				case UIInterfaceOrientationLandscapeRight:
+					currentVideoOrientation = UIImageOrientationUp;
+					break;
+				default:
+					break;
+			}
 		}
+	} else {
+		if (useFrontCamera) {
+			//TODO: this :)
+		} else {
+			//TODO: determine the correct values here
+			switch (interfaceOrientation) {
+				case UIInterfaceOrientationPortrait:
+					currentVideoOrientation = UIImageOrientationLeft;
+					break;
+				case UIInterfaceOrientationPortraitUpsideDown:
+					currentVideoOrientation = UIImageOrientationRight;
+					break;
+				case UIInterfaceOrientationLandscapeLeft:
+					currentVideoOrientation = UIImageOrientationDown;
+					break;
+				case UIInterfaceOrientationLandscapeRight:
+					currentVideoOrientation = UIImageOrientationUp;
+					break;
+				default:
+					break;
+			}
+		}
+		
 	}
 	
 	if (!capturing && inputCapture.value) {
@@ -310,6 +381,8 @@
 	}
 	
 	outputImage.image = [self getVideoTexture];
+	outputAudio.objectValue = mostRecentAudioBuffer;
+	mostRecentAudioBuffer = nil;
 	
 	GL_CHECK_ERROR;
 	
