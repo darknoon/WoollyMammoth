@@ -74,6 +74,9 @@
 	
 	WMTexture2D *texture = [context renderToTextureWithWidth:renderWidth height:renderHeight depthBufferDepth:useDepthBuffer ? GL_DEPTH_COMPONENT16 : 0 block:^{
 		GLKMatrix4 transform = [WMEngine cameraMatrixWithRect:(CGRect){0, 0, renderWidth, renderHeight}];
+		
+		//Invert y-axis
+		transform = GLKMatrix4Scale(transform, 1.0f, -1.0f, 1.0f);
 
 		[context clearToColor:inputClearColor.v];
 		[context clearDepth];
@@ -92,7 +95,7 @@
 		}
 
 	}];
-	texture.orientation = UIImageOrientationDownMirrored;
+	texture.orientation = UIImageOrientationUp;
 	outputImage.image = texture;
 	
 	return YES;
