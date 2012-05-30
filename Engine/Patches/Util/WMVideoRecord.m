@@ -172,6 +172,7 @@ static CVPixelBufferPoolRef CreatePixelBufferPool( int32_t width, int32_t height
 												  nil];
 
 		_assetWriterAudioInput = [[AVAssetWriterInput alloc] initWithMediaType:AVMediaTypeAudio outputSettings:audioCompressionSettings];
+		_assetWriterAudioInput.expectsMediaDataInRealTime = YES;
 		if ([_assetWriter canAddInput:_assetWriterAudioInput]) {
 			[_assetWriter addInput:_assetWriterAudioInput];
 		} else {
@@ -200,14 +201,37 @@ bail:
     });
 }
 
+NSString *writerStatus(AVAssetWriterStatus status)
+{
+	switch (status) {
+		default:
+		case AVAssetWriterStatusUnknown:
+			return @"unknown";
+		case AVAssetWriterStatusWriting:
+			return @"writing";
+		case AVAssetWriterStatusCompleted:
+			return @"completed";
+		case AVAssetWriterStatusFailed:
+			return @"failed";
+		case AVAssetWriterStatusCancelled:
+			return @"cancelled";
+	}
+}
+
 - (void)stopWriting 
 {
     dispatch_sync(videoProcessingQueue, ^{
         if (self.writing) {   
             NSURL *fileURL = [_assetWriter outputURL];
-            BOOL success = [_assetWriter finishWriting];
-            DLog(@"finishWriting %d", success);
-            DLog(@"fileURL %@", fileURL);
+
+            DLog(@"before finishWriting status: %@", writerStatus(_assetWriter.status));
+            
+			BOOL success = [_assetWriter finishWriting];
+			
+			//TODO: dispatch_async to another queue and save to photos in the background?
+            DLog(@"after finishWriting status: %@", writerStatus(_assetWriter.status));
+			
+            //DLog(@"fileURL %@", fileURL);
             if (success) {
                 ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
                 if ([library videoAtPathIsCompatibleWithSavedPhotosAlbum:fileURL]) {
@@ -226,7 +250,8 @@ bail:
 				}
             }
             else {
-                DLog(@"finishWriting failed");
+				NSError *error = _assetWriter.error;
+                DLog(@"finishWriting failed with error: %@", error);
             }   
             
             _assetWriter = nil;
@@ -254,25 +279,41 @@ bail:
     });
 }
 
+- (BOOL)startSessionIfNeededAtTime:(CMTime)time;
+{
+	if (!_writingDidStart) {
+		BOOL success = [_assetWriter startWriting];
+		if (success) {
+			[_assetWriter startSessionAtSourceTime:time];
+			_writingDidStart = YES;
+			return YES;
+		} else {
+			NSLog(@"startWriting failed");
+			return NO;
+		}
+	} else {
+		return YES;
+	}
+}
 
-- (BOOL)appendBufferToAssetWriterInput:(CVImageBufferRef)pixelBuffer forTime:(CMTime)inTime
+- (BOOL)appendAudioBufferToAssetWriterInput:(CMSampleBufferRef)audioBuffer forTime:(CMTime)inTime;
+{
+	BOOL success = [self startSessionIfNeededAtTime:inTime];
+	
+	if (_assetWriterAudioInput.readyForMoreMediaData) {       
+		[_assetWriterAudioInput appendSampleBuffer:audioBuffer];
+	} else {
+		NSLog(@"Dropping audio");
+	}
+	return success;
+}
+
+- (BOOL)appendVideoBufferToAssetWriterInput:(CVImageBufferRef)pixelBuffer forTime:(CMTime)inTime;
 {
 	BOOL success = NO;
 	CMSampleBufferRef resultBuffer = NULL;
 	CMFormatDescriptionRef formatDescription = NULL;    
 	
-	
-	if (!_writingDidStart) {
-		success = [_assetWriter startWriting];
-		if (success) {
-			[_assetWriter startSessionAtSourceTime:inTime];
-			_writingDidStart = YES;
-		}
-		else {
-			NSLog(@"appendVideoToAssetWriterInput, startWriting failed");
-			goto bail;
-		}
-	}
 	if (_assetWriterVideoInput.readyForMoreMediaData) {       
 		
 		OSStatus status = CMVideoFormatDescriptionCreateForImageBuffer(kCFAllocatorDefault, pixelBuffer, &formatDescription);
@@ -298,7 +339,8 @@ bail:
 		NSLog(@"appendVideoToAssetWriterInput, readyForMoreMediaData NO.");
 		success = YES; // Not ready
 	}
-bail:    
+	
+bail: 
 	if (resultBuffer) {
 		CFRelease(resultBuffer);
 	}
@@ -417,7 +459,8 @@ bail:
 	//Write out sample buffer
 	
 	if (shouldBeWriting) {
-		CMTime timeStamp = CMTimeMake(time * 1000000000, 1000000000);
+		CMTime timeStamp = kCMTimeInvalid;
+		
 		if (inputAudio.objectValue) {
 			WMAudioBuffer *firstAudioBuffer = (WMAudioBuffer *)inputAudio.objectValue;
 			CMSampleBufferRef sampleBuffer = (__bridge CMSampleBufferRef)[firstAudioBuffer.sampleBuffers objectAtIndex:0];
@@ -425,14 +468,29 @@ bail:
 		}
 		
 		dispatch_sync(videoProcessingQueue, ^{
-			[self appendBufferToAssetWriterInput:destPixelBuffer forTime:timeStamp];
 			
+			BOOL success = [self startSessionIfNeededAtTime:timeStamp];
+			
+#if 0
+			//A bug was causing audio packets to be written twiec
+			NSMutableString *audioPacketPtrList = [[NSMutableString alloc] init];
 			if (inputAudio.objectValue) {
 				for (id sampleBuffer in ((WMAudioBuffer *)inputAudio.objectValue).sampleBuffers) {
-					if (_assetWriterAudioInput.readyForMoreMediaData) {       
-						[_assetWriterAudioInput appendSampleBuffer:(__bridge CMSampleBufferRef)sampleBuffer];
-					} else {
-						NSLog(@"Dropping audio data");
+					[audioPacketPtrList appendFormat:@"%p, ", sampleBuffer];
+				}
+			}
+			DLog(@"assetWriter: %@ time:%lf.3 valid:%d audioPackets:%@", writerStatus(_assetWriter.status), CMTimeGetSeconds(timeStamp), CMTIME_IS_VALID(timeStamp), audioPacketPtrList);
+#endif
+			
+
+			if (success && CMTIME_IS_VALID(timeStamp)) {
+				
+				[self appendVideoBufferToAssetWriterInput:destPixelBuffer forTime:timeStamp];
+				
+				if (inputAudio.objectValue) {
+					for (id sampleBuffer in ((WMAudioBuffer *)inputAudio.objectValue).sampleBuffers) {
+						CMSampleBufferRef sbref = (__bridge CMSampleBufferRef)sampleBuffer;
+						[self appendAudioBufferToAssetWriterInput:sbref forTime:CMSampleBufferGetOutputPresentationTimeStamp(sbref)];
 					}
 				}
 			}

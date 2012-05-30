@@ -45,7 +45,7 @@
 - (BOOL)takeValueFromPort:(WMPort *)inPort;
 {
 	id value = inPort.objectValue;
-	if ([value isKindOfClass:WMAudioBuffer.class]) {
+	if (!value || [value isKindOfClass:WMAudioBuffer.class]) {
 		self.objectValue = inPort.objectValue;
 		return YES;		
 	} else {
