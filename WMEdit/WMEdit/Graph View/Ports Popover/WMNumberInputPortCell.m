@@ -42,7 +42,7 @@
 		textField.text = [formatter stringFromNumber:[[NSNumber alloc] initWithFloat:port.value]];
 	} else if (sender == textField) {
 		//Validate input value
-		float value = [(UISlider *)sender value];
+		float value = [(UITextField *)sender text].floatValue;
 		value = MAX(port.minValue, MIN(value, port.maxValue));
 		[port setValue:value];
 		valueSlider.value = value;

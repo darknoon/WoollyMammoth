@@ -302,6 +302,8 @@
 		49F0598013D15F640056C506 /* WMEditTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F0597F13D15F640056C506 /* WMEditTests.m */; };
 		49F638C5157414AF00BA9C39 /* WMAudioPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F638C4157414AF00BA9C39 /* WMAudioPort.m */; };
 		49F638CA15741AD000BA9C39 /* WMAudioBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F638C915741AD000BA9C39 /* WMAudioBuffer.m */; };
+		49F638D115742B3900BA9C39 /* WMBooleanInputPortCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F638CF15742B3800BA9C39 /* WMBooleanInputPortCell.m */; };
+		49F638D215742B3900BA9C39 /* WMBooleanInputPortCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49F638D015742B3900BA9C39 /* WMBooleanInputPortCell.xib */; };
 		49F8A94513E69778000D4A3A /* WMImageLoaderSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F8A94313E69778000D4A3A /* WMImageLoaderSettingsController.m */; };
 		49F8A94613E69778000D4A3A /* WMImageLoaderSettingsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49F8A94413E69778000D4A3A /* WMImageLoaderSettingsController.xib */; };
 		B43F38BD13D358B4004A6A47 /* missing_effect_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B43F38BC13D358B4004A6A47 /* missing_effect_thumb.jpg */; };
@@ -740,6 +742,9 @@
 		49F638C4157414AF00BA9C39 /* WMAudioPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMAudioPort.m; sourceTree = "<group>"; };
 		49F638C815741AD000BA9C39 /* WMAudioBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMAudioBuffer.h; sourceTree = "<group>"; };
 		49F638C915741AD000BA9C39 /* WMAudioBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMAudioBuffer.m; sourceTree = "<group>"; };
+		49F638CE15742B3800BA9C39 /* WMBooleanInputPortCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMBooleanInputPortCell.h; sourceTree = "<group>"; };
+		49F638CF15742B3800BA9C39 /* WMBooleanInputPortCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMBooleanInputPortCell.m; sourceTree = "<group>"; };
+		49F638D015742B3900BA9C39 /* WMBooleanInputPortCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMBooleanInputPortCell.xib; sourceTree = "<group>"; };
 		49F8A94213E69778000D4A3A /* WMImageLoaderSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMImageLoaderSettingsController.h; sourceTree = "<group>"; };
 		49F8A94313E69778000D4A3A /* WMImageLoaderSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMImageLoaderSettingsController.m; sourceTree = "<group>"; };
 		49F8A94413E69778000D4A3A /* WMImageLoaderSettingsController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMImageLoaderSettingsController.xib; sourceTree = "<group>"; };
@@ -1326,6 +1331,9 @@
 		498DDEED13DF57FD00D10642 /* Ports Popover */ = {
 			isa = PBXGroup;
 			children = (
+				49F638CE15742B3800BA9C39 /* WMBooleanInputPortCell.h */,
+				49F638CF15742B3800BA9C39 /* WMBooleanInputPortCell.m */,
+				49F638D015742B3900BA9C39 /* WMBooleanInputPortCell.xib */,
 				498DDEEE13DF584000D10642 /* WMCustomPopover.h */,
 				498DDEEF13DF584000D10642 /* WMCustomPopover.m */,
 				498DDEF413DF5BCB00D10642 /* WMCustomPopoverView.h */,
@@ -1839,6 +1847,7 @@
 				491C1CCF1454735000554C73 /* popoverArrowUp.png in Resources */,
 				491C1CD01454735000554C73 /* popoverArrowUp@2x.png in Resources */,
 				491C1CD11454735000554C73 /* popoverArrowUpSimple.png in Resources */,
+				49F638D215742B3900BA9C39 /* WMBooleanInputPortCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2091,6 +2100,7 @@
 				499C9178156C7D6100EC8895 /* WMMathUtil.c in Sources */,
 				49F638C5157414AF00BA9C39 /* WMAudioPort.m in Sources */,
 				49F638CA15741AD000BA9C39 /* WMAudioBuffer.m in Sources */,
+				49F638D115742B3900BA9C39 /* WMBooleanInputPortCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
