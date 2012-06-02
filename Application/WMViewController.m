@@ -244,6 +244,11 @@
     }
 }
 
+- (UIInterfaceOrientation)renderOrientation;
+{
+	return self.interfaceOrientation;
+}
+
 - (void)drawFrame
 {
 	[engine.renderContext renderToFramebuffer:eaglView.framebuffer block:^{
