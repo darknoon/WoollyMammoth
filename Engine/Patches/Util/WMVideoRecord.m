@@ -88,9 +88,9 @@ static CVPixelBufferPoolRef CreatePixelBufferPool( int32_t width, int32_t height
 + (id)defaultValueForInputPortKey:(NSString *)inKey;
 {
 	if ([inKey isEqualToString:@"inputWidth"]) {
-		return [NSNumber numberWithUnsignedInt:1024];
+		return [NSNumber numberWithUnsignedInt:640];
 	} else if ([inKey isEqualToString:@"inputHeight"]) {
-		return [NSNumber numberWithUnsignedInt:768];
+		return [NSNumber numberWithUnsignedInt:480];
 	}
 	return [super defaultValueForInputPortKey:inKey];
 }
@@ -119,6 +119,8 @@ static CVPixelBufferPoolRef CreatePixelBufferPool( int32_t width, int32_t height
 	
 	//Video output setting / creation
 	{
+		
+		//TODO: pick better encoding settings
 		
 		int bitsPerSecond = 1312500 * 8;
 		if (videoDimensions.width <= 192 && videoDimensions.height <= 144)
@@ -352,14 +354,7 @@ bail:
 
 
 - (BOOL)setup:(WMEAGLContext *)context;
-{
-	videoDimensions.width = 480;
-	videoDimensions.height = 640;
-	videoBufferPool = CreatePixelBufferPool(videoDimensions.width, videoDimensions.height, kCVPixelFormatType_32BGRA);
-    if (!videoBufferPool) {
-        NSLog(@"Couldn't create a pixel buffer pool.");
-        return NO;
-    }
+{	
 	CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, (__bridge void *)context, NULL, &textureCache);
 	if (err != kCVReturnSuccess) {
 		NSLog(@"Couldn't create texture cache for writing video file");
@@ -396,11 +391,40 @@ bail:
 	[inContext renderObject:inObject];
 }
 
+- (BOOL)recreatePixelBufferPool;
+{
+	if (videoBufferPool) {
+		CVPixelBufferPoolRelease(videoBufferPool);
+		videoBufferPool = NULL;
+	}
+	
+	NSLog(@"recreating pixel buffer pool width:%d height:%d", videoDimensions.width, videoDimensions.height);
+	
+	videoBufferPool = CreatePixelBufferPool(videoDimensions.width, videoDimensions.height, kCVPixelFormatType_32BGRA);
+	if (!videoBufferPool) {
+		NSLog(@"Couldn't create a pixel buffer pool.");
+		return NO;
+	}
+	return YES;
+}
+
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
-	//TODO: If output dimensions change, cancel read and re-create
+	
+	//Use output dimensions from last time we weren't writing
 	
 	BOOL shouldBeWriting = inputShouldRecord.value;
+	
+	if (!self.writing) {
+		
+		//If dimensions changed, recreate video buffer pool
+		if (videoDimensions.width != inputWidth.index || videoDimensions.height != inputHeight.index) {
+			videoDimensions.width  = inputWidth.index;
+			videoDimensions.height = inputHeight.index;
+
+			[self recreatePixelBufferPool];
+		}
+	}
 	
 	if (shouldBeWriting && !self.writing && !self.savingToPhotos) {
 		NSLog(@"Attempting to create asset writer.");
@@ -408,6 +432,7 @@ bail:
 	} else if (!shouldBeWriting && self.writing) {
 		[self stopWriting];
 	}
+	
 	
 	CVPixelBufferRef destPixelBuffer = NULL;
 	CVReturn err = CVPixelBufferPoolCreatePixelBuffer(kCFAllocatorDefault, videoBufferPool, &destPixelBuffer);
@@ -436,8 +461,41 @@ bail:
 		
 		GLKMatrix4 transform = [WMEngine cameraMatrixWithRect:(CGRect){.size.width = videoDimensions.width, .size.height = videoDimensions.height}];
 		
-		//Invert y-axis
+		
+		switch (inputOrientation.index) {
+			default:
+			case UIImageOrientationUp:
+				break;
+			case UIImageOrientationUpMirrored:
+				//Flip x
+				transform = GLKMatrix4Scale(transform, -1.0f, 1.0f, 1.0f);
+				break;
+			case UIImageOrientationDown:
+				transform = GLKMatrix4Scale(transform, -1.0f, -1.0f, 1.0f);
+				break;
+			case UIImageOrientationDownMirrored:
+				transform = GLKMatrix4Scale(transform, 1.0f, -1.0f, 1.0f);
+				break;
+			case UIImageOrientationLeft:
+				//Rotate 90° ccw
+				transform = GLKMatrix4RotateZ(transform, -M_PI_2);
+				break;
+			case UIImageOrientationLeftMirrored:
+				transform = GLKMatrix4RotateZ(transform, -M_PI_2);
+				transform = GLKMatrix4Scale(transform, -1.0f, 1.0f, 1.0f);
+				break;
+			case UIImageOrientationRight:
+				transform = GLKMatrix4RotateZ(transform, M_PI_2);
+				break;
+			case UIImageOrientationRightMirrored:
+				transform = GLKMatrix4RotateZ(transform, M_PI_2);
+				transform = GLKMatrix4Scale(transform, -1.0f, 1.0f, 1.0f);
+				break;
+		}
+
+		//Invert y-axis to account for different GL/CV coordinates
 		transform = GLKMatrix4Scale(transform, 1.0f, -1.0f, 1.0f);
+
 		
 		if (inputRenderable1.object) {
 			[self renderObject:inputRenderable1.object withTransform:transform inContext:context];
@@ -468,6 +526,8 @@ bail:
 		}
 		
 		dispatch_sync(videoProcessingQueue, ^{
+			
+			if (!CMTIME_IS_VALID(timeStamp)) return;
 			
 			BOOL success = [self startSessionIfNeededAtTime:timeStamp];
 			
@@ -502,7 +562,7 @@ bail:
 	
 	[framebuffer setColorAttachmentWithTexture:nil];
 	
-	currentTexture.orientation = UIImageOrientationUp;
+	currentTexture.orientation = inputOrientation.index;
 	outputImage.image = currentTexture;
 	
 	CVOpenGLESTextureCacheFlush(textureCache, 0);

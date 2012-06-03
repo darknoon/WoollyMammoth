@@ -18,8 +18,10 @@
 	
 	WMBooleanPort *inputShouldRecord;
 	
-//	WMIndexPort *inputWidth;
-//	WMIndexPort *inputHeight;
+	WMIndexPort *inputWidth;
+	WMIndexPort *inputHeight;
+	//This will determine the orientation at which the video should be recorded
+	WMIndexPort *inputOrientation;
 	
 	WMAudioPort *inputAudio;
 	
