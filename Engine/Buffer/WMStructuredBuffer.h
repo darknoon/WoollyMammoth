@@ -17,7 +17,7 @@
 //May be resident on the GPU as a Vertex Array Object (VAO), but this state is private to the render system.
 //Generally, upload occurs when you use one of these to render.
 
-@interface WMStructuredBuffer : WMGLStateObject <NSCopying>
+@interface WMStructuredBuffer : WMGLStateObject
 
 - (id)initWithDefinition:(WMStructureDefinition *)inDefinition;
 
