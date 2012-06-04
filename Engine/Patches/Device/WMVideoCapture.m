@@ -258,26 +258,21 @@
 #endif
 				
 				//NSLog(@"Is ready: %@ samples:%uld sampleSize:%d width:%d height:%d bytes/row:%d baseAddr:%x", ready ? @"Y" : @"N", numsamples, sampleSize, width, height, bytesPerRow, baseAddress);
-				
-				//Copy buffer contents into vram
+
 				GL_CHECK_ERROR;
-				//[textures[currentTexture] setData:baseAddress pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height} orientation:currentVideoOrientation];
-				
-				//Create a BGRA texture
 				
 				WMCVTexture2D *texture = [[WMCVTexture2D alloc] initWithCVImageBuffer:imageBuffer inTextureCache:textureCache format:kWMTexture2DPixelFormat_BGRA8888];
 				texture.orientation = currentVideoOrientation;
 				
 				GL_CHECK_ERROR;
 				
-				//TODO: Pass this texture back to main thread from bg thread.
 				mostRecentTexture = texture;
 				
 				GL_CHECK_ERROR;
 			}
-
-			}
-
+			
+		}
+		
 	});
 }
 
