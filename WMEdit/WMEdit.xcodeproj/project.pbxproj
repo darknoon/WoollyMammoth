@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		07C99A9113D38E8B00712EFA /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 07C99A9013D38E8B00712EFA /* Icon-72.png */; };
+		4905F12C157D729600488306 /* DNKaleidoscopeGeometryVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4905F127157D729600488306 /* DNKaleidoscopeGeometryVariable.m */; };
+		4905F12D157D729600488306 /* DNTriangleTriangleClip.m in Sources */ = {isa = PBXBuildFile; fileRef = 4905F129157D729600488306 /* DNTriangleTriangleClip.m */; };
+		4905F12E157D729600488306 /* WMEightfoldTilePatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 4905F12B157D729600488306 /* WMEightfoldTilePatch.m */; };
 		490AC1E713D8F10F005E61CD /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 490AC1E613D8F10F005E61CD /* GLKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		49174AAC13D235BD008B5B8D /* DNAssertionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174AA413D235BD008B5B8D /* DNAssertionHandler.m */; };
 		49174AAD13D235BD008B5B8D /* EAGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174AA613D235BD008B5B8D /* EAGLView.m */; };
@@ -321,6 +324,12 @@
 
 /* Begin PBXFileReference section */
 		07C99A9013D38E8B00712EFA /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
+		4905F126157D729600488306 /* DNKaleidoscopeGeometryVariable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNKaleidoscopeGeometryVariable.h; sourceTree = "<group>"; };
+		4905F127157D729600488306 /* DNKaleidoscopeGeometryVariable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNKaleidoscopeGeometryVariable.m; sourceTree = "<group>"; };
+		4905F128157D729600488306 /* DNTriangleTriangleClip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNTriangleTriangleClip.h; sourceTree = "<group>"; };
+		4905F129157D729600488306 /* DNTriangleTriangleClip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNTriangleTriangleClip.m; sourceTree = "<group>"; };
+		4905F12A157D729600488306 /* WMEightfoldTilePatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMEightfoldTilePatch.h; sourceTree = "<group>"; };
+		4905F12B157D729600488306 /* WMEightfoldTilePatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMEightfoldTilePatch.m; sourceTree = "<group>"; };
 		490AC1E613D8F10F005E61CD /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		49174AA313D235BD008B5B8D /* DNAssertionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNAssertionHandler.h; sourceTree = "<group>"; };
 		49174AA413D235BD008B5B8D /* DNAssertionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNAssertionHandler.m; sourceTree = "<group>"; };
@@ -815,6 +824,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4905F125157D729600488306 /* Kaleidoscope */ = {
+			isa = PBXGroup;
+			children = (
+				4905F126157D729600488306 /* DNKaleidoscopeGeometryVariable.h */,
+				4905F127157D729600488306 /* DNKaleidoscopeGeometryVariable.m */,
+				4905F128157D729600488306 /* DNTriangleTriangleClip.h */,
+				4905F129157D729600488306 /* DNTriangleTriangleClip.m */,
+				4905F12A157D729600488306 /* WMEightfoldTilePatch.h */,
+				4905F12B157D729600488306 /* WMEightfoldTilePatch.m */,
+			);
+			path = Kaleidoscope;
+			sourceTree = "<group>";
+		};
 		49174AA213D235BD008B5B8D /* Application */ = {
 			isa = PBXGroup;
 			children = (
@@ -1004,6 +1026,7 @@
 		49858DD613DE4C1F0061A1A8 /* Geometry */ = {
 			isa = PBXGroup;
 			children = (
+				4905F125157D729600488306 /* Kaleidoscope */,
 				49858DD713DE4C1F0061A1A8 /* WMClear.h */,
 				49858DD813DE4C1F0061A1A8 /* WMClear.m */,
 				49858DD913DE4C1F0061A1A8 /* WMParticleSystem.h */,
@@ -1754,7 +1777,7 @@
 		49F0594313D15F640056C506 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0430;
 				ORGANIZATIONNAME = Darknoon;
 			};
 			buildConfigurationList = 49F0594613D15F640056C506 /* Build configuration list for PBXProject "WMEdit" */;
@@ -2101,6 +2124,9 @@
 				49F638C5157414AF00BA9C39 /* WMAudioPort.m in Sources */,
 				49F638CA15741AD000BA9C39 /* WMAudioBuffer.m in Sources */,
 				49F638D115742B3900BA9C39 /* WMBooleanInputPortCell.m in Sources */,
+				4905F12C157D729600488306 /* DNKaleidoscopeGeometryVariable.m in Sources */,
+				4905F12D157D729600488306 /* DNTriangleTriangleClip.m in Sources */,
+				4905F12E157D729600488306 /* WMEightfoldTilePatch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
