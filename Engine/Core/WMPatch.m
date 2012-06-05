@@ -359,9 +359,6 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 			done = [inPort setStateValue:value];
 		}
 	}
-	if (!done) {
-		NSLog(@"Couldn't properly initialize the state of port: %@", inPort);
-	}
 }
 
 - (id)plistRepresentation;
