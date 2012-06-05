@@ -52,6 +52,30 @@ NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
 	return self;
 }
 
++ (WMShader *)defaultShader;
+{
+	//TODO: make a better system for default shaders!
+	NSError *defaultShaderError = nil;
+	NSString *vertexShader = [NSString stringWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"WMDefaultShader" withExtension:@"vsh"] encoding:NSASCIIStringEncoding error:&defaultShaderError];
+	if (defaultShaderError) {
+		NSLog(@"Error loading default vertex shader: %@", defaultShaderError);
+		return nil;
+	}
+	
+	NSString *fragmentShader = [NSString stringWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"WMDefaultShader" withExtension:@"fsh"] encoding:NSASCIIStringEncoding error:&defaultShaderError];
+	if (defaultShaderError) {
+		NSLog(@"Error loading default fragment shader: %@", defaultShaderError);
+		return nil;
+	}
+	
+	WMShader *shader = [[WMShader alloc] initWithVertexShader:vertexShader fragmentShader:fragmentShader error:&defaultShaderError];
+	if (defaultShaderError) {
+		NSLog(@"Error loading default shader: %@", defaultShaderError);
+		return nil;
+	}
+
+	return shader;
+}
 
 - (void)deleteInternalState;
 {

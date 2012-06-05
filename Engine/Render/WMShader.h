@@ -18,6 +18,8 @@
 @property (nonatomic, copy, readonly) NSArray *vertexAttributeNames;
 @property (nonatomic, copy, readonly) NSArray *uniformNames;
 
++ (WMShader *)defaultShader;
+
 //Is this program configured correctly for drawing?
 - (BOOL)validateProgram;
 //TODO:- (BOOL)validateProgramWithError:(NSError *)errorDescription;

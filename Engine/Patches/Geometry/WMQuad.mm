@@ -194,31 +194,10 @@ static WMStructureField WMQuadVertex_fields[] = {
 
 - (BOOL)setup:(WMEAGLContext *)context;
 {
-	//TODO: replace this with a user-specifiable shader
-	
 	renderObject = [[WMRenderObject alloc] init];
-
-	//TODO: make a better system for default shaders!
-	NSError *defaultShaderError = nil;
-	NSString *vertexShader = [NSString stringWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"WMDefaultShader" withExtension:@"vsh"] encoding:NSASCIIStringEncoding error:&defaultShaderError];
-	if (defaultShaderError) {
-		NSLog(@"Error loading default vertex shader: %@", defaultShaderError);
-		return NO;
-	}
 	
-	NSString *fragmentShader = [NSString stringWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"WMDefaultShader" withExtension:@"fsh"] encoding:NSASCIIStringEncoding error:&defaultShaderError];
-	if (defaultShaderError) {
-		NSLog(@"Error loading default fragment shader: %@", defaultShaderError);
-		return NO;
-	}
-	
-	shader = [[WMShader alloc] initWithVertexShader:vertexShader fragmentShader:fragmentShader error:&defaultShaderError];
-	if (defaultShaderError) {
-		NSLog(@"Error loading default shader: %@", defaultShaderError);
-		return NO;
-	}
-
-	renderObject.shader = shader;	
+	shader = [WMShader defaultShader]; 
+	renderObject.shader = shader;
 	
 	quadDef = [[WMStructureDefinition alloc] initWithFields:WMQuadVertex_fields count:sizeof(WMQuadVertex_fields) / sizeof(WMStructureField) totalSize:sizeof(WMQuadVertex)];
 	quadDef.shouldAlignTo4ByteBoundary = YES;
