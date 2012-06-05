@@ -121,7 +121,15 @@ NSString *const WMRenderObjectTransformUniformName = @"wm_T";
 
 - (void)setValue:(id)inValue forUniformWithName:(NSString *)inUniformName;
 {
-	[uniformValues setObject:inValue forKey:inUniformName];
+	if (!inUniformName) {
+		ALog(@"No uniform name given.");
+		return;
+	}
+	if (inValue) {
+		[uniformValues setObject:inValue forKey:inUniformName];
+	} else {
+		[uniformValues removeObjectForKey:inUniformName];
+	}
 }
 
 - (id)valueForUniformWithName:(NSString *)inUniformName;
