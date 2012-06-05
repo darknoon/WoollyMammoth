@@ -27,7 +27,11 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 
 @end
 
-@implementation WMBundleDocument
+@implementation WMBundleDocument {
+	//Track all file handles open copying files
+	NSMutableArray *_copyOperations;
+}
+
 @synthesize rootPatch;
 @synthesize userDictionary;
 @synthesize resourceWrappers;
@@ -45,6 +49,8 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 	//Add a render output patch
 	WMRenderOutput *output = [[WMRenderOutput alloc] initWithPlistRepresentation:nil];
 	[rootPatch addChild:output];
+	
+	_copyOperations = [[NSMutableArray alloc] init];
 		
 	return self;
 }
@@ -245,42 +251,56 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 	NSURL *destinationURL = [[self fileURL] URLByAppendingPathComponent:inResourceName];
 	
 	//If the destination already exists, overwrite
-	
-	[[NSFileManager defaultManager] createFileAtPath:[destinationURL path] contents:nil attributes:nil];
 
-	NSFileHandle *file = [NSFileHandle fileHandleForWritingAtPath:[destinationURL path]];
-	[file truncateFileAtOffset:0];
-	
 	dispatch_queue_t currentQueue = dispatch_get_current_queue();
 	
 	[self performAsynchronousFileAccessUsingBlock:^{
+		
+		BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:destinationURL.path];
+		
+		BOOL ok = [[NSFileManager defaultManager] createFileAtPath:[destinationURL path] contents:nil attributes:nil];
+		
+		NSFileHandle *file = [NSFileHandle fileHandleForWritingAtPath:[destinationURL path]];
+		[file truncateFileAtOffset:0];
+		
+		//Don't get rid of the file until it's done
+		[_copyOperations addObject:file];
+		__weak WMBundleDocument *weakSelf = self;
+		
+		NSLog(@"Beginning file write to : %@ (%@) exists: %d create ok %d. Asset size %lld", file, destinationURL.path, exists, ok, assetSize);
+		
 		uint8_t *tempBuffer = malloc(bufferSize);	
 		file.writeabilityHandler = ^(NSFileHandle *handle) {
+			
+			NSLog(@"Write handler called");
+			
 			long long offset = handle.offsetInFile;
 			
 			NSError *error = nil;
-			BOOL ok = [inAsset getBytes:tempBuffer fromOffset:offset length:bufferSize error:&error];
-			if (ok) {
+			NSUInteger readBytes = [inAsset getBytes:tempBuffer fromOffset:offset length:bufferSize error:&error];
+			if (readBytes > 0) {
 				[handle writeData:[NSData dataWithBytesNoCopy:tempBuffer length:bufferSize freeWhenDone:NO]];
-			} else {
+				NSLog(@"Wrote some data. Offset: %lld size:%lld", offset, bufferSize);
+			} else if (error) {
 				free(tempBuffer);
-				NSLog(@"error getting data: %@", error);
+				NSLog(@"error getting %lld bytes of data: %@ for buffer:%p", bufferSize, error, tempBuffer);
 				completion(error);
 				return;
+			} else { //Read 0 bytes = EOF?
+				offset = handle.offsetInFile;
+				if (offset >= assetSize) {
+					handle.writeabilityHandler = nil;
+					free(tempBuffer);
+					//Call back to main thread (whatever we were called on)
+					dispatch_async(currentQueue, ^() {
+						//Success. Add this file to our assets
+						[weakSelf->_copyOperations removeObject:handle];
+						[weakSelf addResourceNamed:inResourceName fromURL:destinationURL completion:completion];
+					});
+				}
+
 			}
 			
-			NSLog(@"Wrote some data. Offset: %lld", offset);
-			
-			offset = handle.offsetInFile;
-			if (offset >= assetSize) {
-				handle.writeabilityHandler = nil;
-				free(tempBuffer);
-				//Call back to main thread (whatever we were called on)
-				dispatch_async(currentQueue, ^() {
-					//Success. Add this file to our assets
-					[self addResourceNamed:inResourceName fromURL:destinationURL completion:completion];				
-				});
-			}
 		};
 	}];
 }

@@ -108,6 +108,8 @@
 					[self refreshImageFromPatch];
 					[picker dismissViewControllerAnimated:YES completion:NULL];
 				}
+				//Ensure library lives as long as the asset representation is being used... :(
+				[library self];
 			}];
 		} else {
 			fail(nil);
