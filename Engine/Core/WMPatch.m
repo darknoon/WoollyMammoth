@@ -590,21 +590,29 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 //Provided as a debugging aid
 - (NSString *)recursiveDescription;
 {
-	NSMutableString *descriptionRecursive = [NSMutableString stringWithString:[self description]];
-	for (WMPatch *child in _children) {
-		int inCount = 0;
-		int outCount = 0;
-		for (WMConnection *c in self.connections) {
-			if ([c.destinationNode isEqualToString:child.key]) {
-				inCount++;
+	__block NSMutableString *s = [[NSMutableString alloc] init];
+	
+	__block void (^recursion)(WMPatch *, NSString *, NSString *) = [^(WMPatch *n, NSString *indent, NSString *connectionInfo) {
+		[s appendFormat:@"%@ - %@ %@\n", indent, n, connectionInfo];
+		
+		for (WMPatch *child in n.children) {
+			int inCount = 0;
+			int outCount = 0;
+			for (WMConnection *c in n.connections) {
+				if ([c.destinationNode isEqualToString:child.key]) {
+					inCount++;
+				}
+				if ([c.sourceNode isEqualToString:child.key]) {
+					outCount++;
+				}
 			}
-			if ([c.sourceNode isEqualToString:child.key]) {
-				outCount++;
-			}
+			connectionInfo = [NSString stringWithFormat:@" <- %d in %d out", inCount, outCount];
+			recursion(child, [indent stringByAppendingString:@"\t"], connectionInfo);
 		}
-		[descriptionRecursive appendFormat:@"\n\t%@ <- %d in %d out", [child recursiveDescription], inCount, outCount];
-	}
-	return descriptionRecursive;
+	} copy];
+	//TODO: report bug: if block is not copied, we have a crash!
+	recursion(self, @"", @"");
+	return s;
 }
 
 - (NSString *)availableKeyForSubPatch:(WMPatch *)inPatch;
