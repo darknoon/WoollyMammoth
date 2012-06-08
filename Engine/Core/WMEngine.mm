@@ -206,6 +206,8 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 		}
 	}
 	
+	NSMutableSet *transientPorts = [NSMutableSet set];
+	
 	//// Render order ////
 	NSArray *ordering = [self executionOrderingOfChildren:inPatch];
 	
@@ -220,7 +222,7 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 			if (!connection) {
 				inputPort.connectedPort = nil;
 				if (inputPort.isInputValueTransient) {
-					inputPort.objectValue = nil;
+					[transientPorts addObject:inputPort];
 				}
 				continue;
 			}
@@ -228,6 +230,7 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 			WMPort *sourcePort = [sourcePatch outputPortWithKey:connection.sourcePort];
 			inputPort.connectedPort = sourcePort;
 			[inputPort takeValueFromPort:sourcePort];
+			//NSLog(@"connection %@ passing value %@", connection, sourcePort.objectValue);
 		}
 
 		//NSLog(@"executing patch: %@", patch.key);
@@ -237,7 +240,7 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 			break;
 		}
 		GL_CHECK_ERROR;
-
+		
 		//Now execute any children
 		if ([patch children].count > 0) {
 			[self drawPatchRecursive:patch];
@@ -249,6 +252,11 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 		if (port.originalPort) {
 			[port takeValueFromPort:port.originalPort];
 		}
+	}
+	
+	//Clear transient input ports
+	for (WMPort *inputPort in transientPorts) {
+		inputPort.objectValue = nil;
 	}
 }
 
