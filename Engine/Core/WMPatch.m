@@ -587,6 +587,9 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	return [NSString stringWithFormat:@"<%@: %p>{%@}", NSStringFromClass([self class]), self, [components componentsJoinedByString:@", "]];
 }
 
+
+
+
 //Provided as a debugging aid
 - (NSString *)recursiveDescription;
 {
@@ -668,6 +671,8 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	connection.destinationNode = toPatch;
 	connection.destinationPort = toPort;
 
+	NSAssert(fromPort && fromPatch && toPort && toPatch, @"Must fully specify connection %@", connection);
+	
 	[_connections addObject:connection];	
 }
 
