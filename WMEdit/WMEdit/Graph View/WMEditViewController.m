@@ -25,11 +25,20 @@
 
 #import "WMCompositionLibrary.h"
 
+
+//HACK POPVIDEO HACK SUPPORT:
+
+#import "DNZipArchive.h"
+#import "ASIS3ObjectRequest.h"
+
+//END HACK SUPPORT
+
 const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 
 
 @interface WMEditViewController ()
 - (void)addPatchViews;
+- (IBAction)_hackUpload:(UIButton *)sender;
 
 @end
 
@@ -106,7 +115,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	NSArray *possibleScreens = [UIScreen screens];
 	__block UIScreen *externalScreen = nil;
 	[possibleScreens enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-		if (idx > 0) {
+		if (obj != [UIScreen mainScreen]) {
 			externalScreen = obj;
 			*stop = YES;
 		}
@@ -203,7 +212,6 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 		[graphView addPatch:child];
 	}
 }
-
 
 - (void)addNodeAtLocation:(CGPoint)inPoint class:(NSString *)inClass;
 {	
@@ -410,5 +418,64 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
     // Return YES for supported orientations
     return YES;
 }
+
+
+//////// THE FOLLOWING IS A HUGE HACK FOR POPVIDEO AND YOU SHOULD REMOVE THIS ////////////
+
+- (IBAction)_hackUpload:(UIButton *)sender;
+{
+	NSString *patchName = document.fileURL.lastPathComponent;
+	NSString *zipFileName = [patchName stringByAppendingPathExtension:@"zip"];
+	
+	//Write contents to temporary location
+	NSURL *tempZipFile = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"_temp_bundle.wmbundle.zip"] isDirectory:NO];
+	NSURL *tempBundleDirectory = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"_temp_bundle.wmbundle"] isDirectory:YES];
+	
+	//TODO: write in block to other file
+	
+	NSError *writeError = NULL;
+	NSFileWrapper *contents = [document contentsForType:@"wmbundle" error:NULL];
+	BOOL success = [contents writeToURL:tempBundleDirectory options:NSFileWrapperWritingAtomic originalContentsURL:document.fileURL error:&writeError];
+	if (success) {
+		NSLog(@"Saved to url %@", tempBundleDirectory);
+	} else {
+		NSLog(@"Couldn't save to url %@", tempBundleDirectory);
+	}
+	
+	DNZipArchive *dnza = [[DNZipArchive alloc] initForWritingWithFileURL:tempZipFile];
+	
+	[dnza appendDataFromURL:tempBundleDirectory asPath:@"" completion:^(NSError *zipWriteError) {
+		if (zipWriteError) {
+			NSLog(@"Couldn't write zip because: %@", zipWriteError);
+		}
+		
+		[dnza closeWithCompletion:^(NSError *zipWriteError) {
+			if (zipWriteError) {
+				NSLog(@"Couldn't write zip because: %@", zipWriteError);
+			}
+			
+			//YAY, now upload the file for goodness sake
+			ASIS3ObjectRequest *request = [ASIS3ObjectRequest PUTRequestForFile:tempZipFile.path withBucket:@"popvideo-filters" key:zipFileName];
+			
+			request.completionBlock = ^{
+				NSLog(@"Uploaded file!");
+			};
+			request.failedBlock = ^{
+				NSLog(@"Hmm, somehow that didn't upload erorr: %@", request.error);
+			};
+			request.accessPolicy = ASIS3AccessPolicyPublicRead;
+			request.accessKey = @"AKIAJN6MQRSOHDO6ZAMA";
+			request.secretAccessKey = @"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";
+			
+			[request startAsynchronous];
+			
+		}];
+	}];
+}
+
+
+///////////////////////// END HUGE HACK /////////////////////////////////////////////////
+
+
 
 @end

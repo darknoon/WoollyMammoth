@@ -191,6 +191,17 @@
 		49B3DB4D13E10F03002DC713 /* WMRenderObjectPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB4C13E10F03002DC713 /* WMRenderObjectPort.m */; };
 		49B3DB5B13E11039002DC713 /* WMRenderOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB5813E11039002DC713 /* WMRenderOutput.m */; };
 		49B3DB5F13E1115B002DC713 /* WMSetShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB5E13E1115B002DC713 /* WMSetShader.m */; };
+		49B792D01581F1E8009E81EB /* DNZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B792C21581F1E8009E81EB /* DNZipArchive.m */; };
+		49B792D11581F1E8009E81EB /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 49B792C41581F1E8009E81EB /* ioapi.c */; };
+		49B792D31581F1E8009E81EB /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 49B792C71581F1E8009E81EB /* mztools.c */; };
+		49B792D41581F1E8009E81EB /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 49B792C91581F1E8009E81EB /* unzip.c */; };
+		49B792D51581F1E8009E81EB /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 49B792CC1581F1E8009E81EB /* zip.c */; };
+		49B792E61581F819009E81EB /* ASIS3Bucket.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B792DB1581F819009E81EB /* ASIS3Bucket.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		49B792E71581F819009E81EB /* ASIS3BucketObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B792DD1581F819009E81EB /* ASIS3BucketObject.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		49B792E81581F819009E81EB /* ASIS3BucketRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B792DF1581F819009E81EB /* ASIS3BucketRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		49B792E91581F819009E81EB /* ASIS3ObjectRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B792E11581F819009E81EB /* ASIS3ObjectRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		49B792EA1581F819009E81EB /* ASIS3Request.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B792E31581F819009E81EB /* ASIS3Request.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		49B792EB1581F819009E81EB /* ASIS3ServiceRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B792E51581F819009E81EB /* ASIS3ServiceRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		49B9900E1459E436009F3CBD /* WMGLStateObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AA853C1442B227005BC6F7 /* WMGLStateObject.m */; };
 		49B99014145E4634009F3CBD /* WMVertexArrayObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B99013145E4634009F3CBD /* WMVertexArrayObject.m */; };
 		49B9A6BD1415C473001DB45B /* WMVideoRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B9A6BC1415C473001DB45B /* WMVideoRecord.m */; };
@@ -651,6 +662,31 @@
 		49B3DB5813E11039002DC713 /* WMRenderOutput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WMRenderOutput.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		49B3DB5D13E1115B002DC713 /* WMSetShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSetShader.h; sourceTree = "<group>"; };
 		49B3DB5E13E1115B002DC713 /* WMSetShader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WMSetShader.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		49B792C01581F1E8009E81EB /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
+		49B792C11581F1E8009E81EB /* DNZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNZipArchive.h; sourceTree = "<group>"; };
+		49B792C21581F1E8009E81EB /* DNZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNZipArchive.m; sourceTree = "<group>"; };
+		49B792C41581F1E8009E81EB /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
+		49B792C51581F1E8009E81EB /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
+		49B792C71581F1E8009E81EB /* mztools.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mztools.c; sourceTree = "<group>"; };
+		49B792C81581F1E8009E81EB /* mztools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mztools.h; sourceTree = "<group>"; };
+		49B792C91581F1E8009E81EB /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
+		49B792CA1581F1E8009E81EB /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
+		49B792CB1581F1E8009E81EB /* zconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zconf.h; sourceTree = "<group>"; };
+		49B792CC1581F1E8009E81EB /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
+		49B792CD1581F1E8009E81EB /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
+		49B792D91581F819009E81EB /* ASINSXMLParserCompat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASINSXMLParserCompat.h; sourceTree = "<group>"; };
+		49B792DA1581F819009E81EB /* ASIS3Bucket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIS3Bucket.h; sourceTree = "<group>"; };
+		49B792DB1581F819009E81EB /* ASIS3Bucket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIS3Bucket.m; sourceTree = "<group>"; };
+		49B792DC1581F819009E81EB /* ASIS3BucketObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIS3BucketObject.h; sourceTree = "<group>"; };
+		49B792DD1581F819009E81EB /* ASIS3BucketObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIS3BucketObject.m; sourceTree = "<group>"; };
+		49B792DE1581F819009E81EB /* ASIS3BucketRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIS3BucketRequest.h; sourceTree = "<group>"; };
+		49B792DF1581F819009E81EB /* ASIS3BucketRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIS3BucketRequest.m; sourceTree = "<group>"; };
+		49B792E01581F819009E81EB /* ASIS3ObjectRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIS3ObjectRequest.h; sourceTree = "<group>"; };
+		49B792E11581F819009E81EB /* ASIS3ObjectRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIS3ObjectRequest.m; sourceTree = "<group>"; };
+		49B792E21581F819009E81EB /* ASIS3Request.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIS3Request.h; sourceTree = "<group>"; };
+		49B792E31581F819009E81EB /* ASIS3Request.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIS3Request.m; sourceTree = "<group>"; };
+		49B792E41581F819009E81EB /* ASIS3ServiceRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIS3ServiceRequest.h; sourceTree = "<group>"; };
+		49B792E51581F819009E81EB /* ASIS3ServiceRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIS3ServiceRequest.m; sourceTree = "<group>"; };
 		49B99012145E4633009F3CBD /* WMVertexArrayObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMVertexArrayObject.h; sourceTree = "<group>"; };
 		49B99013145E4634009F3CBD /* WMVertexArrayObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMVertexArrayObject.m; sourceTree = "<group>"; };
 		49B9A6BB1415C473001DB45B /* WMVideoRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMVideoRecord.h; sourceTree = "<group>"; };
@@ -886,6 +922,7 @@
 				494E4D3513D24A4C00402784 /* ASINetworkQueue.h */,
 				494E4D3613D24A4C00402784 /* ASINetworkQueue.m */,
 				494E4D3713D24A4C00402784 /* ASIProgressDelegate.h */,
+				49B792D81581F819009E81EB /* S3 */,
 			);
 			name = ASIHTTPRequest;
 			path = ASIHTTPRequest/Classes;
@@ -1416,6 +1453,7 @@
 				49A5285313D173B8004EC7F6 /* MIDI */,
 				49A5264E13D17330004EC7F6 /* Apple */,
 				49E3145513DA44F600813CE0 /* Math */,
+				49B792BF1581F1E8009E81EB /* ZipFile-OC */,
 			);
 			name = Externals;
 			path = ../Externals;
@@ -1501,6 +1539,53 @@
 				49B3DB5E13E1115B002DC713 /* WMSetShader.m */,
 			);
 			path = "Render Object";
+			sourceTree = "<group>";
+		};
+		49B792BF1581F1E8009E81EB /* ZipFile-OC */ = {
+			isa = PBXGroup;
+			children = (
+				49B792C01581F1E8009E81EB /* crypt.h */,
+				49B792C11581F1E8009E81EB /* DNZipArchive.h */,
+				49B792C21581F1E8009E81EB /* DNZipArchive.m */,
+				49B792C31581F1E8009E81EB /* minizip */,
+			);
+			path = "ZipFile-OC";
+			sourceTree = "<group>";
+		};
+		49B792C31581F1E8009E81EB /* minizip */ = {
+			isa = PBXGroup;
+			children = (
+				49B792C41581F1E8009E81EB /* ioapi.c */,
+				49B792C51581F1E8009E81EB /* ioapi.h */,
+				49B792C71581F1E8009E81EB /* mztools.c */,
+				49B792C81581F1E8009E81EB /* mztools.h */,
+				49B792C91581F1E8009E81EB /* unzip.c */,
+				49B792CA1581F1E8009E81EB /* unzip.h */,
+				49B792CB1581F1E8009E81EB /* zconf.h */,
+				49B792CC1581F1E8009E81EB /* zip.c */,
+				49B792CD1581F1E8009E81EB /* zip.h */,
+			);
+			path = minizip;
+			sourceTree = "<group>";
+		};
+		49B792D81581F819009E81EB /* S3 */ = {
+			isa = PBXGroup;
+			children = (
+				49B792D91581F819009E81EB /* ASINSXMLParserCompat.h */,
+				49B792DA1581F819009E81EB /* ASIS3Bucket.h */,
+				49B792DB1581F819009E81EB /* ASIS3Bucket.m */,
+				49B792DC1581F819009E81EB /* ASIS3BucketObject.h */,
+				49B792DD1581F819009E81EB /* ASIS3BucketObject.m */,
+				49B792DE1581F819009E81EB /* ASIS3BucketRequest.h */,
+				49B792DF1581F819009E81EB /* ASIS3BucketRequest.m */,
+				49B792E01581F819009E81EB /* ASIS3ObjectRequest.h */,
+				49B792E11581F819009E81EB /* ASIS3ObjectRequest.m */,
+				49B792E21581F819009E81EB /* ASIS3Request.h */,
+				49B792E31581F819009E81EB /* ASIS3Request.m */,
+				49B792E41581F819009E81EB /* ASIS3ServiceRequest.h */,
+				49B792E51581F819009E81EB /* ASIS3ServiceRequest.m */,
+			);
+			path = S3;
 			sourceTree = "<group>";
 		};
 		49BACB3E13EB5827008ED051 /* Tests */ = {
@@ -1986,6 +2071,12 @@
 				494E4D7C13D24A4C00402784 /* ASIInputStream.m in Sources */,
 				494E4D7D13D24A4C00402784 /* ASINetworkQueue.m in Sources */,
 				494E4ED513D24A8C00402784 /* Reachability.m in Sources */,
+				49B792E61581F819009E81EB /* ASIS3Bucket.m in Sources */,
+				49B792E71581F819009E81EB /* ASIS3BucketObject.m in Sources */,
+				49B792E81581F819009E81EB /* ASIS3BucketRequest.m in Sources */,
+				49B792E91581F819009E81EB /* ASIS3ObjectRequest.m in Sources */,
+				49B792EA1581F819009E81EB /* ASIS3Request.m in Sources */,
+				49B792EB1581F819009E81EB /* ASIS3ServiceRequest.m in Sources */,
 				49E3145913DA44F600813CE0 /* Random.cpp in Sources */,
 				49858E2613DE4C1F0061A1A8 /* WMStructuredBuffer.m in Sources */,
 				49858E2713DE4C1F0061A1A8 /* WMStructureDefinition.m in Sources */,
@@ -2127,6 +2218,11 @@
 				4905F12C157D729600488306 /* DNKaleidoscopeGeometryVariable.m in Sources */,
 				4905F12D157D729600488306 /* DNTriangleTriangleClip.m in Sources */,
 				4905F12E157D729600488306 /* WMEightfoldTilePatch.m in Sources */,
+				49B792D01581F1E8009E81EB /* DNZipArchive.m in Sources */,
+				49B792D11581F1E8009E81EB /* ioapi.c in Sources */,
+				49B792D31581F1E8009E81EB /* mztools.c in Sources */,
+				49B792D41581F1E8009E81EB /* unzip.c in Sources */,
+				49B792D51581F1E8009E81EB /* zip.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
