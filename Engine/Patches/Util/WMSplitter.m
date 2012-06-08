@@ -40,6 +40,11 @@
 	} else if ([portClassName isEqualToString:@"QCColorPort"]) {
 		inputPort = [[WMColorPort alloc] init];
 		outputPort = [[WMColorPort alloc] init];
+
+	} else if ([portClassName isEqualToString:@"WMImagePort"]) {
+		inputPort = [[WMImagePort alloc] init];
+		outputPort = [[WMImagePort alloc] init];
+	
 	} else {
 		NSLog(@"Attempt to create unsupported splitter of type: %@", portClassName);
 		return NO;
