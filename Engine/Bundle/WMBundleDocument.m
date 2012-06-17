@@ -293,9 +293,10 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 					free(tempBuffer);
 					//Call back to main thread (whatever we were called on)
 					dispatch_async(currentQueue, ^() {
+						WMBundleDocument *self = weakSelf;
 						//Success. Add this file to our assets
-						[weakSelf->_copyOperations removeObject:handle];
-						[weakSelf addResourceNamed:inResourceName fromURL:destinationURL completion:completion];
+						[self->_copyOperations removeObject:handle];
+						[self addResourceNamed:inResourceName fromURL:destinationURL completion:completion];
 					});
 				}
 
