@@ -17,7 +17,9 @@
 @class WMBundleDocument;
 @class EAGLView;
 
-@interface WMViewController : UIViewController <UIActionSheetDelegate>
+@interface WMViewController : UIViewController <UIActionSheetDelegate> {
+	BOOL _alwaysPortrait;
+}
 
 //Designated initalizer for an existing document
 - (id)initWithDocument:(WMBundleDocument *)inDocument;

@@ -122,6 +122,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	}];
 	
 	previewController = [[WMViewController alloc] initWithDocument:document];
+	previewController->_alwaysPortrait = YES;
 	if (externalScreen) {
 		previewWindow = [[UIWindow alloc] initWithFrame:externalScreen.applicationFrame];
 		previewWindow.rootViewController = previewController;
