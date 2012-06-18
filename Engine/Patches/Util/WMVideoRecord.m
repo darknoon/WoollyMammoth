@@ -17,38 +17,30 @@
 #import "WMRenderObject.h"
 #import "WMAudioBuffer.h"
 
-static CVPixelBufferPoolRef CreatePixelBufferPool( int32_t width, int32_t height, OSType pixelFormat);
-static CVPixelBufferPoolRef CreatePixelBufferPool( int32_t width, int32_t height, OSType pixelFormat)
+static CVPixelBufferPoolRef CreatePixelBufferPool(int32_t width, int32_t height, OSType pixelFormat);
+static CVPixelBufferPoolRef CreatePixelBufferPool(int32_t width, int32_t height, OSType pixelFormat)
 {
 	CVPixelBufferPoolRef outputPool = NULL;
 	
-    CFMutableDictionaryRef sourcePixelBufferOptions = CFDictionaryCreateMutable( kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks );
-    CFNumberRef number = CFNumberCreate( kCFAllocatorDefault, kCFNumberSInt32Type, &pixelFormat );
-    CFDictionaryAddValue( sourcePixelBufferOptions, kCVPixelBufferPixelFormatTypeKey, number );
-    CFRelease( number );
-    
-    number = CFNumberCreate( kCFAllocatorDefault, kCFNumberSInt32Type, &width );
-    CFDictionaryAddValue( sourcePixelBufferOptions, kCVPixelBufferWidthKey, number );
-    CFRelease( number );
-    
-    number = CFNumberCreate( kCFAllocatorDefault, kCFNumberSInt32Type, &height );
-    CFDictionaryAddValue( sourcePixelBufferOptions, kCVPixelBufferHeightKey, number );
-    CFRelease( number );
-    
-    CFDictionaryAddValue( sourcePixelBufferOptions, kCVPixelFormatOpenGLESCompatibility, kCFBooleanTrue );
-    
-    CFDictionaryRef ioSurfaceProps = CFDictionaryCreate( kCFAllocatorDefault, NULL, NULL, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks );      
-    if (ioSurfaceProps) {
-        CFDictionaryAddValue( sourcePixelBufferOptions, kCVPixelBufferIOSurfacePropertiesKey, ioSurfaceProps );
-        CFRelease(ioSurfaceProps);
-    }
-    
-    CVPixelBufferPoolCreate( kCFAllocatorDefault, NULL, sourcePixelBufferOptions, &outputPool );
-    
-    CFRelease( sourcePixelBufferOptions );
+	CFMutableDictionaryRef sourcePixelBufferOptions = CFDictionaryCreateMutable( kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+	
+	CFDictionaryAddValue( sourcePixelBufferOptions, kCVPixelBufferPixelFormatTypeKey, (__bridge CFNumberRef)[NSNumber numberWithInt:pixelFormat]);
+	
+	CFDictionaryAddValue( sourcePixelBufferOptions, kCVPixelBufferWidthKey, (__bridge CFNumberRef)[NSNumber numberWithInt:width]);
+	CFDictionaryAddValue( sourcePixelBufferOptions, kCVPixelBufferHeightKey, (__bridge CFNumberRef)[NSNumber numberWithInt:height]);
+	CFDictionaryAddValue( sourcePixelBufferOptions, kCVPixelFormatOpenGLESCompatibility, kCFBooleanTrue);
+	
+	CFDictionaryRef ioSurfaceProps = CFDictionaryCreate( kCFAllocatorDefault, NULL, NULL, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks );      
+	if (ioSurfaceProps) {
+		CFDictionaryAddValue( sourcePixelBufferOptions, kCVPixelBufferIOSurfacePropertiesKey, ioSurfaceProps );
+		CFRelease(ioSurfaceProps);
+	}
+	
+	CVPixelBufferPoolCreate( kCFAllocatorDefault, NULL, sourcePixelBufferOptions, &outputPool );
+	
+	CFRelease( sourcePixelBufferOptions );
 	return outputPool;
 }
-
 
 @interface WMVideoRecord ()
 
@@ -68,8 +60,6 @@ static CVPixelBufferPoolRef CreatePixelBufferPool( int32_t width, int32_t height
 	
 	CMVideoDimensions videoDimensions;
 	
-//	BOOL                        _writing;
-//	BOOL                        _importing;   	
 	BOOL                        _writingDidStart;        
 	AVAssetWriter               *_assetWriter;
 	AVAssetWriterInput          *_assetWriterVideoInput;
@@ -132,8 +122,8 @@ static CVPixelBufferPoolRef CreatePixelBufferPool( int32_t width, int32_t height
 		
 		NSDictionary *videoCompressionSettings = [NSDictionary dictionaryWithObjectsAndKeys:
 												  AVVideoCodecH264, AVVideoCodecKey,
-												  [NSNumber numberWithInteger:videoDimensions.width], AVVideoWidthKey,
-												  [NSNumber numberWithInteger:videoDimensions.height], AVVideoHeightKey,
+												  [NSNumber numberWithInt:videoDimensions.width], AVVideoWidthKey,
+												  [NSNumber numberWithInt:videoDimensions.height], AVVideoHeightKey,
 												  [NSDictionary dictionaryWithObjectsAndKeys:
 												   [NSNumber numberWithInteger:bitsPerSecond], AVVideoAverageBitRateKey,
 												   [NSNumber numberWithInteger:30], AVVideoMaxKeyFrameIntervalKey,
