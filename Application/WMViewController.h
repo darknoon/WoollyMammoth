@@ -19,7 +19,6 @@
 @class EAGLView;
 
 @interface WMViewController : UIViewController <UIActionSheetDelegate, WMEngineDelegate> {
-	BOOL _alwaysPortrait;
 }
 
 //Designated initalizer for an existing document
@@ -29,6 +28,8 @@
 @property (nonatomic, copy) NSURL *compositionURL;
 
 @property (nonatomic, weak) IBOutlet EAGLView *eaglView;
+
+@property (nonatomic) BOOL alwaysPortrait;
 
 @property (nonatomic, strong) WMBundleDocument *document;
 @property (readonly, strong, readonly) WMEngine *engine;

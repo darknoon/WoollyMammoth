@@ -60,6 +60,7 @@
 
 @synthesize eventDelegate = _eventDelegate;
 @synthesize capturing;
+@synthesize eventDelegatePaused = _eventDelegatePaused;
 
 + (void)load;
 {
@@ -138,11 +139,8 @@
 #if TARGET_OS_EMBEDDED
 	captureSession = [[AVCaptureSession alloc] init];
 
-#if USE_LOW_RES_CAMERA
-	[captureSession setSessionPreset:AVCaptureSessionPresetLow];
-#else
-	[captureSession setSessionPreset:AVCaptureSessionPreset640x480];
-#endif	
+	[captureSession setSessionPreset:AVCaptureSessionPresetHigh];
+
 	NSError *error = nil;
 	
 	NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
@@ -201,6 +199,7 @@
 	[captureSession addInput:captureAudioInput];
 	[captureSession addOutput:videoDataOutput];
 	[captureSession addOutput:audioDataOutput];
+	
 	[captureSession startRunning];
 #else
 	if (!simulatorDebugTimer)
@@ -264,7 +263,8 @@
 				GL_CHECK_ERROR;
 				
 				
-				[self.eventDelegate patchGeneratedUpdateEvent:self atTime:CACurrentMediaTime()];
+				if (!self.eventDelegatePaused)
+					[self.eventDelegate patchGeneratedUpdateEvent:self atTime:CACurrentMediaTime()];
 			}
 			
 		}
@@ -302,11 +302,17 @@
 
 #endif
 
-
-
-- (WMTexture2D *)getVideoTexture;
+- (void)setEventDelegatePaused:(BOOL)eventDelegatePaused;
 {
-	return mostRecentTexture;
+	if (_eventDelegatePaused != eventDelegatePaused) {
+//		if (eventDelegatePaused) {
+//			[self stopCapture];
+//		} else {
+//			[self startCapture];
+//		}
+		
+		_eventDelegatePaused = eventDelegatePaused;
+	}
 }
 
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
@@ -368,7 +374,7 @@
 		[self startCapture];
 	}
 	
-	outputImage.image = [self getVideoTexture];
+	outputImage.image = mostRecentTexture;
 	outputAudio.objectValue = mostRecentAudioBuffer;
 	mostRecentAudioBuffer = nil;
 	

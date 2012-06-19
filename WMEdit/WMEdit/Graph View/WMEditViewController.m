@@ -122,11 +122,11 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	}];
 	
 	previewController = [[WMViewController alloc] initWithDocument:document];
-	previewController->_alwaysPortrait = YES;
 	if (externalScreen) {
 		previewWindow = [[UIWindow alloc] initWithFrame:externalScreen.applicationFrame];
 		previewWindow.rootViewController = previewController;
 		previewWindow.screen = externalScreen;
+		previewController.alwaysPortrait = YES;
 		previewWindow.hidden = NO;
 	} else {
 		[self addChildViewController:previewController];
@@ -137,6 +137,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 		previewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
 		[self.view addSubview:previewController.view];
 
+		previewController.alwaysPortrait = NO;
 		UITapGestureRecognizer *enlargeRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(togglePreviewFullscreen:)];
 		[previewController.view addGestureRecognizer:enlargeRecognizer];
 	}

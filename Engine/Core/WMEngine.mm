@@ -136,9 +136,11 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 	
 	//Find the event source
 	self.eventSource = [self _findEventSource:rootObject];
-	
+	self.eventSource.eventDelegatePaused = NO;
+
 	frameNumber = 0;
 	previousAbsoluteTime = CFAbsoluteTimeGetCurrent();
+
 }
 
 - (void)stop;
@@ -329,6 +331,7 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 - (void)drawFrame;
 {
 	ZAssert(self.renderFramebuffer, @"Must have a framebuffer to render to");
+	[WMEAGLContext setCurrentContext:renderContext];
 	[renderContext renderToFramebuffer:self.renderFramebuffer block:^{
 		
 		ZAssert(!CGRectIsEmpty(self.frame), @"Must specify a rect to render");
@@ -336,8 +339,6 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 		[self drawFrameInRect:self.frame interfaceOrientation:self.interfaceOrientation];
 		
 	}];
-
-	[self drawFrameInRect:self.frame interfaceOrientation:self.interfaceOrientation];
 }
 
 - (void)drawFrameInRect:(CGRect)inBounds interfaceOrientation:(UIInterfaceOrientation)inInterfaceOrientation;

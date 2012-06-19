@@ -35,6 +35,7 @@
 @synthesize eaglView;
 @synthesize animationFrameInterval;
 @synthesize compositionURL;
+@synthesize alwaysPortrait = _alwaysPortrait;
 
 - (void)sharedInit;
 {
@@ -217,13 +218,16 @@
 	engine.frame = eaglView.bounds;
 	engine.interfaceOrientation = self.interfaceOrientation;
 	
+	if (!engine.renderFramebuffer) return NO;
+	
 	return YES;
 }
 
 - (void)engineDidRenderFrame:(WMEngine *)engine;
 {
 	//TODO: only when changed
-	fpsLabel.text = [NSString stringWithFormat:@"%.0lf fps (%.0lf ms)", engine.frameRate, 1000.0 * engine.frameDuration];
+	fpsLabel.text = [NSString stringWithFormat:@"%.0lf fps", engine.frameRate];
+	fpsLabel.textColor = engine.frameRate > 29.0 ? [UIColor whiteColor] : [UIColor redColor];
 }
 
 #pragma mark -

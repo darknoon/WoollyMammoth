@@ -303,6 +303,7 @@
 		49D73A8713FEE0F60028AF22 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D73A8613FEE0F60028AF22 /* AssetsLibrary.framework */; };
 		49E3145913DA44F600813CE0 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49E3145613DA44F600813CE0 /* Random.cpp */; };
 		49E3145A13DA44F600813CE0 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49E3145613DA44F600813CE0 /* Random.cpp */; };
+		49EAAFD215900A2100B7030C /* WMFrameCounter.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EAAFCC15900A2100B7030C /* WMFrameCounter.m */; };
 		49F0595113D15F640056C506 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595013D15F640056C506 /* UIKit.framework */; };
 		49F0595313D15F640056C506 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595213D15F640056C506 /* Foundation.framework */; };
 		49F0595513D15F640056C506 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595413D15F640056C506 /* CoreGraphics.framework */; };
@@ -767,6 +768,9 @@
 		49E3145613DA44F600813CE0 /* Random.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Random.cpp; sourceTree = "<group>"; };
 		49E3145713DA44F600813CE0 /* Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Random.h; sourceTree = "<group>"; };
 		49E3145813DA44F600813CE0 /* Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Types.h; sourceTree = "<group>"; };
+		49EAAFB415900A0900B7030C /* WMPatchEventSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WMPatchEventSource.h; sourceTree = "<group>"; };
+		49EAAFCB15900A2100B7030C /* WMFrameCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMFrameCounter.h; sourceTree = "<group>"; };
+		49EAAFCC15900A2100B7030C /* WMFrameCounter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMFrameCounter.m; sourceTree = "<group>"; };
 		49F0594C13D15F640056C506 /* WMEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WMEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49F0595013D15F640056C506 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		49F0595213D15F640056C506 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1026,6 +1030,7 @@
 				49858DCB13DE4C1F0061A1A8 /* WMEngine.mm */,
 				49858DCC13DE4C1F0061A1A8 /* WMPatch.h */,
 				49858DCD13DE4C1F0061A1A8 /* WMPatch.m */,
+				49EAAFB415900A0900B7030C /* WMPatchEventSource.h */,
 				49791BC513EB98E8003B20EA /* WMPatch+GraphAlgorithms.h */,
 				49791BC613EB98E9003B20EA /* WMPatch+GraphAlgorithms.m */,
 				49858DCE13DE4C1F0061A1A8 /* WMPatchCategories.h */,
@@ -1694,6 +1699,16 @@
 			path = Math;
 			sourceTree = "<group>";
 		};
+		49EAAFB615900A2100B7030C /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				49EAAFCB15900A2100B7030C /* WMFrameCounter.h */,
+				49EAAFCC15900A2100B7030C /* WMFrameCounter.m */,
+			);
+			name = Misc;
+			path = ../Misc;
+			sourceTree = "<group>";
+		};
 		49F0594113D15F640056C506 = {
 			isa = PBXGroup;
 			children = (
@@ -1701,6 +1716,7 @@
 				49174AA213D235BD008B5B8D /* Application */,
 				49A5286113D174C6004EC7F6 /* Resources */,
 				49858DBF13DE4C1F0061A1A8 /* Engine */,
+				49EAAFB615900A2100B7030C /* Misc */,
 				49858E4F13DE4C800061A1A8 /* More Patches */,
 				49A5264D13D17330004EC7F6 /* Externals */,
 				49F0597613D15F640056C506 /* WMEditTests */,
@@ -2223,6 +2239,7 @@
 				49B792D31581F1E8009E81EB /* mztools.c in Sources */,
 				49B792D41581F1E8009E81EB /* unzip.c in Sources */,
 				49B792D51581F1E8009E81EB /* zip.c in Sources */,
+				49EAAFD215900A2100B7030C /* WMFrameCounter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

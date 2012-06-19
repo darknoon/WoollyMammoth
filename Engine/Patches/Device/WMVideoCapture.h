@@ -13,10 +13,6 @@
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
 
-#define VideoCapture_NumTextures 2
-
-#define USE_LOW_RES_CAMERA 0
-
 #import "WMPatch.h"
 
 @class WMImagePort;
