@@ -20,9 +20,12 @@
 @class WMTexture2D;
 
 @interface WMVideoCapture : WMPatch
+<
+WMPatchEventSource
 #if TARGET_OS_EMBEDDED
-<AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate, WMPatchEventSource> 
+,AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate
 #endif
+>
 {
 	WMImagePort *outputImage;
 	WMAudioPort *outputAudio;

@@ -35,7 +35,8 @@
 	WMTexture2D *mostRecentTexture;
 	WMAudioBuffer *mostRecentAudioBuffer;
 	
-	
+	WMEAGLContext *_context;
+
 #if TARGET_OS_EMBEDDED
 	
 	dispatch_queue_t videoCaptureQueue;
@@ -52,7 +53,7 @@
 	AVCaptureAudioDataOutput *audioDataOutput;
 	
 	CVOpenGLESTextureCacheRef textureCache;
-#else			
+#else
 	NSTimer *simulatorDebugTimer;
 #endif
 	
@@ -92,6 +93,8 @@
 
 - (BOOL)setup:(WMEAGLContext *)context;
 {	
+	_context = context;
+	
 	GL_CHECK_ERROR;
 	
 #if TARGET_OS_EMBEDDED
@@ -128,6 +131,7 @@
 	mostRecentTexture = nil;
 	
 	[super cleanup:context];
+	_context = nil;
 }
 
 
@@ -139,7 +143,7 @@
 #if TARGET_OS_EMBEDDED
 	captureSession = [[AVCaptureSession alloc] init];
 
-	[captureSession setSessionPreset:AVCaptureSessionPresetHigh];
+	[captureSession setSessionPreset:AVCaptureSessionPreset640x480];
 
 	NSError *error = nil;
 	
@@ -194,7 +198,7 @@
 		NSLog(@"Error making audio output.");
 		return;
 	}
-
+	
 	[captureSession addInput:captureVideoInput];
 	[captureSession addInput:captureAudioInput];
 	[captureSession addOutput:videoDataOutput];
@@ -276,6 +280,7 @@
 
 - (void)simulatorUploadTexture;
 {
+	[WMEAGLContext setCurrentContext:_context];
 	//Get the texture ready
 	
 	unsigned width = 640;
@@ -298,6 +303,9 @@
 	mostRecentTexture = [[WMTexture2D alloc] initWithData:buffer pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height} orientation:currentVideoOrientation];
 	
 	free(buffer);
+	
+	if (!self.eventDelegatePaused)
+		[self.eventDelegate patchGeneratedUpdateEvent:self atTime:CACurrentMediaTime()];
 }
 
 #endif
