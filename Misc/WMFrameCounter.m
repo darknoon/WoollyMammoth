@@ -10,13 +10,15 @@
 
 @implementation WMFrameCounter {
 	//Used to calculate actual FPS
-	double lastFPSUpdate;
-	NSUInteger framesSinceLastFPSUpdate;
-	NSTimeInterval lastFrameEndTime;
+	double _lastFPSUpdate;
+	NSUInteger _framesSinceLastFPSUpdate;
+	NSTimeInterval _lastFrameEndTime;
 	
 }
 @synthesize fps = _fps;
 @synthesize updateInterval = _updateInterval;
+@synthesize lastDuration = _lastDuration;
+
 - (id)init;
 {
     self = [super init];
@@ -27,18 +29,17 @@
     return self;
 }
 
-
-
 - (void)recordFrameWithTime:(NSTimeInterval)t duration:(NSTimeInterval)duration;
 {
-	lastFrameEndTime = t;
+	_lastFrameEndTime = t;
+	_lastDuration = duration;
 	
-	framesSinceLastFPSUpdate++;
-	if (t - lastFPSUpdate > _updateInterval) {
-		_fps = framesSinceLastFPSUpdate;
-		framesSinceLastFPSUpdate = 0;
+	_framesSinceLastFPSUpdate++;
+	if (t - _lastFPSUpdate > _updateInterval) {
+		_fps = _framesSinceLastFPSUpdate;
+		_framesSinceLastFPSUpdate = 0;
 		
-		lastFPSUpdate = t;
+		_lastFPSUpdate = t;
 	}
 }
 

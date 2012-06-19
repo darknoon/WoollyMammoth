@@ -11,6 +11,7 @@
 #import "WMPorts.h"
 
 #import "WMPatchCategories.h"
+#import "WMPatchEventSource.h"
 
 @class WMEAGLContext;
 @class WMPort;
@@ -82,4 +83,5 @@
 - (void)removeConnectionToPort:(NSString *)inPort ofPatch:(NSString *)toPatch;
 
 @end
+
 

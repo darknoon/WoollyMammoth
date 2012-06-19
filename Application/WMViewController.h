@@ -12,12 +12,13 @@
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
 
-@class WMEngine;
+#import "WMEngine.h"
+
 @class WMPatch;
 @class WMBundleDocument;
 @class EAGLView;
 
-@interface WMViewController : UIViewController <UIActionSheetDelegate> {
+@interface WMViewController : UIViewController <UIActionSheetDelegate, WMEngineDelegate> {
 	BOOL _alwaysPortrait;
 }
 
@@ -41,8 +42,5 @@
 
 //Override if you want WM to render in an orientation NOT the current -[UIViewController interfaceOrientation]
 - (UIInterfaceOrientation)renderOrientation;
-
-//For subclassers, do not call directly (the display link will handle this)
-- (void)drawFrame;
 
 @end

@@ -17,21 +17,20 @@
 
 #import "WMCompositionSerialization.h"
 
+@interface WMViewController ()
+
+@end
+
 @implementation WMViewController {
     CADisplayLink *displayLink;
 	
 	BOOL openingDocument;
 	
 	UILabel *fpsLabel;
-	
-	//Used to calculate actual FPS
-	NSTimeInterval lastFrameEndTime;
-	double lastFPSUpdate;
-	NSUInteger framesSinceLastFPSUpdate;
 }
 
 @synthesize document;
-@synthesize engine;
+@synthesize engine = _engine;
 @synthesize animating;
 @synthesize eaglView;
 @synthesize animationFrameInterval;
@@ -95,16 +94,18 @@
 {
 	//TODO: start lazily
 	GL_CHECK_ERROR;
-	[engine start];
+	[_engine start];
 	GL_CHECK_ERROR;
 	
-	[eaglView setContext:engine.renderContext];
+	[eaglView setContext:_engine.renderContext];
 }
 
 - (void)setup;
 {
 	//Recreate engine
-	engine = [[WMEngine alloc] initWithBundle:document];
+	_engine = [[WMEngine alloc] initWithBundle:document];
+	_engine.delegate = self;
+	
 	[self engineDidLoad];
 }
 
@@ -121,7 +122,7 @@
 				openingDocument = NO;
 			}];
 			openingDocument = YES;
-		} else if (!engine) {
+		} else if (!_engine) {
 			[self setup];
 		} 
 	}
@@ -132,7 +133,7 @@
 	if ([document.fileURL isEqual:inDocument.fileURL]) return;
 
 	document = inDocument;
-	engine = nil;
+	_engine = nil;
 	
 	[self openDocumentAndSetupIfNecessary];
 }
@@ -195,53 +196,14 @@
 	return !_alwaysPortrait || UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
 }
 
-- (NSInteger)animationFrameInterval
-{
-    return animationFrameInterval;
-}
-
-- (void)setAnimationFrameInterval:(NSInteger)frameInterval
-{
-    /*
-	 Frame interval defines how many display frames must pass between each time the display link fires.
-	 The display link will only fire 30 times a second when the frame internal is two on a display that refreshes 60 times a second. The default frame interval setting of one will fire 60 times a second when the display refreshes at 60 times a second. A frame interval setting of less than one results in undefined behavior.
-	 */
-    if (frameInterval >= 1)
-    {
-        animationFrameInterval = frameInterval;
-        
-        if (animating)
-        {
-            [self stopAnimation];
-            [self startAnimation];
-        }
-    }
-}
-
 - (void)startAnimation
 {
-    if (!animating)
-    {
-		displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(drawFrame)];
-		[displayLink setFrameInterval:animationFrameInterval];
-		
-		// The run loop will retain the display link on add.
-		[displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-
-        animating = TRUE;
-		lastFrameEndTime = CFAbsoluteTimeGetCurrent();
-    }
+	[_engine start];
 }
 
 - (void)stopAnimation
 {
-    if (animating)
-    {
-		[displayLink invalidate];
-		displayLink = nil;
-        
-        animating = FALSE;
-    }
+	[_engine stop];
 }
 
 - (UIInterfaceOrientation)renderOrientation;
@@ -249,34 +211,19 @@
 	return self.interfaceOrientation;
 }
 
-- (void)drawFrame
+- (BOOL)engineShouldRenderFrame:(WMEngine *)engine;
 {
-	[engine.renderContext renderToFramebuffer:eaglView.framebuffer block:^{
-		NSTimeInterval frameStartTime = CFAbsoluteTimeGetCurrent();
-		
-		[engine drawFrameInRect:eaglView.bounds interfaceOrientation:self.interfaceOrientation];
-		
-		NSTimeInterval frameEndTime = CFAbsoluteTimeGetCurrent();
-		
-		NSTimeInterval timeToDrawFrame = frameEndTime - frameStartTime;
-		
-		framesSinceLastFPSUpdate++;
-		if (frameEndTime - lastFPSUpdate > 1.0) {
-			float fps = framesSinceLastFPSUpdate;
-			framesSinceLastFPSUpdate = 0;
-			
-			//TODO: if not release...
-			fpsLabel.text = [NSString stringWithFormat:@"%.0lf fps (%.0lf ms)", fps, timeToDrawFrame * 1000.0];		
-			
-			lastFPSUpdate = frameEndTime;
-		}
-		
-		
-		lastFrameEndTime = frameEndTime;
+	engine.renderFramebuffer = eaglView.framebuffer;
+	engine.frame = eaglView.bounds;
+	engine.interfaceOrientation = self.interfaceOrientation;
+	
+	return YES;
+}
 
-	}];	
-
-	[eaglView presentFramebuffer];
+- (void)engineDidRenderFrame:(WMEngine *)engine;
+{
+	//TODO: only when changed
+	fpsLabel.text = [NSString stringWithFormat:@"%.0lf fps (%.0lf ms)", engine.frameRate, 1000.0 * engine.frameDuration];
 }
 
 #pragma mark -

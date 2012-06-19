@@ -58,6 +58,7 @@
 	
 }
 
+@synthesize eventDelegate = _eventDelegate;
 @synthesize capturing;
 
 + (void)load;
@@ -106,6 +107,8 @@
 	
 #endif
 	
+	[self startCapture];
+
 	return YES;
 }
 
@@ -138,7 +141,7 @@
 #if USE_LOW_RES_CAMERA
 	[captureSession setSessionPreset:AVCaptureSessionPresetLow];
 #else
-	[captureSession setSessionPreset:AVCaptureSessionPresetMedium];
+	[captureSession setSessionPreset:AVCaptureSessionPreset640x480];
 #endif	
 	NSError *error = nil;
 	
@@ -178,13 +181,12 @@
 		NSLog(@"Error making video output.");
 		return;
 	}
-	NSDictionary* videoSettings = [NSDictionary dictionaryWithObjectsAndKeys:
+	NSDictionary *videoSettings = [NSDictionary dictionaryWithObjectsAndKeys:
 								   [NSNumber numberWithUnsignedInt:kCVPixelFormatType_32BGRA], (id)kCVPixelBufferPixelFormatTypeKey,
 								   [NSNumber numberWithBool:YES], (id)kCVPixelBufferOpenGLCompatibilityKey, nil];
 	
 	[videoDataOutput setVideoSettings:videoSettings];	
 	[videoDataOutput setAlwaysDiscardsLateVideoFrames:YES];
-	//1.0 / 60.0 seconds
 	
 	[videoDataOutput setSampleBufferDelegate:self queue:videoCaptureQueue];
 	
@@ -202,7 +204,7 @@
 	[captureSession startRunning];
 #else
 	if (!simulatorDebugTimer)
-		simulatorDebugTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/60.0 target:self selector:@selector(simulatorUploadTexture) userInfo:nil repeats:YES];
+		simulatorDebugTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/30.0 target:self selector:@selector(simulatorUploadTexture) userInfo:nil repeats:YES];
 
 #endif	
 
@@ -234,7 +236,7 @@
 
 #if TARGET_OS_EMBEDDED
 
-- (void)captureOutput:(AVCaptureOutput *)captureOutput  didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer 
+- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer 
 	   fromConnection:(AVCaptureConnection *)connection;
 {		
 	dispatch_sync(dispatch_get_main_queue(), ^{
@@ -248,15 +250,6 @@
 				//Get buffer info
 				CVPixelBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
 				
-#if 0
-				NSDictionary *dict = (__bridge_transfer NSDictionary *)CMCopyDictionaryOfAttachments(kCFAllocatorDefault, sampleBuffer, kCMAttachmentMode_ShouldPropagate);
-				
-				CMSampleTimingInfo timing;
-				CMSampleBufferGetSampleTimingInfo(sampleBuffer, 0, &timing);
-				
-				NSLog(@"sample attachments: %@", dict);
-#endif
-				
 				//NSLog(@"Is ready: %@ samples:%uld sampleSize:%d width:%d height:%d bytes/row:%d baseAddr:%x", ready ? @"Y" : @"N", numsamples, sampleSize, width, height, bytesPerRow, baseAddress);
 
 				GL_CHECK_ERROR;
@@ -269,6 +262,9 @@
 				mostRecentTexture = texture;
 				
 				GL_CHECK_ERROR;
+				
+				
+				[self.eventDelegate patchGeneratedUpdateEvent:self atTime:CACurrentMediaTime()];
 			}
 			
 		}
@@ -368,11 +364,8 @@
 		
 	}
 	
-	if (!capturing && inputCapture.value) {
+	if (!capturing) {
 		[self startCapture];
-	}
-	if (capturing && !inputCapture.value) {
-		[self stopCapture];
 	}
 	
 	outputImage.image = [self getVideoTexture];

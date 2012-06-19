@@ -25,11 +25,9 @@
 
 @interface WMVideoCapture : WMPatch
 #if TARGET_OS_EMBEDDED
-<AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate> 
+<AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate, WMPatchEventSource> 
 #endif
 {
-	WMBooleanPort *inputCapture;
-	
 	WMImagePort *outputImage;
 	WMAudioPort *outputAudio;
 }

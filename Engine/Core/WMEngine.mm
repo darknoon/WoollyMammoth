@@ -20,6 +20,9 @@
 #import "WMFramebuffer.h"
 #import "wMCompositionSerialization.h"
 #import "WMBundleDocument.h"
+#import "WMFrameCounter.h"
+
+#import <QuartzCore/QuartzCore.h>
 
 #define DEBUG_LOG_RENDER_MATRICES 0
 
@@ -35,6 +38,7 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 
 @implementation WMEngine {
 	NSMutableDictionary *compositionUserData;
+	WMFrameCounter *_frameCounter;
 }
 
 @synthesize renderContext;
@@ -43,6 +47,11 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 @synthesize t;
 @synthesize previousAbsoluteTime;
 @synthesize frameNumber;
+@synthesize eventSource = _eventSource;
+@synthesize frame = _frame;
+@synthesize interfaceOrientation = _interfaceOrientation;
+@synthesize renderFramebuffer = _renderFramebuffer;
+@synthesize delegate;
 
 - (id)initWithRootPatch:(WMPatch *)inPatch;
 {
@@ -50,6 +59,7 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 	if (self == nil) return self; 
 
 	renderContext = [[WMEAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+	_frameCounter = [[WMFrameCounter alloc] init];
 	self.rootObject = inPatch;
 	
 	return self;
@@ -100,14 +110,51 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 	}
 }
 
+- (WMPatch<WMPatchEventSource> *)_findEventSource:(WMPatch *)patch;
+{
+	WMPatch<WMPatchEventSource> *eventSource;
+	for (WMPatch *p in patch.children) {
+		if ([p conformsToProtocol:@protocol(WMPatchEventSource)]) {
+			ZAssert(!eventSource, @"More than one event source found!");
+			eventSource = (WMPatch<WMPatchEventSource> *)p;
+		}
+	}
+	return eventSource;
+}
+
+- (void)setEventSource:(WMPatch<WMPatchEventSource> *)eventSource;
+{
+	_eventSource = eventSource;
+	_eventSource.eventDelegate = self;
+}
+
 - (void)start;
 {
 	[WMEAGLContext setCurrentContext:self.renderContext];
 	//Call setup on all patches
 	[self _setupRecursive:rootObject];
 	
+	//Find the event source
+	self.eventSource = [self _findEventSource:rootObject];
+	
 	frameNumber = 0;
 	previousAbsoluteTime = CFAbsoluteTimeGetCurrent();
+}
+
+- (void)stop;
+{
+	self.eventSource.eventDelegatePaused = YES;
+}
+
+- (void)beginConfiguration;
+{
+	
+}
+
+- (void)commitConfiguration;
+{
+	//Find the event source
+	self.eventSource = [self _findEventSource:rootObject];
 }
 
 //TODO: use this method to reduce the number of nodes executed
@@ -196,6 +243,25 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 	return nil;
 }
 
+- (void)patchGeneratedUpdateEvent:(id <WMPatchEventSource>)patch atTime:(double)time;
+{
+	BOOL ok = [self.delegate engineShouldRenderFrame:self];
+	
+	if (ok) {
+		NSTimeInterval frameStartTime = CACurrentMediaTime();
+
+		[self drawFrame];
+		[self.renderFramebuffer presentRenderbuffer];
+		
+		NSTimeInterval frameEndTime = CACurrentMediaTime();
+		
+		NSTimeInterval timeToDrawFrame = frameEndTime - frameStartTime;
+		[_frameCounter recordFrameWithTime:frameEndTime duration:timeToDrawFrame];
+
+		[self.delegate engineDidRenderFrame:self];
+	}
+}
+
 - (void)drawPatchRecursive:(WMPatch *)inPatch;
 {
 	/// Write values of input ports to inPatch's children ///
@@ -260,6 +326,20 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 	}
 }
 
+- (void)drawFrame;
+{
+	ZAssert(self.renderFramebuffer, @"Must have a framebuffer to render to");
+	[renderContext renderToFramebuffer:self.renderFramebuffer block:^{
+		
+		ZAssert(!CGRectIsEmpty(self.frame), @"Must specify a rect to render");
+		
+		[self drawFrameInRect:self.frame interfaceOrientation:self.interfaceOrientation];
+		
+	}];
+
+	[self drawFrameInRect:self.frame interfaceOrientation:self.interfaceOrientation];
+}
+
 - (void)drawFrameInRect:(CGRect)inBounds interfaceOrientation:(UIInterfaceOrientation)inInterfaceOrientation;
 {
 	//Pass along the device orientation. This is necessary for patches whose semantics are dependent on which direction is "up" for the user.
@@ -286,6 +366,17 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 	
 	[self drawPatchRecursive:self.rootObject];
 	frameNumber++;
+}
+
+
+- (double)frameRate;
+{
+	return _frameCounter.fps;
+}
+
+- (double)frameDuration;
+{
+	return _frameCounter.lastDuration;
 }
 
 - (NSString *)description

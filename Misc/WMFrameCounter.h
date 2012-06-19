@@ -14,6 +14,7 @@
 @property (nonatomic) double updateInterval;
 
 @property (nonatomic, readonly) double fps;
+@property (nonatomic, readonly) double lastDuration;
 
 - (void)recordFrameWithTime:(NSTimeInterval)t duration:(NSTimeInterval)duration;
 
