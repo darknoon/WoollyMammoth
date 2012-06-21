@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#define USE_UIDOCUMENT 1
+#define USE_UIDOCUMENT 0
 
 //UIDocument is fucking broken. So, I'm subclassing object instead for now.
 #if USE_UIDOCUMENT
