@@ -207,7 +207,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 	
 	GL_CHECK_ERROR;
 
-	NSLog(@"render object: %@", renderObject);
+	//DLog(@"render object: %@", renderObject);
 
 	GL_CHECK_ERROR;
 
