@@ -179,7 +179,7 @@
 {
     [self stopAnimation];
     
-	document.preview = [eaglView screenshotImage];
+//	document.preview = [eaglView screenshotImage];
 	
 	[[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 	
