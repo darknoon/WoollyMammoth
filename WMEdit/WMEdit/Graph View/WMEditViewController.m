@@ -421,6 +421,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
     return YES;
 }
 
+#pragma mark - PopVideo hacks
 
 //////// THE FOLLOWING IS A HUGE HACK FOR POPVIDEO AND YOU SHOULD REMOVE THIS ////////////
 
