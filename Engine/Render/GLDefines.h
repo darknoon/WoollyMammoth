@@ -6,11 +6,11 @@
 //  Copyright 2010 Darknoon. All rights reserved.
 //
 
-#if DEBUG
-#define DEBUG_OPENGL 1
-#else
-#define DEBUG_OPENGL 0
-#endif
+//#if DEBUG
+//#define DEBUG_OPENGL 1
+//#else
+//#define DEBUG_OPENGL 0
+//#endif
 
 #ifdef __cplusplus
 extern "C" {

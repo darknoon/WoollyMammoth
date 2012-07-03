@@ -372,7 +372,7 @@ NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
 		GLint attributeSize = 0;
 		GLenum attributeType = 0;
 		glGetActiveAttrib(program, i, sizeof(nameBuf), &nameLength, &attributeSize, &attributeType, nameBuf);
-		NSLog(@"gl attribute: %s type(%@) size:%d", nameBuf, [WMShader nameOfShaderType:attributeType], attributeSize);
+		//NSLog(@"gl attribute: %s type(%@) size:%d", nameBuf, [WMShader nameOfShaderType:attributeType], attributeSize);
 		
 		NSString *attributeName = [NSString stringWithCString:nameBuf encoding:NSASCIIStringEncoding];
 		[attributeNamesMutable addObject:attributeName];

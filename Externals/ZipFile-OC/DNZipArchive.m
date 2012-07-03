@@ -160,21 +160,21 @@ const NSUInteger DNZipArchiveReadBufferSize = 4096;
 		
 		for (NSString *subpath in rec) {
 			
+			NSURL *sourceURL = [[NSURL URLWithString:subpath relativeToURL:inFileOrDirectoryURL] absoluteURL];
+			
 			//Take the inFileOrDirectoryURL and remove the... hmm
 			//TODO: This is obviously not correct :(
 			NSString *relativePath = [path stringByAppendingPathComponent:subpath];
 			
-			NSURL *u = [NSURL URLWithString:relativePath relativeToURL:inFileOrDirectoryURL];
+			NSLog(@"Adding url %@ as path %@", sourceURL, relativePath);
 			
-			NSLog(@"Adding url %@ as path %@", u, relativePath);
-
 			//TODO: stream data into file with dispatch_io :D
 			
 			NSError *readDataError = nil;
-			NSData *data = [NSData dataWithContentsOfURL:u options:NSDataReadingMapped error:&readDataError];
+			NSData *data = [NSData dataWithContentsOfURL:sourceURL options:NSDataReadingMapped error:&readDataError];
 			if (!data) {
 				dispatch_async(callingQueue, ^{
-					NSLog(@"Couldn't read file data: %@", u);
+					NSLog(@"Couldn't read file data: %@", sourceURL);
 					NSError *zipWriteError = [[NSError alloc] initWithDomain:DNZipArchiveErrorDomain code:DNZipArchiveWriteError userInfo:nil];
 					completion(zipWriteError);
 				});

@@ -67,6 +67,20 @@ static CVPixelBufferPoolRef CreatePixelBufferPool(int32_t width, int32_t height,
 }
 @synthesize writing = _writing;
 @synthesize savingToPhotos;
+@synthesize inputRenderable1 = _inputRenderable1;
+@synthesize inputRenderable2 = _inputRenderable2;
+@synthesize inputRenderable3 = _inputRenderable3;
+@synthesize inputRenderable4 = _inputRenderable4;
+@synthesize inputTempName = _inputTempName;
+@synthesize inputShouldRecord = _inputShouldRecord;
+@synthesize inputWidth = _inputWidth;
+@synthesize inputHeight = _inputHeight;
+@synthesize inputOrientation = _inputOrientation;
+@synthesize inputAudio = _inputAudio;
+@synthesize outputRecording = _outputRecording;
+@synthesize outputSaving = _outputSaving;
+@synthesize outputImage = _outputImage;
+
 
 + (void)load;
 {
@@ -403,14 +417,14 @@ bail:
 	
 	//Use output dimensions from last time we weren't writing
 	
-	BOOL shouldBeWriting = inputShouldRecord.value;
+	BOOL shouldBeWriting = _inputShouldRecord.value;
 	
 	if (!self.writing) {
 		
 		//If dimensions changed, recreate video buffer pool
-		if (videoDimensions.width != inputWidth.index || videoDimensions.height != inputHeight.index) {
-			videoDimensions.width  = inputWidth.index;
-			videoDimensions.height = inputHeight.index;
+		if (videoDimensions.width != _inputWidth.index || videoDimensions.height != _inputHeight.index) {
+			videoDimensions.width  = _inputWidth.index;
+			videoDimensions.height = _inputHeight.index;
 
 			[self recreatePixelBufferPool];
 		}
@@ -452,7 +466,7 @@ bail:
 		GLKMatrix4 transform = [WMEngine cameraMatrixWithRect:(CGRect){.size.width = videoDimensions.width, .size.height = videoDimensions.height}];
 		
 		
-		switch (inputOrientation.index) {
+		switch (_inputOrientation.index) {
 			default:
 			case UIImageOrientationUp:
 				break;
@@ -487,17 +501,17 @@ bail:
 		transform = GLKMatrix4Scale(transform, 1.0f, -1.0f, 1.0f);
 
 		
-		if (inputRenderable1.object) {
-			[self renderObject:inputRenderable1.object withTransform:transform inContext:context];
+		if (_inputRenderable1.object) {
+			[self renderObject:_inputRenderable1.object withTransform:transform inContext:context];
 		}
-		if (inputRenderable2.object) {
-			[self renderObject:inputRenderable2.object withTransform:transform inContext:context];
+		if (_inputRenderable2.object) {
+			[self renderObject:_inputRenderable2.object withTransform:transform inContext:context];
 		}
-		if (inputRenderable3.object) {
-			[self renderObject:inputRenderable3.object withTransform:transform inContext:context];
+		if (_inputRenderable3.object) {
+			[self renderObject:_inputRenderable3.object withTransform:transform inContext:context];
 		}
-		if (inputRenderable4.object) {
-			[self renderObject:inputRenderable4.object withTransform:transform inContext:context];
+		if (_inputRenderable4.object) {
+			[self renderObject:_inputRenderable4.object withTransform:transform inContext:context];
 		}
 
 	}];
@@ -509,8 +523,8 @@ bail:
 	if (shouldBeWriting) {
 		CMTime timeStamp = kCMTimeInvalid;
 		
-		if (inputAudio.objectValue) {
-			WMAudioBuffer *firstAudioBuffer = (WMAudioBuffer *)inputAudio.objectValue;
+		if (_inputAudio.objectValue) {
+			WMAudioBuffer *firstAudioBuffer = (WMAudioBuffer *)_inputAudio.objectValue;
 			CMSampleBufferRef sampleBuffer = (__bridge CMSampleBufferRef)[firstAudioBuffer.sampleBuffers objectAtIndex:0];
 			timeStamp = CMSampleBufferGetPresentationTimeStamp( sampleBuffer );
 		}
@@ -537,8 +551,8 @@ bail:
 				
 				[self appendVideoBufferToAssetWriterInput:destPixelBuffer forTime:timeStamp];
 				
-				if (inputAudio.objectValue) {
-					for (id sampleBuffer in ((WMAudioBuffer *)inputAudio.objectValue).sampleBuffers) {
+				if (_inputAudio.objectValue) {
+					for (id sampleBuffer in ((WMAudioBuffer *)_inputAudio.objectValue).sampleBuffers) {
 						CMSampleBufferRef sbref = (__bridge CMSampleBufferRef)sampleBuffer;
 						[self appendAudioBufferToAssetWriterInput:sbref forTime:CMSampleBufferGetOutputPresentationTimeStamp(sbref)];
 					}
@@ -552,8 +566,8 @@ bail:
 	
 	[framebuffer setColorAttachmentWithTexture:nil];
 	
-	currentTexture.orientation = inputOrientation.index;
-	outputImage.image = currentTexture;
+	currentTexture.orientation = _inputOrientation.index;
+	_outputImage.image = currentTexture;
 	
 	CVOpenGLESTextureCacheFlush(textureCache, 0);
 	CFRelease(destPixelBuffer);

@@ -189,7 +189,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 
 - (void)markDocumentDirty;
 {
-	[self.document updateChangeCount:UIDocumentChangeDone];
+	//[self.document updateChangeCount:UIDocumentChangeDone];
 }
 
 - (void)togglePreviewFullscreen:(UITapGestureRecognizer *)inR;
@@ -447,7 +447,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	
 	DNZipArchive *dnza = [[DNZipArchive alloc] initForWritingWithFileURL:tempZipFile];
 	
-	[dnza appendDataFromURL:tempBundleDirectory asPath:@"" completion:^(NSError *zipWriteError) {
+	[dnza appendDataFromURL:tempBundleDirectory asPath:patchName completion:^(NSError *zipWriteError) {
 		if (zipWriteError) {
 			NSLog(@"Couldn't write zip because: %@", zipWriteError);
 		}
