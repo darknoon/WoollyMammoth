@@ -256,8 +256,7 @@ NSString *writerStatus(AVAssetWriterStatus status)
 				}
             }
             else {
-				NSError *error = _assetWriter.error;
-                DLog(@"finishWriting failed with error: %@", error);
+                DLog(@"finishWriting failed with error: %@", _assetWriter.error);
             }   
             
             _assetWriter = nil;
