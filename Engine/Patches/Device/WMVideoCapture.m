@@ -62,6 +62,8 @@
 @synthesize eventDelegate = _eventDelegate;
 @synthesize capturing;
 @synthesize eventDelegatePaused = _eventDelegatePaused;
+@synthesize outputImage = _outputImage;
+@synthesize outputAudio = _outputAudio;
 
 + (void)load;
 {
@@ -382,8 +384,8 @@
 		[self startCapture];
 	}
 	
-	outputImage.image = mostRecentTexture;
-	outputAudio.objectValue = mostRecentAudioBuffer;
+	_outputImage.image = mostRecentTexture;
+	_outputAudio.objectValue = mostRecentAudioBuffer;
 	mostRecentAudioBuffer = nil;
 	
 	GL_CHECK_ERROR;

@@ -71,7 +71,6 @@ static CVPixelBufferPoolRef CreatePixelBufferPool(int32_t width, int32_t height,
 @synthesize inputRenderable2 = _inputRenderable2;
 @synthesize inputRenderable3 = _inputRenderable3;
 @synthesize inputRenderable4 = _inputRenderable4;
-@synthesize inputTempName = _inputTempName;
 @synthesize inputShouldRecord = _inputShouldRecord;
 @synthesize inputWidth = _inputWidth;
 @synthesize inputHeight = _inputHeight;
@@ -99,20 +98,11 @@ static CVPixelBufferPoolRef CreatePixelBufferPool(int32_t width, int32_t height,
 	return [super defaultValueForInputPortKey:inKey];
 }
 
-- (void)removeFileURL:(NSURL *)fileURL
-{
-    NSString *outputPath = [fileURL path];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    if ([fileManager fileExistsAtPath:outputPath]) {
-        [fileManager removeItemAtPath:outputPath error:nil];
-    }
-}
-
-
 - (BOOL)createVideoAssetWriter 
 {
 	NSURL *fileURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), @"WMVideoRecord.mov"] isDirectory:NO];
-	[self removeFileURL:fileURL];
+	[[NSFileManager defaultManager] removeItemAtPath:fileURL.path error:nil];
+	
 	NSLog(@"fileURL %@", fileURL);
 	NSError *error = nil;
 	_assetWriter = [[AVAssetWriter alloc] initWithURL:fileURL fileType:@"com.apple.quicktime-movie"/*kUTTypeQuickTimeMovie*/ error:&error];
@@ -273,7 +263,7 @@ NSString *writerStatus(AVAssetWriterStatus status)
             NSURL *fileURL = [_assetWriter outputURL];              
             [_assetWriter cancelWriting];
 			
-            [self removeFileURL:fileURL];
+			[[NSFileManager defaultManager] removeItemAtPath:fileURL.path error:nil];
             
             _assetWriter = nil;
             _assetWriterVideoInput = nil;

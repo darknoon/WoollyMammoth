@@ -27,9 +27,10 @@ WMPatchEventSource
 #endif
 >
 {
-	WMImagePort *outputImage;
-	WMAudioPort *outputAudio;
 }
+
+@property (nonatomic, readonly) WMImagePort *outputImage;
+@property (nonatomic, readonly) WMAudioPort *outputAudio;
 
 @property (nonatomic, readonly) BOOL capturing;
 
