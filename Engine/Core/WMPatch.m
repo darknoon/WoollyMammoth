@@ -68,7 +68,6 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	//Keep around a dictionary of formerly-used input values in order to correctly restore state for dynamic ports that don't exist before -setup
 	NSDictionary *storedInputPortValues;
 	
-	NSString *key;
     NSMutableArray *_connections;
 	NSMutableArray *_children;
 	NSMutableDictionary *childrenByKey;
@@ -81,10 +80,6 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	//Render
 	CFAbsoluteTime lastExecutionTime;
 }
-
-@synthesize key;
-@synthesize editorPosition;
-@synthesize hasSetup;
 
 + (NSMutableDictionary *)_classMap;
 {
@@ -580,9 +575,9 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 - (NSString *)description;
 {
 	NSMutableArray *components = [NSMutableArray array];
-	[components addObject:[NSString stringWithFormat:@"key: %@", key]];
+	[components addObject:[NSString stringWithFormat:@"key: %@", _key]];
 	if (_connections.count > 0) [components addObject: [NSString stringWithFormat:@"connections: %u", _connections.count]];
-	if (_children.count > 0) [components addObject:[NSString stringWithFormat:@"childen: %u"]];
+	if (_children.count > 0) [components addObject:[NSString stringWithFormat:@"childen: %u", _children.count]];
 	
 	return [NSString stringWithFormat:@"<%@: %p>{%@}", NSStringFromClass([self class]), self, [components componentsJoinedByString:@", "]];
 }
@@ -718,7 +713,7 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 
 - (NSString *)description;
 {
-	return [NSString stringWithFormat:@"<%@ (was %@) : %p>{key: %@, connections: %u, childen: %u>}", NSStringFromClass([self class]), originalClassName, self, key, _connections.count, _children.count];
+	return [NSString stringWithFormat:@"<%@ (was %@) : %p>{key: %@, connections: %u, childen: %u>}", NSStringFromClass([self class]), originalClassName, self, self.key, _connections.count, _children.count];
 }
 
 

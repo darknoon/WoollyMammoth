@@ -295,7 +295,7 @@
 		} else if (value) {
 			DLog(@"Unsupported value %@ of class %@ for uniform name %@", value, [value class], uniformName);
 		} else {
-			DLog(@"WARNING: trying to render without a value for uniform %@. This can lead to unexpecetd results.", uniformName, [value class], uniformName);
+			DLog(@"WARNING: trying to render without a value for uniform %@. This can lead to unexpecetd results.", uniformName);
 		}
 	}
 	
