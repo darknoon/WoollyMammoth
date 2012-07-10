@@ -200,7 +200,7 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 		glFlush();
 		self.context = inContext;
 	} else {
-		DLog(@"Cannot move texture %@ to context %@ because they do not have the same sharegroup!");
+		DLog(@"Cannot move texture %@ to context %@ because they do not have the same sharegroup!", self, self.context);
 	}
 }
 - (NSString *)description
