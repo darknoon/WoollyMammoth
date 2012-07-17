@@ -247,11 +247,17 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 
 - (void)patchGeneratedUpdateEvent:(id <WMPatchEventSource>)patch atTime:(double)time;
 {
+	BOOL applicationCanUseOpenGL = [UIApplication sharedApplication].applicationState == UIApplicationStateActive;
+	if (!applicationCanUseOpenGL) {
+		NSLog(@"Trying to update when GL not allowed: %lf", time);
+		return;
+	}
+	
 	BOOL ok = [self.delegate engineShouldRenderFrame:self];
 	
 	if (ok) {
 		NSTimeInterval frameStartTime = CACurrentMediaTime();
-
+		
 		[self drawFrame];
 		[self.renderFramebuffer presentRenderbuffer];
 		

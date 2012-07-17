@@ -44,6 +44,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 - (id)initWithDocument:(WMBundleDocument *)inDocument;
@@ -267,6 +268,16 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     [self startAnimation];
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application;
+{
+	[self startAnimation];
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+    [self stopAnimation];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

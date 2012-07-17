@@ -252,6 +252,12 @@
 				mostRecentAudioBuffer = mostRecentAudioBuffer ? [mostRecentAudioBuffer bufferByAppendingSampleBuffer:sampleBuffer] : [[WMAudioBuffer alloc] initWithCMSampleBuffer:sampleBuffer];
 				
 			} else if (captureOutput == videoDataOutput) {
+
+				BOOL applicationCanUseOpenGL = [UIApplication sharedApplication].applicationState == UIApplicationStateActive;
+				if (!applicationCanUseOpenGL) {
+					NSLog(@"Camera update when app is in background");
+				}
+				
 				//Get buffer info
 				CVPixelBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
 				
