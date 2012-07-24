@@ -458,7 +458,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 			}
 			
 			//YAY, now upload the file for goodness sake
-			ASIS3ObjectRequest *request = [ASIS3ObjectRequest PUTRequestForFile:tempZipFile.path withBucket:@"popvideo-filters" key:zipFileName];
+			ASIS3ObjectRequest *request = [ASIS3ObjectRequest PUTRequestForFile:tempZipFile.path withBucket:@"popvideo-dev" key:zipFileName];
 			
 			request.completionBlock = ^{
 				NSLog(@"Uploaded file!");
