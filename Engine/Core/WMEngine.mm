@@ -247,7 +247,7 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 
 - (void)patchGeneratedUpdateEvent:(id <WMPatchEventSource>)patch atTime:(double)time;
 {
-	BOOL applicationCanUseOpenGL = [UIApplication sharedApplication].applicationState == UIApplicationStateActive;
+	BOOL applicationCanUseOpenGL = [UIApplication sharedApplication].applicationState != UIApplicationStateBackground;
 	if (!applicationCanUseOpenGL) {
 		NSLog(@"Trying to update when GL not allowed: %lf", time);
 		return;
