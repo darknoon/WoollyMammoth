@@ -371,7 +371,7 @@ const NSUInteger DNZipArchiveReadBufferSize = 4096;
 							}
 							int status = unzCloseCurrentFile(unzipFile);
 							if (status == UNZ_CRCERROR) {
-								NSLog(@"crc error!");
+								NSLog(@"crc error on file %@", filePath);
 //								//We read the file ok, but the CRC was invalid
 //								ok = NO;
 //								dispatch_async(callingQueue, ^{
