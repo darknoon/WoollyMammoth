@@ -26,6 +26,8 @@
 
 @property (nonatomic, readonly) WMBooleanPort *outputRecording;
 @property (nonatomic, readonly) WMBooleanPort *outputSaving;
+@property (nonatomic, readonly) WMNumberPort *outputRecordDuration;
+
 @property (nonatomic, readonly) WMStringPort *outputMostRecentFilePath;
 
 //Use this to show a preview of what will be recorded. Works even when

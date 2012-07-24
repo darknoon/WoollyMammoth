@@ -60,6 +60,11 @@ static CVPixelBufferPoolRef CreatePixelBufferPool(int32_t width, int32_t height,
 	
 	CMVideoDimensions videoDimensions;
 	
+	//Use this to track duration
+	//TODO: handle stopping/resuming recording
+	CMTime _assetWriterStartTime;
+	CMTime _assetWriterMostRecentTime;
+	
 	BOOL                        _writingDidStart;        
 	AVAssetWriter               *_assetWriter;
 	AVAssetWriterInput          *_assetWriterVideoInput;
@@ -217,7 +222,9 @@ NSString *writerStatus(AVAssetWriterStatus status)
 - (void)stopWriting 
 {
     dispatch_sync(videoProcessingQueue, ^{
-        if (self.writing) {   
+        if (self.writing) {
+			self.outputRecording.value = NO;
+
             NSURL *fileURL = [_assetWriter outputURL];
 
             DLog(@"before finishWriting status: %@", writerStatus(_assetWriter.status));
@@ -281,6 +288,8 @@ NSString *writerStatus(AVAssetWriterStatus status)
 		if (success) {
 			[_assetWriter startSessionAtSourceTime:time];
 			_writingDidStart = YES;
+			_assetWriterStartTime = time;
+			self.outputRecording.value = YES;
 			return YES;
 		} else {
 			NSLog(@"startWriting failed");
@@ -297,6 +306,7 @@ NSString *writerStatus(AVAssetWriterStatus status)
 	
 	if (_assetWriterAudioInput.readyForMoreMediaData) {       
 		[_assetWriterAudioInput appendSampleBuffer:audioBuffer];
+		_assetWriterMostRecentTime = inTime;
 	} else {
 		NSLog(@"Dropping audio");
 	}
@@ -417,6 +427,13 @@ bail:
 
 			[self recreatePixelBufferPool];
 		}
+	}
+	
+	if (self.writing) {
+		CMTime duration = CMTimeSubtract(_assetWriterMostRecentTime, _assetWriterStartTime);
+		self.outputRecordDuration.value = CMTIME_IS_NUMERIC(duration) ? CMTimeGetSeconds(duration) : 0.0;
+	} else {
+		self.outputRecordDuration.value = 0.0;
 	}
 	
 	if (shouldBeWriting && !self.writing && !self.savingToPhotos) {
