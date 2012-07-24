@@ -15,6 +15,8 @@
 //File extension for Woolly Mammoth bundles
 extern NSString *WMBundleDocumentExtension;
 
+extern NSString *WMBundleDocumentRootPlistFileName;
+
 enum WMBundleDocumentError {
 	WMBundleDocumentErrorRootDataSize = -14,
 	WMBundleDocumentErrorRootPlistInvalid = -15,	
