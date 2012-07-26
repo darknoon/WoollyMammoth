@@ -103,6 +103,26 @@ static CVPixelBufferPoolRef CreatePixelBufferPool(int32_t width, int32_t height,
 	return [super defaultValueForInputPortKey:inKey];
 }
 
+static inline double radians (double degrees) { return degrees * (M_PI / 180); }
+
+- (CGAffineTransform)transformForDeviceOrientation:(UIDeviceOrientation)orientation
+{
+	CGAffineTransform transform;
+	
+	if (orientation == UIDeviceOrientationPortrait) {
+		transform = CGAffineTransformMakeRotation(radians(90.0));
+	} else if (orientation == UIDeviceOrientationLandscapeRight) {
+		transform = CGAffineTransformMakeRotation(radians(180.0));
+	} else if (orientation == UIDeviceOrientationPortraitUpsideDown) {
+		transform = CGAffineTransformMakeRotation(radians(270.0));
+	} else if (orientation == UIDeviceOrientationLandscapeLeft) {
+		transform = CGAffineTransformIdentity;
+	}
+	
+	return transform;
+}
+
+
 - (BOOL)createVideoAssetWriter 
 {
 	NSURL *fileURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), @"WMVideoRecord.mov"] isDirectory:NO];
@@ -142,7 +162,7 @@ static CVPixelBufferPoolRef CreatePixelBufferPool(int32_t width, int32_t height,
 		if ([_assetWriter canApplyOutputSettings:videoCompressionSettings forMediaType:AVMediaTypeVideo]) {
 			_assetWriterVideoInput = [[AVAssetWriterInput alloc] initWithMediaType:AVMediaTypeVideo outputSettings:videoCompressionSettings];
 			_assetWriterVideoInput.expectsMediaDataInRealTime = YES;
-			// _assetWriterVideoInput.transform = [self assetWriterTransformForDeviceOrientation];
+			_assetWriterVideoInput.transform = [self transformForDeviceOrientation:_inputOrientation.index];
 		}
 		else {
 			NSLog(@"Couldn't apply video output settings.");
@@ -447,7 +467,7 @@ bail:
 	CVPixelBufferRef destPixelBuffer = NULL;
 	CVReturn err = CVPixelBufferPoolCreatePixelBuffer(kCFAllocatorDefault, videoBufferPool, &destPixelBuffer);
     if (!destPixelBuffer || err != kCVReturnSuccess) {
-        NSLog(@"displayAndRenderPixelBuffer error");
+        NSLog(@"create pixel buffer error");
 		return NO;
     }
 	
@@ -470,8 +490,10 @@ bail:
 		}
 		
 		GLKMatrix4 transform = [WMEngine cameraMatrixWithRect:(CGRect){.size.width = videoDimensions.width, .size.height = videoDimensions.height}];
-		
-		
+		//Rotate to landscape
+		transform = GLKMatrix4RotateZ(transform, M_PI_2);
+
+#if 0
 		switch (_inputOrientation.index) {
 			default:
 			case UIImageOrientationUp:
@@ -502,10 +524,10 @@ bail:
 				transform = GLKMatrix4Scale(transform, -1.0f, 1.0f, 1.0f);
 				break;
 		}
+#endif
 
 		//Invert y-axis to account for different GL/CV coordinates
 		transform = GLKMatrix4Scale(transform, 1.0f, -1.0f, 1.0f);
-
 		
 		if (_inputRenderable1.object) {
 			[self renderObject:_inputRenderable1.object withTransform:transform inContext:context];
@@ -572,7 +594,7 @@ bail:
 	
 	[framebuffer setColorAttachmentWithTexture:nil];
 	
-	currentTexture.orientation = _inputOrientation.index;
+	currentTexture.orientation = UIImageOrientationRight;
 	_outputImage.image = currentTexture;
 	
 	CVOpenGLESTextureCacheFlush(textureCache, 0);
