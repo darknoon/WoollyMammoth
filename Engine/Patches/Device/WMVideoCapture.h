@@ -19,18 +19,13 @@
 @class WMBooleanPort;
 @class WMTexture2D;
 
-@interface WMVideoCapture : WMPatch
-<
-WMPatchEventSource
-#if TARGET_OS_EMBEDDED
-,AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate
-#endif
->
-{
-}
+@interface WMVideoCapture : WMPatch <WMPatchEventSource>
+
+@property (nonatomic, readonly) WMVector2Port *inputFocusPointOfInterest;
 
 @property (nonatomic, readonly) WMImagePort *outputImage;
 @property (nonatomic, readonly) WMAudioPort *outputAudio;
+@property (nonatomic, readonly) WMBooleanPort *outputFocusing;
 
 @property (nonatomic, readonly) BOOL capturing;
 

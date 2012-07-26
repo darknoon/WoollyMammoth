@@ -24,6 +24,12 @@
 //For the interfaceOrientation argument
 #import "WMEngine.h"
 
+#if TARGET_OS_EMBEDDED
+@interface WMVideoCapture ()
+<AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate>
+@end
+#endif
+
 @implementation WMVideoCapture {
 	BOOL capturing;
 	
@@ -82,8 +88,9 @@
 
 + (id)defaultValueForInputPortKey:(NSString *)inKey;
 {
-	if ([inKey isEqualToString:@"inputCapture"]) {
-		return [NSNumber numberWithBool:YES];
+	if ([inKey isEqualToString:KVC(self.new, inputFocusPointOfInterest)]) {
+		//Default to center like the system
+		return [NSValue valueWithBytes:&(GLKVector2){0.5, 0.5} objCType:@encode(GLKVector2)];
 	}
 	return nil;
 }
@@ -390,6 +397,28 @@
 		[self startCapture];
 	}
 	
+	//Set focus point of interest if supported
+	if (cameraDevice.focusPointOfInterestSupported) {
+		CGPoint inputFocusPoint = CGPointFromGLKVector2(_inputFocusPointOfInterest.v);
+		CGPoint currentFocusPoint = cameraDevice.focusPointOfInterest;;
+		if (!CGPointEqualToPoint(inputFocusPoint, currentFocusPoint)) {
+			NSError *lockError;
+			BOOL locked = [cameraDevice lockForConfiguration:&lockError];
+			if (locked) {
+				NSLog(@"Setting camera focus POI to : %.2f %.2f", inputFocusPoint.x, inputFocusPoint.y);
+				cameraDevice.focusPointOfInterest = inputFocusPoint;
+				cameraDevice.focusMode = AVCaptureFocusModeAutoFocus;
+				[cameraDevice unlockForConfiguration];
+				
+				//This is a hack to prevent us thinking we're not focusing...
+			} else {
+				DLog(@"Camera device lock failed: %@", lockError);
+			}
+		}
+	}
+	_outputFocusing.value = cameraDevice.focusMode == AVCaptureFocusModeAutoFocus;
+	
+
 	_outputImage.image = mostRecentTexture;
 	_outputAudio.objectValue = mostRecentAudioBuffer;
 	mostRecentAudioBuffer = nil;
