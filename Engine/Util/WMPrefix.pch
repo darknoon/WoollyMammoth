@@ -28,6 +28,7 @@
 #define ZAssert(condition, ...) do { if (!(condition)) { ALog(__VA_ARGS__); }} while(0)
 
 #import "GLDefines.h"
+#import "GLKVectorCGCompatibility.h"
 
 
 #ifdef __OBJC__
