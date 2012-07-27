@@ -69,7 +69,10 @@ static CVPixelBufferPoolRef CreatePixelBufferPool(int32_t width, int32_t height,
 	AVAssetWriter               *_assetWriter;
 	AVAssetWriterInput          *_assetWriterVideoInput;
 	AVAssetWriterInput          *_assetWriterAudioInput;
+	
+	CVPixelBufferRef _prevPixelBuffer;
 }
+
 @synthesize writing = _writing;
 @synthesize savingToPhotos;
 @synthesize inputRenderable1 = _inputRenderable1;
@@ -474,6 +477,60 @@ bail:
 		[self stopWriting];
 	}
 	
+	glFinish();
+	
+	//Write out sample buffer
+	
+	if (shouldBeWriting && _prevPixelBuffer) {
+		CMTime timeStamp = kCMTimeInvalid;
+		
+		if (_inputAudio.objectValue) {
+			WMAudioBuffer *firstAudioBuffer = (WMAudioBuffer *)_inputAudio.objectValue;
+			CMSampleBufferRef sampleBuffer = (__bridge CMSampleBufferRef)[firstAudioBuffer.sampleBuffers objectAtIndex:0];
+			timeStamp = CMSampleBufferGetPresentationTimeStamp( sampleBuffer );
+		}
+		
+		dispatch_sync(videoProcessingQueue, ^{
+			
+			if (!CMTIME_IS_VALID(timeStamp)) return;
+			
+			BOOL success = [self startSessionIfNeededAtTime:timeStamp];
+			
+#if 0
+			//A bug was causing audio packets to be written twiec
+			NSMutableString *audioPacketPtrList = [[NSMutableString alloc] init];
+			if (inputAudio.objectValue) {
+				for (id sampleBuffer in ((WMAudioBuffer *)inputAudio.objectValue).sampleBuffers) {
+					[audioPacketPtrList appendFormat:@"%p, ", sampleBuffer];
+				}
+			}
+			DLog(@"assetWriter: %@ time:%lf.3 valid:%d audioPackets:%@", writerStatus(_assetWriter.status), CMTimeGetSeconds(timeStamp), CMTIME_IS_VALID(timeStamp), audioPacketPtrList);
+#endif
+			
+			
+			if (success && CMTIME_IS_VALID(timeStamp)) {
+				
+				[self appendVideoBufferToAssetWriterInput:_prevPixelBuffer forTime:timeStamp];
+				CFRelease(_prevPixelBuffer);
+				_prevPixelBuffer = nil;
+				
+				if (_inputAudio.objectValue) {
+					for (id sampleBuffer in ((WMAudioBuffer *)_inputAudio.objectValue).sampleBuffers) {
+						CMSampleBufferRef sbref = (__bridge CMSampleBufferRef)sampleBuffer;
+						[self appendAudioBufferToAssetWriterInput:sbref forTime:CMSampleBufferGetOutputPresentationTimeStamp(sbref)];
+					}
+				}
+			}
+			
+		});
+		
+		
+	} else if (_prevPixelBuffer) {
+		CFRelease(_prevPixelBuffer);
+		_prevPixelBuffer = nil;
+	}
+	
+
 	
 	CVPixelBufferRef destPixelBuffer = NULL;
 	CVReturn err = CVPixelBufferPoolCreatePixelBuffer(kCFAllocatorDefault, videoBufferPool, &destPixelBuffer);
@@ -493,7 +550,7 @@ bail:
 
 	[context renderToFramebuffer:framebuffer block:^{
 				
-		[context clearToColor:(GLKVector4){0, 0, 0, 1}];
+		[context clearToColor:(GLKVector4){0, 1, 0, 1}];
 		[context clearDepth];
 		
 		if (!currentTexture || err) {
@@ -555,61 +612,15 @@ bail:
 
 	}];
 	
-	glFinish();
-	
-	//Write out sample buffer
-	
-	if (shouldBeWriting) {
-		CMTime timeStamp = kCMTimeInvalid;
-		
-		if (_inputAudio.objectValue) {
-			WMAudioBuffer *firstAudioBuffer = (WMAudioBuffer *)_inputAudio.objectValue;
-			CMSampleBufferRef sampleBuffer = (__bridge CMSampleBufferRef)[firstAudioBuffer.sampleBuffers objectAtIndex:0];
-			timeStamp = CMSampleBufferGetPresentationTimeStamp( sampleBuffer );
-		}
-		
-		dispatch_sync(videoProcessingQueue, ^{
-			
-			if (!CMTIME_IS_VALID(timeStamp)) return;
-			
-			BOOL success = [self startSessionIfNeededAtTime:timeStamp];
-			
-#if 0
-			//A bug was causing audio packets to be written twiec
-			NSMutableString *audioPacketPtrList = [[NSMutableString alloc] init];
-			if (inputAudio.objectValue) {
-				for (id sampleBuffer in ((WMAudioBuffer *)inputAudio.objectValue).sampleBuffers) {
-					[audioPacketPtrList appendFormat:@"%p, ", sampleBuffer];
-				}
-			}
-			DLog(@"assetWriter: %@ time:%lf.3 valid:%d audioPackets:%@", writerStatus(_assetWriter.status), CMTimeGetSeconds(timeStamp), CMTIME_IS_VALID(timeStamp), audioPacketPtrList);
-#endif
-			
 
-			if (success && CMTIME_IS_VALID(timeStamp)) {
-				
-				[self appendVideoBufferToAssetWriterInput:destPixelBuffer forTime:timeStamp];
-				
-				if (_inputAudio.objectValue) {
-					for (id sampleBuffer in ((WMAudioBuffer *)_inputAudio.objectValue).sampleBuffers) {
-						CMSampleBufferRef sbref = (__bridge CMSampleBufferRef)sampleBuffer;
-						[self appendAudioBufferToAssetWriterInput:sbref forTime:CMSampleBufferGetOutputPresentationTimeStamp(sbref)];
-					}
-				}
-			}
-
-		});
-		
-		
-	}
-	
-	[framebuffer setColorAttachmentWithTexture:nil];
-	
 	currentTexture.orientation = UIImageOrientationUp;
 	_outputImage.image = currentTexture;
 	
-	CVOpenGLESTextureCacheFlush(textureCache, 0);
-	CFRelease(destPixelBuffer);
+	[framebuffer setColorAttachmentWithTexture:nil];
+	_prevPixelBuffer = destPixelBuffer;
+	//Will release later CFRelease(destPixelBuffer);
+
+	//CVOpenGLESTextureCacheFlush(textureCache, 0);
 		
 	return YES;
 	
