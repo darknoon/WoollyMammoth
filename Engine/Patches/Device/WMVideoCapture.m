@@ -152,7 +152,7 @@
 #if TARGET_OS_EMBEDDED
 	captureSession = [[AVCaptureSession alloc] init];
 
-	[captureSession setSessionPreset:AVCaptureSessionPreset640x480];
+	[captureSession setSessionPreset:AVCaptureSessionPreset1280x720];
 
 	NSError *error = nil;
 	
