@@ -36,6 +36,8 @@ static CVPixelBufferPoolRef CreatePixelBufferPool(int32_t width, int32_t height,
 		CFRelease(ioSurfaceProps);
 	}
 	
+	//TODO: set kCVPixelBufferPoolMinimumBufferCountKey to 5? Does that actually make a maximum?
+	
 	CVPixelBufferPoolCreate( kCFAllocatorDefault, NULL, sourcePixelBufferOptions, &outputPool );
 	
 	CFRelease( sourcePixelBufferOptions );
