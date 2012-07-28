@@ -237,9 +237,9 @@ static WMStructureField WMQuadVertex_fields[] = {
 		
 		switch (inputBlending.index) {
 			default:
-//			case QCBlendModeReplace:
-//				renderObject.renderBlendState = 0;
-//				break;
+			case QCBlendModeReplace:
+				renderObject.renderBlendState = 0;
+				break;
 			case QCBlendModeOver:
 				renderObject.renderBlendState = DNGLStateBlendEnabled;
 				break;
