@@ -10,4 +10,13 @@
 
 @interface WMImageSize : WMPatch
 
+//An image
+@property (nonatomic, readonly) WMImagePort *inputImage;
+
+// Size of the image in pixels
+@property (nonatomic, readonly) WMVector2Port *outputSize;
+
+// 1.0 / imageSize
+@property (nonatomic, readonly) WMVector2Port *outputSizeInv;
+
 @end

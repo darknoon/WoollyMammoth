@@ -191,6 +191,8 @@
 		49B3DB4D13E10F03002DC713 /* WMRenderObjectPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB4C13E10F03002DC713 /* WMRenderObjectPort.m */; };
 		49B3DB5B13E11039002DC713 /* WMRenderOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB5813E11039002DC713 /* WMRenderOutput.m */; };
 		49B3DB5F13E1115B002DC713 /* WMSetShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB5E13E1115B002DC713 /* WMSetShader.m */; };
+		49B4500615C362EA00113D82 /* GLKVectorCGCompatibility.c in Sources */ = {isa = PBXBuildFile; fileRef = 49B4500415C362EA00113D82 /* GLKVectorCGCompatibility.c */; };
+		49B4500A15C36F2B00113D82 /* WMImageSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B4500915C36F2B00113D82 /* WMImageSize.m */; };
 		49B792D01581F1E8009E81EB /* DNZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B792C21581F1E8009E81EB /* DNZipArchive.m */; };
 		49B792D11581F1E8009E81EB /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 49B792C41581F1E8009E81EB /* ioapi.c */; };
 		49B792D31581F1E8009E81EB /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 49B792C71581F1E8009E81EB /* mztools.c */; };
@@ -663,6 +665,10 @@
 		49B3DB5813E11039002DC713 /* WMRenderOutput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WMRenderOutput.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		49B3DB5D13E1115B002DC713 /* WMSetShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSetShader.h; sourceTree = "<group>"; };
 		49B3DB5E13E1115B002DC713 /* WMSetShader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WMSetShader.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		49B4500415C362EA00113D82 /* GLKVectorCGCompatibility.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GLKVectorCGCompatibility.c; sourceTree = "<group>"; };
+		49B4500515C362EA00113D82 /* GLKVectorCGCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKVectorCGCompatibility.h; sourceTree = "<group>"; };
+		49B4500815C36F2B00113D82 /* WMImageSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMImageSize.h; sourceTree = "<group>"; };
+		49B4500915C36F2B00113D82 /* WMImageSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMImageSize.m; sourceTree = "<group>"; };
 		49B792C01581F1E8009E81EB /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
 		49B792C11581F1E8009E81EB /* DNZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNZipArchive.h; sourceTree = "<group>"; };
 		49B792C21581F1E8009E81EB /* DNZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNZipArchive.m; sourceTree = "<group>"; };
@@ -1091,6 +1097,8 @@
 				49858DE413DE4C1F0061A1A8 /* WMImageLoader.m */,
 				49858DE513DE4C1F0061A1A8 /* WMRenderInImage.h */,
 				49858DE613DE4C1F0061A1A8 /* WMRenderInImage.mm */,
+				49B4500815C36F2B00113D82 /* WMImageSize.h */,
+				49B4500915C36F2B00113D82 /* WMImageSize.m */,
 			);
 			path = Image;
 			sourceTree = "<group>";
@@ -1702,6 +1710,8 @@
 		49EAAFB615900A2100B7030C /* Misc */ = {
 			isa = PBXGroup;
 			children = (
+				49B4500415C362EA00113D82 /* GLKVectorCGCompatibility.c */,
+				49B4500515C362EA00113D82 /* GLKVectorCGCompatibility.h */,
 				49EAAFCB15900A2100B7030C /* WMFrameCounter.h */,
 				49EAAFCC15900A2100B7030C /* WMFrameCounter.m */,
 			);
@@ -2240,6 +2250,8 @@
 				49B792D41581F1E8009E81EB /* unzip.c in Sources */,
 				49B792D51581F1E8009E81EB /* zip.c in Sources */,
 				49EAAFD215900A2100B7030C /* WMFrameCounter.m in Sources */,
+				49B4500615C362EA00113D82 /* GLKVectorCGCompatibility.c in Sources */,
+				49B4500A15C36F2B00113D82 /* WMImageSize.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
