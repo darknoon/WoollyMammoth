@@ -27,10 +27,13 @@
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
 	if (_inputImage.image) {
-		_outputSize.v = GLKVector2FromCGSize(_inputImage.image.contentSize);
-		_outputSizeInv.v = (GLKVector2){1.0 / _outputSize.v.x, 1.0 / _outputSize.v.y};
+		CGSize imageSize =_inputImage.image.contentSize;
+		_outputWidth.index = imageSize.width;
+		_outputHeight.index = imageSize.width;
+		_outputSizeInv.v = (GLKVector2){1.0 / imageSize.width, 1.0 / imageSize.height};
 	} else {
-		_outputSize.v = (GLKVector2){};
+		_outputWidth.index = 0;
+		_outputHeight.index = 0;
 		_outputSizeInv.v = (GLKVector2){};
 	}
 	return YES;
