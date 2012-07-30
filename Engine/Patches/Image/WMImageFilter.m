@@ -136,11 +136,9 @@ static WMStructureField WMQuadVertex_fields[] = {
 	
 	//Set uniform values
 	
-	const GLKVector2 offset = {inAmountX / 64, inAmountY / 64};
-	[ro setValue:[NSValue valueWithBytes:&offset objCType:@encode(GLKVector2)] forUniformWithName:@"offset"];
+	[ro setValue:[NSValue valueWithGLKVector2:(GLKVector2){inAmountX / 64, inAmountY / 64}] forUniformWithName:@"offset"];
 	
-	const GLKVector2 tcScale = {inSourceTexture.maxS, inSourceTexture.maxT};
-	[ro setValue:[NSValue valueWithBytes:&tcScale objCType:@encode(GLKVector2)] forUniformWithName:@"tcScale"];
+	[ro setValue:[NSValue valueWithGLKVector2:(GLKVector2){inSourceTexture.maxS, inSourceTexture.maxT}] forUniformWithName:@"tcScale"];
 	
 	[ro setValue:inSourceTexture forUniformWithName:@"sTexture"];
 		

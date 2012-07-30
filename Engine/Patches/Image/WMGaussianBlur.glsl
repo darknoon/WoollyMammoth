@@ -40,11 +40,12 @@ uniform sampler2D sTexture;
 
 void main()
 {
-	lowp vec3 color = texture2D(sTexture, vTexCoord0).rgb * 0.333333;
-	  color = color + texture2D(sTexture, vTexCoord1).rgb * 0.333333;
-	  color = color + texture2D(sTexture, vTexCoord2).rgb * 0.333333;
+	const mediump float mul = 0.333333;
+	mediump vec3 accum = mul * texture2D(sTexture, vTexCoord0).rgb;
+	accum += mul * texture2D(sTexture, vTexCoord1).rgb * 0.333333;
+	accum += mul * texture2D(sTexture, vTexCoord2).rgb * 0.333333;
 	
-	  gl_FragColor.rgb = color;
+	gl_FragColor.rgb = accum;
 }
 
 #endif
