@@ -52,19 +52,10 @@
 	return NO;
 }
 
-- (id)objectValue;
-{
-	return [NSValue valueWithBytes:&_v objCType:@encode(GLKVector4)];
-}
-
 - (BOOL)setObjectValue:(id)inRuntimeValue;
 {
 	if ([inRuntimeValue isKindOfClass:[NSValue class]]) {
-		//TODO: support inputs of GLKVector2, GLKVector3?
-		if (strcmp([inRuntimeValue objCType], @encode(GLKVector4)) == 0) {
-			[(NSValue *)inRuntimeValue getValue:_v.v];
-			return YES;
-		}
+		_v = [(NSValue *)inRuntimeValue GLKVector4Value];
 	}
 	return NO;
 }
@@ -110,6 +101,11 @@
 	_v = (GLKVector4){inV.x, inV.y, 0.0f, 0.0f};
 }
 
+- (id)objectValue;
+{
+	return [NSValue valueWithGLKVector2:(GLKVector2){_v.x, _v.y}];
+}
+
 - (NSString *)description;
 {
 	return [NSString stringWithFormat:@"<%@ : %p>{key: %@, v:%@}", NSStringFromClass([self class]), self, self.key, NSStringFromGLKVector2(self.v)];
@@ -137,6 +133,11 @@
 	_v = (GLKVector4){inV.x, inV.y, inV.z, 0.0f};
 }
 
+- (id)objectValue;
+{
+	return [NSValue valueWithGLKVector3:(GLKVector3){_v.x, _v.y, _v.z}];
+}
+
 - (NSString *)description;
 {
 	return [NSString stringWithFormat:@"<%@ : %p>{key: %@, v:%@}", NSStringFromClass([self class]), self, self.key, NSStringFromGLKVector3(self.v)];
@@ -162,6 +163,11 @@
 - (void)setV:(GLKVector4)inV;
 {
 	_v = inV;
+}
+
+- (id)objectValue;
+{
+	return [NSValue valueWithGLKVector4:_v];
 }
 
 - (NSString *)description;
