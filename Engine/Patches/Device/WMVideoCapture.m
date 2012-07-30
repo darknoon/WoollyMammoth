@@ -398,6 +398,7 @@
 	}
 	
 	//Set focus point of interest if supported
+#if TARGET_OS_EMBEDDED
 	if (cameraDevice.focusPointOfInterestSupported) {
 		CGPoint inputFocusPoint = CGPointFromGLKVector2(_inputFocusPointOfInterest.v);
 		CGPoint currentFocusPoint = cameraDevice.focusPointOfInterest;;
@@ -417,7 +418,7 @@
 		}
 	}
 	_outputFocusing.value = cameraDevice.focusMode == AVCaptureFocusModeAutoFocus;
-	
+#endif
 
 	_outputImage.image = mostRecentTexture;
 	_outputAudio.objectValue = mostRecentAudioBuffer;
