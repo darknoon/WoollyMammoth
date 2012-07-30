@@ -121,9 +121,12 @@ static WMStructureField WMQuadVertex_fields[] = {
 	
 	//Make sure framebuffer has this texture
 	[fbo setColorAttachmentWithTexture:inDestinationTexture];
+
+#if DEBUG_OPENGL
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
 		NSLog(@"Failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
 	}
+#endif
 
 	WMRenderObject *ro = [[WMRenderObject alloc] init];
 	
@@ -143,7 +146,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 		
 	GL_CHECK_ERROR;
 	
-#if DEBUG
+#if DEBUG_OPENGL
 	if (![shader validateProgram])
 	{
 		NSLog(@"Failed to validate program in shader: %@", shader);
