@@ -34,7 +34,6 @@
 //Call in +load for any WMPatch subclass
 + (void)registerPatchClass;
 
-+ (Class)findClassWithName:(NSString*)className;
 + (NSString *)humanReadableTitle;
 
 - (BOOL)setPlistState:(id)inPlist;
