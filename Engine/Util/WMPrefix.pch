@@ -32,6 +32,7 @@
 #import "DNKVC.h"
 
 #ifdef __OBJC__
+#import "NSValue+GLKVector.h"
 #import <Foundation/Foundation.h>
 
 #if TARGET_OS_IPHONE
