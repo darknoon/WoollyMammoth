@@ -29,7 +29,7 @@
 	if (_inputImage.image) {
 		CGSize imageSize =_inputImage.image.contentSize;
 		_outputWidth.index = imageSize.width;
-		_outputHeight.index = imageSize.width;
+		_outputHeight.index = imageSize.height;
 		_outputSizeInv.v = (GLKVector2){1.0 / imageSize.width, 1.0 / imageSize.height};
 	} else {
 		_outputWidth.index = 0;

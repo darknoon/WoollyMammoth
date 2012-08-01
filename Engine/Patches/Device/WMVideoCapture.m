@@ -37,7 +37,6 @@
 	
 	UIImageOrientation currentVideoOrientation;
 	
-	//TODO: yeah, this is dumb, use the camera as an event source and only process each frame once...
 	WMTexture2D *mostRecentTexture;
 	WMAudioBuffer *mostRecentAudioBuffer;
 	
