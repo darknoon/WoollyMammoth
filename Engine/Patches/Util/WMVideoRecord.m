@@ -484,7 +484,7 @@ bail:
 			
 			BOOL success = [self startSessionIfNeededAtTime:timeStamp];
 			
-#if DEBUG_OPENGL
+#if 0
 			//A bug was causing audio packets to be written twiec
 			NSMutableString *audioPacketPtrList = [[NSMutableString alloc] init];
 			if (inputAudio.objectValue) {

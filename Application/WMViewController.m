@@ -217,7 +217,7 @@
 {
 	engine.renderFramebuffer = eaglView.framebuffer;
 	engine.frame = eaglView.bounds;
-	engine.interfaceOrientation = self.interfaceOrientation;
+	engine.interfaceOrientation = self.renderOrientation;
 	
 	if (!engine.renderFramebuffer) return NO;
 	

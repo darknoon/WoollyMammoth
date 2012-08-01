@@ -31,6 +31,7 @@
 		491C1CD01454735000554C73 /* popoverArrowUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 491C1CC41454735000554C73 /* popoverArrowUp@2x.png */; };
 		491C1CD11454735000554C73 /* popoverArrowUpSimple.png in Resources */ = {isa = PBXBuildFile; fileRef = 491C1CC51454735000554C73 /* popoverArrowUpSimple.png */; };
 		491D665513D630BD003C609B /* plugstrip-stretchable~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 491D665413D630BD003C609B /* plugstrip-stretchable~ipad.png */; };
+		491E26AB15C94A9F0087D52B /* WMImageOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 491E26AA15C94A9F0087D52B /* WMImageOrientation.m */; };
 		493A1A2B1400C1CB001BB458 /* background-tile~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 493A1A2A1400C1CB001BB458 /* background-tile~ipad.png */; };
 		493A1A2E1400E491001BB458 /* WMIndexInputPortCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 493A1A2D1400E491001BB458 /* WMIndexInputPortCell.m */; };
 		493A1A301400E4B4001BB458 /* WMIndexInputPortCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 493A1A2F1400E4B4001BB458 /* WMIndexInputPortCell.xib */; };
@@ -369,6 +370,8 @@
 		491C1CC41454735000554C73 /* popoverArrowUp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popoverArrowUp@2x.png"; sourceTree = "<group>"; };
 		491C1CC51454735000554C73 /* popoverArrowUpSimple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverArrowUpSimple.png; sourceTree = "<group>"; };
 		491D665413D630BD003C609B /* plugstrip-stretchable~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plugstrip-stretchable~ipad.png"; sourceTree = "<group>"; };
+		491E26A915C94A9F0087D52B /* WMImageOrientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMImageOrientation.h; sourceTree = "<group>"; };
+		491E26AA15C94A9F0087D52B /* WMImageOrientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMImageOrientation.m; sourceTree = "<group>"; };
 		493A1A2A1400C1CB001BB458 /* background-tile~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-tile~ipad.png"; sourceTree = "<group>"; };
 		493A1A2C1400E491001BB458 /* WMIndexInputPortCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMIndexInputPortCell.h; sourceTree = "<group>"; };
 		493A1A2D1400E491001BB458 /* WMIndexInputPortCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMIndexInputPortCell.m; sourceTree = "<group>"; };
@@ -1102,6 +1105,8 @@
 				49858DE613DE4C1F0061A1A8 /* WMRenderInImage.mm */,
 				49B4500815C36F2B00113D82 /* WMImageSize.h */,
 				49B4500915C36F2B00113D82 /* WMImageSize.m */,
+				491E26A915C94A9F0087D52B /* WMImageOrientation.h */,
+				491E26AA15C94A9F0087D52B /* WMImageOrientation.m */,
 			);
 			path = Image;
 			sourceTree = "<group>";
@@ -2258,6 +2263,7 @@
 				49B4500615C362EA00113D82 /* GLKVectorCGCompatibility.c in Sources */,
 				49B4500A15C36F2B00113D82 /* WMImageSize.m in Sources */,
 				49B4501115C4244B00113D82 /* NSValue+GLKVector.m in Sources */,
+				491E26AB15C94A9F0087D52B /* WMImageOrientation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

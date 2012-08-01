@@ -18,6 +18,8 @@
 @property (nonatomic, readonly) WMRenderObjectPort *inputObject3;
 @property (nonatomic, readonly) WMRenderObjectPort *inputObject4;
 
+@property (nonatomic, readonly) WMIndexPort *inputOrientation;
+
 @property (nonatomic, readonly) WMColorPort *inputClearColor;
 
 @property (nonatomic, readonly) WMIndexPort *inputWidth;
