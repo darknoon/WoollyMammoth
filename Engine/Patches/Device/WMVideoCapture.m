@@ -45,7 +45,6 @@
 #if TARGET_OS_EMBEDDED
 	
 	dispatch_queue_t videoCaptureQueue;
-	dispatch_queue_t audioCaptureQueue;
 
 	AVCaptureSession *captureSession;
 	AVCaptureInput *captureVideoInput;
@@ -108,10 +107,7 @@
 #if TARGET_OS_EMBEDDED
 	videoCaptureQueue = dispatch_queue_create([[NSString stringWithFormat:@"com.darknoon.%@.videoCaptureQueue", [self class]] UTF8String], DISPATCH_QUEUE_SERIAL);
 	dispatch_set_target_queue(videoCaptureQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0));
-	
-	audioCaptureQueue = dispatch_queue_create([[NSString stringWithFormat:@"com.darknoon.%@.audioCaptureQueue", [self class]] UTF8String], DISPATCH_QUEUE_SERIAL);
-	dispatch_set_target_queue(audioCaptureQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0));
-	
+		
 	CVReturn result = CVOpenGLESTextureCacheCreate(NULL, NULL, (__bridge void *)context, NULL, &textureCache);
 	if (result != kCVReturnSuccess) {
 		NSLog(@"Error creating CVOpenGLESTextureCache");
@@ -131,9 +127,6 @@
 	if (videoCaptureQueue)
 		dispatch_release(videoCaptureQueue);
 	videoCaptureQueue = NULL;
-	if (audioCaptureQueue)
-		dispatch_release(audioCaptureQueue);
-	audioCaptureQueue = NULL;
 #endif
 	
 	mostRecentTexture = nil;
@@ -201,7 +194,7 @@
 	[videoDataOutput setSampleBufferDelegate:self queue:videoCaptureQueue];
 	
 	audioDataOutput = [[AVCaptureAudioDataOutput alloc] init];
-	[audioDataOutput setSampleBufferDelegate:self queue:audioCaptureQueue];
+	[audioDataOutput setSampleBufferDelegate:self queue:videoCaptureQueue];
 	if (!audioDataOutput) {
 		NSLog(@"Error making audio output.");
 		return;
@@ -255,11 +248,17 @@
 			
 			if (captureOutput == audioDataOutput) {
 				
+				//Better to drop than accumulate a ton!
+				if (mostRecentAudioBuffer.sampleBuffers.count > 5) {
+					mostRecentAudioBuffer = nil;
+					NSLog(@"ERROR: audio buffer overflow (video underflow) delegate: %@", self.eventDelegate);
+				}
+				
 				mostRecentAudioBuffer = mostRecentAudioBuffer ? [mostRecentAudioBuffer bufferByAppendingSampleBuffer:sampleBuffer] : [[WMAudioBuffer alloc] initWithCMSampleBuffer:sampleBuffer];
 				
 			} else if (captureOutput == videoDataOutput) {
 
-				BOOL applicationCanUseOpenGL = [UIApplication sharedApplication].applicationState == UIApplicationStateActive;
+				BOOL applicationCanUseOpenGL = [UIApplication sharedApplication].applicationState != UIApplicationStateBackground;
 				if (!applicationCanUseOpenGL) {
 					NSLog(@"Camera update when app is in background");
 				}
