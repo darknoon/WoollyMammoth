@@ -217,6 +217,11 @@ static WMStructureField WMQuadVertex_fields[] = {
 - (void)cleanup:(WMEAGLContext *)context;
 {
 	renderObject = nil;
+	shader = nil;
+	
+	vertexBuffer = nil;
+	indexBuffer = nil;
+	
 	GL_CHECK_ERROR;
 
 }
