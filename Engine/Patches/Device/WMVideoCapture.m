@@ -342,53 +342,26 @@
 	
 	UIInterfaceOrientation interfaceOrientation = [[args objectForKey:WMEngineArgumentsInterfaceOrientationKey] intValue];
 	
-	BOOL isPhone = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone;
-	
-	if (isPhone) {
-		if (useFrontCamera) {
-			//TODO: this :)
-		} else {
-			//TODO: determine the correct values here
-			switch (interfaceOrientation) {
-				case UIInterfaceOrientationPortrait:
-					currentVideoOrientation = UIImageOrientationLeft;
-					break;
-				case UIInterfaceOrientationPortraitUpsideDown:
-					currentVideoOrientation = UIImageOrientationRight;
-					break;
-				case UIInterfaceOrientationLandscapeLeft:
-					currentVideoOrientation = UIImageOrientationDown;
-					break;
-				case UIInterfaceOrientationLandscapeRight:
-					currentVideoOrientation = UIImageOrientationUp;
-					break;
-				default:
-					break;
-			}
-		}
+	if (useFrontCamera) {
+		//TODO: this :)
 	} else {
-		if (useFrontCamera) {
-			//TODO: this :)
-		} else {
-			//TODO: determine the correct values here
-			switch (interfaceOrientation) {
-				case UIInterfaceOrientationPortrait:
-					currentVideoOrientation = UIImageOrientationLeft;
-					break;
-				case UIInterfaceOrientationPortraitUpsideDown:
-					currentVideoOrientation = UIImageOrientationRight;
-					break;
-				case UIInterfaceOrientationLandscapeLeft:
-					currentVideoOrientation = UIImageOrientationDown;
-					break;
-				case UIInterfaceOrientationLandscapeRight:
-					currentVideoOrientation = UIImageOrientationUp;
-					break;
-				default:
-					break;
-			}
+		//TODO: determine the correct values here
+		switch (interfaceOrientation) {
+			case UIInterfaceOrientationPortrait:
+				currentVideoOrientation = UIImageOrientationLeft;
+				break;
+			case UIInterfaceOrientationPortraitUpsideDown:
+				currentVideoOrientation = UIImageOrientationRight;
+				break;
+			case UIInterfaceOrientationLandscapeLeft:
+				currentVideoOrientation = UIImageOrientationDown;
+				break;
+			case UIInterfaceOrientationLandscapeRight:
+				currentVideoOrientation = UIImageOrientationUp;
+				break;
+			default:
+				break;
 		}
-		
 	}
 	
 	if (!capturing) {
