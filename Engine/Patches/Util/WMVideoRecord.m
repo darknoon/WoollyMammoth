@@ -465,7 +465,7 @@ bail:
 		[self stopWriting];
 	}
 	
-	glFinish();
+	//glFinish();
 	
 	//Write out sample buffer
 	
