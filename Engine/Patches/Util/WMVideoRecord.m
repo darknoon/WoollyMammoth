@@ -73,9 +73,9 @@
 
 + (id)defaultValueForInputPortKey:(NSString *)inKey;
 {
-	if ([inKey isEqualToString:@"inputWidth"]) {
+	if ([inKey isEqualToString:KVC([WMVideoRecord new], inputWidth)]) {
 		return [NSNumber numberWithUnsignedInt:640];
-	} else if ([inKey isEqualToString:@"inputHeight"]) {
+	} else if ([inKey isEqualToString:KVC([WMVideoRecord new], inputHeight)]) {
 		return [NSNumber numberWithUnsignedInt:480];
 	}
 	return [super defaultValueForInputPortKey:inKey];
@@ -487,8 +487,8 @@ bail:
 #if 0
 			//A bug was causing audio packets to be written twiec
 			NSMutableString *audioPacketPtrList = [[NSMutableString alloc] init];
-			if (inputAudio.objectValue) {
-				for (id sampleBuffer in ((WMAudioBuffer *)inputAudio.objectValue).sampleBuffers) {
+			if (_inputAudio.objectValue) {
+				for (id sampleBuffer in ((WMAudioBuffer *)_inputAudio.objectValue).sampleBuffers) {
 					[audioPacketPtrList appendFormat:@"%p, ", sampleBuffer];
 				}
 			}
