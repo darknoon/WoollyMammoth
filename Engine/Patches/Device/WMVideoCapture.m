@@ -271,7 +271,7 @@
 
 				GL_CHECK_ERROR;
 				
-				WMCVTexture2D *texture = [[WMCVTexture2D alloc] initWithCVImageBuffer:imageBuffer inTextureCache:textureCache format:kWMTexture2DPixelFormat_BGRA8888];
+				WMCVTexture2D *texture = [[WMCVTexture2D alloc] initWithCVImageBuffer:imageBuffer inTextureCache:textureCache format:kWMTexture2DPixelFormat_BGRA8888 use:@"Video Capture"];
 				texture.orientation = currentVideoOrientation;
 				
 				GL_CHECK_ERROR;

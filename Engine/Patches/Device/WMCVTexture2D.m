@@ -11,18 +11,72 @@
 #import "WMTexture2D_WMEAGLContext_Private.h"
 #import "WMTexture2D_RenderPrivate.h"
 
+#define TRACK_ALL_CVTEXTURES 0
+
 @implementation WMCVTexture2D {
 	CVOpenGLESTextureRef cvTexture;
+	CVImageBufferRef _imageBuffer;
 }
 
-- (id)initWithCVImageBuffer:(CVImageBufferRef)inImageBuffer inTextureCache:(CVOpenGLESTextureCacheRef)inTextureCache format:(WMTexture2DPixelFormat)inFormat;
+#if TRACK_ALL_CVTEXTURES
+
+static int textureCount;
+/*
+ Guys who retain the texture:
+ 
+ WMRenderObject
+ WMVideoRecord
+ 
+ */
+static NSMutableDictionary *textureUsesCounts;
+
+- (void)incrementTextureCount;
+{
+	
+	@synchronized (WMCVTexture2D.class) {
+		if (!textureUsesCounts) {
+			textureUsesCounts = [[NSMutableDictionary alloc] init];
+		}
+		int countForThisUse = [[textureUsesCounts objectForKey:self.use] intValue];
+		[textureUsesCounts setObject:@(countForThisUse + 1) forKey:self.use];
+		
+		textureCount++;
+		ZAssert(textureCount < 10, @"Too many CV textures outstanding: %d!", textureCount);
+		
+	}
+}
+
+- (void)decrementTextureCount;
+{
+	@synchronized(WMCVTexture2D.class) {
+		int countForThisUse = [[textureUsesCounts objectForKey:self.use] intValue];
+		[textureUsesCounts setObject:@(countForThisUse - 1) forKey:self.use];
+		
+		textureCount--;
+	}
+}
+
+#endif
+
+- (id)initWithCVImageBuffer:(CVImageBufferRef)inImageBuffer inTextureCache:(CVOpenGLESTextureCacheRef)inTextureCache format:(WMTexture2DPixelFormat)inFormat use:(NSString *)useInfo;
 {
 	self = [super init];
 	if (!self) return nil;
+	if (!inImageBuffer) return nil;
+	if (!inTextureCache) return nil;
+	
+	self.use = useInfo;
+	
+#if TRACK_ALL_CVTEXTURES
+	[self incrementTextureCount];
+#endif
 	
 	CFDictionaryRef textureAttributes = NULL;
 	
 	ZAssert(inFormat == kWMTexture2DPixelFormat_BGRA8888, @"Other CV Texture formats currently unimplemented.");
+	
+	_imageBuffer = inImageBuffer;
+	CFRetain(_imageBuffer);
 	
 	//Get width and height
 	CGSize size = CVImageBufferGetEncodedSize(inImageBuffer);
@@ -84,10 +138,16 @@
 
 - (void)dealloc;
 {
+#if TRACK_ALL_CVTEXTURES
+	[self decrementTextureCount];
+#endif
 	//Even if our context has gone away, presumably we should still free the cvTexture...
 	if (cvTexture)
 		CFRelease(cvTexture);
 	cvTexture = NULL;
+	if (_imageBuffer) {
+		CFRelease(_imageBuffer);
+	}
 }
 
 @end

@@ -12,6 +12,9 @@
 
 @interface WMCVTexture2D : WMTexture2D
 
-- (id)initWithCVImageBuffer:(CVImageBufferRef)inImageBuffer inTextureCache:(CVOpenGLESTextureCacheRef)inTextureCache format:(WMTexture2DPixelFormat)inFormat;
+- (id)initWithCVImageBuffer:(CVImageBufferRef)inImageBuffer inTextureCache:(CVOpenGLESTextureCacheRef)inTextureCache format:(WMTexture2DPixelFormat)inFormat use:(NSString *)useInfo;
+
+@property (nonatomic) NSTimeInterval createTime;
+@property (nonatomic, copy) NSString *use;
 
 @end
