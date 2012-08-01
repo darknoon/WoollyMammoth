@@ -17,33 +17,6 @@
 #import "WMRenderObject.h"
 #import "WMAudioBuffer.h"
 
-static CVPixelBufferPoolRef CreatePixelBufferPool(int32_t width, int32_t height, OSType pixelFormat);
-static CVPixelBufferPoolRef CreatePixelBufferPool(int32_t width, int32_t height, OSType pixelFormat)
-{
-	CVPixelBufferPoolRef outputPool = NULL;
-	
-	CFMutableDictionaryRef sourcePixelBufferOptions = CFDictionaryCreateMutable( kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-	
-	CFDictionaryAddValue( sourcePixelBufferOptions, kCVPixelBufferPixelFormatTypeKey, (__bridge CFNumberRef)[NSNumber numberWithInt:pixelFormat]);
-	
-	CFDictionaryAddValue( sourcePixelBufferOptions, kCVPixelBufferWidthKey, (__bridge CFNumberRef)[NSNumber numberWithInt:width]);
-	CFDictionaryAddValue( sourcePixelBufferOptions, kCVPixelBufferHeightKey, (__bridge CFNumberRef)[NSNumber numberWithInt:height]);
-	CFDictionaryAddValue( sourcePixelBufferOptions, kCVPixelFormatOpenGLESCompatibility, kCFBooleanTrue);
-	
-	CFDictionaryRef ioSurfaceProps = CFDictionaryCreate( kCFAllocatorDefault, NULL, NULL, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks );      
-	if (ioSurfaceProps) {
-		CFDictionaryAddValue( sourcePixelBufferOptions, kCVPixelBufferIOSurfacePropertiesKey, ioSurfaceProps );
-		CFRelease(ioSurfaceProps);
-	}
-	
-	//TODO: set kCVPixelBufferPoolMinimumBufferCountKey to 5? Does that actually make a maximum?
-	
-	CVPixelBufferPoolCreate( kCFAllocatorDefault, NULL, sourcePixelBufferOptions, &outputPool );
-	
-	CFRelease( sourcePixelBufferOptions );
-	return outputPool;
-}
-
 @interface WMVideoRecord ()
 
 @property (nonatomic, readwrite) BOOL writing;
@@ -433,9 +406,23 @@ bail:
 		videoBufferPool = NULL;
 	}
 	
-	NSLog(@"recreating pixel buffer pool width:%d height:%d", videoDimensions.width, videoDimensions.height);
+	if (_prevPixelBuffer) {
+		CVPixelBufferRelease(_prevPixelBuffer);
+		_prevPixelBuffer = NULL;
+	}
 	
-	videoBufferPool = CreatePixelBufferPool(videoDimensions.width, videoDimensions.height, kCVPixelFormatType_32BGRA);
+	NSLog(@"recreating pixel buffer pool width:%d height:%d", videoDimensions.width, videoDimensions.height);
+		
+	NSDictionary *pixelBufferAttributes = @{
+	(id)kCVPixelBufferPixelFormatTypeKey: @(kCVPixelFormatType_32BGRA),
+	(id)kCVPixelBufferWidthKey: @(videoDimensions.width),
+	(id)kCVPixelBufferHeightKey: @(videoDimensions.height),
+	(id)kCVPixelFormatOpenGLESCompatibility: @(YES),
+	(id)kCVPixelBufferIOSurfacePropertiesKey: @{} //Mere presence requests IOSurface allocation! 🙈
+	};
+	
+	CVPixelBufferPoolCreate( kCFAllocatorDefault, NULL, (__bridge CFDictionaryRef)(pixelBufferAttributes), &videoBufferPool);
+
 	if (!videoBufferPool) {
 		NSLog(@"Couldn't create a pixel buffer pool.");
 		return NO;
@@ -446,10 +433,9 @@ bail:
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
 	
-	//Use output dimensions from last time we weren't writing
-	
 	BOOL shouldBeWriting = _inputShouldRecord.value;
 	
+	//Use output dimensions from last time we weren't writing
 	if (!self.writing) {
 		
 		//If dimensions changed, recreate video buffer pool
@@ -498,7 +484,7 @@ bail:
 			
 			BOOL success = [self startSessionIfNeededAtTime:timeStamp];
 			
-#if 0
+#if DEBUG_OPENGL
 			//A bug was causing audio packets to be written twiec
 			NSMutableString *audioPacketPtrList = [[NSMutableString alloc] init];
 			if (inputAudio.objectValue) {
@@ -531,17 +517,15 @@ bail:
 		CFRelease(_prevPixelBuffer);
 		_prevPixelBuffer = nil;
 	}
-	
-
-	
+		
 	CVPixelBufferRef destPixelBuffer = NULL;
-	CVReturn err = CVPixelBufferPoolCreatePixelBuffer(kCFAllocatorDefault, videoBufferPool, &destPixelBuffer);
+	CVReturn err = CVPixelBufferPoolCreatePixelBuffer(NULL, videoBufferPool, &destPixelBuffer);
     if (!destPixelBuffer || err != kCVReturnSuccess) {
-        NSLog(@"create pixel buffer error");
+        NSLog(@"ERROR: create pixel buffer error");
 		return NO;
     }
 	
-	WMCVTexture2D *currentTexture = [[WMCVTexture2D alloc] initWithCVImageBuffer:destPixelBuffer inTextureCache:textureCache format:kWMTexture2DPixelFormat_BGRA8888];
+	WMCVTexture2D *currentTexture = [[WMCVTexture2D alloc] initWithCVImageBuffer:destPixelBuffer inTextureCache:textureCache format:kWMTexture2DPixelFormat_BGRA8888 use:@"Video Record"];
 	
 	if (!framebuffer /* || framebuffer parameters are not consistent with inputs... */) {
 		framebuffer = [[WMFramebuffer alloc] initWithTexture:currentTexture depthBufferDepth:0];		
@@ -560,41 +544,6 @@ bail:
 		}
 		
 		GLKMatrix4 transform = [WMEngine cameraMatrixWithRect:(CGRect){.size.width = videoDimensions.width, .size.height = videoDimensions.height}];
-		//Rotate to landscape
-		//transform = GLKMatrix4RotateZ(transform, M_PI_2);
-
-#if 0
-		switch (_inputOrientation.index) {
-			default:
-			case UIImageOrientationUp:
-				break;
-			case UIImageOrientationUpMirrored:
-				//Flip x
-				transform = GLKMatrix4Scale(transform, -1.0f, 1.0f, 1.0f);
-				break;
-			case UIImageOrientationDown:
-				transform = GLKMatrix4Scale(transform, -1.0f, -1.0f, 1.0f);
-				break;
-			case UIImageOrientationDownMirrored:
-				transform = GLKMatrix4Scale(transform, 1.0f, -1.0f, 1.0f);
-				break;
-			case UIImageOrientationLeft:
-				//Rotate 90° ccw
-				transform = GLKMatrix4RotateZ(transform, -M_PI_2);
-				break;
-			case UIImageOrientationLeftMirrored:
-				transform = GLKMatrix4RotateZ(transform, -M_PI_2);
-				transform = GLKMatrix4Scale(transform, -1.0f, 1.0f, 1.0f);
-				break;
-			case UIImageOrientationRight:
-				transform = GLKMatrix4RotateZ(transform, M_PI_2);
-				break;
-			case UIImageOrientationRightMirrored:
-				transform = GLKMatrix4RotateZ(transform, M_PI_2);
-				transform = GLKMatrix4Scale(transform, -1.0f, 1.0f, 1.0f);
-				break;
-		}
-#endif
 
 		//Invert y-axis to account for different GL/CV coordinates
 		transform = GLKMatrix4Scale(transform, 1.0f, -1.0f, 1.0f);
@@ -611,7 +560,6 @@ bail:
 		if (_inputRenderable4.object) {
 			[self renderObject:_inputRenderable4.object withTransform:transform inContext:context];
 		}
-
 	}];
 	
 
@@ -620,9 +568,10 @@ bail:
 	
 	[framebuffer setColorAttachmentWithTexture:nil];
 	_prevPixelBuffer = destPixelBuffer;
+	
 	//Will release later CFRelease(destPixelBuffer);
 
-	//CVOpenGLESTextureCacheFlush(textureCache, 0);
+	CVOpenGLESTextureCacheFlush(textureCache, 0);
 		
 	return YES;
 	

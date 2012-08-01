@@ -91,7 +91,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 														  encoding:NSUTF8StringEncoding
 															 error:&error];
 	if (!combindedShader) {
-		NSLog(@"Couldn't load blur shader: %@", error);
+		NSLog(@"ERROR: Couldn't load blur shader: %@", error);
 	}
 	
 	shader = [[WMShader alloc] initWithVertexShader:combindedShader

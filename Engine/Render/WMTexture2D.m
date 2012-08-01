@@ -205,7 +205,7 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 }
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"<%@ %p = %i>", [self class], self, _name];
+	return [NSString stringWithFormat:@"<%@ %p = %i>", [self class], self, self.name];
 }
 
 

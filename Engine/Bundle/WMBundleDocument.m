@@ -86,7 +86,7 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 						[fileWrappers removeObjectForKey:WMBundleDocumentPreviewFileName];
 						self.resourceWrappers = fileWrappers;
 						
-						NSLog(@"Success in loadFromContents:ofType:error:");
+						//NSLog(@"Success in loadFromContents:ofType:error:");
 						return YES;
 					} else {
 						if (outError) {
@@ -147,7 +147,7 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 			if (tempRootPatch) {
 				self.userDictionary = tempUserDictionary;
 				self.rootPatch = tempRootPatch;
-				NSLog(@"Success in loadFromContents:ofType:error:");
+				//DLog(@"Success in loadFromContents:ofType:error:");
 				return YES;
 			} else {
 				if (outError) {

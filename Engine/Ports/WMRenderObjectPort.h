@@ -11,7 +11,6 @@
 @class WMRenderObject;
 @interface WMRenderObjectPort : WMPort
 
-//TODO: we shouldn't be hanging onto this value, ie the port should be marked transient and that defined
 @property (nonatomic, copy) WMRenderObject *object;
 
 @end

@@ -19,12 +19,6 @@
 @class WMTexture2D;
 
 @interface WMFramebuffer : WMGLStateObject {
-	GLint framebufferWidth;
-    GLint framebufferHeight;
-		
-	GLuint colorRenderbuffer;
-	GLuint depthRenderbuffer;
-	GLuint framebufferObject;
 }
 
 #if TARGET_OS_IPHONE
@@ -46,8 +40,6 @@
 //Sets the color attachment mipmap level 0 to be backed by the texture
 //This works with inTexture = nil as well, to unset the texture
 - (void)setColorAttachmentWithTexture:(WMTexture2D *)inTexture;
-
-@property (weak, nonatomic, readonly) WMTexture2D *texture;
 
 @property (nonatomic, readonly) GLint framebufferWidth;
 @property (nonatomic, readonly) GLint framebufferHeight;

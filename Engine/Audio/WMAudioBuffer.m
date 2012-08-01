@@ -62,24 +62,7 @@
 
 - (NSString *)debugDescription;
 {
-	return [NSString stringWithFormat:@"<%@ %p with sample buffers %@>", self.class, self, _sampleBuffers.description];
+	return [NSString stringWithFormat:@"<%@ %p with %d sample buffers %@>", self.class, self, _sampleBuffers.count, _sampleBuffers.description];
 }
-
-//- (void)printFormat;
-//{
-//	CMSampleBufferRef sampleBuffer = 
-//	
-//	CMFormatDescriptionRef audioFormatDesc = CMSampleBufferGetFormatDescription(sampleBuffer);
-//	
-//	size_t formatListSize = 0;
-//	const AudioFormatListItem *formats = CMAudioFormatDescriptionGetFormatList(audioFormatDesc, &formatListSize);
-//	
-//	//WTF: this is returing 44 instead of something sensible. Well, just check if it's greater than 0 for now
-//	if (formatListSize > 0) {
-//		
-//	}
-//	
-//
-//}
 
 @end

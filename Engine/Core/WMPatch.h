@@ -81,6 +81,8 @@
 - (void)addConnectionFromPort:(NSString *)inPort ofPatch:(NSString *)fromPatch toPort:(NSString *)toPort ofPatch:(NSString *)toPatch;
 - (void)removeConnectionToPort:(NSString *)inPort ofPatch:(NSString *)toPatch;
 
+- (NSString *)recursiveDescription;
+
 @end
 
 

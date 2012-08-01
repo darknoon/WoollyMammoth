@@ -20,6 +20,6 @@
 @property (nonatomic) BOOL eventDelegatePaused;
 
 //Send events here
-@property (nonatomic) id <WMPatchEventDelegate> eventDelegate;
+@property (nonatomic, weak) id <WMPatchEventDelegate> eventDelegate;
 
 @end

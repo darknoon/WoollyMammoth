@@ -50,15 +50,15 @@
 
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
-	if (!inputObject1.object && !inputObject2.object && !inputObject3.object && !inputObject4.object) {
-		outputImage.image = nil;
+	if (!_inputObject1.object && !_inputObject2.object && !_inputObject3.object && !_inputObject4.object) {
+		_outputImage.image = nil;
 		return YES;
 	}
 	
 	CGSize outputSize = [[args objectForKey:WMEngineArgumentsOutputDimensionsKey] CGSizeValue];
 	
-	unsigned int renderWidth = inputWidth.index;
-	unsigned int renderHeight = inputHeight.index;
+	unsigned int renderWidth = _inputWidth.index;
+	unsigned int renderHeight = _inputHeight.index;
 	if (renderWidth == 0) {
 		renderWidth = (NSUInteger)outputSize.width;
 	}
@@ -78,25 +78,24 @@
 		//Invert y-axis
 		transform = GLKMatrix4Scale(transform, 1.0f, -1.0f, 1.0f);
 
-		[context clearToColor:inputClearColor.v];
+		[context clearToColor:_inputClearColor.v];
 		[context clearDepth];
 		
-		if (inputObject1.object) {
-			[self renderObject:inputObject1.object withTransform:transform inContext:context];
+		if (_inputObject1.object) {
+			[self renderObject:_inputObject1.object withTransform:transform inContext:context];
 		}
-		if (inputObject2.object) {
-			[self renderObject:inputObject2.object withTransform:transform inContext:context];
+		if (_inputObject2.object) {
+			[self renderObject:_inputObject2.object withTransform:transform inContext:context];
 		}
-		if (inputObject3.object) {
-			[self renderObject:inputObject3.object withTransform:transform inContext:context];
+		if (_inputObject3.object) {
+			[self renderObject:_inputObject3.object withTransform:transform inContext:context];
 		}
-		if (inputObject4.object) {
-			[self renderObject:inputObject4.object withTransform:transform inContext:context];
+		if (_inputObject4.object) {
+			[self renderObject:_inputObject4.object withTransform:transform inContext:context];
 		}
-
 	}];
 	texture.orientation = UIImageOrientationUp;
-	outputImage.image = texture;
+	_outputImage.image = texture;
 	
 	return YES;
 }

@@ -87,7 +87,7 @@
 
 + (id)defaultValueForInputPortKey:(NSString *)inKey;
 {
-	if ([inKey isEqualToString:KVC(self.new, inputFocusPointOfInterest)]) {
+	if ([inKey isEqualToString:KVC([WMVideoCapture new], inputFocusPointOfInterest)]) {
 		//Default to center like the system
 		return [NSValue valueWithBytes:&(GLKVector2){0.5, 0.5} objCType:@encode(GLKVector2)];
 	}
@@ -280,9 +280,9 @@
 				
 				GL_CHECK_ERROR;
 				
-				
-				if (!self.eventDelegatePaused)
+				if (!self.eventDelegatePaused) {
 					[self.eventDelegate patchGeneratedUpdateEvent:self atTime:CACurrentMediaTime()];
+				}
 			}
 			
 		}

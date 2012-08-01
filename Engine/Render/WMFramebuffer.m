@@ -17,12 +17,17 @@
 
 #import "WMEAGLContext.h"
 
+@interface WMFramebuffer ()
 
+@property (weak, nonatomic, readonly) WMTexture2D *texture;
 
-@implementation WMFramebuffer
-@synthesize framebufferWidth;
-@synthesize framebufferHeight;
-@synthesize texture;
+@end
+
+@implementation WMFramebuffer {
+	GLuint _colorRenderbuffer;
+	GLuint _depthRenderbuffer;
+	GLuint _framebufferObject;
+}
 
 + (NSString *)descriptionOfFramebufferStatus:(GLenum)inStatus;
 {
@@ -57,11 +62,11 @@
 {
 	if (inDepthBufferDepth > 0) {
 		//Create depth buffer
-		glGenRenderbuffers(1, &depthRenderbuffer);	
-		glBindRenderbuffer(GL_RENDERBUFFER, depthRenderbuffer);
-		glRenderbufferStorage(GL_RENDERBUFFER, inDepthBufferDepth, framebufferWidth, framebufferHeight);
+		glGenRenderbuffers(1, &_depthRenderbuffer);	
+		glBindRenderbuffer(GL_RENDERBUFFER, _depthRenderbuffer);
+		glRenderbufferStorage(GL_RENDERBUFFER, inDepthBufferDepth, _framebufferWidth, _framebufferHeight);
 		//Attach depth buffer
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _depthRenderbuffer);
 	}	
 }
 
@@ -79,16 +84,16 @@
 	WMFramebuffer *oldFrameBuffer = context.boundFramebuffer;
 	
 	// Create default framebuffer object.
-	glGenFramebuffers(1, &framebufferObject);
+	glGenFramebuffers(1, &_framebufferObject);
 	
 	//WARNING: we're modifying state outside of WMEAGLContext. This method should therefore be moved to WMEAGLContext!
 	[self bind];
 
-	texture = inTexture;
+	_texture = inTexture;
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, inTexture.name, 0);
 	
-	framebufferWidth = inTexture.pixelsWide;
-	framebufferHeight = inTexture.pixelsHigh;
+	_framebufferWidth = inTexture.pixelsWide;
+	_framebufferHeight = inTexture.pixelsHigh;
 	
 	[self createAndAttachDepthBufferOfDepth:inDepthBufferDepth];
 	
@@ -102,7 +107,6 @@
 	} else {
 		//DLog(@"Created framebuffer %@ from texture: %@", self, inTexture);
 	}
-	
 	
 	[oldFrameBuffer bind];
 	
@@ -121,7 +125,7 @@
 	WMFramebuffer *oldFrameBuffer = context.boundFramebuffer;
 	
 	// Create default framebuffer object.
-	glGenFramebuffers(1, &framebufferObject);
+	glGenFramebuffers(1, &_framebufferObject);
 	
 	//WARNING: we're modifying state outside of WMEAGLContext. This method should therefore be moved to WMEAGLContext!
 	[self bind];
@@ -129,14 +133,14 @@
 	//ASSUMPTION: we don't care about stomping on currently bound renderbuffer state
 	
 	// Create color render buffer and allocate backing store.
-	glGenRenderbuffers(1, &colorRenderbuffer);
-	glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer);
+	glGenRenderbuffers(1, &_colorRenderbuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, _colorRenderbuffer);
 	BOOL storageOk = [context renderbufferStorage:GL_RENDERBUFFER fromDrawable:inLayer];
 	if (storageOk) {
-		glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &framebufferWidth);
-		glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &framebufferHeight);
+		glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &_framebufferWidth);
+		glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &_framebufferHeight);
 		//Attach color buffer
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorRenderbuffer);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _colorRenderbuffer);
 		
 		[self createAndAttachDepthBufferOfDepth:inDepthBufferDepth];
 		
@@ -184,21 +188,21 @@
 
 - (void)deleteInternalState;
 {
-	if (framebufferObject)
+	if (_framebufferObject)
 	{
-		glDeleteFramebuffers(1, &framebufferObject);
-		framebufferObject = 0;
+		glDeleteFramebuffers(1, &_framebufferObject);
+		_framebufferObject = 0;
 	}
 	
-	if (colorRenderbuffer)
+	if (_colorRenderbuffer)
 	{
-		glDeleteRenderbuffers(1, &colorRenderbuffer);
-		colorRenderbuffer = 0;
+		glDeleteRenderbuffers(1, &_colorRenderbuffer);
+		_colorRenderbuffer = 0;
 	}
 	
-	if (depthRenderbuffer) {
-		glDeleteRenderbuffers(1, &depthRenderbuffer);
-		depthRenderbuffer = 0;
+	if (_depthRenderbuffer) {
+		glDeleteRenderbuffers(1, &_depthRenderbuffer);
+		_depthRenderbuffer = 0;
 	}
 	GL_CHECK_ERROR;
 	
@@ -206,7 +210,7 @@
 
 - (void)bind;
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, framebufferObject);
+	glBindFramebuffer(GL_FRAMEBUFFER, _framebufferObject);
 }
 
 - (BOOL)presentRenderbuffer;
@@ -223,7 +227,7 @@
 		glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, discards);
 #endif 
 		
-		glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer);
+		glBindRenderbuffer(GL_RENDERBUFFER, _colorRenderbuffer);
 		success = [context presentRenderbuffer:GL_RENDERBUFFER];
 		
 		if (!success) {
@@ -244,11 +248,15 @@
 	WMFramebuffer *oldFrameBuffer = context.boundFramebuffer;
 	context.boundFramebuffer = self;
 	
-	texture = inTexture;
+	GL_CHECK_ERROR;
+
+	_texture = inTexture;
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, inTexture.name, 0);
-	
-	framebufferWidth = inTexture.pixelsWide;
-	framebufferHeight = inTexture.pixelsHigh;
+		
+	GL_CHECK_ERROR;
+
+	_framebufferWidth = inTexture.pixelsWide;
+	_framebufferHeight = inTexture.pixelsHigh;
 	
 #if DEBUG_OPENGL
 	
@@ -265,12 +273,12 @@
 
 - (BOOL)hasDepthbuffer;
 {
-	return depthRenderbuffer != 0;
+	return _depthRenderbuffer != 0;
 }
 
 - (NSString *)description;
 {
-	return [NSString stringWithFormat:@"<%@ : %p>{fbo: %u, color:%u depth:%u texture:%@ size:{%d, %d}}", NSStringFromClass([self class]), self, framebufferObject, colorRenderbuffer, depthRenderbuffer,  texture, framebufferWidth, framebufferHeight];
+	return [NSString stringWithFormat:@"<%@ : %p>{fbo: %u, color:%u depth:%u texture:%@ size:{%d, %d}}", NSStringFromClass([self class]), self, _framebufferObject, _colorRenderbuffer, _depthRenderbuffer, _texture, _framebufferWidth, _framebufferHeight];
 }
 
 @end

@@ -42,8 +42,8 @@ void main()
 {
 	const mediump float mul = 0.333333;
 	mediump vec3 accum = mul * texture2D(sTexture, vTexCoord0).rgb;
-	accum += mul * texture2D(sTexture, vTexCoord1).rgb * 0.333333;
-	accum += mul * texture2D(sTexture, vTexCoord2).rgb * 0.333333;
+	accum             += mul * texture2D(sTexture, vTexCoord1).rgb;
+	accum             += mul * texture2D(sTexture, vTexCoord2).rgb;
 	
 	gl_FragColor.rgb = accum;
 }
