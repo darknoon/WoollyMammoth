@@ -130,6 +130,10 @@
 #endif
 	
 	mostRecentTexture = nil;
+
+	if (textureCache)
+		CFRelease(textureCache);
+	textureCache = NULL;
 	
 	[super cleanup:context];
 	_context = nil;
@@ -225,10 +229,6 @@
 	cameraDevice = nil;
 	
 	mostRecentTexture = nil;
-
-	if (textureCache)
-		CFRelease(textureCache);
-	textureCache = NULL;
 	
 #else
 	[simulatorDebugTimer invalidate];
@@ -326,11 +326,11 @@
 - (void)setEventDelegatePaused:(BOOL)eventDelegatePaused;
 {
 	if (_eventDelegatePaused != eventDelegatePaused) {
-//		if (eventDelegatePaused) {
-//			[self stopCapture];
-//		} else {
-//			[self startCapture];
-//		}
+		if (eventDelegatePaused) {
+			[self stopCapture];
+		} else {
+			[self startCapture];
+		}
 		
 		_eventDelegatePaused = eventDelegatePaused;
 	}
