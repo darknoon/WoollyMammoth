@@ -15,7 +15,6 @@
 
 @implementation WMCVTexture2D {
 	CVOpenGLESTextureRef cvTexture;
-	CVImageBufferRef _imageBuffer;
 }
 
 #if TRACK_ALL_CVTEXTURES
@@ -74,10 +73,7 @@ static NSMutableDictionary *textureUsesCounts;
 	CFDictionaryRef textureAttributes = NULL;
 	
 	ZAssert(inFormat == kWMTexture2DPixelFormat_BGRA8888, @"Other CV Texture formats currently unimplemented.");
-	
-	_imageBuffer = inImageBuffer;
-	CFRetain(_imageBuffer);
-	
+		
 	//Get width and height
 	CGSize size = CVImageBufferGetEncodedSize(inImageBuffer);
 	
@@ -145,9 +141,6 @@ static NSMutableDictionary *textureUsesCounts;
 	if (cvTexture)
 		CFRelease(cvTexture);
 	cvTexture = NULL;
-	if (_imageBuffer) {
-		CFRelease(_imageBuffer);
-	}
 }
 
 @end
