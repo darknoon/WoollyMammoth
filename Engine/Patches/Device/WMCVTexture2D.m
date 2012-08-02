@@ -28,31 +28,40 @@ static int textureCount;
  
  */
 static NSMutableDictionary *textureUsesCounts;
+static dispatch_semaphore_t sem;
 
 - (void)incrementTextureCount;
 {
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		sem = dispatch_semaphore_create(1);
+	});
 	
-	@synchronized (WMCVTexture2D.class) {
-		if (!textureUsesCounts) {
-			textureUsesCounts = [[NSMutableDictionary alloc] init];
-		}
-		int countForThisUse = [[textureUsesCounts objectForKey:self.use] intValue];
-		[textureUsesCounts setObject:@(countForThisUse + 1) forKey:self.use];
-		
-		textureCount++;
-		ZAssert(textureCount < 10, @"Too many CV textures outstanding: %d!", textureCount);
-		
+	dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+	
+	if (!textureUsesCounts) {
+		textureUsesCounts = [[NSMutableDictionary alloc] init];
 	}
+	int countForThisUse = [[textureUsesCounts objectForKey:self.use] intValue];
+	[textureUsesCounts setObject:@(countForThisUse + 1) forKey:self.use];
+	
+	textureCount++;
+	if (textureCount > 10) {
+		NSLog(@"Too many CV textures outstanding: %d!", textureCount);
+	}
+	
+	dispatch_semaphore_signal(sem);
 }
 
 - (void)decrementTextureCount;
 {
-	@synchronized(WMCVTexture2D.class) {
-		int countForThisUse = [[textureUsesCounts objectForKey:self.use] intValue];
-		[textureUsesCounts setObject:@(countForThisUse - 1) forKey:self.use];
-		
-		textureCount--;
-	}
+	dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+	
+	int countForThisUse = [[textureUsesCounts objectForKey:self.use] intValue];
+	[textureUsesCounts setObject:@(countForThisUse - 1) forKey:self.use];
+	
+	textureCount--;
+	dispatch_semaphore_signal(sem);
 }
 
 #endif
