@@ -362,18 +362,22 @@ bail:
 
 
 - (BOOL)setup:(WMEAGLContext *)context;
-{	
-	CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, (__bridge void *)context, NULL, &textureCache);
-	if (err != kCVReturnSuccess) {
-		NSLog(@"Couldn't create texture cache for writing video file");
-        return NO;
+{
+	if (!textureCache) {
+		CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, (__bridge void *)context, NULL, &textureCache);
+		if (err != kCVReturnSuccess) {
+			NSLog(@"Couldn't create texture cache for writing video file");
+			return NO;
+		}
 	}
 	
 	//TODO: rename this
-	videoProcessingQueue = dispatch_queue_create("com.darknoon.writevideo", DISPATCH_QUEUE_SERIAL);
 	if (!videoProcessingQueue) {
-		NSLog(@"Couldn't create the queue to perform video output processing on");
-		return NO;
+		videoProcessingQueue = dispatch_queue_create("com.darknoon.writevideo", DISPATCH_QUEUE_SERIAL);
+		if (!videoProcessingQueue) {
+			NSLog(@"Couldn't create the queue to perform video output processing on");
+			return NO;
+		}
 	}
 	
 	return YES;
@@ -499,8 +503,6 @@ bail:
 			if (success && CMTIME_IS_VALID(timeStamp)) {
 				
 				[self appendVideoBufferToAssetWriterInput:_prevPixelBuffer forTime:timeStamp];
-				CFRelease(_prevPixelBuffer);
-				_prevPixelBuffer = nil;
 				
 				if (_inputAudio.objectValue) {
 					for (id sampleBuffer in ((WMAudioBuffer *)_inputAudio.objectValue).sampleBuffers) {
@@ -513,7 +515,9 @@ bail:
 		});
 		
 		
-	} else if (_prevPixelBuffer) {
+	}
+	
+	if (_prevPixelBuffer) {
 		CFRelease(_prevPixelBuffer);
 		_prevPixelBuffer = nil;
 	}
@@ -567,6 +571,9 @@ bail:
 	_outputImage.image = currentTexture;
 	
 	[framebuffer setColorAttachmentWithTexture:nil];
+	if (_prevPixelBuffer) {
+		CFRelease(_prevPixelBuffer);
+	}
 	_prevPixelBuffer = destPixelBuffer;
 	
 	//Will release later CFRelease(destPixelBuffer);
