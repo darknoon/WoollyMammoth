@@ -97,6 +97,9 @@
 	
 	[self createAndAttachDepthBufferOfDepth:inDepthBufferDepth];
 	
+	GL_CHECK_ERROR;
+	
+#if DEBUG_OPENGL
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
 		
 		NSLog(@"Failed to make complete framebuffer object (%@) with texture %@", [WMFramebuffer descriptionOfFramebufferStatus:glCheckFramebufferStatus(GL_FRAMEBUFFER)], inTexture);
@@ -107,6 +110,7 @@
 	} else {
 		//DLog(@"Created framebuffer %@ from texture: %@", self, inTexture);
 	}
+#endif
 	
 	[oldFrameBuffer bind];
 	

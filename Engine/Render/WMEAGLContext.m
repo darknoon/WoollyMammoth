@@ -463,7 +463,7 @@
 		boundTextures2D[inTextureUnit] = inTextureName;
 	}
 	//Just check that it is bound as we thought
-#if DEBUG
+#if DEBUG_OPENGL
 	[self setActiveTextureUnit:inTextureUnit];
 	int boundTexture;
 	glGetIntegerv(GL_TEXTURE_BINDING_2D, &boundTexture);
