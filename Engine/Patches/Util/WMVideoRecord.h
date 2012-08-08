@@ -24,6 +24,9 @@
 
 @property (nonatomic, readonly) WMAudioPort *inputAudio;
 
+//If you need to insert your own file handling, do it here
+@property (nonatomic, strong) void (^saveHandler)(NSURL *videoURL);
+
 @property (nonatomic, readonly) WMBooleanPort *outputRecording;
 @property (nonatomic, readonly) WMBooleanPort *outputSaving;
 @property (nonatomic, readonly) WMNumberPort *outputRecordDuration;

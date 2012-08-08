@@ -113,14 +113,23 @@ static inline double radians (double degrees) { return degrees * (M_PI / 180); }
 	NSURL *fileURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), @"WMVideoRecord.mov"] isDirectory:NO];
 	[[NSFileManager defaultManager] removeItemAtPath:fileURL.path error:nil];
 	
-	NSLog(@"fileURL %@", fileURL);
+	DLog(@"Beginning write to fileURL %@", fileURL);
 	NSError *error = nil;
-	_assetWriter = [[AVAssetWriter alloc] initWithURL:fileURL fileType:@"com.apple.quicktime-movie"/*kUTTypeQuickTimeMovie*/ error:&error];
+	_assetWriter = [[AVAssetWriter alloc] initWithURL:fileURL fileType:AVFileTypeQuickTimeMovie error:&error];
 	if (error) {
 		NSLog(@"Couldn't create AVAssetWriter (%@ %@)", error, [error userInfo]);
 		goto bail;
 	}
+	{
+		AVMutableMetadataItem *usedFilterMetadata = [[AVMutableMetadataItem alloc] init];
+		usedFilterMetadata.keySpace = @"com.darknoon.take";
+		usedFilterMetadata.key = @"filter";
+		usedFilterMetadata.value = @"testFilterDataItemRaw";
+		usedFilterMetadata.extraAttributes = @{@"com.darknoon.take.extraAttributes.filter" : @"testFilterDataItem"};
+		
+		_assetWriter.metadata = @[ usedFilterMetadata ];
 	
+	}
 	//Video output setting / creation
 	{
 		
@@ -241,35 +250,40 @@ NSString *writerStatus(AVAssetWriterStatus status)
 			
             //DLog(@"fileURL %@", fileURL);
             if (success) {
-                ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-                if ([library videoAtPathIsCompatibleWithSavedPhotosAlbum:fileURL]) {
-					self.savingToPhotos = YES;
-                    [library writeVideoAtPathToSavedPhotosAlbum:fileURL
-                                                completionBlock:^(NSURL *assetURL, NSError *error){
-                                                    if (error) {
-                                                        DLog(@"Error: %@ %@", error, [error userInfo]);
-                                                    } else {
-                                                        DLog(@"Video saved to photos: %@", assetURL);
-                                                    }
-													self.savingToPhotos = NO;													 
-                                                }];
-                } else {
-					DLog(@"Created a video not compatible with the photo library :(");
+				if (_saveHandler) {
+					_saveHandler(fileURL);
+				} else {
+					ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+					if ([library videoAtPathIsCompatibleWithSavedPhotosAlbum:fileURL]) {
+						self.savingToPhotos = YES;
+						
+						
+						[library writeVideoAtPathToSavedPhotosAlbum:fileURL
+													completionBlock:^(NSURL *assetURL, NSError *error){
+														if (error) {
+															DLog(@"Error: %@ %@", error, [error userInfo]);
+														} else {
+															DLog(@"Video saved to photos: %@", assetURL);
+														}
+														self.savingToPhotos = NO;
+													}];
+					} else {
+						DLog(@"Created a video not compatible with the photo library :(");
+					}
 				}
-            }
-            else {
+            } else {
                 DLog(@"finishWriting failed with error: %@", _assetWriter.error);
-            }   
+            }
             
             _assetWriter = nil;
-            _assetWriterVideoInput = nil;  
+            _assetWriterVideoInput = nil;
 			self.writing = NO;
         }
     });
 }
 
-- (void)cancelWriting 
-{     
+- (void)cancelWriting
+{
     dispatch_sync(videoProcessingQueue, ^{
         if (self.writing) {             
             NSURL *fileURL = [_assetWriter outputURL];              

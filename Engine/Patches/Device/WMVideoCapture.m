@@ -127,13 +127,15 @@
 	if (videoCaptureQueue)
 		dispatch_release(videoCaptureQueue);
 	videoCaptureQueue = NULL;
+	
+	if (textureCache)
+		CFRelease(textureCache);
+	textureCache = NULL;
+
 #endif
 	
 	mostRecentTexture = nil;
 
-	if (textureCache)
-		CFRelease(textureCache);
-	textureCache = NULL;
 	
 	[super cleanup:context];
 	_context = nil;
