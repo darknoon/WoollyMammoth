@@ -141,6 +141,77 @@
 	_context = nil;
 }
 
+- (BOOL)configureForVideoInputDevice:(AVCaptureDevice *)device error:(NSError **)outError;
+{
+	NSError *error = nil;
+	
+
+	//Remove any old camera device
+	if (captureVideoInput) {
+		[captureSession removeInput:captureVideoInput];
+		captureVideoInput = nil;
+	}
+	cameraDevice = device;
+	DLog(@"Configuring capture for video device: %@", device);
+	
+	if (cameraDevice) {
+		if ([cameraDevice supportsAVCaptureSessionPreset:AVCaptureSessionPreset1280x720]) {
+			[captureSession setSessionPreset:AVCaptureSessionPreset1280x720];
+		} else if ([cameraDevice supportsAVCaptureSessionPreset:AVCaptureSessionPresetMedium]) {
+			[captureSession setSessionPreset:AVCaptureSessionPresetMedium];
+		} else if ([cameraDevice supportsAVCaptureSessionPreset:AVCaptureSessionPresetLow]) {
+			[captureSession setSessionPreset:AVCaptureSessionPresetLow];
+		} else {
+			NSLog(@"ERROR: could not set an appropriate session preset for capturing from video device: %@", device);
+			return NO;
+		}
+		
+
+		captureVideoInput = [[AVCaptureDeviceInput alloc] initWithDevice:cameraDevice error:&error];
+		if (captureVideoInput) {
+			[captureSession addInput:captureVideoInput];
+		} else {
+			NSLog(@"Error making a video input from device. %@", error);
+			if (outError) *outError = error;
+			return NO;
+		}
+	} else {
+		return NO;
+	}
+	
+	return YES;
+}
+
+- (BOOL)configureForAudioInputDevice:(AVCaptureDevice *)device error:(NSError **)outError;
+{
+	NSError *error = nil;
+
+	if (captureAudioInput) {
+		[captureSession removeInput:captureAudioInput];
+		captureAudioInput = nil;
+	}
+	if (!device) {
+		NSLog(@"Error getting microphone. Continuing...");
+		return NO;
+	}
+	
+	microphoneDevice = device;
+	
+	if (microphoneDevice) {
+		captureAudioInput = [[AVCaptureDeviceInput alloc] initWithDevice:microphoneDevice error:&error];
+		if (captureAudioInput) {
+			[captureSession addInput:captureAudioInput];
+		} else {
+			NSLog(@"Error making an audio input from device. %@", error);
+			if (outError) *outError = error;
+			return NO;
+		}
+	} else {
+		return NO;
+	}
+	
+	return YES;
+}
 
 - (void)startCapture;
 {
@@ -149,39 +220,20 @@
 		
 #if TARGET_OS_EMBEDDED
 	captureSession = [[AVCaptureSession alloc] init];
-
-	[captureSession setSessionPreset:AVCaptureSessionPreset1280x720];
+	
+	[captureSession beginConfiguration];
 
 	NSError *error = nil;
 	
-	NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
-	DLog(@"Devices: %@", devices);
-	
-	//Look for back camera
-	for (AVCaptureDevice *device in devices) {
+	for (AVCaptureDevice *device in [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo]) {
 		if (device.position == (useFrontCamera ? AVCaptureDevicePositionFront : AVCaptureDevicePositionBack)) {
-			DLog(@"Video capture from device: %@", device);
-			cameraDevice = device;
+			[self configureForVideoInputDevice:device error:&error];
 			break;
 		}
 	}
 	
-	microphoneDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio];
-	if (!microphoneDevice) {
-		NSLog(@"Error getting microphone. Continuing...");
-	}
+	[self configureForAudioInputDevice:[AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio] error:&error];
 	
-	captureVideoInput = [[AVCaptureDeviceInput alloc] initWithDevice:cameraDevice error:&error];
-	if (!captureVideoInput) {
-		NSLog(@"Error making a video input from device. %@", error);
-		return;
-	}
-	
-	captureAudioInput = [[AVCaptureDeviceInput alloc] initWithDevice:microphoneDevice error:&error];
-	if (!captureAudioInput) {
-		NSLog(@"Error making an audio input from device. %@", error);
-		return;
-	}
 	
 	videoDataOutput = [[AVCaptureVideoDataOutput alloc] init];
 	DLog(@"Capture pixel formats in order of decreasing efficency: %@", [[videoDataOutput availableVideoCVPixelFormatTypes] componentsJoinedByString:@", "]);
@@ -190,6 +242,7 @@
 		NSLog(@"Error making video output.");
 		return;
 	}
+	
 	NSDictionary *videoSettings = [NSDictionary dictionaryWithObjectsAndKeys:
 								   [NSNumber numberWithUnsignedInt:kCVPixelFormatType_32BGRA], (id)kCVPixelBufferPixelFormatTypeKey,
 								   [NSNumber numberWithBool:YES], (id)kCVPixelBufferOpenGLCompatibilityKey, nil];
@@ -206,11 +259,11 @@
 		return;
 	}
 	
-	[captureSession addInput:captureVideoInput];
-	[captureSession addInput:captureAudioInput];
 	[captureSession addOutput:videoDataOutput];
 	[captureSession addOutput:audioDataOutput];
-	
+
+	[captureSession commitConfiguration];
+
 	[captureSession startRunning];
 #else
 	if (!simulatorDebugTimer)
@@ -340,12 +393,46 @@
 
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
-	useFrontCamera = [[args objectForKey:@"com.darknoon.WMVideoCapture.useFront"] boolValue];
-	
 	UIInterfaceOrientation interfaceOrientation = [[args objectForKey:WMEngineArgumentsInterfaceOrientationKey] intValue];
+	
+	//Switich camera devices
+	if (capturing && useFrontCamera != self.inputUseFrontCamera.value) {
+		useFrontCamera = self.inputUseFrontCamera.value;
+		//Recreate the input
+		[captureSession beginConfiguration];
+		for (AVCaptureDevice *device in [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo]) {
+			if (device.position == (useFrontCamera ? AVCaptureDevicePositionFront : AVCaptureDevicePositionBack)) {
+				NSError *error = nil;
+				if (![self configureForVideoInputDevice:device error:&error]) {
+					NSLog(@"Error configuring video input: %@", error);
+				}
+				
+				break;
+			}
+		}
+		[captureSession commitConfiguration];
+	}
+	useFrontCamera = self.inputUseFrontCamera.value;
 	
 	if (useFrontCamera) {
 		//TODO: this :)
+		switch (interfaceOrientation) {
+			case UIInterfaceOrientationPortrait:
+				currentVideoOrientation = UIImageOrientationLeft;
+				break;
+			case UIInterfaceOrientationPortraitUpsideDown:
+				currentVideoOrientation = UIImageOrientationRight;
+				break;
+			case UIInterfaceOrientationLandscapeLeft:
+				currentVideoOrientation = UIImageOrientationDown;
+				break;
+			case UIInterfaceOrientationLandscapeRight:
+				currentVideoOrientation = UIImageOrientationUp;
+				break;
+			default:
+				break;
+		}
+
 	} else {
 		//TODO: determine the correct values here
 		switch (interfaceOrientation) {
@@ -369,6 +456,18 @@
 	if (!capturing) {
 		[self startCapture];
 	}
+	
+	//Set torch mode if supported
+	if (cameraDevice.torchAvailable && (_inputEnableTorch.value != (cameraDevice.torchMode == AVCaptureTorchModeOn)) ) {
+		NSError *lockError;
+		BOOL locked = [cameraDevice lockForConfiguration:&lockError];
+		if (locked) {
+			cameraDevice.torchMode = _inputEnableTorch.value ? AVCaptureTorchModeOn : AVCaptureTorchModeOff;
+			
+			[cameraDevice unlockForConfiguration];
+		}
+	}
+	
 	
 	//Set focus point of interest if supported
 #if TARGET_OS_EMBEDDED

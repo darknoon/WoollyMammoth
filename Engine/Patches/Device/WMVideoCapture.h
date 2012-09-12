@@ -22,6 +22,8 @@
 @interface WMVideoCapture : WMPatch <WMPatchEventSource>
 
 @property (nonatomic, readonly) WMVector2Port *inputFocusPointOfInterest;
+@property (nonatomic, readonly) WMBooleanPort *inputUseFrontCamera;
+@property (nonatomic, readonly) WMBooleanPort *inputEnableTorch;
 
 @property (nonatomic, readonly) WMImagePort *outputImage;
 @property (nonatomic, readonly) WMAudioPort *outputAudio;
