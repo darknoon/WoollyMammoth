@@ -378,7 +378,7 @@ bail:
 - (BOOL)setup:(WMEAGLContext *)context;
 {
 	if (!textureCache) {
-		CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, (__bridge void *)context, NULL, &textureCache);
+		CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, context, NULL, &textureCache);
 		if (err != kCVReturnSuccess) {
 			NSLog(@"Couldn't create texture cache for writing video file");
 			return NO;

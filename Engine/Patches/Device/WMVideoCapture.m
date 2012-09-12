@@ -108,7 +108,7 @@
 	videoCaptureQueue = dispatch_queue_create([[NSString stringWithFormat:@"com.darknoon.%@.videoCaptureQueue", [self class]] UTF8String], DISPATCH_QUEUE_SERIAL);
 	dispatch_set_target_queue(videoCaptureQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0));
 		
-	CVReturn result = CVOpenGLESTextureCacheCreate(NULL, NULL, (__bridge void *)context, NULL, &textureCache);
+	CVReturn result = CVOpenGLESTextureCacheCreate(NULL, NULL, context, NULL, &textureCache);
 	if (result != kCVReturnSuccess) {
 		NSLog(@"Error creating CVOpenGLESTextureCache");
 	}
@@ -141,6 +141,7 @@
 	_context = nil;
 }
 
+#if TARGET_OS_EMBEDDED
 - (BOOL)configureForVideoInputDevice:(AVCaptureDevice *)device error:(NSError **)outError;
 {
 	NSError *error = nil;
@@ -212,6 +213,7 @@
 	
 	return YES;
 }
+#endif
 
 - (void)startCapture;
 {
@@ -395,6 +397,7 @@
 {
 	UIInterfaceOrientation interfaceOrientation = [[args objectForKey:WMEngineArgumentsInterfaceOrientationKey] intValue];
 	
+#if TARGET_OS_EMBEDDED
 	//Switich camera devices
 	if (capturing && useFrontCamera != self.inputUseFrontCamera.value) {
 		useFrontCamera = self.inputUseFrontCamera.value;
@@ -413,6 +416,7 @@
 		[captureSession commitConfiguration];
 	}
 	useFrontCamera = self.inputUseFrontCamera.value;
+#endif
 	
 	if (useFrontCamera) {
 		//TODO: this :)
@@ -457,6 +461,7 @@
 		[self startCapture];
 	}
 	
+#if TARGET_OS_EMBEDDED
 	//Set torch mode if supported
 	if (cameraDevice.torchAvailable && (_inputEnableTorch.value != (cameraDevice.torchMode == AVCaptureTorchModeOn)) ) {
 		NSError *lockError;
@@ -467,13 +472,13 @@
 			[cameraDevice unlockForConfiguration];
 		}
 	}
-	
+#endif
 	
 	//Set focus point of interest if supported
 #if TARGET_OS_EMBEDDED
 	if (cameraDevice.focusPointOfInterestSupported) {
 		CGPoint inputFocusPoint = CGPointFromGLKVector2(_inputFocusPointOfInterest.v);
-		CGPoint currentFocusPoint = cameraDevice.focusPointOfInterest;;
+		CGPoint currentFocusPoint = cameraDevice.focusPointOfInterest;
 		if (!CGPointEqualToPoint(inputFocusPoint, currentFocusPoint)) {
 			NSError *lockError;
 			BOOL locked = [cameraDevice lockForConfiguration:&lockError];
