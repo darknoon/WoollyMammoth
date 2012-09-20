@@ -104,7 +104,7 @@
         
         context = newContext;
         
-        [EAGLContext setCurrentContext:nil];
+        [EAGLContext setCurrentContext:context];
     }
 }
 
