@@ -23,6 +23,7 @@
 //Is this program configured correctly for drawing?
 - (BOOL)validateProgram;
 //TODO:- (BOOL)validateProgramWithError:(NSError *)errorDescription;
+//TODO: move to the EAGLContext, because it depends on state outside the shader
 
 //TODO: @property (nonatomic) BOOL vertexShaderCompatibleWithPointRendering;
 
