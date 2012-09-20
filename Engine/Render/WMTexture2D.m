@@ -147,6 +147,11 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 			case kWMTexture2DPixelFormat_A8:
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, width, height, 0, GL_ALPHA, GL_UNSIGNED_BYTE, data);
 				break;
+#if GL_EXT_texture_rg
+			case kWMTexture2DPixelFormat_R8:
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RED_EXT, width, height, 0, GL_RED_EXT, GL_UNSIGNED_BYTE, data);
+				break;
+#endif
 			default:
 				[NSException raise:NSInternalInconsistencyException format:@""];
 				
@@ -237,6 +242,10 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 
 - (id)initWithBitmapSize:(CGSize)size block:(void(^)(CGContextRef ctx))block;
 {
+	return [self initWithBitmapSize:size format:kWMTexture2DPixelFormat_RGBA8888 block:block];
+}
+- (id)initWithBitmapSize:(CGSize)size format:(WMTexture2DPixelFormat)format block:(void(^)(CGContextRef ctx))block;
+{
 	self = [self init];
 	if (!self) return nil;
 
@@ -246,21 +255,42 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 	
 	int width = floorf(size.width), height = floorf(size.height);
 	
-	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-	
-	void *data = malloc(height * width * 4);
-	CGContextRef context = CGBitmapContextCreate(data, width, height, 8, 4 * width, colorSpace, kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big);
-	CGContextSetFillColorSpace(context, colorSpace);
-	CGContextSetStrokeColorSpace(context, colorSpace);
-	CGColorSpaceRelease(colorSpace);
-	
-	CGContextClearRect(context, (CGRect){.size = size});
-	block(context);
-	CGContextRelease(context);
-	
-	[self setData:data pixelFormat:kWMTexture2DPixelFormat_RGBA8888 pixelsWide:width pixelsHigh:height contentSize:size orientation:UIImageOrientationUp];
+	if (format == kWMTexture2DPixelFormat_BGRA8888 || format == kWMTexture2DPixelFormat_RGBA8888) {
+		
+		CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+		
+		void *data = malloc(height * width * 4);
+		CGContextRef context = CGBitmapContextCreate(data, width, height, 8, 4 * width, colorSpace, kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big);
+		CGContextSetFillColorSpace(context, colorSpace);
+		CGContextSetStrokeColorSpace(context, colorSpace);
+		CGColorSpaceRelease(colorSpace);
+		
+		CGContextClearRect(context, (CGRect){.size = size});
+		block(context);
+		CGContextRelease(context);
+		
+		[self setData:data pixelFormat:kWMTexture2DPixelFormat_RGBA8888 pixelsWide:width pixelsHigh:height contentSize:size orientation:UIImageOrientationUp];
+		
+		free(data);
+	} else if (format == kWMTexture2DPixelFormat_R8) {
+		
+		CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceGray();
+		
+		void *data = malloc(height * width * 1);
+		CGContextRef context = CGBitmapContextCreate(data, width, height, 8, 1 * width, colorSpace, kCGImageAlphaNone);
+		CGContextSetFillColorSpace(context, colorSpace);
+		CGContextSetStrokeColorSpace(context, colorSpace);
+		CGColorSpaceRelease(colorSpace);
+		
+		CGContextClearRect(context, (CGRect){.size = size});
+		block(context);
+		CGContextRelease(context);
+		
+		[self setData:data pixelFormat:kWMTexture2DPixelFormat_R8 pixelsWide:width pixelsHigh:height contentSize:size orientation:UIImageOrientationUp];
+		
+		free(data);
 
-	free(data);
+	}
 	
 	return self;
 }
