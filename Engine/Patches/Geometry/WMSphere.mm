@@ -129,7 +129,8 @@ static WMStructureField WMQuadVertex_fields[] = {
 		return NO;
 	}
 	
-	unsigned short *indexData = new unsigned short [numberOfTriangles * 3]; 
+	NSUInteger indexCount = numberOfTriangles * 3 + 1;
+	unsigned short *indexData = new unsigned short [indexCount];
 	if (!indexData) {
 		NSLog(@"Out of mem");
 		return NO;
@@ -143,7 +144,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 			float theta = u * 2.0f * M_PI / unum;
 			float phi = v * M_PI / vnum;
 			//Add the vertex
-			GLKVector3 n = (GLKVector3){sinf(phi)*cosf(theta), sinf(phi)*sinf(theta), cosf(phi)};
+			GLKVector3 n = (GLKVector3){sin(phi)*cosf(theta), sinf(phi)*sinf(theta), cosf(phi)};
 			vertexData[i].n = GLKVector4MakeWithVector3(n, 1.0);
 			vertexData[i].p = GLKVector4MakeWithVector3(radius * n + spherePosition, 1.0);
 			vertexData[i].tc = (GLKVector2){theta, phi};
@@ -164,6 +165,9 @@ static WMStructureField WMQuadVertex_fields[] = {
 		}
 	}
 	
+	//Add bottom again
+	indexData[indexCount - 1] = 0 * vnum + vnum;
+	
 #if DEBUG
 	int maxRefI = 0;
 	for (int i=0; i<numberOfTriangles*3; i++) {
@@ -180,7 +184,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 	
 	WMStructureDefinition *indexDef = [[WMStructureDefinition alloc] initWithAnonymousFieldOfType:WMStructureTypeUnsignedShort];
 	WMStructuredBuffer *indexBuffer = [[WMStructuredBuffer alloc] initWithDefinition:indexDef];
-	[indexBuffer appendData:indexData withStructure:indexDef count:numberOfTriangles * 3];
+	[indexBuffer appendData:indexData withStructure:indexDef count:numberOfTriangles * 3 + 1];
 
 	
 	WMRenderObject *ro = [[WMRenderObject alloc] init];
