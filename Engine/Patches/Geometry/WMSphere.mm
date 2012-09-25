@@ -11,7 +11,6 @@
 #import "WMStructuredBuffer.h"
 #import "WMShader.h"
 #import "WMRenderObject.h"
-#import "WMTexture2D.h"
 
 //Position, Normal, Color, TexCoord0, TexCoord1, PointSize, Weight, MatrixIndex
 struct WMSphereVertex {
@@ -130,7 +129,8 @@ static WMStructureField WMQuadVertex_fields[] = {
 		return NO;
 	}
 	
-	unsigned short *indexData = new unsigned short [numberOfTriangles * 3]; 
+	NSUInteger indexCount = numberOfTriangles * 3 + 1;
+	unsigned short *indexData = new unsigned short [indexCount];
 	if (!indexData) {
 		NSLog(@"Out of mem");
 		return NO;
@@ -165,6 +165,9 @@ static WMStructureField WMQuadVertex_fields[] = {
 		}
 	}
 	
+	//Add bottom again
+	indexData[indexCount - 1] = 0 * vnum + vnum;
+	
 #if DEBUG
 	int maxRefI = 0;
 	for (int i=0; i<numberOfTriangles*3; i++) {
@@ -181,7 +184,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 	
 	WMStructureDefinition *indexDef = [[WMStructureDefinition alloc] initWithAnonymousFieldOfType:WMStructureTypeUnsignedShort];
 	WMStructuredBuffer *indexBuffer = [[WMStructuredBuffer alloc] initWithDefinition:indexDef];
-	[indexBuffer appendData:indexData withStructure:indexDef count:numberOfTriangles * 3];
+	[indexBuffer appendData:indexData withStructure:indexDef count:numberOfTriangles * 3 + 1];
 
 	
 	WMRenderObject *ro = [[WMRenderObject alloc] init];
