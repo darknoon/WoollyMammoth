@@ -66,11 +66,11 @@ static WMStructureField WMQuadVertex_fields[] = {
 
 + (id)defaultValueForInputPortKey:(NSString *)inKey;
 {
-	if ([inKey isEqualToString:@"inputUCount"]) {
+	if ([inKey isEqualToString:KVC([WMSphere new], inputUCount)]) {
 		return [NSNumber numberWithInt:5];
-	} else if ([inKey isEqualToString:@"inputVCount"]) {
+	} else if ([inKey isEqualToString:KVC([WMSphere new], inputVCount)]) {
 		return [NSNumber numberWithInt:5];
-	} else if ([inKey isEqualToString:@"inputRadius"]) {
+	} else if ([inKey isEqualToString:KVC([WMSphere new], inputRadius)]) {
 		return [NSNumber numberWithFloat:1.0f];
 	}
 	return nil;
@@ -113,10 +113,11 @@ static WMStructureField WMQuadVertex_fields[] = {
 }
 
 - (BOOL)recreateVertexData;
-{	
-	unum = inputUCount.index;
-	vnum = inputVCount.index;
-	radius = inputRadius.value;
+{
+	
+	unum = _inputUCount.index;
+	vnum = _inputVCount.index;
+	radius = _inputRadius.value;
 	
 	const int numberOfVertices = unum * vnum;
 	const int numberOfTriangles = unum * (vnum - 1) * 2;
@@ -191,7 +192,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 	ro.renderDepthState = DNGLStateDepthWriteEnabled;
 	ro.renderBlendState = 0;
 	
-	outputSphere.object = ro;
+	_outputSphere.object = ro;
 	
 	return YES;
 }
@@ -199,7 +200,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
 	//TODO: replace radius with a transformation matrix!
-	BOOL dirty = radius != inputRadius.value || unum != inputUCount.index || vnum != inputVCount.index || radius != inputRadius.value;
+	BOOL dirty = radius != _inputRadius.value || unum != _inputUCount.index || vnum != _inputVCount.index || radius != _inputRadius.value;
 	
 	if (dirty) {
 		return [self recreateVertexData];
