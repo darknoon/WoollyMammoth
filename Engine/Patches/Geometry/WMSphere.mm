@@ -14,14 +14,14 @@
 
 //Position, Normal, Color, TexCoord0, TexCoord1, PointSize, Weight, MatrixIndex
 struct WMSphereVertex {
-	GLKVector3 p;
-	GLKVector3 n;
+	GLKVector4 p;
+	GLKVector4 n;
 	GLKVector2 tc;
 };
 
 static WMStructureField WMQuadVertex_fields[] = {
-	{.name = "position",  .type = WMStructureTypeFloat,  .count = 3, .normalized = NO,  .offset = offsetof(WMSphereVertex, p)},
-	{.name = "normal",    .type = WMStructureTypeFloat,  .count = 3, .normalized = NO,  .offset = offsetof(WMSphereVertex, n)},
+	{.name = "position",  .type = WMStructureTypeFloat,  .count = 4, .normalized = NO,  .offset = offsetof(WMSphereVertex, p)},
+	{.name = "normal",    .type = WMStructureTypeFloat,  .count = 4, .normalized = NO,  .offset = offsetof(WMSphereVertex, n)},
 	{.name = "texCoord0", .type = WMStructureTypeFloat,  .count = 2, .normalized = NO,  .offset = offsetof(WMSphereVertex, tc)},
 };
 @interface WMSphere ()
@@ -143,8 +143,9 @@ static WMStructureField WMQuadVertex_fields[] = {
 			float theta = u * 2.0f * M_PI / unum;
 			float phi = v * M_PI / vnum;
 			//Add the vertex
-			vertexData[i].n = (GLKVector3){sinf(phi)*cosf(theta), sinf(phi)*sinf(theta), cosf(phi)};
-			vertexData[i].p = radius * vertexData[i].n + spherePosition;
+			GLKVector3 n = (GLKVector3){sinf(phi)*cosf(theta), sinf(phi)*sinf(theta), cosf(phi)};
+			vertexData[i].n = GLKVector4MakeWithVector3(n, 1.0);
+			vertexData[i].p = GLKVector4MakeWithVector3(radius * n + spherePosition, 1.0);
 			vertexData[i].tc = (GLKVector2){theta, phi};
 			
 			//Add the triangles in the quad {(u,v), (u+1,v), (u,v+1), (u+1,v+1)}
