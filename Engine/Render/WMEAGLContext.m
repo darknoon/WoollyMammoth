@@ -186,13 +186,11 @@
 {
 	if (_cullFaceState != cullFaceState) {
 		if (cullFaceState && !_cullFaceState) {
-			glDisable(GL_CULL_FACE);
-		}
-		if (!_cullFaceState && cullFaceState) {
 			glEnable(GL_CULL_FACE);
 		}
-		
-		_cullFaceState = cullFaceState;
+		if (!cullFaceState && _cullFaceState) {
+			glDisable(GL_CULL_FACE);
+		}
 		
 		switch (cullFaceState) {
 			case DNGLCullFaceBack:
@@ -215,6 +213,9 @@
 				break;
 		}
 	}
+	
+	_cullFaceState = cullFaceState;
+
 }
 
 - (NSString *)description;

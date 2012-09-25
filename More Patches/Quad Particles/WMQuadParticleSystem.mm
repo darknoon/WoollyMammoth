@@ -455,9 +455,7 @@ int particleZCompare(const void *a, const void *b) {
 	
 	if (inputTexture.image) {
 		[renderObject setValue:inputTexture.image forUniformWithName:@"texture"];
-		if (defaultTexture) {
-			defaultTexture = nil;
-		}
+		defaultTexture = nil;
 	} else {
 		if (!defaultTexture) {
 			defaultTexture = [[WMTexture2D alloc] initWithImage:[UIImage imageNamed:@"SnowChunk.png"]];
