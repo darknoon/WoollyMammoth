@@ -52,6 +52,7 @@
 @public
 	DNGLStateBlendMask blendState;
 	DNGLStateDepthMask depthState;
+	DNGLCullFaceMask _cullFaceState;
 	WMFramebuffer *boundFramebuffer;
 	CGRect viewport;
 	
@@ -91,6 +92,29 @@
 		//Assumed state
 		glEnable(GL_DEPTH_TEST);
 		depthState = DNGLStateDepthTestEnabled | DNGLStateDepthWriteEnabled;
+		
+		BOOL cullEnabled;
+		GLint cullMode = 0;
+		glGetIntegerv(GL_CULL_FACE_MODE, &cullMode);
+		ZAssert(cullEnabled, @"Cull not enabled in accordance with mode");
+		if (cullEnabled) {
+			switch ((GLenum)cullMode) {
+				case GL_FRONT:
+					_cullFaceState = DNGLCullFaceFront;
+					break;
+				case GL_BACK:
+					_cullFaceState = DNGLCullFaceBack;
+					break;
+				case GL_FRONT_AND_BACK:
+					_cullFaceState = DNGLCullFaceBack | DNGLCullFaceFront;
+					break;
+				default:
+					ZAssert(0, @"glGetIntegerv(GL_CULL_FACE_MODE, &cullMode) returned unexpected result");
+					break;
+			}
+		} else {
+			_cullFaceState = 0;
+		}
 		
 		//Assume an source-over mode to start
 		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
@@ -156,6 +180,41 @@
 	}
 	
 	depthState = inDepthState;
+}
+
+- (void)setCullFaceState:(int)cullFaceState;
+{
+	if (_cullFaceState != cullFaceState) {
+		if (cullFaceState && !_cullFaceState) {
+			glDisable(GL_CULL_FACE);
+		}
+		if (!_cullFaceState && cullFaceState) {
+			glEnable(GL_CULL_FACE);
+		}
+		
+		_cullFaceState = cullFaceState;
+		
+		switch (cullFaceState) {
+			case DNGLCullFaceBack:
+				glCullFace(GL_BACK);
+				break;
+
+			case DNGLCullFaceFront:
+				glCullFace(GL_FRONT);
+				break;
+				
+			case DNGLCullFaceBack | DNGLCullFaceFront:
+				glCullFace(GL_BACK);
+				break;
+			
+			case 0:
+				break;
+				
+			default:
+				ZAssert(0, @"Tried to set cull face to invalid mode: %d", cullFaceState);
+				break;
+		}
+	}
 }
 
 - (NSString *)description;
@@ -317,7 +376,7 @@
 	
 	self.blendState = inObject.renderBlendState;
 	self.depthState = inObject.renderDepthState;
-	
+	self.cullFaceState = inObject.cullFaceState;
 	
 	GL_CHECK_ERROR;
 

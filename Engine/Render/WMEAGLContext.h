@@ -21,6 +21,14 @@ enum {
 };
 typedef int DNGLStateDepthMask;
 
+enum {
+	//Cull all back faces (not facing the camera)
+	DNGLCullFaceBack = 1 << 0,
+	//Cull all back faces 
+	DNGLCullFaceFront = 1 << 1,
+};
+typedef int DNGLCullFaceMask;
+
 @class WMFramebuffer;
 @class WMTexture2D;
 @class WMRenderObject;

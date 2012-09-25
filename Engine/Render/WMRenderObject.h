@@ -52,6 +52,7 @@ extern NSString *const WMRenderObjectTransformUniformName; // wm_T is selected f
 
 @property (nonatomic) DNGLStateBlendMask renderBlendState;
 @property (nonatomic) DNGLStateDepthMask renderDepthState;
+@property (nonatomic) DNGLCullFaceMask cullFaceState;
 
 //These are applied to the WMRenderObjectTransformUniformName key, ie the transformation from VBO coords to world coords, performed in the vertex shader
 //The transform can also be set directly to a specific value if that is of use

@@ -47,6 +47,7 @@ NSString *const WMRenderObjectTransformUniformName = @"wm_T";
     
 	renderBlendState = 0;
 	renderDepthState = 0;
+	_cullFaceState = 0;
 	
 	uniformValues = [[NSMutableDictionary alloc] init];
 	
@@ -65,6 +66,7 @@ NSString *const WMRenderObjectTransformUniformName = @"wm_T";
 	copy->renderRange = renderRange;
 	copy->renderBlendState = renderBlendState;
 	copy->renderDepthState = renderDepthState;
+	copy->_cullFaceState = _cullFaceState;
 	
 	copy->vertexArrayObject = vertexArrayObject;
 	copy->vertexArrayObjectDirty = vertexArrayObjectDirty;
