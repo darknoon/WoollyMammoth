@@ -28,7 +28,7 @@ CTrivialRandomGenerator rng;
 
 @interface WMQuadParticleSystem () {
 	//Internal
-@public
+@package
 	
 	NSUInteger maxParticles;
 	//Evaluates the noise function for every nth particle
@@ -330,8 +330,8 @@ int particleZCompare(const void *a, const void *b) {
 
 - (void)update;
 {
-	GLKVector3 gravity = inputGravity.v;
-	GLKVector3 rotationRate = inputRotation.v;
+	GLKVector3 gravity = _inputGravity.v;
+	GLKVector3 rotationRate = _inputRotation.v;
 
 	//NSLog(@"g(%f, %f, %f) rot(%f, %f, %f)", gravity.x, gravity.y, gravity.z, rotationRate.x, rotationRate.y, rotationRate.z);
 	
@@ -443,8 +443,8 @@ int particleZCompare(const void *a, const void *b) {
 
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {	
-	radius = MAX(0.1f, MIN(inputRadius.value, 2.0f));
-	particleSize = MAX(0.001f, MIN(inputParticleSize.value * 0.05f, 0.05f));
+	radius = MAX(0.1f, MIN(_inputRadius.value, 2.0f));
+	particleSize = MAX(0.001f, MIN(_inputParticleSize.value * 0.05f, 0.05f));
 
 	[self update];
 	
@@ -453,11 +453,9 @@ int particleZCompare(const void *a, const void *b) {
 		return YES;
 	}
 	
-	if (inputTexture.image) {
-		[renderObject setValue:inputTexture.image forUniformWithName:@"texture"];
-		if (defaultTexture) {
-			defaultTexture = nil;
-		}
+	if (_inputTexture.image) {
+		[renderObject setValue:_inputTexture.image forUniformWithName:@"texture"];
+		defaultTexture = nil;
 	} else {
 		if (!defaultTexture) {
 			defaultTexture = [[WMTexture2D alloc] initWithImage:[UIImage imageNamed:@"SnowChunk.png"]];
@@ -471,7 +469,7 @@ int particleZCompare(const void *a, const void *b) {
 	renderObject.vertexBuffer = particleVertexBuffers[currentParticleVBOIndex];
 	renderObject.indexBuffer = particleIndexBuffer;
 	
-	outputObject.object = renderObject;
+	_outputObject.object = renderObject;
 	
 	return YES;
 }
