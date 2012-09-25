@@ -194,7 +194,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 	ro.indexBuffer = indexBuffer;
 	
 	ro.renderType = GL_TRIANGLE_STRIP;
-	ro.renderDepthState = DNGLStateDepthTestEnabled;
+	ro.renderDepthState = DNGLStateDepthWriteEnabled;
 	ro.renderBlendState = 0;
 	
 	_outputSphere.object = ro;
