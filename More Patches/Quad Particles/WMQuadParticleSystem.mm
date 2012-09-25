@@ -465,6 +465,7 @@ int particleZCompare(const void *a, const void *b) {
 	GL_CHECK_ERROR;
 	
 	renderObject.shader = shader;
+	renderObject.renderType = GL_TRIANGLES;
 	
 	renderObject.vertexBuffer = particleVertexBuffers[currentParticleVBOIndex];
 	renderObject.indexBuffer = particleIndexBuffer;
