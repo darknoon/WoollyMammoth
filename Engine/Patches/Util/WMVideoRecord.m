@@ -132,6 +132,7 @@ static inline double radians (double degrees) { return degrees * (M_PI / 180); }
 	}
 	//Video output setting / creation
 	{
+		_assetWriter.movieFragmentInterval = CMTimeMakeWithSeconds(4.0, 10);
 		
 		//TODO: pick better encoding settings
 		
