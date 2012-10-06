@@ -62,6 +62,9 @@ typedef enum {
 	kWMTexture2DPixelFormat_BGRA8888,
 	kWMTexture2DPixelFormat_RGB565,
 	kWMTexture2DPixelFormat_A8,
+#if GL_EXT_texture_rg
+	kWMTexture2DPixelFormat_R8,
+#endif
 } WMTexture2DPixelFormat;
 
 //CLASS INTERFACES:
@@ -111,6 +114,9 @@ Be aware that the content of the generated textures will be upside-down!
 //For now, this is restricted to kWMTexture2DPixelFormat_BGRA8888
 //Use this to draw arbitrary CPU graphics into a texture
 - (id)initWithBitmapSize:(CGSize)size block:(void(^)(CGContextRef ctx))block;
+
+- (id)initWithBitmapSize:(CGSize)size format:(WMTexture2DPixelFormat)format block:(void(^)(CGContextRef ctx))block;
+
 @end
 
 

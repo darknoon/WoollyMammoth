@@ -23,18 +23,14 @@ struct WMQuadParticleVertex;
 @class WMTexture2D;
 @class WMShader;
 
-@interface WMQuadParticleSystem : WMPatch {
-	
-	//Take data from accelerometer
-	
-	WMVector3Port *inputRotation;
-	WMVector3Port *inputGravity;
-	WMNumberPort *inputRadius;
-	WMNumberPort *inputParticleSize;
-	
-	WMImagePort *inputTexture;
-	
-	WMRenderObjectPort *outputObject;
-}
+@interface WMQuadParticleSystem : WMPatch
+
+@property (nonatomic, readonly) WMVector3Port *inputRotation;
+@property (nonatomic, readonly) WMVector3Port *inputGravity;
+@property (nonatomic, readonly) WMNumberPort *inputRadius;
+@property (nonatomic, readonly) WMNumberPort *inputParticleSize;
+@property (nonatomic, readonly) WMImagePort *inputTexture;
+
+@property (nonatomic, readonly) WMRenderObjectPort *outputObject;
 
 @end

@@ -47,10 +47,8 @@
 	depthBufferDepth = GL_DEPTH_COMPONENT16_OES;
 	
 	eaglLayer.opaque = TRUE;
-	eaglLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
-									[NSNumber numberWithBool:FALSE], kEAGLDrawablePropertyRetainedBacking,
-									kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat,
-									nil];
+	eaglLayer.drawableProperties = @{kEAGLDrawablePropertyRetainedBacking : @FALSE,
+                                     kEAGLDrawablePropertyColorFormat     : kEAGLColorFormatRGBA8};
 }
 
 //The EAGL view is stored in the nib file. When it's unarchived it's sent -initWithCoder:.
@@ -104,7 +102,7 @@
         
         context = newContext;
         
-        [EAGLContext setCurrentContext:nil];
+        [EAGLContext setCurrentContext:context];
     }
 }
 

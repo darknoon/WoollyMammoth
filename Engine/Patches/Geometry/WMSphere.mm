@@ -14,14 +14,14 @@
 
 //Position, Normal, Color, TexCoord0, TexCoord1, PointSize, Weight, MatrixIndex
 struct WMSphereVertex {
-	GLKVector3 p;
-	GLKVector3 n;
+	GLKVector4 p;
+	GLKVector4 n;
 	GLKVector2 tc;
 };
 
 static WMStructureField WMQuadVertex_fields[] = {
-	{.name = "position",  .type = WMStructureTypeFloat,  .count = 3, .normalized = NO,  .offset = offsetof(WMSphereVertex, p)},
-	{.name = "normal",    .type = WMStructureTypeFloat,  .count = 3, .normalized = NO,  .offset = offsetof(WMSphereVertex, n)},
+	{.name = "position",  .type = WMStructureTypeFloat,  .count = 4, .normalized = NO,  .offset = offsetof(WMSphereVertex, p)},
+	{.name = "normal",    .type = WMStructureTypeFloat,  .count = 4, .normalized = NO,  .offset = offsetof(WMSphereVertex, n)},
 	{.name = "texCoord0", .type = WMStructureTypeFloat,  .count = 2, .normalized = NO,  .offset = offsetof(WMSphereVertex, tc)},
 };
 @interface WMSphere ()
@@ -66,11 +66,11 @@ static WMStructureField WMQuadVertex_fields[] = {
 
 + (id)defaultValueForInputPortKey:(NSString *)inKey;
 {
-	if ([inKey isEqualToString:@"inputUCount"]) {
+	if ([inKey isEqualToString:KVC([WMSphere new], inputUCount)]) {
 		return [NSNumber numberWithInt:5];
-	} else if ([inKey isEqualToString:@"inputVCount"]) {
+	} else if ([inKey isEqualToString:KVC([WMSphere new], inputVCount)]) {
 		return [NSNumber numberWithInt:5];
-	} else if ([inKey isEqualToString:@"inputRadius"]) {
+	} else if ([inKey isEqualToString:KVC([WMSphere new], inputRadius)]) {
 		return [NSNumber numberWithFloat:1.0f];
 	}
 	return nil;
@@ -113,10 +113,11 @@ static WMStructureField WMQuadVertex_fields[] = {
 }
 
 - (BOOL)recreateVertexData;
-{	
-	unum = inputUCount.index;
-	vnum = inputVCount.index;
-	radius = inputRadius.value;
+{
+	
+	unum = _inputUCount.index;
+	vnum = _inputVCount.index;
+	radius = _inputRadius.value;
 	
 	const int numberOfVertices = unum * vnum;
 	const int numberOfTriangles = unum * (vnum - 1) * 2;
@@ -128,7 +129,8 @@ static WMStructureField WMQuadVertex_fields[] = {
 		return NO;
 	}
 	
-	unsigned short *indexData = new unsigned short [numberOfTriangles * 3]; 
+	NSUInteger indexCount = numberOfTriangles * 3 + 1;
+	unsigned short *indexData = new unsigned short [indexCount];
 	if (!indexData) {
 		NSLog(@"Out of mem");
 		return NO;
@@ -142,8 +144,9 @@ static WMStructureField WMQuadVertex_fields[] = {
 			float theta = u * 2.0f * M_PI / unum;
 			float phi = v * M_PI / vnum;
 			//Add the vertex
-			vertexData[i].n = (GLKVector3){sinf(phi)*cosf(theta), sinf(phi)*sinf(theta), cosf(phi)};
-			vertexData[i].p = radius * vertexData[i].n + spherePosition;
+			GLKVector3 n = (GLKVector3){sin(phi)*cosf(theta), sinf(phi)*sinf(theta), cosf(phi)};
+			vertexData[i].n = GLKVector4MakeWithVector3(n, 1.0);
+			vertexData[i].p = GLKVector4MakeWithVector3(radius * n + spherePosition, 1.0);
 			vertexData[i].tc = (GLKVector2){theta, phi};
 			
 			//Add the triangles in the quad {(u,v), (u+1,v), (u,v+1), (u+1,v+1)}
@@ -162,6 +165,9 @@ static WMStructureField WMQuadVertex_fields[] = {
 		}
 	}
 	
+	//Add bottom again
+	indexData[indexCount - 1] = 0 * vnum + vnum;
+	
 #if DEBUG
 	int maxRefI = 0;
 	for (int i=0; i<numberOfTriangles*3; i++) {
@@ -178,7 +184,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 	
 	WMStructureDefinition *indexDef = [[WMStructureDefinition alloc] initWithAnonymousFieldOfType:WMStructureTypeUnsignedShort];
 	WMStructuredBuffer *indexBuffer = [[WMStructuredBuffer alloc] initWithDefinition:indexDef];
-	[indexBuffer appendData:indexData withStructure:indexDef count:numberOfTriangles * 3];
+	[indexBuffer appendData:indexData withStructure:indexDef count:numberOfTriangles * 3 + 1];
 
 	
 	WMRenderObject *ro = [[WMRenderObject alloc] init];
@@ -191,7 +197,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 	ro.renderDepthState = DNGLStateDepthWriteEnabled;
 	ro.renderBlendState = 0;
 	
-	outputSphere.object = ro;
+	_outputSphere.object = ro;
 	
 	return YES;
 }
@@ -199,7 +205,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
 	//TODO: replace radius with a transformation matrix!
-	BOOL dirty = radius != inputRadius.value || unum != inputUCount.index || vnum != inputVCount.index || radius != inputRadius.value;
+	BOOL dirty = radius != _inputRadius.value || unum != _inputUCount.index || vnum != _inputVCount.index || radius != _inputRadius.value;
 	
 	if (dirty) {
 		return [self recreateVertexData];
