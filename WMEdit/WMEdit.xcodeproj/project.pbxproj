@@ -18,6 +18,8 @@
 		4917AC9F13F9C722008AD2CB /* WMBundleDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917AC9C13F9C722008AD2CB /* WMBundleDocument.m */; };
 		4917ACA113F9C722008AD2CB /* WMCompositionSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917AC9E13F9C722008AD2CB /* WMCompositionSerialization.m */; };
 		4917ACA213F9C722008AD2CB /* WMCompositionSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917AC9E13F9C722008AD2CB /* WMCompositionSerialization.m */; };
+		4918B9C2161FAE6200C6D1A9 /* WMImageResize.m in Sources */ = {isa = PBXBuildFile; fileRef = 4918B9C1161FAE6200C6D1A9 /* WMImageResize.m */; };
+		4918B9D5161FB07100C6D1A9 /* WMRenderObject+CreateWithGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 4918B9D4161FB07100C6D1A9 /* WMRenderObject+CreateWithGeometry.m */; };
 		491C1CC61454735000554C73 /* popoverArrowDown.png in Resources */ = {isa = PBXBuildFile; fileRef = 491C1CBA1454735000554C73 /* popoverArrowDown.png */; };
 		491C1CC71454735000554C73 /* popoverArrowDown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 491C1CBB1454735000554C73 /* popoverArrowDown@2x.png */; };
 		491C1CC81454735000554C73 /* popoverArrowDownSimple.png in Resources */ = {isa = PBXBuildFile; fileRef = 491C1CBC1454735000554C73 /* popoverArrowDownSimple.png */; };
@@ -357,6 +359,10 @@
 		4917AC9C13F9C722008AD2CB /* WMBundleDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMBundleDocument.m; sourceTree = "<group>"; };
 		4917AC9D13F9C722008AD2CB /* WMCompositionSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMCompositionSerialization.h; sourceTree = "<group>"; };
 		4917AC9E13F9C722008AD2CB /* WMCompositionSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMCompositionSerialization.m; sourceTree = "<group>"; };
+		4918B9C0161FAE6200C6D1A9 /* WMImageResize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMImageResize.h; sourceTree = "<group>"; };
+		4918B9C1161FAE6200C6D1A9 /* WMImageResize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMImageResize.m; sourceTree = "<group>"; };
+		4918B9D3161FB07100C6D1A9 /* WMRenderObject+CreateWithGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMRenderObject+CreateWithGeometry.h"; sourceTree = "<group>"; };
+		4918B9D4161FB07100C6D1A9 /* WMRenderObject+CreateWithGeometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WMRenderObject+CreateWithGeometry.m"; sourceTree = "<group>"; };
 		491C1CBA1454735000554C73 /* popoverArrowDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverArrowDown.png; sourceTree = "<group>"; };
 		491C1CBB1454735000554C73 /* popoverArrowDown@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popoverArrowDown@2x.png"; sourceTree = "<group>"; };
 		491C1CBC1454735000554C73 /* popoverArrowDownSimple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverArrowDownSimple.png; sourceTree = "<group>"; };
@@ -809,6 +815,8 @@
 		49F8A94213E69778000D4A3A /* WMImageLoaderSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMImageLoaderSettingsController.h; sourceTree = "<group>"; };
 		49F8A94313E69778000D4A3A /* WMImageLoaderSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMImageLoaderSettingsController.m; sourceTree = "<group>"; };
 		49F8A94413E69778000D4A3A /* WMImageLoaderSettingsController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMImageLoaderSettingsController.xib; sourceTree = "<group>"; };
+		49FBEC641622489B00B2920F /* WMImageFromString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMImageFromString.h; sourceTree = "<group>"; };
+		49FBEC651622489B00B2920F /* WMImageFromString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMImageFromString.m; sourceTree = "<group>"; };
 		B43F38BC13D358B4004A6A47 /* missing_effect_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = missing_effect_thumb.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1107,6 +1115,8 @@
 				49B4500915C36F2B00113D82 /* WMImageSize.m */,
 				491E26A915C94A9F0087D52B /* WMImageOrientation.h */,
 				491E26AA15C94A9F0087D52B /* WMImageOrientation.m */,
+				4918B9C0161FAE6200C6D1A9 /* WMImageResize.h */,
+				4918B9C1161FAE6200C6D1A9 /* WMImageResize.m */,
 			);
 			path = Image;
 			sourceTree = "<group>";
@@ -1128,6 +1138,8 @@
 				49B9A6BC1415C473001DB45B /* WMVideoRecord.m */,
 				496AF5FB144A169900082FBD /* WMSetRenderObject.h */,
 				496AF5FC144A169900082FBD /* WMSetRenderObject.m */,
+				49FBEC641622489B00B2920F /* WMImageFromString.h */,
+				49FBEC651622489B00B2920F /* WMImageFromString.m */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1462,6 +1474,8 @@
 				499C9172156C7D6100EC8895 /* WMPrefix.pch */,
 				49B4500F15C4244B00113D82 /* NSValue+GLKVector.h */,
 				49B4501015C4244B00113D82 /* NSValue+GLKVector.m */,
+				4918B9D3161FB07100C6D1A9 /* WMRenderObject+CreateWithGeometry.h */,
+				4918B9D4161FB07100C6D1A9 /* WMRenderObject+CreateWithGeometry.m */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1898,7 +1912,7 @@
 		49F0594313D15F640056C506 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0450;
 				ORGANIZATIONNAME = Darknoon;
 			};
 			buildConfigurationList = 49F0594613D15F640056C506 /* Build configuration list for PBXProject "WMEdit" */;
@@ -2264,6 +2278,9 @@
 				49B4500A15C36F2B00113D82 /* WMImageSize.m in Sources */,
 				49B4501115C4244B00113D82 /* NSValue+GLKVector.m in Sources */,
 				491E26AB15C94A9F0087D52B /* WMImageOrientation.m in Sources */,
+				4918B9C2161FAE6200C6D1A9 /* WMImageResize.m in Sources */,
+				4918B9D5161FB07100C6D1A9 /* WMRenderObject+CreateWithGeometry.m in Sources */,
+				49FBEC661622489B00B2920F /* WMImageFromString.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
