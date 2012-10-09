@@ -14,4 +14,6 @@
 //Vertices are in "position", texture coords are in "texCoord0"
 + (WMRenderObject *)quadRenderObjectWithFrame:(CGRect)inFrame;
 
++ (WMRenderObject *)quadRenderObjectWithTexture2D:(WMTexture2D *)texture uSubdivisions:(NSUInteger)u vSubdivisions:(NSUInteger)v;
+
 @end
