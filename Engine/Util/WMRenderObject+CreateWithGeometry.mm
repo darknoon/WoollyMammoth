@@ -151,6 +151,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 	}
 	
 	WMRenderObject *ro = [[WMRenderObject alloc] init];
+	[ro premultiplyTransform:GLKMatrix4Identity];
 	ro.vertexBuffer = vertexBuffer;
 	ro.indexBuffer = indexBuffer;
 	ro.shader = [WMShader defaultShader];
