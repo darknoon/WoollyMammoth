@@ -149,7 +149,7 @@
 
 		[renderObject setValue:inputColor.objectValue forUniformWithName:@"color"];
 		
-		
+		renderObject.debugLabel = self.key;
 		outputObject.object = renderObject;
 	} else {
 		outputObject.object = nil;

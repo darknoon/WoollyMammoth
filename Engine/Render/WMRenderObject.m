@@ -110,8 +110,8 @@ NSString *const WMRenderObjectTransformUniformName = @"wm_T";
 
 - (NSString *)description;
 {
-	return [NSString stringWithFormat:@"<%@ %p vb:%@ ib:%@ shader:%@ renderType:%@ range:%@ renderBlendState:%d renderDepthState:%d vao:%@>",
-			[self class], self, vertexBuffer, indexBuffer, shader, [WMRenderObject stringFromGLRenderType:renderType], NSStringFromRange(renderRange), renderBlendState, renderDepthState, vertexArrayObject];
+	return [NSString stringWithFormat:@"<%@ %p label:%@ vb:%@ ib:%@ shader:%@ renderType:%@ range:%@ renderBlendState:%d renderDepthState:%d vao:%@>",
+			[self class], self, _debugLabel, vertexBuffer, indexBuffer, shader, [WMRenderObject stringFromGLRenderType:renderType], NSStringFromRange(renderRange), renderBlendState, renderDepthState, vertexArrayObject];
 }
 
 - (NSArray *)uniformKeys;

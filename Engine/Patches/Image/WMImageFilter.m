@@ -129,6 +129,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 #endif
 
 	WMRenderObject *ro = [[WMRenderObject alloc] init];
+	ro.debugLabel = self.key;
 	
 	ro.vertexBuffer = vertexBuffer;
 	ro.indexBuffer = indexBuffer;
