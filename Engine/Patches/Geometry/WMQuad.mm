@@ -81,11 +81,13 @@
 	NSUInteger vCount = MIN(MAX(1u, inputSubV.index), 256u) + 1;
 
 	//If the buffer doesn't need update, return
-	if (CGSizeEqualToSize(inImage.contentSize, vertexBufferSize) && inImage.orientation == vertexBufferOrientation && vertexBufferU == uCount && vertexBufferV == vCount) {
+	if (renderObject && CGSizeEqualToSize(inImage.contentSize, vertexBufferSize) && inImage.orientation == vertexBufferOrientation && vertexBufferU == uCount && vertexBufferV == vCount) {
 		return;
 	}
 	
 	renderObject = [WMRenderObject quadRenderObjectWithTexture2D:inImage uSubdivisions:uCount vSubdivisions:vCount];
+	vertexBufferU = uCount;
+	vertexBufferV = vCount;
 	
 	vertexBufferSize = inImage.contentSize;
 	vertexBufferOrientation = inImage.orientation;	
@@ -94,8 +96,6 @@
 
 - (BOOL)setup:(WMEAGLContext *)context;
 {
-	renderObject = [[WMRenderObject alloc] init];
-	
 	inputRotation.minValue = -180.f;
 	inputRotation.maxValue = 180.f;
 	
