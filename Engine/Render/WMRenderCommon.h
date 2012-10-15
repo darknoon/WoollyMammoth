@@ -5,7 +5,6 @@
 #import <OpenGLES/ES2/glext.h>
 
 #import <GLKit/GLKit.h>
-#import "GLKMath_cpp.h"
 
 #elif TARGET_OS_MAC
 
@@ -15,3 +14,6 @@
 #import "EAGLContextMac.h"
 
 #endif
+
+#import "WMTransforms.h"
+#import "GLKMath_cpp.h"

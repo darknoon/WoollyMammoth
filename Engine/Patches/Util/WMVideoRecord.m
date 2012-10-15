@@ -562,7 +562,7 @@ bail:
 			NSLog(@"displayAndRenderPixelBuffer error"); 
 		}
 		
-		GLKMatrix4 transform = [WMEngine cameraMatrixWithRect:(CGRect){.size.width = videoDimensions.width, .size.height = videoDimensions.height}];
+		GLKMatrix4 transform = cameraMatrixForRect((CGRect){.size.width = videoDimensions.width, .size.height = videoDimensions.height});
 
 		//Invert y-axis to account for different GL/CV coordinates
 		transform = GLKMatrix4Scale(transform, 1.0f, -1.0f, 1.0f);

@@ -10,8 +10,6 @@
 
 @interface WMImageResize : WMPatch
 
-@property (nonatomic, strong) WMIndexPort *inputOrientation;
-
 @property (nonatomic, strong) WMVector2Port *inputFactors;
 
 @property (nonatomic, strong) WMImagePort *inputImage;

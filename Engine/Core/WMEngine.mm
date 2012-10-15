@@ -203,8 +203,6 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 	//GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(viewAngle, aspectRatio, near, far);
 	GLKMatrix4 projectionMatrix = GLKMatrix4MakeFrustum(-scale, scale, -scale * aspectRatio, scale * aspectRatio, near, far);
 	
-	//glDepthRangef(near, far);
-	
 	const GLKVector3 cameraPosition = {0, 0, eyeZ};
 	const GLKVector3 cameraTarget = {0, 0, 0};
 	const GLKVector3 upVec = {0, 1, 0};
