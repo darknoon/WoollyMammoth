@@ -8,7 +8,8 @@
 @interface WMStructuredBuffer ()  {
 	//For the WMEAGLContext's use
 	NSMutableIndexSet *dirtySet;
-	unsigned int bufferObject;
+	GLuint _bufferObject;
+	GLenum _bufferObjectType;
 }
 
 @end
@@ -17,9 +18,17 @@
 
 //A structured buffer can be uploaded to the GPU and have a representation there
 @property (nonatomic) GLuint bufferObject;
+@property (nonatomic) GLenum bufferObjectType;
 
 //Type is GL_ARRAY_BUFFER or GL_ELEMENT_ARRAY_BUFFER
 - (BOOL)uploadToBufferObjectIfNecessaryOfType:(GLenum)inBufferType inContext:(WMEAGLContext *)inContext;
+
+//TODO: support buffer mapping on the mac
+#if GL_OES_mapbuffer
+//Private methods for implementing public method so we can implement in WMEAGLContext instead in WMStructuredBuffer
+- (void *)_mapGLBufferForWriting;
+- (void)_unmapGLBuffer;
+#endif
 
 - (NSIndexSet *)dirtyIndexSet;
 - (void)resetDirtyIndexSet;
