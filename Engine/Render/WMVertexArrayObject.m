@@ -97,6 +97,7 @@
 
 - (BOOL)isEqual:(id)object;
 {
+	if (object == self) return YES;
 	if ([object isKindOfClass:[self class]]) {
 		return [self isEqualToVertexArrayObject:object];
 	} else {
@@ -104,9 +105,10 @@
 	}
 }
 
-- (BOOL)isEqualToVertexArrayObject:(WMVertexArrayObject *)inObject;
+- (BOOL)isEqualToVertexArrayObject:(WMVertexArrayObject *)object;
 {
-	return [buffers isEqualToArray:inObject->buffers] && [attributeNames isEqualToOrderedSet:inObject->attributeNames] && [attributeLocations isEqualToOrderedSet:inObject->attributeLocations];
+	if (object == self) return YES;
+	return [buffers isEqualToArray:object->buffers] && [attributeNames isEqualToOrderedSet:object->attributeNames] && [attributeLocations isEqualToOrderedSet:object->attributeLocations];
 }
 
 - (NSString *)description;
