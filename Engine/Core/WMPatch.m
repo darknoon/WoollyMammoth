@@ -573,7 +573,7 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	if (_connections.count > 0) [components addObject: [NSString stringWithFormat:@"connections: %u", _connections.count]];
 	if (_children.count > 0) [components addObject:[NSString stringWithFormat:@"childen: %u", _children.count]];
 	
-	return [NSString stringWithFormat:@"<%@: %p>{%@}", NSStringFromClass([self class]), self, [components componentsJoinedByString:@", "]];
+	return [NSString stringWithFormat:@"<%@: %p hasSetup:%d>{%@}", NSStringFromClass([self class]), self, self.hasSetup, [components componentsJoinedByString:@", "]];
 }
 
 

@@ -83,8 +83,6 @@ static WMStructureField WMQuadVertex_fields[] = {
 
 - (BOOL)setup:(WMEAGLContext *)context;
 {
-	BOOL ok = [super setup:context];
-	if (!ok) return NO;
 	
 	NSError *error = nil;
 	NSString *combindedShader = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"WMGaussianBlur" ofType:@"glsl"]
@@ -100,7 +98,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 	
 	[self loadQuadData];
 	
-	return ok;
+	return YES;
 }
 
 - (void)cleanup:(WMEAGLContext *)context;
@@ -170,7 +168,7 @@ static WMStructureField WMQuadVertex_fields[] = {
 	
 	const float NONE = 0.0f;
 	
-	if (amt > 0.1f) {
+	if (amt > 0.01f) {
 		
 		const float scales[] = {0.2f, 0.3f, 0.5f, 0.8f};
 		const float amts[]   = {1.0f, 1.5f, 1.5f, 2.0f};
@@ -199,6 +197,9 @@ static WMStructureField WMQuadVertex_fields[] = {
 
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
+	ZAssert(self.hasSetup, @"Setup did not happen properly!");
+	ZAssert(self.hasSetup && shader, @"Shader not compiled properly!");
+	
 	NSUInteger renderWidth = inputImage.image.pixelsWide;
 	NSUInteger renderHeight = inputImage.image.pixelsHigh;
 	
