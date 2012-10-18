@@ -94,11 +94,6 @@
 
 - (void)engineDidLoad;
 {
-	//TODO: start lazily
-	GL_CHECK_ERROR;
-	[_engine start];
-	GL_CHECK_ERROR;
-	
 	[eaglView setContext:_engine.renderContext];
 }
 
