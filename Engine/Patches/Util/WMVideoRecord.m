@@ -143,7 +143,10 @@ static inline double radians (double degrees) { return degrees * (M_PI / 180); }
 			bitsPerSecond = 87500 * 8;
 		else if (videoDimensions.width <= 640 && videoDimensions.height <= 480)
 			bitsPerSecond = 437500 * 8;
-		
+		else if (videoDimensions.width <= 1280 && videoDimensions.height <= 720)
+			bitsPerSecond = 1000000 * 8;
+		else
+			bitsPerSecond = 1500000 * 8;
 		NSDictionary *videoCompressionSettings = [NSDictionary dictionaryWithObjectsAndKeys:
 												  AVVideoCodecH264, AVVideoCodecKey,
 												  [NSNumber numberWithInt:videoDimensions.width], AVVideoWidthKey,
