@@ -80,7 +80,10 @@
 - (id) initWithPlistRepresentation:(id)inPlist {
 	self = [super initWithPlistRepresentation:inPlist];
 	if (!self) return self; 
-		
+	
+	_sessionPreset = AVCaptureSessionPreset640x480;
+	_eventDelegatePaused = YES; //paused, so setting not paused triggers setup & go
+	
 	return self;
 }
 
@@ -114,8 +117,6 @@
 	}
 	
 #endif
-	
-	[self startCapture];
 
 	return YES;
 }
@@ -156,12 +157,8 @@
 	DLog(@"Configuring capture for video device: %@", device);
 	
 	if (cameraDevice) {
-		if ([cameraDevice supportsAVCaptureSessionPreset:AVCaptureSessionPreset1280x720]) {
-			[captureSession setSessionPreset:AVCaptureSessionPreset1280x720];
-		} else if ([cameraDevice supportsAVCaptureSessionPreset:AVCaptureSessionPresetMedium]) {
-			[captureSession setSessionPreset:AVCaptureSessionPresetMedium];
-		} else if ([cameraDevice supportsAVCaptureSessionPreset:AVCaptureSessionPresetLow]) {
-			[captureSession setSessionPreset:AVCaptureSessionPresetLow];
+		if ([cameraDevice supportsAVCaptureSessionPreset:_sessionPreset]) {
+			[captureSession setSessionPreset:_sessionPreset];
 		} else {
 			NSLog(@"ERROR: could not set an appropriate session preset for capturing from video device: %@", device);
 			return NO;
@@ -308,7 +305,7 @@
 				//Better to drop than accumulate a ton!
 				if (mostRecentAudioBuffer.sampleBuffers.count > 5) {
 					mostRecentAudioBuffer = nil;
-					NSLog(@"ERROR: audio buffer overflow (video underflow) delegate: %@", self.eventDelegate);
+					DLog(@"ERROR: audio buffer overflow (video underflow) delegate: %@", self.eventDelegate);
 				}
 				
 				mostRecentAudioBuffer = mostRecentAudioBuffer ? [mostRecentAudioBuffer bufferByAppendingSampleBuffer:sampleBuffer] : [[WMAudioBuffer alloc] initWithCMSampleBuffer:sampleBuffer];
