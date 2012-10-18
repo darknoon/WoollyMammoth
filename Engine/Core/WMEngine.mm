@@ -39,6 +39,8 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 @implementation WMEngine {
 	NSMutableDictionary *compositionUserData;
 	WMFrameCounter *_frameCounter;
+	NSCache *_orderingCache;
+	NSCache *_connectionCache;
 }
 
 @synthesize renderContext;
@@ -76,6 +78,9 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 	
 	self.document = inDocument;
 	compositionUserData = document.userDictionary ? [document.userDictionary mutableCopy] : [[NSMutableDictionary alloc] init];
+	
+	_orderingCache = [[NSCache alloc] init];
+	_connectionCache = [[NSCache alloc] init];
 	
 	return self;
 }
@@ -157,6 +162,8 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 {
 	//Find the event source
 	self.eventSource = [self _findEventSource:rootObject];
+	[_orderingCache removeAllObjects];
+	[_connectionCache removeAllObjects];
 }
 
 //TODO: use this method to reduce the number of nodes executed
@@ -177,8 +184,13 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 {
 	NSArray *executionOrdering = nil;
 	NSSet *excludedEdges = nil;
-	BOOL ok = [inPatch getTopologicalOrdering:&executionOrdering andExcludedEdges:&excludedEdges];
-	if (ok) {
+	
+	NSValue *cacheKey = [NSValue valueWithPointer:(const void *)inPatch];
+	executionOrdering = [_orderingCache objectForKey:cacheKey];
+	if (executionOrdering) {
+		return executionOrdering;
+	} else if ([inPatch getTopologicalOrdering:&executionOrdering andExcludedEdges:&excludedEdges]) {
+		[_orderingCache setObject:executionOrdering forKey:cacheKey];
 		return executionOrdering;
 	} else {
 		return nil;
@@ -233,11 +245,17 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 
 - (WMConnection *)connectionToInputPort:(WMPort *)inPort ofNode:(WMPatch *)inPatch inParent:(WMPatch *)inParent;
 {
-	for (WMConnection *connection in inParent.connections) {
-		if ([connection.destinationNode isEqualToString:inPatch.key] && [connection.destinationPort isEqualToString:inPort.key]) {
-			//Find the source node
-			//TODO: optimize the order of this
-			return connection;
+	NSValue *cacheKey = [NSValue valueWithPointer:(const void *)inPort];
+	
+	WMConnection *connection = [_connectionCache objectForKey:cacheKey];
+	if (connection) {
+		return connection;
+	} else {
+		for (WMConnection *connection in inParent.connections) {
+			if ([connection.destinationNode isEqualToString:inPatch.key] && [connection.destinationPort isEqualToString:inPort.key]) {
+				[_connectionCache setObject:connection forKey:cacheKey];
+				return connection;
+			}
 		}
 	}
 	return nil;

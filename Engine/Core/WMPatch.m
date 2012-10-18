@@ -524,12 +524,12 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 
 - (NSArray *)children;
 {
-	return [_children copy];
+	return _children;
 }
 
 - (NSArray *)connections;
 {
-	return [_connections copy];
+	return _connections;
 }
 
 #pragma mark -
@@ -641,7 +641,7 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 - (void)removeChild:(WMPatch *)inPatch;
 {
 	//Remove any connections related
-	for (WMConnection *connection in self.connections) {
+	for (WMConnection *connection in [_connections copy]) {
 		if ([connection.destinationNode isEqualToString:inPatch.key] || [connection.sourceNode isEqualToString:inPatch.key]) {
 			[_connections removeObject:connection];
 		}
