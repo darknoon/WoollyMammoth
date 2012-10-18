@@ -53,7 +53,7 @@
 	} else {
 		documentState = UIDocumentStateNormal;
 	}
-	completionHandler(ok);
+	if (completionHandler) completionHandler(ok);
 }
 
 - (void)closeWithCompletionHandler:(void (^)(BOOL success))completionHandler;
