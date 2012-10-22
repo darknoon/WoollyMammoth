@@ -57,6 +57,8 @@
 	
 	WMVertexArrayObject *boundVAO;
 	
+	NSCache *_objectCache;
+	
 	GLKVector4 clearColor;
 	
 	int activeTexture;
@@ -112,7 +114,15 @@
 	return self;
 }
 
+- (WMGLStateObject *)cachedObjectForKey:(NSString *)key;
+{
+	return [_objectCache objectForKey:key];
+}
 
+- (void)setCachedObject:(WMGLStateObject *)object forKey:(NSString *)key;
+{
+	[_objectCache setObject:object forKey:key];
+}
 
 - (void)setBlendState:(int)inBlendState;
 {

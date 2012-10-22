@@ -12,6 +12,8 @@
 
 NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
 
+NSString *const WMDefaultShaderCacheKey = @"com.darknoon.WMShader.defaultShader";
+
 #import "WMShader_WMEAGLContext_Private.h"
 
 @implementation WMShader {
@@ -54,27 +56,34 @@ NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
 
 + (WMShader *)defaultShader;
 {
-	//TODO: make a better system for default shaders!
-	NSError *defaultShaderError = nil;
-	NSString *vertexShader = [NSString stringWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"WMDefaultShader" withExtension:@"vsh"] encoding:NSASCIIStringEncoding error:&defaultShaderError];
-	if (defaultShaderError) {
-		NSLog(@"Error loading default vertex shader: %@", defaultShaderError);
-		return nil;
-	}
+	ZAssert([WMEAGLContext currentContext], @"Must have an WMEAGLContext active");
 	
-	NSString *fragmentShader = [NSString stringWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"WMDefaultShader" withExtension:@"fsh"] encoding:NSASCIIStringEncoding error:&defaultShaderError];
-	if (defaultShaderError) {
-		NSLog(@"Error loading default fragment shader: %@", defaultShaderError);
-		return nil;
+	WMShader *defaultShader = (WMShader *)[(WMEAGLContext *)[WMEAGLContext currentContext] cachedObjectForKey:WMDefaultShaderCacheKey];
+	if (!defaultShader) {
+		
+		//TODO: make a better system for default shaders!
+		NSError *defaultShaderError = nil;
+		NSString *vertexShader = [NSString stringWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"WMDefaultShader" withExtension:@"vsh"] encoding:NSASCIIStringEncoding error:&defaultShaderError];
+		if (defaultShaderError) {
+			NSLog(@"Error loading default vertex shader: %@", defaultShaderError);
+			return nil;
+		}
+		
+		NSString *fragmentShader = [NSString stringWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"WMDefaultShader" withExtension:@"fsh"] encoding:NSASCIIStringEncoding error:&defaultShaderError];
+		if (defaultShaderError) {
+			NSLog(@"Error loading default fragment shader: %@", defaultShaderError);
+			return nil;
+		}
+		
+		defaultShader = [[WMShader alloc] initWithVertexShader:vertexShader fragmentShader:fragmentShader error:&defaultShaderError];
+		if (defaultShaderError) {
+			NSLog(@"Error loading default shader: %@", defaultShaderError);
+			return nil;
+		}
+		
+		[(WMEAGLContext *)[WMEAGLContext currentContext] setCachedObject:defaultShader forKey:WMDefaultShaderCacheKey];
 	}
-	
-	WMShader *shader = [[WMShader alloc] initWithVertexShader:vertexShader fragmentShader:fragmentShader error:&defaultShaderError];
-	if (defaultShaderError) {
-		NSLog(@"Error loading default shader: %@", defaultShaderError);
-		return nil;
-	}
-
-	return shader;
+	return defaultShader;
 }
 
 - (void)deleteInternalState;
