@@ -314,9 +314,9 @@
 		[self setBound2DTextureName:[(WMTexture2D *)[textures objectAtIndex:i] name] onTextureUnit:i];
 	}
 	GL_CHECK_ERROR;
-
+	
 	// Validate program before drawing. This is a good check, but only really necessary in a debug build.
-#if DEBUG
+#if DEBUG_OPENGL
 	if (![shader validateProgram])
 	{
 		NSLog(@"Failed to validate program in shader: %@", shader);
