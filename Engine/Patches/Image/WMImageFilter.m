@@ -26,6 +26,8 @@ static WMStructureField WMQuadVertex_fields[] = {
 	{.name = "texCoord0", .type = WMStructureTypeUnsignedByte, .count = 2, .normalized = YES, .offset = offsetof(WMQuadVertex, tc)},
 };
 
+NSString *WMImageFilterCacheKey = @"WMImageFilterShader";
+
 @implementation WMImageFilter
 
 + (NSString *)category;
@@ -84,17 +86,22 @@ static WMStructureField WMQuadVertex_fields[] = {
 - (BOOL)setup:(WMEAGLContext *)context;
 {
 	
-	NSError *error = nil;
-	NSString *combindedShader = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"WMGaussianBlur" ofType:@"glsl"]
-														  encoding:NSUTF8StringEncoding
-															 error:&error];
-	if (!combindedShader) {
-		NSLog(@"ERROR: Couldn't load blur shader: %@", error);
+	shader = (WMShader *)[(WMEAGLContext *)[WMEAGLContext currentContext] cachedObjectForKey:WMImageFilterCacheKey];
+	if (!shader) {
+		NSError *error = nil;
+		NSString *combindedShader = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"WMGaussianBlur" ofType:@"glsl"]
+															  encoding:NSUTF8StringEncoding
+																 error:&error];
+		if (!combindedShader) {
+			NSLog(@"ERROR: Couldn't load blur shader: %@", error);
+		}
+
+		shader = [[WMShader alloc] initWithVertexShader:combindedShader
+										 fragmentShader:combindedShader
+												  error:NULL];
+		[(WMEAGLContext *)[WMEAGLContext currentContext] setCachedObject:shader forKey:WMImageFilterCacheKey];
 	}
-	
-	shader = [[WMShader alloc] initWithVertexShader:combindedShader
-									 fragmentShader:combindedShader
-											  error:NULL];
+
 	
 	[self loadQuadData];
 	
