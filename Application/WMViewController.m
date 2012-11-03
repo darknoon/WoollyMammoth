@@ -149,7 +149,8 @@
 	} else {
 		[self openDocumentAndSetupIfNecessary];
 	}
-	
+
+#if DEBUG
 	fpsLabel = [[UILabel alloc] initWithFrame:CGRectMake(74, 10, 200, 22)];
 	fpsLabel.backgroundColor = [UIColor clearColor];
 	fpsLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:18.f];
@@ -159,6 +160,7 @@
 	fpsLabel.alpha = 0.8f;
 	fpsLabel.text = @"";
 	[self.view addSubview:fpsLabel];
+#endif
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -255,27 +257,27 @@
 #pragma mark -
 #pragma mark Notifications
 
-- (void)applicationWillResignActive:(UIApplication *)application
+- (void)applicationWillResignActive:(NSNotification *)note;
 {
     [self stopAnimation];
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application
+- (void)applicationDidBecomeActive:(NSNotification *)note;
 {
     [self startAnimation];
 }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application;
+- (void)applicationWillEnterForeground:(NSNotification *)note;
 {
 	[self startAnimation];
 }
 
-- (void)applicationDidEnterBackground:(UIApplication *)application
+- (void)applicationDidEnterBackground:(NSNotification *)note;
 {
     [self stopAnimation];
 }
 
-- (void)applicationWillTerminate:(UIApplication *)application
+- (void)applicationWillTerminate:(NSNotification *)note;
 {
     [self stopAnimation];
 }
