@@ -65,6 +65,7 @@ typedef enum {
 #if GL_EXT_texture_rg
 	kWMTexture2DPixelFormat_R8,
 #endif
+	_WMTexture2DPixelFormat_count
 } WMTexture2DPixelFormat;
 
 //CLASS INTERFACES:
@@ -76,6 +77,10 @@ Depending on how you create the WMTexture2D object, the actual image area of the
 Be aware that the content of the generated textures will be upside-down!
 */
 @interface WMTexture2D : WMGLStateObject
+
+//Experimental. Cannot modify size later with -setData
+//Only 1 mip level currently
+- (id)initEmptyTextureWithPixelFormat:(WMTexture2DPixelFormat)pixelFormat width:(GLuint)width height:(GLuint)height;
 
 //Designated initializer
 - (id)initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;

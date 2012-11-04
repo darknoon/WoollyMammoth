@@ -28,7 +28,23 @@ static WMStructureField WMQuadVertex_fields[] = {
 
 NSString *WMImageFilterCacheKey = @"WMImageFilterShader";
 
-@implementation WMImageFilter
+@implementation WMImageFilter {
+    WMShader *shader;
+	
+	WMFramebuffer *fbo;
+	//Keep around textures at various sizes. We need two of each, which are called a and b
+	//This is more efficient than recreating textures every frame.
+	//Keys are nsstrings of the form "<width>x<height>-<a/b>"
+	NSCache *_textureCache;
+	
+	//For quad
+	WMStructuredBuffer *vertexBuffer;
+	WMStructuredBuffer *indexBuffer;
+	
+	WMNumberPort *inputRadius;
+	WMImagePort *inputImage;
+	WMImagePort *outputImage;
+}
 
 + (NSString *)category;
 {
@@ -85,6 +101,7 @@ NSString *WMImageFilterCacheKey = @"WMImageFilterShader";
 
 - (BOOL)setup:(WMEAGLContext *)context;
 {
+	_textureCache = [[NSCache alloc] init];
 	
 	shader = (WMShader *)[(WMEAGLContext *)[WMEAGLContext currentContext] cachedObjectForKey:WMImageFilterCacheKey];
 	if (!shader) {
@@ -112,17 +129,11 @@ NSString *WMImageFilterCacheKey = @"WMImageFilterShader";
 {
 	shader = nil;
 	fbo = nil;
-	texture0 = nil;
-	texture1 = nil;
+	_textureCache = nil;
 }
 
-- (void)renderBlurPassFromTexture:(WMTexture2D *)inSourceTexture toTexture:(WMTexture2D *)inDestinationTexture atSize:(CGSize)inSize amountX:(float)inAmountX amountY:(float)inAmountY inContext:(WMEAGLContext *)inContext;
+- (void)renderBlurPassFromTexture:(WMTexture2D *)inSourceTexture toTexture:(WMTexture2D *)inDestinationTexture amountX:(float)inAmountX amountY:(float)inAmountY inContext:(WMEAGLContext *)inContext;
 {	
-	//Resize out output texture to the correct size
-	NSUInteger destTextureWidth = inSize.width;
-	NSUInteger destTextureHeight = inSize.height;
-//	if (inDestinationTexture.pixelsWide != destTextureWidth || inDestinationTexture.pixelsHigh != destTextureHeight)
-	[inDestinationTexture setData:NULL pixelFormat:inDestinationTexture.pixelFormat pixelsWide:destTextureWidth pixelsHigh:destTextureHeight contentSize:inSize];
 	
 	//Make sure framebuffer has this texture
 	[fbo setColorAttachmentWithTexture:inDestinationTexture];
@@ -163,8 +174,8 @@ NSString *WMImageFilterCacheKey = @"WMImageFilterShader";
 	[inContext renderObject:ro];
 }
 
-- (void)renderBlurFromTexture:(WMTexture2D *)inSourceTexture toTexture:(WMTexture2D *)inDestinationTexture atSize:(CGSize)inOutputSize withIntermediateTexture:(WMTexture2D *)inTempTexture inContext:(WMEAGLContext *)inContext;
-{		
+- (WMTexture2D *)renderBlurFromTexture:(WMTexture2D *)inSourceTexture atSize:(CGSize)inOutputSize inContext:(WMEAGLContext *)inContext;
+{
 	//TODO: use correct offsets here
 	//TODO: downscale texture to increase blur effectiveness
 	//TODO: use blur amount in calculation of passes
@@ -177,28 +188,45 @@ NSString *WMImageFilterCacheKey = @"WMImageFilterShader";
 	
 	if (amt > 0.01f) {
 		
-		const float scales[] = {0.2f, 0.3f, 0.5f, 0.8f};
-		const float amts[]   = {1.0f, 1.5f, 1.5f, 2.0f};
+		const float scales[] = {0.2f, 0.3f, 0.5f, 0.8f, 1.0f};
+		const float amts[]   = {1.0f, 1.5f, 1.5f, 2.0f, 1.0f};
 		
 		//Pass 0...3
-		for (int i=0; i<4; i++) {
-			WMTexture2D *src = i==0 ? inSourceTexture : inDestinationTexture;
-			WMTexture2D *dst = inDestinationTexture;
-			WMTexture2D *tmp = inTempTexture;
-			
+		WMTexture2D *src = inSourceTexture;
+		for (int i=0; i<5; i++) {
 			float scale = MIN(scales[i] / amtNorm, 1.0f);
 			CGSize size = {floorf(scale * inSourceTexture.contentSize.width), floorf(scale * inSourceTexture.contentSize.height)};
-			[self renderBlurPassFromTexture:src toTexture:tmp atSize:size amountX:amts[i] * amt amountY:NONE          inContext:inContext];
-			[self renderBlurPassFromTexture:tmp toTexture:dst atSize:size amountX:NONE          amountY:amts[i] * amt inContext:inContext];
+			
+			NSString *textureSizeStringA = [NSString stringWithFormat:@"%dx%d-a", (uint32_t)size.width, (uint32_t)size.height];
+			NSString *textureSizeStringB = [NSString stringWithFormat:@"%dx%d-b", (uint32_t)size.width, (uint32_t)size.height];
+			
+			WMTexture2D *tmp = [_textureCache objectForKey:textureSizeStringA];
+			if (!tmp) {
+				tmp = [[WMTexture2D alloc] initEmptyTextureWithPixelFormat:kWMTexture2DPixelFormat_RGBA8888 width:size.width height:size.height];
+				[tmp setData:NULL pixelFormat:kWMTexture2DPixelFormat_RGBA8888 pixelsWide:size.width pixelsHigh:size.height contentSize:size];
+				[_textureCache setObject:tmp forKey:textureSizeStringA];
+			}
+			
+			WMTexture2D *tmp2 = [_textureCache objectForKey:textureSizeStringB];
+			
+			if (!tmp2) {
+				tmp2 = [[WMTexture2D alloc] initEmptyTextureWithPixelFormat:kWMTexture2DPixelFormat_RGBA8888 width:size.width height:size.height];
+				[tmp2 setData:NULL pixelFormat:kWMTexture2DPixelFormat_RGBA8888 pixelsWide:size.width pixelsHigh:size.height contentSize:size];
+				[_textureCache setObject:tmp2 forKey:textureSizeStringB];
+			}
+			
+
+			[self renderBlurPassFromTexture:src toTexture:tmp  amountX:amts[i] * amt amountY:NONE inContext:inContext];
+
+			[self renderBlurPassFromTexture:tmp toTexture:tmp2 amountX:NONE          amountY:amts[i] * amt inContext:inContext];
+			
+			src = tmp2;
 		}
-		//Pass 4 => Write to output	
-		[self renderBlurPassFromTexture:inDestinationTexture toTexture:inTempTexture atSize:inOutputSize amountX:1.0f * amt amountY:NONE inContext:inContext];
-		[self renderBlurPassFromTexture:inTempTexture toTexture:inDestinationTexture atSize:inOutputSize amountX:NONE amountY:1.0f * amt inContext:inContext];
-		
+		return src;
 	} else {
 		//Amount too small, do 1 pass
-		[self renderBlurPassFromTexture:inSourceTexture toTexture:inTempTexture        atSize:inOutputSize amountX:1.0f * amt amountY:NONE inContext:inContext];
-		[self renderBlurPassFromTexture:inTempTexture   toTexture:inDestinationTexture atSize:inOutputSize amountX:NONE amountY:1.0f * amt inContext:inContext];
+//		[self renderBlurPassFromTexture:inSourceTexture toTexture:inTempTexture        atSize:inOutputSize amountX:1.0f * amt amountY:NONE inContext:inContext];
+//		[self renderBlurPassFromTexture:inTempTexture   toTexture:inDestinationTexture atSize:inOutputSize amountX:NONE amountY:1.0f * amt inContext:inContext];
 	}
 }
 
@@ -215,29 +243,24 @@ NSString *WMImageFilterCacheKey = @"WMImageFilterShader";
 		return YES;
 	}
 	
-	//These will have their storage resized...
-	if (!texture0) {
-		texture0 = [[WMTexture2D alloc] initWithData:NULL pixelFormat:kWMTexture2DPixelFormat_RGBA8888 pixelsWide:64 pixelsHigh:64 contentSize:CGSizeZero];
-	}
-	if (!texture1) {
-		texture1 = [[WMTexture2D alloc] initWithData:NULL pixelFormat:kWMTexture2DPixelFormat_RGBA8888 pixelsWide:64 pixelsHigh:64 contentSize:CGSizeZero];
-	}
 	if (!fbo) {
-		fbo = [[WMFramebuffer alloc] initWithTexture:texture0 depthBufferDepth:0];
+		WMTexture2D *tex = [[WMTexture2D alloc] initEmptyTextureWithPixelFormat:kWMTexture2DPixelFormat_RGBA8888 width:64 height:64];
+		fbo = [[WMFramebuffer alloc] initWithTexture:tex depthBufferDepth:0];
 	}
 	
+	__block WMTexture2D *tex;
 	//Bind this fbo for rendering
 	[context renderToFramebuffer:fbo block:^{
 		//	NSLog(@"Render blur %@ => %@", inputImage, texture);
-		[self renderBlurFromTexture:inputImage.image toTexture:texture1 atSize:inputImage.image.contentSize withIntermediateTexture:texture0 inContext:context];
+		tex = [self renderBlurFromTexture:inputImage.image atSize:inputImage.image.contentSize inContext:context];
 	}];
 
-	texture1.orientation = inputImage.image.orientation;
+	tex.orientation = inputImage.image.orientation;
 	
-	outputImage.image = texture1;
+	outputImage.image = tex;
 	
 	//Discard temp texture content
-	[texture0 discardData];
+	//[texture0 discardData];
 
 	return YES;
 	
