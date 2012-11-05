@@ -99,9 +99,20 @@ NSString *WMImageFilterCacheKey = @"WMImageFilterShader";
 	[indexBuffer appendData:indexData withStructure:indexBuffer.definition count:2 * 3];
 }
 
+- (NSMapTable *)crossFilterShareTable;
+{
+	NSMapTable *mapTable = [[WMEAGLContext currentContext] cachedObjectForKey:@"WMImageFilter.TextureShareTable"];
+	if (!mapTable) {
+		mapTable = [NSMapTable strongToWeakObjectsMapTable];
+		[[WMEAGLContext currentContext] setCachedObject:mapTable forKey:@"WMImageFilter.TextureShareTable"];
+	}
+	return mapTable;
+}
+
 - (BOOL)setup:(WMEAGLContext *)context;
 {
 	_textureCache = [[NSCache alloc] init];
+	[_textureCache setCountLimit:10];
 	
 	shader = (WMShader *)[(WMEAGLContext *)[WMEAGLContext currentContext] cachedObjectForKey:WMImageFilterCacheKey];
 	if (!shader) {
@@ -174,6 +185,20 @@ NSString *WMImageFilterCacheKey = @"WMImageFilterShader";
 	[inContext renderObject:ro];
 }
 
+- (WMTexture2D *)_tempTextureOfSize:(CGSize)size keySuffix:(NSString *)key;
+{
+	NSString *textureUniqueCacheKey = [NSString stringWithFormat:@"%dx%d-%@", (uint32_t)size.width, (uint32_t)size.height, key];
+	WMTexture2D *tempTexture = [_textureCache objectForKey:textureUniqueCacheKey];
+	if (!tempTexture) {
+		tempTexture = [self.crossFilterShareTable objectForKey:textureUniqueCacheKey];
+	}
+	if (!tempTexture) {
+		tempTexture = [[WMTexture2D alloc] initEmptyTextureWithPixelFormat:kWMTexture2DPixelFormat_RGBA8888 width:size.width height:size.height];
+		[_textureCache setObject:tempTexture forKey:textureUniqueCacheKey];
+	}
+	return tempTexture;
+}
+
 - (WMTexture2D *)renderBlurFromTexture:(WMTexture2D *)inSourceTexture atSize:(CGSize)inOutputSize inContext:(WMEAGLContext *)inContext;
 {
 	//TODO: use correct offsets here
@@ -181,7 +206,6 @@ NSString *WMImageFilterCacheKey = @"WMImageFilterShader";
 	//TODO: use blur amount in calculation of passes
 	CGFloat amt = MIN(inputRadius.value, 5.0f);
 	
-	float amtNorm = amt / 5.0f;
 	//Do 1 pass from the in texture to the temp buffer to the out buffer
 	
 	const float NONE = 0.0f;
@@ -191,42 +215,38 @@ NSString *WMImageFilterCacheKey = @"WMImageFilterShader";
 		const float scales[] = {0.2f, 0.3f, 0.5f, 0.8f, 1.0f};
 		const float amts[]   = {1.0f, 1.5f, 1.5f, 2.0f, 1.0f};
 		
+		float finalScales[5] = {};
+		for (int i=0; i<5; i++) {
+			finalScales[i] = MIN(scales[i] / amt, 1.0f);
+		}
+		
 		//Pass 0...3
 		WMTexture2D *src = inSourceTexture;
 		for (int i=0; i<5; i++) {
-			float scale = MIN(scales[i] / amtNorm, 1.0f);
+			float scale = finalScales[i];
 			CGSize size = {floorf(scale * inSourceTexture.contentSize.width), floorf(scale * inSourceTexture.contentSize.height)};
 			
-			NSString *textureSizeStringA = [NSString stringWithFormat:@"%dx%d-a", (uint32_t)size.width, (uint32_t)size.height];
-			NSString *textureSizeStringB = [NSString stringWithFormat:@"%dx%d-b", (uint32_t)size.width, (uint32_t)size.height];
+			WMTexture2D *tempTextureA = [self _tempTextureOfSize:size keySuffix:@"a"];
+			WMTexture2D *tempTextureB = [self _tempTextureOfSize:size keySuffix:@"b"];
 			
-			WMTexture2D *tmp = [_textureCache objectForKey:textureSizeStringA];
-			if (!tmp) {
-				tmp = [[WMTexture2D alloc] initEmptyTextureWithPixelFormat:kWMTexture2DPixelFormat_RGBA8888 width:size.width height:size.height];
-				[tmp setData:NULL pixelFormat:kWMTexture2DPixelFormat_RGBA8888 pixelsWide:size.width pixelsHigh:size.height contentSize:size];
-				[_textureCache setObject:tmp forKey:textureSizeStringA];
-			}
+			[self renderBlurPassFromTexture:src          toTexture:tempTextureA amountX:amts[i] * amt amountY:NONE inContext:inContext];
+			[self renderBlurPassFromTexture:tempTextureA toTexture:tempTextureB amountX:NONE          amountY:amts[i] * amt inContext:inContext];
 			
-			WMTexture2D *tmp2 = [_textureCache objectForKey:textureSizeStringB];
-			
-			if (!tmp2) {
-				tmp2 = [[WMTexture2D alloc] initEmptyTextureWithPixelFormat:kWMTexture2DPixelFormat_RGBA8888 width:size.width height:size.height];
-				[tmp2 setData:NULL pixelFormat:kWMTexture2DPixelFormat_RGBA8888 pixelsWide:size.width pixelsHigh:size.height contentSize:size];
-				[_textureCache setObject:tmp2 forKey:textureSizeStringB];
-			}
-			
-
-			[self renderBlurPassFromTexture:src toTexture:tmp  amountX:amts[i] * amt amountY:NONE inContext:inContext];
-
-			[self renderBlurPassFromTexture:tmp toTexture:tmp2 amountX:NONE          amountY:amts[i] * amt inContext:inContext];
-			
-			src = tmp2;
+			src = tempTextureB;
 		}
 		return src;
 	} else {
 		//Amount too small, do 1 pass
-//		[self renderBlurPassFromTexture:inSourceTexture toTexture:inTempTexture        atSize:inOutputSize amountX:1.0f * amt amountY:NONE inContext:inContext];
-//		[self renderBlurPassFromTexture:inTempTexture   toTexture:inDestinationTexture atSize:inOutputSize amountX:NONE amountY:1.0f * amt inContext:inContext];
+		CGSize size = inSourceTexture.contentSize;
+		WMTexture2D *tempTextureA = [self _tempTextureOfSize:size keySuffix:@"a"];
+		WMTexture2D *tempTextureB = [self _tempTextureOfSize:size keySuffix:@"b"];
+		
+		WMTexture2D *src = inSourceTexture;
+		
+		[self renderBlurPassFromTexture:src toTexture:tempTextureA  amountX:amt amountY:NONE inContext:inContext];
+		[self renderBlurPassFromTexture:tempTextureA toTexture:tempTextureB amountX:NONE          amountY:amt inContext:inContext];
+		
+		return tempTextureB;
 	}
 }
 

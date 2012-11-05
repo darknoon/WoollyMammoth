@@ -33,12 +33,13 @@ typedef int DNGLStateDepthMask;
 //ie WMStructuredBuffer only has gl backing when actually being used to render, transparent to the user
 //ie WMRenderObject only has a VAO backing when actually going to be rendered to the screen
 
++ (WMEAGLContext *)currentContext;
 
 /////// Caching methods  ///////
 
 // Used by various parts of the render system to avoid duplication of shaders etc
-- (WMGLStateObject *)cachedObjectForKey:(NSString *)key;
-- (void)setCachedObject:(WMGLStateObject *)object forKey:(NSString *)key;
+- (id)cachedObjectForKey:(NSString *)key;
+- (void)setCachedObject:(id)object forKey:(NSString *)key;
 
 /////// State object factory methods ///////
 

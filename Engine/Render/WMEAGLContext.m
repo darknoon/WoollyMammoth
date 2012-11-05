@@ -87,29 +87,28 @@
 	if (self == nil) return self; 
 	
 	BOOL success = [EAGLContext setCurrentContext:self];
-	
-	if (success) {
-		
-		//Assumed state
-		glEnable(GL_DEPTH_TEST);
-		depthState = DNGLStateDepthTestEnabled | DNGLStateDepthWriteEnabled;
-		
-		//Assume an source-over mode to start
-		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-		
-		glGetIntegerv(GL_ACTIVE_TEXTURE, &activeTexture);
-		activeTexture -= GL_TEXTURE0;
-		
-		glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &maxVertexAttributes);
-		
-		glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
-		
-		glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
-		
-	} else {
+	if (!success) {
 		NSLog(@"Couldn't set current EAGLContext to self in WMEAGLContext initWithAPI:sharegroup:");
 		return nil;
 	}
+	
+	_objectCache = [[NSCache alloc] init];
+	
+	//Assumed state
+	glEnable(GL_DEPTH_TEST);
+	depthState = DNGLStateDepthTestEnabled | DNGLStateDepthWriteEnabled;
+	
+	//Assume an source-over mode to start
+	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+	
+	glGetIntegerv(GL_ACTIVE_TEXTURE, &activeTexture);
+	activeTexture -= GL_TEXTURE0;
+	
+	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &maxVertexAttributes);
+	
+	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
+	
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
 	
 	return self;
 }
