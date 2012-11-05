@@ -51,6 +51,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 #import "WMTexture2D_WMEAGLContext_Private.h"
 #import "WMGLStateObject_WMEAGLContext_Private.h"
+#import "EAGLContext+Extensions.h"
 
 NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation);
 
@@ -82,7 +83,7 @@ GLenum GLTypeForWMTexture2DPixelFormat(WMTexture2DPixelFormat format) {
 		case kWMTexture2DPixelFormat_BGRA8888:
 		case kWMTexture2DPixelFormat_A8:
 		case kWMTexture2DPixelFormat_R8:
-			return GL_BYTE;
+			return GL_UNSIGNED_BYTE;
 		case kWMTexture2DPixelFormat_RGB565:
 			return GL_UNSIGNED_SHORT_5_6_5;
 		default:
@@ -162,32 +163,60 @@ GLint GLFormatForWMTexture2DPixelFormat(WMTexture2DPixelFormat format) {
 	self = [self init];
 	if (!self) return nil;
 	
-	_format = pixelFormat;
+	static BOOL supported;
+	static BOOL supported_initialized;
 	
+	if (!supported_initialized) {
 #if GL_EXT_texture_storage
-	ZAssert(pixelFormat < _WMTexture2DPixelFormat_count, @"Invalid format");
-	ZAssert(pixelFormat != kWMTexture2DPixelFormat_Automatic, @"Invalid format");
-	ZAssert(width < self.context.maxTextureSize, @"Texture width too big!");
-	ZAssert(height < self.context.maxTextureSize, @"Texture height too big!");
-	
-	GLint internalFormat = _WMTexture2DPixelFormats[pixelFormat].internal;
-
-	glGenTextures(1, &_name);
-	[self.context bind2DTextureNameForModification:_name inBlock:^{
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		//Needed by default for npot
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-		glTexStorage2DEXT(GL_TEXTURE_2D, 1, internalFormat, width, height);
-	}];
-	
-
-	return self;
-#else
-#warning Compling without GL_EXT_texture_storage
-	 return [self initWithData:NULL pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height}];
+		supported = [self.context supportsExtension:AS_NSSTRING(GL_EXT_texture_storage)];
 #endif
+		supported_initialized = YES;
+	}
+	
+	if (supported) {
+		
+#if GL_EXT_texture_storage
+		ZAssert([self.context supportsExtension:@"GL_EXT_texture_storage"], @"Oops, this impl doesn't support glTexStorage2DEXT");
+		ZAssert(pixelFormat < _WMTexture2DPixelFormat_count, @"Invalid format");
+		ZAssert(pixelFormat != kWMTexture2DPixelFormat_Automatic, @"Invalid format");
+		ZAssert(width < self.context.maxTextureSize, @"Texture width too big!");
+		ZAssert(height < self.context.maxTextureSize, @"Texture height too big!");
+		
+		GLint internalFormat = _WMTexture2DPixelFormats[pixelFormat].internal;
+		_format = pixelFormat;
+		
+		_size = (CGSize){width, height};
+		_width = width;
+		_height = height;
+		_format = pixelFormat;
+		
+		
+		glGenTextures(1, &_name);
+		[self.context bind2DTextureNameForModification:_name inBlock:^{
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			//Needed by default for npot
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			
+			GL_CHECK_ERROR;
+			
+			glTexStorage2DEXT(GL_TEXTURE_2D, 1, GL_BGRA8_EXT, width, height);
+			
+			GL_CHECK_ERROR;
+			
+			//		uint8_t *buf = malloc(width * height * 4);
+			
+			//glTexSubImage2D (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid* pixels);
+			//		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, buf);
+			//		free(buf);
+			
+			GL_CHECK_ERROR;
+		}];
+		
+#endif
+		return self;
+	}
+	 return [self initWithData:NULL pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height}];
 }
 	 
 
@@ -216,6 +245,7 @@ GLint GLFormatForWMTexture2DPixelFormat(WMTexture2DPixelFormat format) {
 	[self.context bind2DTextureNameForModification:_name inBlock:^{
 		GLenum type = GLTypeForWMTexture2DPixelFormat(pixelFormat);
 		GLint glFormat = GLFormatForWMTexture2DPixelFormat(pixelFormat);
+		
 		
 		switch(pixelFormat) {
 				

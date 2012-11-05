@@ -10,7 +10,6 @@
 
 #import <TargetConditionals.h>
 
-
 #if DEBUG
 
 #define DLog(...) NSLog(@"%s %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:__VA_ARGS__])
@@ -34,6 +33,7 @@
 #ifdef __OBJC__
 #import <Foundation/Foundation.h>
 #import "NSValue+GLKVector.h"
+#define AS_NSSTRING(X) @#X
 
 #if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
