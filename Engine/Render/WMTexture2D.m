@@ -91,17 +91,6 @@ GLenum GLTypeForWMTexture2DPixelFormat(WMTexture2DPixelFormat format) {
 	}
 }
 
-struct WMTexture2DPixelFormatDef {
-	GLint format;
-	GLint internal;
-	GLenum type;
-};
-
-const struct WMTexture2DPixelFormatDef _WMTexture2DPixelFormats[_WMTexture2DPixelFormat_count] = {
-	{},
-	{.format = GL_RGBA, .internal = GL_BGRA, .type = GL_BYTE},
-};
-
 GLint GLFormatForWMTexture2DPixelFormat(WMTexture2DPixelFormat format) {
 	switch(format) {
 		case kWMTexture2DPixelFormat_RGBA8888:
@@ -136,7 +125,9 @@ GLint GLFormatForWMTexture2DPixelFormat(WMTexture2DPixelFormat format) {
 
 //CLASS IMPLEMENTATIONS:
 
-@implementation WMTexture2D
+@implementation WMTexture2D {
+	BOOL _immutable;
+}
 
 @synthesize orientation;
 @synthesize contentSize=_size;
@@ -144,6 +135,7 @@ GLint GLFormatForWMTexture2DPixelFormat(WMTexture2DPixelFormat format) {
 @synthesize pixelsWide=_width;
 @synthesize pixelsHigh=_height;
 @synthesize name=_name;
+
 
 
 - (void)createDefaultTexture;
@@ -182,7 +174,25 @@ GLint GLFormatForWMTexture2DPixelFormat(WMTexture2DPixelFormat format) {
 		ZAssert(width < self.context.maxTextureSize, @"Texture width too big!");
 		ZAssert(height < self.context.maxTextureSize, @"Texture height too big!");
 		
-		GLint internalFormat = _WMTexture2DPixelFormats[pixelFormat].internal;
+		GLint internalFormat;
+		switch (pixelFormat) {
+			case kWMTexture2DPixelFormat_BGRA8888:
+			case kWMTexture2DPixelFormat_RGBA8888:
+				internalFormat = GL_BGRA8_EXT;
+				break;
+			case kWMTexture2DPixelFormat_A8:
+				internalFormat = GL_ALPHA8_EXT;
+				break;
+#if GL_EXT_texture_rg
+			case kWMTexture2DPixelFormat_R8:
+				internalFormat = GL_LUMINANCE8_EXT;
+				break;
+#endif
+			default:
+				ZAssert(0, @"Invalid internal format!");
+				return nil;
+		}
+		
 		_format = pixelFormat;
 		
 		_size = (CGSize){width, height};
@@ -203,20 +213,13 @@ GLint GLFormatForWMTexture2DPixelFormat(WMTexture2DPixelFormat format) {
 			glTexStorage2DEXT(GL_TEXTURE_2D, 1, GL_BGRA8_EXT, width, height);
 			
 			GL_CHECK_ERROR;
-			
-			//		uint8_t *buf = malloc(width * height * 4);
-			
-			//glTexSubImage2D (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid* pixels);
-			//		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, buf);
-			//		free(buf);
-			
-			GL_CHECK_ERROR;
 		}];
 		
 #endif
 		return self;
+	} else {
+		return [self initWithData:NULL pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height}];
 	}
-	 return [self initWithData:NULL pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height}];
 }
 	 
 
