@@ -77,7 +77,7 @@
 	self = [super init];
 	if (!self) return nil;
 	
-	WMEAGLContext *context = (WMEAGLContext *)[EAGLContext currentContext];
+	WMEAGLContext *context = [WMEAGLContext currentContext];
 	ZAssert(context, @"nil current context creating RTT WMFramebuffer");
 	ZAssert([context isKindOfClass:[WMEAGLContext class]], @"Cannot use WMFramebuffer without WMEAGLContext");
 	
@@ -124,7 +124,7 @@
 	self = [super init];
 	if (!self) return nil;
 	
-	WMEAGLContext *context = (WMEAGLContext *)[EAGLContext currentContext];
+	WMEAGLContext *context = [WMEAGLContext currentContext];
 	
 	WMFramebuffer *oldFrameBuffer = context.boundFramebuffer;
 	
@@ -222,7 +222,7 @@
 	
 #if TARGET_OS_IPHONE
 	
-	WMEAGLContext *context = (WMEAGLContext *)[EAGLContext currentContext];
+	WMEAGLContext *context = [WMEAGLContext currentContext];
 	
 	__block BOOL success = NO;
 	[context renderToFramebuffer:self block:^{
@@ -248,7 +248,7 @@
 
 - (void)setColorAttachmentWithTexture:(WMTexture2D *)inTexture;
 {
-	WMEAGLContext *context = (WMEAGLContext *)[EAGLContext currentContext];
+	WMEAGLContext *context = [WMEAGLContext currentContext];
 	WMFramebuffer *oldFrameBuffer = context.boundFramebuffer;
 	context.boundFramebuffer = self;
 	

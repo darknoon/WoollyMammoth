@@ -114,7 +114,7 @@ NSString *WMImageFilterCacheKey = @"WMImageFilterShader";
 	_textureCache = [[NSCache alloc] init];
 	[_textureCache setCountLimit:10];
 	
-	shader = (WMShader *)[(WMEAGLContext *)[WMEAGLContext currentContext] cachedObjectForKey:WMImageFilterCacheKey];
+	shader = (WMShader *)[[WMEAGLContext currentContext] cachedObjectForKey:WMImageFilterCacheKey];
 	if (!shader) {
 		NSError *error = nil;
 		NSString *combindedShader = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"WMGaussianBlur" ofType:@"glsl"]
@@ -127,7 +127,7 @@ NSString *WMImageFilterCacheKey = @"WMImageFilterShader";
 		shader = [[WMShader alloc] initWithVertexShader:combindedShader
 										 fragmentShader:combindedShader
 												  error:NULL];
-		[(WMEAGLContext *)[WMEAGLContext currentContext] setCachedObject:shader forKey:WMImageFilterCacheKey];
+		[[WMEAGLContext currentContext] setCachedObject:shader forKey:WMImageFilterCacheKey];
 	}
 
 	

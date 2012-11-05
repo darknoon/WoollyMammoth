@@ -16,7 +16,7 @@
 
 - (id)init;
 {
-	WMEAGLContext *currentContext = (WMEAGLContext *)[WMEAGLContext currentContext];
+	WMEAGLContext *currentContext = [WMEAGLContext currentContext];
 	if (!currentContext) {
 		NSLog(@"Can't create a %@ without a current WMEAGLContext", [self class]);
 		return nil;

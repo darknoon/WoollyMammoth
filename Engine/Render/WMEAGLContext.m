@@ -77,6 +77,13 @@
 @synthesize maxTextureUnits;
 @synthesize maxVertexAttributes;
 
++ (WMEAGLContext *)currentContext;
+{
+	EAGLContext *ctx = [super currentContext];
+	ZAssert(!ctx || [ctx isKindOfClass:[WMEAGLContext class]], @"Not the expected context type!");
+	return (WMEAGLContext *)ctx;
+}
+
 - (id)initWithAPI:(EAGLRenderingAPI)api;
 {
 	return [self initWithAPI:api sharegroup:nil];
