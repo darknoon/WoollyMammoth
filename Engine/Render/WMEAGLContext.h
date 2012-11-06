@@ -87,4 +87,10 @@ typedef int DNGLStateDepthMask;
 @property (nonatomic, readonly) int maxVertexAttributes;
 @property (nonatomic, readonly) int maxTextureUnits;
 
+/////// Debug aids  ///////
+
+- (void)pushDebugGroup:(NSString *)group;
+- (void)popDebugGroup;
+- (void)insertDebugText:(NSString *)text;
+
 @end

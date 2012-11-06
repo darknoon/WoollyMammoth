@@ -38,13 +38,13 @@ NSString *WMImageFilterCacheKey = @"WMImageFilterShader";
 	NSCache *_textureCache;
 	
 	//For quad
+	WMRenderObject *_renderObject;
 	WMStructuredBuffer *vertexBuffer;
 	WMStructuredBuffer *indexBuffer;
-	
-	WMNumberPort *inputRadius;
-	WMImagePort *inputImage;
-	WMImagePort *outputImage;
 }
+@synthesize inputImage = inputImage;
+@synthesize inputRadius = inputRadius;
+@synthesize outputImage = outputImage;
 
 + (NSString *)category;
 {
@@ -99,16 +99,6 @@ NSString *WMImageFilterCacheKey = @"WMImageFilterShader";
 	[indexBuffer appendData:indexData withStructure:indexBuffer.definition count:2 * 3];
 }
 
-- (NSMapTable *)crossFilterShareTable;
-{
-	NSMapTable *mapTable = [[WMEAGLContext currentContext] cachedObjectForKey:@"WMImageFilter.TextureShareTable"];
-	if (!mapTable) {
-		mapTable = [NSMapTable strongToWeakObjectsMapTable];
-		[[WMEAGLContext currentContext] setCachedObject:mapTable forKey:@"WMImageFilter.TextureShareTable"];
-	}
-	return mapTable;
-}
-
 - (BOOL)setup:(WMEAGLContext *)context;
 {
 	_textureCache = [[NSCache alloc] init];
@@ -138,14 +128,19 @@ NSString *WMImageFilterCacheKey = @"WMImageFilterShader";
 
 - (void)cleanup:(WMEAGLContext *)context;
 {
+	_renderObject = nil;
+	vertexBuffer = nil;
+	indexBuffer = nil;
 	shader = nil;
 	fbo = nil;
 	_textureCache = nil;
 }
 
 - (void)renderBlurPassFromTexture:(WMTexture2D *)inSourceTexture toTexture:(WMTexture2D *)inDestinationTexture amountX:(float)inAmountX amountY:(float)inAmountY inContext:(WMEAGLContext *)inContext;
-{	
-	
+{
+#if DEBUG_OPENGL
+	[inContext pushDebugGroup:@"WMBlurPass"];
+#endif
 	//Make sure framebuffer has this texture
 	[fbo setColorAttachmentWithTexture:inDestinationTexture];
 
@@ -154,22 +149,26 @@ NSString *WMImageFilterCacheKey = @"WMImageFilterShader";
 		NSLog(@"Failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
 	}
 #endif
-
-	WMRenderObject *ro = [[WMRenderObject alloc] init];
-	ro.debugLabel = self.key;
 	
-	ro.vertexBuffer = vertexBuffer;
-	ro.indexBuffer = indexBuffer;
-	ro.shader = shader;
+	if (!_renderObject) {
+		_renderObject = [[WMRenderObject alloc] init];
+		_renderObject.debugLabel = self.key;
+		
+		_renderObject.vertexBuffer = vertexBuffer;
+		_renderObject.indexBuffer = indexBuffer;
+		_renderObject.shader = shader;
+	}
+	ZAssert(_renderObject, @"Need a render object");
+	ZAssert(_renderObject.shader, @"Need a good shader");
+	ZAssert(_renderObject.vertexBuffer, @"Need a good vertex buffer");
+	ZAssert(_renderObject.indexBuffer, @"Need a good vertex buffer");
 	
 	//Set uniform values
 	
-	[ro setValue:[NSValue valueWithGLKVector2:(GLKVector2){inAmountX / 64, inAmountY / 64}] forUniformWithName:@"offset"];
+	[_renderObject setValue:[NSValue valueWithGLKVector2:(GLKVector2){inAmountX / 64, inAmountY / 64}] forUniformWithName:@"offset"];
+	[_renderObject setValue:[NSValue valueWithGLKVector2:(GLKVector2){inSourceTexture.maxS, inSourceTexture.maxT}] forUniformWithName:@"tcScale"];
+	[_renderObject setValue:inSourceTexture forUniformWithName:@"sTexture"];
 	
-	[ro setValue:[NSValue valueWithGLKVector2:(GLKVector2){inSourceTexture.maxS, inSourceTexture.maxT}] forUniformWithName:@"tcScale"];
-	
-	[ro setValue:inSourceTexture forUniformWithName:@"sTexture"];
-		
 	GL_CHECK_ERROR;
 	
 #if DEBUG_OPENGL
@@ -182,16 +181,18 @@ NSString *WMImageFilterCacheKey = @"WMImageFilterShader";
 
 	//Render blur quad into dest
 	[inContext clearToColor:(GLKVector4){0,0,0,0}];
-	[inContext renderObject:ro];
+	[inContext renderObject:_renderObject];
+
+	[_renderObject setValue:nil forUniformWithName:@"sTexture"];
+#if DEBUG_OPENGL
+	[inContext popDebugGroup];
+#endif
 }
 
 - (WMTexture2D *)_tempTextureOfSize:(CGSize)size keySuffix:(NSString *)key;
 {
 	NSString *textureUniqueCacheKey = [NSString stringWithFormat:@"%dx%d-%@", (uint32_t)size.width, (uint32_t)size.height, key];
 	WMTexture2D *tempTexture = [_textureCache objectForKey:textureUniqueCacheKey];
-	if (!tempTexture) {
-		tempTexture = [self.crossFilterShareTable objectForKey:textureUniqueCacheKey];
-	}
 	if (!tempTexture) {
 		tempTexture = [[WMTexture2D alloc] initEmptyTextureWithPixelFormat:kWMTexture2DPixelFormat_RGBA8888 width:size.width height:size.height];
 		[_textureCache setObject:tempTexture forKey:textureUniqueCacheKey];
@@ -217,6 +218,7 @@ NSString *WMImageFilterCacheKey = @"WMImageFilterShader";
 		
 		float finalScales[5] = {};
 		for (int i=0; i<5; i++) {
+			//TODO: need to make this more sane. If scales[i] < 1, then it doesn't look correct, which is absolutely bullshit.c
 			finalScales[i] = MIN(scales[i] / amt, 1.0f);
 		}
 		

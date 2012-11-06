@@ -398,6 +398,22 @@
 	glClear(GL_DEPTH_BUFFER_BIT);
 }
 
+- (void)pushDebugGroup:(NSString *)group;
+{
+	glPushGroupMarkerEXT(0, [group cStringUsingEncoding:NSASCIIStringEncoding]);
+}
+
+- (void)popDebugGroup;
+{
+	glPopGroupMarkerEXT();
+}
+
+- (void)insertDebugText:(NSString *)text;
+{
+	glInsertEventMarkerEXT(0, [text cStringUsingEncoding:NSASCIIStringEncoding]);
+}
+
+
 @end
 
 

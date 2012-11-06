@@ -21,4 +21,9 @@
 
 @interface WMImageFilter : WMPatch
 
+@property (nonatomic, readonly) WMNumberPort *inputRadius;
+@property (nonatomic, readonly) WMImagePort *inputImage;
+@property (nonatomic, readonly) WMImagePort *outputImage;
+
+
 @end
