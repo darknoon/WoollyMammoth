@@ -111,7 +111,7 @@
 	videoCaptureQueue = dispatch_queue_create([[NSString stringWithFormat:@"com.darknoon.%@.videoCaptureQueue", [self class]] UTF8String], DISPATCH_QUEUE_SERIAL);
 	dispatch_set_target_queue(videoCaptureQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0));
 		
-	CVReturn result = CVOpenGLESTextureCacheCreate(NULL, NULL, context, NULL, &textureCache);
+	CVReturn result = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, context, NULL, &textureCache);
 	if (result != kCVReturnSuccess) {
 		NSLog(@"Error creating CVOpenGLESTextureCache");
 	}

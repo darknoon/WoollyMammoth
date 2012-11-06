@@ -58,7 +58,7 @@ NSString *const WMDefaultShaderCacheKey = @"com.darknoon.WMShader.defaultShader"
 {
 	ZAssert([WMEAGLContext currentContext], @"Must have an WMEAGLContext active");
 	
-	WMShader *defaultShader = (WMShader *)[(WMEAGLContext *)[WMEAGLContext currentContext] cachedObjectForKey:WMDefaultShaderCacheKey];
+	WMShader *defaultShader = (WMShader *)[[WMEAGLContext currentContext] cachedObjectForKey:WMDefaultShaderCacheKey];
 	if (!defaultShader) {
 		
 		//TODO: make a better system for default shaders!
@@ -81,7 +81,7 @@ NSString *const WMDefaultShaderCacheKey = @"com.darknoon.WMShader.defaultShader"
 			return nil;
 		}
 		
-		[(WMEAGLContext *)[WMEAGLContext currentContext] setCachedObject:defaultShader forKey:WMDefaultShaderCacheKey];
+		[[WMEAGLContext currentContext] setCachedObject:defaultShader forKey:WMDefaultShaderCacheKey];
 	}
 	return defaultShader;
 }

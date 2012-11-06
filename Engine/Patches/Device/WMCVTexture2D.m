@@ -125,7 +125,9 @@ static dispatch_semaphore_t sem;
 
 - (GLuint)name;
 {
-	return CVOpenGLESTextureGetName(cvTexture);	
+	GLuint name =  CVOpenGLESTextureGetName(cvTexture);
+	ZAssert(name != 0, @"Could not get texture name!");
+	return name;
 }
 
 - (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;

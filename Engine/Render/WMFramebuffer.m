@@ -152,6 +152,7 @@
 	}
 	
 	
+#if DEBUG_OPENGL
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
 		
 		NSLog(@"Failed to make complete framebuffer object (%@) with layer %@", [WMFramebuffer descriptionOfFramebufferStatus:glCheckFramebufferStatus(GL_FRAMEBUFFER)], inLayer);
@@ -162,7 +163,7 @@
 	} else {
 		//NSLog(@"Created framebuffer %@ from layer: %@", self, inLayer);
 	}
-	
+#endif
 
 	[oldFrameBuffer bind];
 	
@@ -268,7 +269,6 @@
 	_framebufferHeight = inTexture.pixelsHigh;
 	
 #if DEBUG_OPENGL
-	
 	if (inTexture) {
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
 			NSLog(@"Failed to make complete framebuffer object (%@) with texture %@", [WMFramebuffer descriptionOfFramebufferStatus:glCheckFramebufferStatus(GL_FRAMEBUFFER)], inTexture);		
