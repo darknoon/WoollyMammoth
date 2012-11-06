@@ -250,7 +250,12 @@
 {
 	WMEAGLContext *context = [WMEAGLContext currentContext];
 	WMFramebuffer *oldFrameBuffer = context.boundFramebuffer;
-	context.boundFramebuffer = self;
+	if (oldFrameBuffer != self) {
+		context.boundFramebuffer = self;
+	} else {
+		CGRect desiredViewport = (CGRect){.size.width = inTexture.pixelsWide, .size.height = inTexture.pixelsHigh};
+		context.viewport = desiredViewport;
+	}
 	
 	GL_CHECK_ERROR;
 

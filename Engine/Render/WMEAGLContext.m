@@ -185,6 +185,14 @@
 	return [[super description] stringByAppendingFormat:@"{\n%@\n}", stateDesc];
 }
 
+- (void)setViewport:(CGRect)desiredViewport;
+{
+	if (!CGRectEqualToRect(desiredViewport, viewport)) {
+		glViewport(desiredViewport.origin.x, desiredViewport.origin.y, desiredViewport.size.width, desiredViewport.size.height);
+		viewport = desiredViewport;
+	}
+}
+
 - (void)setBoundFramebuffer:(WMFramebuffer *)inFramebuffer;
 {
 	if (boundFramebuffer != inFramebuffer) {
@@ -194,10 +202,7 @@
 			[boundFramebuffer bind];
 			CGRect desiredViewport = (CGRect){.size.width = boundFramebuffer.framebufferWidth, .size.height = boundFramebuffer.framebufferHeight};
 			//Set viewport as necessary
-			if (!CGRectEqualToRect(desiredViewport, viewport)) {
-				glViewport(desiredViewport.origin.x, desiredViewport.origin.y, desiredViewport.size.width, desiredViewport.size.height);
-				viewport = desiredViewport;
-			}
+			self.viewport = desiredViewport;
 		} else {
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		}
