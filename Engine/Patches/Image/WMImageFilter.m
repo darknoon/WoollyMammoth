@@ -218,15 +218,15 @@ NSString *WMImageFilterCacheKey = @"WMImageFilterShader";
 		
 		float finalScales[5] = {};
 		for (int i=0; i<5; i++) {
-			//TODO: need to make this more sane. If scales[i] < 1, then it doesn't look correct, which is absolutely bullshit.c
-			finalScales[i] = MIN(scales[i] / amt, 1.0f);
+			finalScales[i] = MIN(scales[i] / amt, 0.5f);
 		}
 		
 		//Pass 0...3
 		WMTexture2D *src = inSourceTexture;
 		for (int i=0; i<5; i++) {
-			float scale = finalScales[i];
-			CGSize size = {floorf(scale * inSourceTexture.contentSize.width), floorf(scale * inSourceTexture.contentSize.height)};
+			CGSize size = {
+				.width  = floorf(finalScales[i] * inSourceTexture.contentSize.width),
+				.height = floorf(finalScales[i] * inSourceTexture.contentSize.height)};
 			
 			WMTexture2D *tempTextureA = [self _tempTextureOfSize:size keySuffix:@"a"];
 			WMTexture2D *tempTextureB = [self _tempTextureOfSize:size keySuffix:@"b"];
