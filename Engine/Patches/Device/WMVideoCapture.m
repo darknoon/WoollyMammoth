@@ -166,6 +166,7 @@
 		
 
 		captureVideoInput = [[AVCaptureDeviceInput alloc] initWithDevice:cameraDevice error:&error];
+				
 		if (captureVideoInput) {
 			[captureSession addInput:captureVideoInput];
 		} else {
@@ -260,6 +261,12 @@
 	
 	[captureSession addOutput:videoDataOutput];
 	[captureSession addOutput:audioDataOutput];
+	
+	ZAssert(videoDataOutput.connections.count > 0, @"AVCaptureSession did not hook the videoDataOutput to any connections");
+	AVCaptureConnection *videoDataConnection = [videoDataOutput.connections objectAtIndex:0];
+	if (self.targetFramerate > 0) {
+		videoDataConnection.videoMinFrameDuration = CMTimeMakeWithSeconds(1.0 / _targetFramerate, 600);
+	}
 
 	[captureSession commitConfiguration];
 
@@ -303,7 +310,7 @@
 			if (captureOutput == audioDataOutput) {
 				
 				//Better to drop than accumulate a ton!
-				if (mostRecentAudioBuffer.sampleBuffers.count > 5) {
+				if (mostRecentAudioBuffer.sampleBuffers.count > 10) {
 					mostRecentAudioBuffer = nil;
 					DLog(@"ERROR: audio buffer overflow (video underflow) delegate: %@", self.eventDelegate);
 				}
