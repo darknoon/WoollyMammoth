@@ -357,8 +357,8 @@
 	[WMEAGLContext setCurrentContext:_context];
 	//Get the texture ready
 	
-	unsigned width = 640;
-	unsigned height = 480;
+	unsigned width = 320;
+	unsigned height = 240;
 	
 	static unsigned char ppp;
 	
@@ -367,8 +367,8 @@
 	for (int y=0, i=0; y<height; y++) {
 		for (int x=0; x<width; x++, i++) {
 			buffer[4*i + 0] = 255 - ppp;
-			buffer[4*i + 1] = ppp + x;
-			buffer[4*i + 2] = y;
+			buffer[4*i + 1] = 2 * ppp + x;
+			buffer[4*i + 2] = 2 * y;
 			buffer[4*i + 3] = 255;
 		}
 	}
