@@ -571,8 +571,7 @@ bail:
 
 	[context renderToFramebuffer:framebuffer block:^{
 				
-		[context clearToColor:(GLKVector4){0, 1, 0, 1}];
-		[context clearDepth];
+		[context clearToColor:(GLKVector4){0, 0, 0, 1}];
 		
 		if (!currentTexture || err) {
 			NSLog(@"displayAndRenderPixelBuffer error"); 
