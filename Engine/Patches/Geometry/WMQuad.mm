@@ -33,6 +33,7 @@
 	NSUInteger vertexBufferV;
 }
 
+//TODO: convert to new style
 @synthesize inputImage;
 @synthesize inputPosition;
 @synthesize inputScale;
@@ -41,6 +42,7 @@
 @synthesize inputBlending;
 @synthesize inputSubU;
 @synthesize inputSubV;
+@synthesize inputTransform;
 @synthesize outputObject;
 
 + (NSString *)category;
@@ -144,6 +146,7 @@
 		transform = GLKMatrix4RotateZ(transform, inputRotation.value * M_PI / 180.f);
 		transform = GLKMatrix4TranslateWithVector3(transform, inputPosition.v);
 		transform = GLKMatrix4Scale(transform, inputScale.value, inputScale.value, 1.0f);
+		transform = GLKMatrix4Multiply(transform, inputTransform.v);
 		
 		[renderObject setValue:[NSValue valueWithBytes:&transform objCType:@encode(GLKMatrix4)] forUniformWithName:WMRenderObjectTransformUniformName];
 

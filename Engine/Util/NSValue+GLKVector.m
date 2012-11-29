@@ -31,12 +31,6 @@ MAKE_VALUE_WITH(GLKVector4);
 MAKE_VALUE_WITH(GLKVector3);
 MAKE_VALUE_WITH(GLKVector2);
 
-#define GET_VALUE_WITH(type) \
-+ (id)valueWith##type:(type)v;\
-{\
-return [self valueWithBytes:&v objCType:@encode(type)];\
-}\
-
 
 static BOOL isVector(const char *objCType) {
 	if (strcmp(objCType, @encode(GLKVector4)) == 0) {
@@ -92,5 +86,29 @@ static BOOL isVector(const char *objCType) {
 	
 }
 
+
+@end
+
+
+
+@implementation NSValue (GLKMatrix)
+
+MAKE_INIT(GLKMatrix4);
+MAKE_VALUE_WITH(GLKMatrix4);
+
+- (BOOL)containsGLKMatrix4;
+{
+	return strcmp(self.objCType, @encode(GLKMatrix4)) == 0;
+}
+
+- (GLKMatrix4)GLKMatrix4Value;
+{
+	if ([self containsGLKMatrix4]) {
+		GLKMatrix4 matrix;
+		[self getValue:&matrix];
+		return matrix;
+	}
+	return GLKMatrix4Identity;
+}
 
 @end

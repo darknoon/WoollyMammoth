@@ -26,6 +26,8 @@
 @property (nonatomic, strong, readonly) WMNumberPort *inputRotation;
 @property (nonatomic, strong, readonly) WMColorPort *inputColor;
 
+@property (nonatomic, strong, readonly) WMTransformPort *inputTransform;
+
 @property (nonatomic, strong, readonly) WMIndexPort *inputSubU;
 @property (nonatomic, strong, readonly) WMIndexPort *inputSubV;
 

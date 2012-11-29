@@ -10,6 +10,8 @@
 
 #import <GLKit/GLKMath.h>
 
+//TODO: rename this file
+
 @interface NSValue (GLKVector)
 
 - (id)initWithGLKVector4:(GLKVector4)v;
@@ -26,5 +28,20 @@
 - (GLKVector4)GLKVector4Value;
 - (GLKVector3)GLKVector3Value;
 - (GLKVector2)GLKVector2Value;
+
+@end
+
+
+@interface NSValue (GLKMatrix)
+
+//TODO: the other matrix sizes, with implicit conversion routines
+
+- (id)initWithGLKMatrix4:(GLKMatrix4)matrix;
+
++ (id)valueWithGLKMatrix4:(GLKMatrix4)matrix;
+
+- (BOOL)containsGLKMatrix4;
+
+- (GLKMatrix4)GLKMatrix4Value;
 
 @end
