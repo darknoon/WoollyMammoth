@@ -121,6 +121,10 @@ static inline double radians (double degrees) { return degrees * (M_PI / 180); }
 		goto bail;
 	}
 	{
+		//Neither of these approaches seems to be working properly.
+		//TODO: post on devforums
+		
+#if 0
 		AVMutableMetadataItem *usedFilterMetadata = [[AVMutableMetadataItem alloc] init];
 		usedFilterMetadata.keySpace = @"com.darknoon.take";
 		usedFilterMetadata.key = @"filter";
@@ -128,11 +132,20 @@ static inline double radians (double degrees) { return degrees * (M_PI / 180); }
 		usedFilterMetadata.extraAttributes = @{@"com.darknoon.take.extraAttributes.filter" : @"testFilterDataItem"};
 		
 		_assetWriter.metadata = @[ usedFilterMetadata ];
-	
+#endif
+#if 0
+		AVMutableMetadataItem *usedFilterMetadata = [[AVMutableMetadataItem alloc] init];
+		usedFilterMetadata.keySpace = AVMetadataKeySpaceID3;
+		usedFilterMetadata.key = AVMetadataID3MetadataKeyGeneralEncapsulatedObject;
+		usedFilterMetadata.value = @{@"com.darknoon.take.filter" : @"testFilterDataItem"};
+		
+		_assetWriter.metadata = @[ usedFilterMetadata ];
+#endif
 	}
 	//Video output setting / creation
 	{
-		CMTimeMakeWithSeconds(4.0, _assetWriter.movieTimeScale);
+		//TODO: fully test movie fragments
+		//_assetWriter.movieFragmentInterval = CMTimeMakeWithSeconds(4.0, _assetWriter.movieTimeScale);
 		
 		//TODO: pick better encoding settings
 		
@@ -525,7 +538,7 @@ bail:
 				if (_inputAudio.objectValue) {
 					for (id sampleBuffer in ((WMAudioBuffer *)_inputAudio.objectValue).sampleBuffers) {
 						CMSampleBufferRef sbref = (__bridge CMSampleBufferRef)sampleBuffer;
-						[self appendAudioBufferToAssetWriterInput:sbref forTime:CMSampleBufferGetOutputPresentationTimeStamp(sbref)];
+						[self appendAudioBufferToAssetWriterInput:sbref forTime:CMSampleBufferGetPresentationTimeStamp(sbref)];
 					}
 				}
 			}

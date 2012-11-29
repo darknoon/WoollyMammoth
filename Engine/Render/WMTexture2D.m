@@ -246,9 +246,6 @@ GLint GLFormatForWMTexture2DPixelFormat(WMTexture2DPixelFormat format) {
 {
 	ZAssert(self.context, @"Weird! No context in which to set data!");
 	[self.context bind2DTextureNameForModification:_name inBlock:^{
-		GLenum type = GLTypeForWMTexture2DPixelFormat(pixelFormat);
-		GLint glFormat = GLFormatForWMTexture2DPixelFormat(pixelFormat);
-		
 		
 		switch(pixelFormat) {
 				
