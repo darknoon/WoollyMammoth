@@ -38,6 +38,10 @@
 //-(void)beginUpdates
 //-(void)endUpdates
 
+//Check void *ptr is not NULL! NULL indicates the buffer could not be mapped for whatever reason.
+//If the buffer has been submitted to OpenGL, then you'll get a buffer from glMapBuffer()
+- (void)mapForWritingWithBlock:(void (^)(void *ptr))blockWithMappedMemory;
+
 - (NSUInteger)dataSize;
 - (void *)dataPointer;
 - (const void *)pointerToField:(NSString *)inField atIndex:(NSUInteger)inIndex;

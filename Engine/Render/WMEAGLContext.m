@@ -421,15 +421,18 @@
 
 - (BOOL)uploadToBufferObjectIfNecessaryOfType:(GLenum)inBufferType inContext:(WMEAGLContext *)inContext;
 {
-	if (bufferObject == 0) {
-		glGenBuffers(1, &bufferObject);
+	if (_bufferObject == 0) {
+		glGenBuffers(1, &_bufferObject);
+		_bufferObjectType = inBufferType;
+	} else {
+		ZAssert(_bufferObjectType == inBufferType, @"Cannot upload to a different buffer type!");
 	}
 	
 	//TODO: use glBufferSubData() only on the dirty indices
 	//TODO: allow user specify static or stream
 	//TODO: also support glMapBuffer()
 	if (dirtySet.count > 0) {
-		glBindBuffer(inBufferType, bufferObject);
+		glBindBuffer(inBufferType, _bufferObject);
 		
 		ZAssert(self.dataPointer, @"Unable to get data pointer");
 		
@@ -446,22 +449,32 @@
 
 - (void)deleteInternalState;
 {
-	if (bufferObject != 0) {
-		glDeleteBuffers(1, &bufferObject);
-		bufferObject = 0;
+	if (_bufferObject != 0) {
+		glDeleteBuffers(1, &_bufferObject);
+		_bufferObject = 0;
 	}
 }
 
 - (GLuint)bufferObject;
 {
-	return bufferObject;
+	return _bufferObject;
 }
 
-- (void)setBufferObject:(GLuint)inBufferObject;
+- (void)setBufferObject:(GLuint)bufferObject;
 {
-	bufferObject = inBufferObject;
+	_bufferObject = bufferObject;
 }
 
+- (GLenum)bufferObjectType;
+{
+	return _bufferObjectType;
+}
+
+- (void)setBufferObjectType:(GLenum)bufferObjectType;
+{
+	ZAssert(bufferObjectType == GL_ARRAY_BUFFER || bufferObjectType || GL_ELEMENT_ARRAY_BUFFER, @"Bad buffer object type!");
+	_bufferObjectType = bufferObjectType;
+}
 
 - (NSIndexSet *)dirtyIndexSet;
 {
@@ -472,6 +485,19 @@
 {
 	[dirtySet removeAllIndexes];
 }
+
+#if GL_OES_mapbuffer
+- (void *)_mapGLBufferForWriting;
+{
+	ZAssert(self.bufferObjectType == GL_ARRAY_BUFFER || self.bufferObjectType == GL_ELEMENT_ARRAY_BUFFER, @"Either this object has not been mapped or it is mapped to the wrong type!");
+	return glMapBufferOES(self.bufferObjectType, GL_WRITE_ONLY_OES);
+}
+
+- (void)_unmapGLBuffer;
+{
+	glUnmapBufferOES(self.bufferObjectType);
+}
+#endif
 
 @end
 

@@ -139,9 +139,23 @@ static inline unsigned int nextPowerOf2(unsigned int v) {
 	[dirtySet addIndexesInRange:inRange];
 }
 
+- (void)mapForWritingWithBlock:(void (^)(void *))blockWithMappedMemory;
+{
+	if (!blockWithMappedMemory) return;
+	if (_bufferObject) {
+		void *ptr = [self _mapGLBufferForWriting];
+		blockWithMappedMemory(ptr);
+		[self _unmapGLBuffer];
+	} else {
+		blockWithMappedMemory(self.dataPointer);
+		//"Map" the un-uploaded gl buffer, mark as dirty
+		[self markRangeDirty:(NSRange){.length = self.count}];
+	}
+}
+
 - (NSString *)description;
 {
-	NSString *bufferObjectString = bufferObject ? [NSString stringWithFormat:@" bufferObject: %d", bufferObject] : @"";
+	NSString *bufferObjectString = _bufferObject ? [NSString stringWithFormat:@" bufferObject: %d", _bufferObject] : @"";
 	return [NSString stringWithFormat:@"<%@ : %p = %d @ %d bytes = %d%@>", [self class], self, count, definition.size, self.dataSize, bufferObjectString];
 }
 
