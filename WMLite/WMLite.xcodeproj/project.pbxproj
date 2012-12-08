@@ -92,13 +92,82 @@
 		49E2EA2E1672C2DA00FA4FCE /* WMTransforms.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49E2EA2C1672C2DA00FA4FCE /* WMTransforms.mm */; };
 		49E2EA311672C35400FA4FCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2EA301672C35400FA4FCE /* UIKit.framework */; };
 		49E2EA341672C51700FA4FCE /* WMRenderObject+CreateWithGeometry.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49E2EA331672C51700FA4FCE /* WMRenderObject+CreateWithGeometry.mm */; };
+		49E2EA98167319F000FA4FCE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49E2EA96167319F000FA4FCE /* InfoPlist.strings */; };
+		49E2EAA116731A9E00FA4FCE /* WMLite.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2EA9A167319F000FA4FCE /* WMLite.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EAA216731AC100FA4FCE /* DNAssertionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E9D31672A40000FA4FCE /* DNAssertionHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EAA316731ACC00FA4FCE /* WMStructuredBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E7D0167296FE00FA4FCE /* WMStructuredBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EAA416731ACC00FA4FCE /* WMStructuredBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E7D1167296FE00FA4FCE /* WMStructuredBuffer.m */; };
+		49E2EAA516731ACC00FA4FCE /* WMStructureDefinition.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E7D2167296FE00FA4FCE /* WMStructureDefinition.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EAA616731ACC00FA4FCE /* WMStructureDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E7D3167296FE00FA4FCE /* WMStructureDefinition.m */; };
+		49E2EAA716731AD200FA4FCE /* GLDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E83B167296FE00FA4FCE /* GLDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EAA816731AD200FA4FCE /* GLDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E83C167296FE00FA4FCE /* GLDefines.m */; };
+		49E2EAA916731AD200FA4FCE /* WMEAGLContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E83F167296FE00FA4FCE /* WMEAGLContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EAAA16731AD200FA4FCE /* WMEAGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E840167296FE00FA4FCE /* WMEAGLContext.m */; };
+		49E2EAAB16731AD200FA4FCE /* WMFramebuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E841167296FE00FA4FCE /* WMFramebuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EAAC16731AD200FA4FCE /* WMFramebuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E842167296FE00FA4FCE /* WMFramebuffer.m */; };
+		49E2EAAD16731AD200FA4FCE /* WMFramebuffer_WMEAGLContext_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E843167296FE00FA4FCE /* WMFramebuffer_WMEAGLContext_Private.h */; };
+		49E2EAAE16731AD200FA4FCE /* WMGLStateObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E844167296FE00FA4FCE /* WMGLStateObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EAAF16731AD200FA4FCE /* WMGLStateObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E845167296FE00FA4FCE /* WMGLStateObject.m */; };
+		49E2EAB016731AD200FA4FCE /* WMGLStateObject_WMEAGLContext_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E846167296FE00FA4FCE /* WMGLStateObject_WMEAGLContext_Private.h */; };
+		49E2EAB116731AD200FA4FCE /* WMRenderCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E847167296FE00FA4FCE /* WMRenderCommon.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EAB216731AD200FA4FCE /* WMRenderObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E848167296FE00FA4FCE /* WMRenderObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EAB316731AD200FA4FCE /* WMRenderObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E849167296FE00FA4FCE /* WMRenderObject.m */; };
+		49E2EAB416731AD200FA4FCE /* WMRenderObject_WMEAGLContext_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E84A167296FE00FA4FCE /* WMRenderObject_WMEAGLContext_Private.h */; };
+		49E2EAB516731AD200FA4FCE /* WMShader.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E84B167296FE00FA4FCE /* WMShader.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EAB616731AD200FA4FCE /* WMShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E84C167296FE00FA4FCE /* WMShader.m */; };
+		49E2EAB716731AD200FA4FCE /* WMShader_WMEAGLContext_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E84D167296FE00FA4FCE /* WMShader_WMEAGLContext_Private.h */; };
+		49E2EAB816731AD200FA4FCE /* WMStructuredBuffer_WMEAGLContext_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E84E167296FE00FA4FCE /* WMStructuredBuffer_WMEAGLContext_Private.h */; };
+		49E2EAB916731AD200FA4FCE /* WMTexture2D.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E84F167296FE00FA4FCE /* WMTexture2D.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EABA16731AD200FA4FCE /* WMTexture2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E850167296FE00FA4FCE /* WMTexture2D.m */; };
+		49E2EABB16731AD200FA4FCE /* WMTexture2D_RenderPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E851167296FE00FA4FCE /* WMTexture2D_RenderPrivate.h */; };
+		49E2EABC16731AD200FA4FCE /* WMTexture2D_WMEAGLContext_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E852167296FE00FA4FCE /* WMTexture2D_WMEAGLContext_Private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EABD16731AD200FA4FCE /* WMTextureCubeMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E853167296FE00FA4FCE /* WMTextureCubeMap.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EABE16731AD200FA4FCE /* WMTextureCubeMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E854167296FE00FA4FCE /* WMTextureCubeMap.m */; };
+		49E2EABF16731AD200FA4FCE /* WMVertexArrayObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E855167296FE00FA4FCE /* WMVertexArrayObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EAC016731AD200FA4FCE /* WMVertexArrayObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E856167296FE00FA4FCE /* WMVertexArrayObject.m */; };
+		49E2EAC416731C3D00FA4FCE /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2EAC216731C3C00FA4FCE /* GLKit.framework */; };
+		49E2EAC516731C3D00FA4FCE /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2EAC316731C3C00FA4FCE /* OpenGL.framework */; };
+		49E2EAC716731C7400FA4FCE /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2EAC616731C7400FA4FCE /* AppKit.framework */; };
+		49E2EAC916731C7800FA4FCE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2EAC816731C7800FA4FCE /* Cocoa.framework */; };
+		49E2EAD916731DEC00FA4FCE /* WMTransforms.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2EA2B1672C2DA00FA4FCE /* WMTransforms.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EADA16731DEC00FA4FCE /* WMTransforms.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49E2EA2C1672C2DA00FA4FCE /* WMTransforms.mm */; };
+		49E2EADB16731DEC00FA4FCE /* DNKVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E868167296FE00FA4FCE /* DNKVC.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EADC16731DEC00FA4FCE /* DNMemoryInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E869167296FE00FA4FCE /* DNMemoryInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EADD16731DEC00FA4FCE /* DNMemoryInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E86A167296FE00FA4FCE /* DNMemoryInfo.m */; };
+		49E2EADE16731DEC00FA4FCE /* DNTimingMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E86B167296FE00FA4FCE /* DNTimingMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EADF16731DEC00FA4FCE /* EAGLContext+Extensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E86C167296FE00FA4FCE /* EAGLContext+Extensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EAE016731DEC00FA4FCE /* EAGLContext+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E86D167296FE00FA4FCE /* EAGLContext+Extensions.m */; };
+		49E2EAE116731DEC00FA4FCE /* GLKMath_cpp.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E86E167296FE00FA4FCE /* GLKMath_cpp.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EAE216731DEC00FA4FCE /* GLKMatrix3_cpp.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E86F167296FE00FA4FCE /* GLKMatrix3_cpp.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EAE316731DEC00FA4FCE /* GLKMatrix4_cpp.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E870167296FE00FA4FCE /* GLKMatrix4_cpp.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EAE416731DEC00FA4FCE /* GLKQuaternion_cpp.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E871167296FE00FA4FCE /* GLKQuaternion_cpp.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EAE516731DEC00FA4FCE /* GLKVector2_cpp.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E872167296FE00FA4FCE /* GLKVector2_cpp.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EAE616731DEC00FA4FCE /* GLKVector3_cpp.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E873167296FE00FA4FCE /* GLKVector3_cpp.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EAE716731DEC00FA4FCE /* GLKVector4_cpp.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E874167296FE00FA4FCE /* GLKVector4_cpp.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EAE816731DEC00FA4FCE /* NSValue+GLKVector.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E877167296FE00FA4FCE /* NSValue+GLKVector.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EAE916731DEC00FA4FCE /* NSValue+GLKVector.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E878167296FE00FA4FCE /* NSValue+GLKVector.m */; };
+		49E2EAEA16731DEC00FA4FCE /* WMMathUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E87B167296FE00FA4FCE /* WMMathUtil.c */; };
+		49E2EAEB16731DEC00FA4FCE /* WMMathUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E87C167296FE00FA4FCE /* WMMathUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EAEC16731DEC00FA4FCE /* WMPrefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E87D167296FE00FA4FCE /* WMPrefix.pch */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EAED16731DEC00FA4FCE /* WMRenderObject+CreateWithGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E87E167296FE00FA4FCE /* WMRenderObject+CreateWithGeometry.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EAEE16731DEC00FA4FCE /* WMRenderObject+CreateWithGeometry.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49E2EA331672C51700FA4FCE /* WMRenderObject+CreateWithGeometry.mm */; };
+		49E2EAF016731DF200FA4FCE /* EAGLContextMac.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E94F16729B3000FA4FCE /* EAGLContextMac.m */; };
+		49E2EB14167322A800FA4FCE /* EAGLContextMac.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E94E16729B3000FA4FCE /* EAGLContextMac.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EB151673230F00FA4FCE /* WMDisplayLink_Mac.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E96316729B3000FA4FCE /* WMDisplayLink_Mac.m */; };
+		49E2EB161673231200FA4FCE /* WMDisplayLink.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E96116729B3000FA4FCE /* WMDisplayLink.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EB171673231700FA4FCE /* WMCompatibilityMac.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E95F16729B3000FA4FCE /* WMCompatibilityMac.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EB181673231B00FA4FCE /* WMCompatibilityMac.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E96016729B3000FA4FCE /* WMCompatibilityMac.m */; };
+		49E2EB191673233500FA4FCE /* GLKVectorCGCompatibility.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E95E16729B3000FA4FCE /* GLKVectorCGCompatibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EB1A1673233900FA4FCE /* GLKVectorCGCompatibility.c in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E95D16729B3000FA4FCE /* GLKVectorCGCompatibility.c */; };
+		49E2EB1C1673236C00FA4FCE /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2EB1B1673236C00FA4FCE /* CoreVideo.framework */; };
+		49E2EB261673274B00FA4FCE /* WMFrameCounter.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E96416729B3000FA4FCE /* WMFrameCounter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EB271673274F00FA4FCE /* WMFrameCounter.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E96516729B3000FA4FCE /* WMFrameCounter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		49E2E7BD167296B400FA4FCE /* WMLite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WMLite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E2E7C1167296B400FA4FCE /* WMLite-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WMLite-Info.plist"; sourceTree = "<group>"; };
 		49E2E7C3167296B400FA4FCE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		49E2E7C5167296B400FA4FCE /* WMLite-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WMLite-Prefix.pch"; sourceTree = "<group>"; };
 		49E2E7D0167296FE00FA4FCE /* WMStructuredBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMStructuredBuffer.h; sourceTree = "<group>"; };
 		49E2E7D1167296FE00FA4FCE /* WMStructuredBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMStructuredBuffer.m; sourceTree = "<group>"; };
 		49E2E7D2167296FE00FA4FCE /* WMStructureDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMStructureDefinition.h; sourceTree = "<group>"; };
@@ -189,6 +258,19 @@
 		49E2EA2C1672C2DA00FA4FCE /* WMTransforms.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WMTransforms.mm; sourceTree = "<group>"; };
 		49E2EA301672C35400FA4FCE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		49E2EA331672C51700FA4FCE /* WMRenderObject+CreateWithGeometry.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "WMRenderObject+CreateWithGeometry.mm"; sourceTree = "<group>"; };
+		49E2EA8C167319F000FA4FCE /* WMLite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WMLite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		49E2EA8D167319F000FA4FCE /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		49E2EA90167319F000FA4FCE /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		49E2EA91167319F000FA4FCE /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		49E2EA92167319F000FA4FCE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		49E2EA95167319F000FA4FCE /* WMLite Mac-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WMLite Mac-Info.plist"; sourceTree = "<group>"; };
+		49E2EA97167319F000FA4FCE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		49E2EA9A167319F000FA4FCE /* WMLite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WMLite.h; sourceTree = "<group>"; };
+		49E2EAC216731C3C00FA4FCE /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/GLKit.framework; sourceTree = DEVELOPER_DIR; };
+		49E2EAC316731C3C00FA4FCE /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/OpenGL.framework; sourceTree = DEVELOPER_DIR; };
+		49E2EAC616731C7400FA4FCE /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/AppKit.framework; sourceTree = DEVELOPER_DIR; };
+		49E2EAC816731C7800FA4FCE /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		49E2EB1B1673236C00FA4FCE /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/CoreVideo.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -208,6 +290,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		49E2EA88167319F000FA4FCE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49E2EB1C1673236C00FA4FCE /* CoreVideo.framework in Frameworks */,
+				49E2EAC916731C7800FA4FCE /* Cocoa.framework in Frameworks */,
+				49E2EAC716731C7400FA4FCE /* AppKit.framework in Frameworks */,
+				49E2EAC416731C3D00FA4FCE /* GLKit.framework in Frameworks */,
+				49E2EAC516731C3D00FA4FCE /* OpenGL.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -217,8 +311,10 @@
 				49E2E9D21672A40000FA4FCE /* Application */,
 				49E2E7CB167296FE00FA4FCE /* Engine */,
 				49E2E94D16729B3000FA4FCE /* Misc */,
-				49E2E7BF167296B400FA4FCE /* WMLite */,
-				49E2E94B167298BA00FA4FCE /* Frameworks */,
+				49E2E7BF167296B400FA4FCE /* WMLite (iPhone) */,
+				49E2EA93167319F000FA4FCE /* WMLite (Mac) */,
+				49E2EAC116731C1A00FA4FCE /* Frameworks (Mac) */,
+				49E2E94B167298BA00FA4FCE /* Frameworks (iPhone) */,
 				49E2E7BE167296B400FA4FCE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -227,19 +323,20 @@
 			isa = PBXGroup;
 			children = (
 				49E2E7BD167296B400FA4FCE /* WMLite.framework */,
+				49E2EA8C167319F000FA4FCE /* WMLite.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		49E2E7BF167296B400FA4FCE /* WMLite */ = {
+		49E2E7BF167296B400FA4FCE /* WMLite (iPhone) */ = {
 			isa = PBXGroup;
 			children = (
 				49E2E94C167299EC00FA4FCE /* WMLite.h */,
 				49E2E7C1167296B400FA4FCE /* WMLite-Info.plist */,
 				49E2E7C2167296B400FA4FCE /* InfoPlist.strings */,
-				49E2E7C5167296B400FA4FCE /* WMLite-Prefix.pch */,
 			);
-			path = WMLite;
+			name = "WMLite (iPhone)";
+			path = iPhone;
 			sourceTree = "<group>";
 		};
 		49E2E7CB167296FE00FA4FCE /* Engine */ = {
@@ -326,7 +423,7 @@
 			path = Util;
 			sourceTree = "<group>";
 		};
-		49E2E94B167298BA00FA4FCE /* Frameworks */ = {
+		49E2E94B167298BA00FA4FCE /* Frameworks (iPhone) */ = {
 			isa = PBXGroup;
 			children = (
 				49E2EA301672C35400FA4FCE /* UIKit.framework */,
@@ -339,8 +436,9 @@
 				49E2E93A1672988600FA4FCE /* GLKit.framework */,
 				49E2E93B1672988600FA4FCE /* OpenGLES.framework */,
 				49E2E93C1672988600FA4FCE /* QuartzCore.framework */,
+				49E2EA8F167319F000FA4FCE /* Other Frameworks */,
 			);
-			name = Frameworks;
+			name = "Frameworks (iPhone)";
 			sourceTree = "<group>";
 		};
 		49E2E94D16729B3000FA4FCE /* Misc */ = {
@@ -349,8 +447,8 @@
 				49E2E94E16729B3000FA4FCE /* EAGLContextMac.h */,
 				49E2E94F16729B3000FA4FCE /* EAGLContextMac.m */,
 				49E2E95016729B3000FA4FCE /* GLKit */,
-				49E2E95D16729B3000FA4FCE /* GLKVectorCGCompatibility.c */,
 				49E2E95E16729B3000FA4FCE /* GLKVectorCGCompatibility.h */,
+				49E2E95D16729B3000FA4FCE /* GLKVectorCGCompatibility.c */,
 				49E2E95F16729B3000FA4FCE /* WMCompatibilityMac.h */,
 				49E2E96016729B3000FA4FCE /* WMCompatibilityMac.m */,
 				49E2E96116729B3000FA4FCE /* WMDisplayLink.h */,
@@ -392,6 +490,48 @@
 			);
 			name = Application;
 			path = ../Application;
+			sourceTree = "<group>";
+		};
+		49E2EA8F167319F000FA4FCE /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				49E2EA90167319F000FA4FCE /* AppKit.framework */,
+				49E2EA91167319F000FA4FCE /* CoreData.framework */,
+				49E2EA92167319F000FA4FCE /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		49E2EA93167319F000FA4FCE /* WMLite (Mac) */ = {
+			isa = PBXGroup;
+			children = (
+				49E2EA9A167319F000FA4FCE /* WMLite.h */,
+				49E2EA94167319F000FA4FCE /* Supporting Files */,
+			);
+			name = "WMLite (Mac)";
+			path = Mac;
+			sourceTree = "<group>";
+		};
+		49E2EA94167319F000FA4FCE /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				49E2EA95167319F000FA4FCE /* WMLite Mac-Info.plist */,
+				49E2EA96167319F000FA4FCE /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		49E2EAC116731C1A00FA4FCE /* Frameworks (Mac) */ = {
+			isa = PBXGroup;
+			children = (
+				49E2EB1B1673236C00FA4FCE /* CoreVideo.framework */,
+				49E2EAC816731C7800FA4FCE /* Cocoa.framework */,
+				49E2EAC616731C7400FA4FCE /* AppKit.framework */,
+				49E2EA8D167319F000FA4FCE /* Cocoa.framework */,
+				49E2EAC216731C3C00FA4FCE /* GLKit.framework */,
+				49E2EAC316731C3C00FA4FCE /* OpenGL.framework */,
+			);
+			name = "Frameworks (Mac)";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -456,6 +596,55 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		49E2EA89167319F000FA4FCE /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49E2EAA116731A9E00FA4FCE /* WMLite.h in Headers */,
+				49E2EAA216731AC100FA4FCE /* DNAssertionHandler.h in Headers */,
+				49E2EAA316731ACC00FA4FCE /* WMStructuredBuffer.h in Headers */,
+				49E2EAA516731ACC00FA4FCE /* WMStructureDefinition.h in Headers */,
+				49E2EAA716731AD200FA4FCE /* GLDefines.h in Headers */,
+				49E2EAA916731AD200FA4FCE /* WMEAGLContext.h in Headers */,
+				49E2EAAB16731AD200FA4FCE /* WMFramebuffer.h in Headers */,
+				49E2EAAE16731AD200FA4FCE /* WMGLStateObject.h in Headers */,
+				49E2EAB216731AD200FA4FCE /* WMRenderObject.h in Headers */,
+				49E2EAB516731AD200FA4FCE /* WMShader.h in Headers */,
+				49E2EAB916731AD200FA4FCE /* WMTexture2D.h in Headers */,
+				49E2EABC16731AD200FA4FCE /* WMTexture2D_WMEAGLContext_Private.h in Headers */,
+				49E2EABD16731AD200FA4FCE /* WMTextureCubeMap.h in Headers */,
+				49E2EABF16731AD200FA4FCE /* WMVertexArrayObject.h in Headers */,
+				49E2EAD916731DEC00FA4FCE /* WMTransforms.h in Headers */,
+				49E2EADB16731DEC00FA4FCE /* DNKVC.h in Headers */,
+				49E2EADC16731DEC00FA4FCE /* DNMemoryInfo.h in Headers */,
+				49E2EADE16731DEC00FA4FCE /* DNTimingMacros.h in Headers */,
+				49E2EADF16731DEC00FA4FCE /* EAGLContext+Extensions.h in Headers */,
+				49E2EAE116731DEC00FA4FCE /* GLKMath_cpp.h in Headers */,
+				49E2EAE216731DEC00FA4FCE /* GLKMatrix3_cpp.h in Headers */,
+				49E2EAE316731DEC00FA4FCE /* GLKMatrix4_cpp.h in Headers */,
+				49E2EAE416731DEC00FA4FCE /* GLKQuaternion_cpp.h in Headers */,
+				49E2EAE516731DEC00FA4FCE /* GLKVector2_cpp.h in Headers */,
+				49E2EAE616731DEC00FA4FCE /* GLKVector3_cpp.h in Headers */,
+				49E2EAE716731DEC00FA4FCE /* GLKVector4_cpp.h in Headers */,
+				49E2EAE816731DEC00FA4FCE /* NSValue+GLKVector.h in Headers */,
+				49E2EAEB16731DEC00FA4FCE /* WMMathUtil.h in Headers */,
+				49E2EAEC16731DEC00FA4FCE /* WMPrefix.pch in Headers */,
+				49E2EAED16731DEC00FA4FCE /* WMRenderObject+CreateWithGeometry.h in Headers */,
+				49E2EAAD16731AD200FA4FCE /* WMFramebuffer_WMEAGLContext_Private.h in Headers */,
+				49E2EAB016731AD200FA4FCE /* WMGLStateObject_WMEAGLContext_Private.h in Headers */,
+				49E2EAB116731AD200FA4FCE /* WMRenderCommon.h in Headers */,
+				49E2EAB416731AD200FA4FCE /* WMRenderObject_WMEAGLContext_Private.h in Headers */,
+				49E2EAB716731AD200FA4FCE /* WMShader_WMEAGLContext_Private.h in Headers */,
+				49E2EAB816731AD200FA4FCE /* WMStructuredBuffer_WMEAGLContext_Private.h in Headers */,
+				49E2EABB16731AD200FA4FCE /* WMTexture2D_RenderPrivate.h in Headers */,
+				49E2EB14167322A800FA4FCE /* EAGLContextMac.h in Headers */,
+				49E2EB161673231200FA4FCE /* WMDisplayLink.h in Headers */,
+				49E2EB171673231700FA4FCE /* WMCompatibilityMac.h in Headers */,
+				49E2EB191673233500FA4FCE /* GLKVectorCGCompatibility.h in Headers */,
+				49E2EB261673274B00FA4FCE /* WMFrameCounter.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -480,6 +669,24 @@
 			productReference = 49E2E7BD167296B400FA4FCE /* WMLite.framework */;
 			productType = "com.apple.product-type.bundle";
 		};
+		49E2EA8B167319F000FA4FCE /* WMLite Mac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 49E2EA9F167319F000FA4FCE /* Build configuration list for PBXNativeTarget "WMLite Mac" */;
+			buildPhases = (
+				49E2EA87167319F000FA4FCE /* Sources */,
+				49E2EA88167319F000FA4FCE /* Frameworks */,
+				49E2EA89167319F000FA4FCE /* Headers */,
+				49E2EA8A167319F000FA4FCE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "WMLite Mac";
+			productName = "WMLite Mac";
+			productReference = 49E2EA8C167319F000FA4FCE /* WMLite.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -502,6 +709,7 @@
 			projectRoot = "";
 			targets = (
 				49E2E7BC167296B400FA4FCE /* WMLite */,
+				49E2EA8B167319F000FA4FCE /* WMLite Mac */,
 			);
 		};
 /* End PBXProject section */
@@ -512,6 +720,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				49E2E7C4167296B400FA4FCE /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		49E2EA8A167319F000FA4FCE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49E2EA98167319F000FA4FCE /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -590,6 +806,35 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		49E2EA87167319F000FA4FCE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49E2EAA416731ACC00FA4FCE /* WMStructuredBuffer.m in Sources */,
+				49E2EAA616731ACC00FA4FCE /* WMStructureDefinition.m in Sources */,
+				49E2EAA816731AD200FA4FCE /* GLDefines.m in Sources */,
+				49E2EAAA16731AD200FA4FCE /* WMEAGLContext.m in Sources */,
+				49E2EAAC16731AD200FA4FCE /* WMFramebuffer.m in Sources */,
+				49E2EAAF16731AD200FA4FCE /* WMGLStateObject.m in Sources */,
+				49E2EAB316731AD200FA4FCE /* WMRenderObject.m in Sources */,
+				49E2EAB616731AD200FA4FCE /* WMShader.m in Sources */,
+				49E2EABA16731AD200FA4FCE /* WMTexture2D.m in Sources */,
+				49E2EABE16731AD200FA4FCE /* WMTextureCubeMap.m in Sources */,
+				49E2EAC016731AD200FA4FCE /* WMVertexArrayObject.m in Sources */,
+				49E2EADA16731DEC00FA4FCE /* WMTransforms.mm in Sources */,
+				49E2EADD16731DEC00FA4FCE /* DNMemoryInfo.m in Sources */,
+				49E2EAE016731DEC00FA4FCE /* EAGLContext+Extensions.m in Sources */,
+				49E2EAE916731DEC00FA4FCE /* NSValue+GLKVector.m in Sources */,
+				49E2EAEA16731DEC00FA4FCE /* WMMathUtil.c in Sources */,
+				49E2EAEE16731DEC00FA4FCE /* WMRenderObject+CreateWithGeometry.mm in Sources */,
+				49E2EAF016731DF200FA4FCE /* EAGLContextMac.m in Sources */,
+				49E2EB151673230F00FA4FCE /* WMDisplayLink_Mac.m in Sources */,
+				49E2EB181673231B00FA4FCE /* WMCompatibilityMac.m in Sources */,
+				49E2EB1A1673233900FA4FCE /* GLKVectorCGCompatibility.c in Sources */,
+				49E2EB271673274F00FA4FCE /* WMFrameCounter.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
@@ -597,6 +842,14 @@
 			isa = PBXVariantGroup;
 			children = (
 				49E2E7C3167296B400FA4FCE /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		49E2EA96167319F000FA4FCE /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				49E2EA97167319F000FA4FCE /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -627,6 +880,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 			};
@@ -648,6 +902,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -668,7 +923,7 @@
 					"$(inherited)",
 					WM_RESOURCES_IN_FRAMEWORK,
 				);
-				INFOPLIST_FILE = "WMLite/WMLite-Info.plist";
+				INFOPLIST_FILE = "iPhone/WMLite-Info.plist";
 				INFOPLIST_PATH = "$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/Info.plist";
 				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
 				LINK_WITH_STANDARD_LIBRARIES = NO;
@@ -695,7 +950,7 @@
 					"$(inherited)",
 					"WM_RESOURCES_IN_FRAMEWORK=WMLite",
 				);
-				INFOPLIST_FILE = "WMLite/WMLite-Info.plist";
+				INFOPLIST_FILE = "iPhone/WMLite-Info.plist";
 				INFOPLIST_PATH = "$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/Info.plist";
 				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
 				LINK_WITH_STANDARD_LIBRARIES = NO;
@@ -703,6 +958,56 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				UNLOCALIZED_RESOURCES_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Resources";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
+		49E2EA9D167319F000FA4FCE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+				);
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = ../Engine/Util/WMPrefix.pch;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				INFOPLIST_FILE = "Mac/WMLite Mac-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = WMLite;
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Debug;
+		};
+		49E2EA9E167319F000FA4FCE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+				);
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = ../Engine/Util/WMPrefix.pch;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				INFOPLIST_FILE = "Mac/WMLite Mac-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = WMLite;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;
@@ -724,6 +1029,15 @@
 			buildConfigurations = (
 				49E2E7C9167296B400FA4FCE /* Debug */,
 				49E2E7CA167296B400FA4FCE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		49E2EA9F167319F000FA4FCE /* Build configuration list for PBXNativeTarget "WMLite Mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				49E2EA9D167319F000FA4FCE /* Debug */,
+				49E2EA9E167319F000FA4FCE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -400,17 +400,23 @@
 
 - (void)pushDebugGroup:(NSString *)group;
 {
+#if GL_EXT_debug_marker
 	glPushGroupMarkerEXT(0, [group cStringUsingEncoding:NSASCIIStringEncoding]);
+#endif
 }
 
 - (void)popDebugGroup;
 {
+#if GL_EXT_debug_marker
 	glPopGroupMarkerEXT();
+#endif
 }
 
 - (void)insertDebugText:(NSString *)text;
 {
+#if GL_EXT_debug_marker
 	glInsertEventMarkerEXT(0, [text cStringUsingEncoding:NSASCIIStringEncoding]);
+#endif
 }
 
 
@@ -497,6 +503,19 @@
 {
 	glUnmapBufferOES(self.bufferObjectType);
 }
+#else
+
+- (void *)_mapGLBufferForWriting;
+{
+	ZAssert(self.bufferObjectType == GL_ARRAY_BUFFER || self.bufferObjectType == GL_ELEMENT_ARRAY_BUFFER, @"Either this object has not been mapped or it is mapped to the wrong type!");
+	return glMapBuffer(self.bufferObjectType, GL_WRITE_ONLY);
+}
+
+- (void)_unmapGLBuffer;
+{
+	glUnmapBuffer(self.bufferObjectType);
+}
+
 #endif
 
 @end

@@ -6,7 +6,7 @@
 //  Copyright 2010 Darknoon. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <AppKit/AppKit.h>
 
 #if TARGET_OS_MAC && !TARGET_OS_IPHONE
 

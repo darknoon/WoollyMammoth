@@ -26,7 +26,6 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 	if (!self) return nil;
 	
 	_targetQueue = queue;
-	dispatch_retain(queue);
 
 	_callback = [callback copy];
 	
@@ -46,8 +45,6 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 {
 	CVDisplayLinkRelease(_displayLink);
 	_displayLink = nil;
-
-	dispatch_release(_targetQueue);
 }
 
 - (void)_displayLinkCallback:(CVDisplayLinkRef)displayLink currentTime:(NSTimeInterval)currentTime outputTime:(NSTimeInterval)outputTime;
@@ -63,8 +60,8 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 // This is the renderer output callback function
 static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTimeStamp* now, const CVTimeStamp* outputTime, CVOptionFlags flagsIn, CVOptionFlags* flagsOut, void* displayLinkContext)
 {
-	NSTimeInterval nowSeconds = now->hostTime / (double)now->videoTimeScale;
-	NSTimeInterval ouputTimeSeconds = outputTime->hostTime / (double)outputTime->videoTimeScale;
+	NSTimeInterval nowSeconds = now->videoTime / (double)now->videoTimeScale;
+	NSTimeInterval ouputTimeSeconds = outputTime->videoTime / (double)outputTime->videoTimeScale;
 	[(__bridge WMDisplayLink*)displayLinkContext _displayLinkCallback:displayLink currentTime:nowSeconds outputTime:ouputTimeSeconds];
     return kCVReturnSuccess;
 }

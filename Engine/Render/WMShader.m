@@ -58,6 +58,7 @@ NSString *const WMDefaultShaderCacheKey = @"com.darknoon.WMShader.defaultShader"
 {
 	ZAssert([WMEAGLContext currentContext], @"Must have an WMEAGLContext active");
 	
+#if TARGET_OS_IPHONE
 	NSString *fragmentShader = @"\
 uniform sampler2D texture;\
 uniform lowp vec4 color;\
@@ -84,6 +85,38 @@ void main()\
 	v_tc = texCoord0;\
 }\
 ";
+	
+#else
+	
+		NSString *fragmentShader = @"\
+uniform sampler2D texture;\
+uniform vec4 color;\
+\
+in vec2 v_tc;\
+out vec4 wm_fragColor;\
+\
+void main()\
+{\
+	wm_fragColor = color * texture(texture, v_tc);\
+}\
+";
+
+	NSString *vertexShader = @"\
+in vec4 position;\
+in vec2 texCoord0;\
+\
+uniform mat4 wm_T;\
+\
+out vec2 v_tc;\
+\
+void main()\
+{\
+	gl_Position = wm_T * position;\
+	v_tc = texCoord0;\
+}\
+";
+
+#endif
 	
 	//TODO: make a better system for default shaders!
 	NSError *defaultShaderError = nil;	

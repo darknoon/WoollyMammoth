@@ -8,9 +8,7 @@
 
 #import "EAGLContext+Extensions.h"
 
-#import <OpenGLES/EAGL.h>
-#import <OpenGLES/ES2/gl.h>
-#import <OpenGLES/ES2/glext.h>
+#import "WMRenderCommon.h"
 
 NSString *WMEAGLContextCachedExtensionsKey = @"WM.extensions";
 

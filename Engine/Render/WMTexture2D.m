@@ -82,8 +82,10 @@ GLenum GLTypeForWMTexture2DPixelFormat(WMTexture2DPixelFormat format) {
 		case kWMTexture2DPixelFormat_RGBA8888:
 		case kWMTexture2DPixelFormat_BGRA8888:
 		case kWMTexture2DPixelFormat_A8:
+#if GL_EXT_texture_rg
 		case kWMTexture2DPixelFormat_R8:
 			return GL_UNSIGNED_BYTE;
+#endif
 		case kWMTexture2DPixelFormat_RGB565:
 			return GL_UNSIGNED_SHORT_5_6_5;
 		default:
@@ -109,6 +111,9 @@ GLint GLFormatForWMTexture2DPixelFormat(WMTexture2DPixelFormat format) {
 #if GL_EXT_texture_rg
 		case kWMTexture2DPixelFormat_R8:
 			return GL_RED_EXT;
+#elif GL_ARB_texture_rg
+		case kWMTexture2DPixelFormat_R8:
+			return GL_R8;
 #endif
 		default:
 			@throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Invalid texture format" userInfo:nil];
@@ -392,6 +397,7 @@ GLint GLFormatForWMTexture2DPixelFormat(WMTexture2DPixelFormat format) {
 		free(data);
 	} else if (format == kWMTexture2DPixelFormat_R8) {
 		
+#if GL_EXT_texture_rg
 		CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceGray();
 		
 		void *data = malloc(height * width * 1);
@@ -407,6 +413,7 @@ GLint GLFormatForWMTexture2DPixelFormat(WMTexture2DPixelFormat format) {
 		[self setData:data pixelFormat:kWMTexture2DPixelFormat_R8 pixelsWide:width pixelsHigh:height contentSize:size orientation:UIImageOrientationUp];
 		
 		free(data);
+#endif
 
 	}
 	

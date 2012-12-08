@@ -7,7 +7,7 @@ extern "C" {
 
 GLKMatrix4 cameraMatrixForRect(CGRect rect);
 
-#ifdef __OBJC__
+#if defined(__OBJC__) && TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
 GLKMatrix4 transformForRenderingInOrientation(UIImageOrientation outputOrientation, int renderWidth, int renderHeight);
 #endif

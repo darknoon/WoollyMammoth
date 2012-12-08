@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "WMRenderCommon.h"
+
 @class WMEAGLContext;
 @interface WMGLStateObject : NSObject
 

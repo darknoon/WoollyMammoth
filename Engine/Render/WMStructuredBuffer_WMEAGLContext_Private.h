@@ -24,11 +24,9 @@
 - (BOOL)uploadToBufferObjectIfNecessaryOfType:(GLenum)inBufferType inContext:(WMEAGLContext *)inContext;
 
 //TODO: support buffer mapping on the mac
-#if GL_OES_mapbuffer
 //Private methods for implementing public method so we can implement in WMEAGLContext instead in WMStructuredBuffer
 - (void *)_mapGLBufferForWriting;
 - (void)_unmapGLBuffer;
-#endif
 
 - (NSIndexSet *)dirtyIndexSet;
 - (void)resetDirtyIndexSet;

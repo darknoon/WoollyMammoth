@@ -26,6 +26,15 @@
 		49E2E9F21672A78F00FA4FCE /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2E9E91672A78F00FA4FCE /* GLKit.framework */; };
 		49E2E9F31672A78F00FA4FCE /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2E9EA1672A78F00FA4FCE /* OpenGLES.framework */; };
 		49E2E9F41672A78F00FA4FCE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2E9EB1672A78F00FA4FCE /* QuartzCore.framework */; };
+		49E2EAF8167321F700FA4FCE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2EAF7167321F700FA4FCE /* Cocoa.framework */; };
+		49E2EB02167321F800FA4FCE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49E2EB00167321F800FA4FCE /* InfoPlist.strings */; };
+		49E2EB04167321F800FA4FCE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2EB03167321F800FA4FCE /* main.m */; };
+		49E2EB08167321F800FA4FCE /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 49E2EB06167321F800FA4FCE /* Credits.rtf */; };
+		49E2EB0B167321F800FA4FCE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2EB0A167321F800FA4FCE /* AppDelegate.m */; };
+		49E2EB0E167321F800FA4FCE /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49E2EB0C167321F800FA4FCE /* MainMenu.xib */; };
+		49E2EB2A1673278200FA4FCE /* BasicGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2EB291673278200FA4FCE /* BasicGLView.m */; };
+		49E2EB2C16732A9A00FA4FCE /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2EB2B16732A9A00FA4FCE /* OpenGL.framework */; };
+		49E2EB2E16732AA400FA4FCE /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2EB2D16732AA400FA4FCE /* GLKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +62,23 @@
 		49E2E9E91672A78F00FA4FCE /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/GLKit.framework; sourceTree = "<absolute>"; };
 		49E2E9EA1672A78F00FA4FCE /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/OpenGLES.framework; sourceTree = "<absolute>"; };
 		49E2E9EB1672A78F00FA4FCE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = "<absolute>"; };
+		49E2EAF5167321F700FA4FCE /* BasicGL Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BasicGL Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		49E2EAF7167321F700FA4FCE /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		49E2EAFA167321F800FA4FCE /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		49E2EAFB167321F800FA4FCE /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		49E2EAFC167321F800FA4FCE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		49E2EAFF167321F800FA4FCE /* BasicGL Mac-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BasicGL Mac-Info.plist"; sourceTree = "<group>"; };
+		49E2EB01167321F800FA4FCE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		49E2EB03167321F800FA4FCE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		49E2EB05167321F800FA4FCE /* BasicGL Mac-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BasicGL Mac-Prefix.pch"; sourceTree = "<group>"; };
+		49E2EB07167321F800FA4FCE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		49E2EB09167321F800FA4FCE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		49E2EB0A167321F800FA4FCE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		49E2EB0D167321F800FA4FCE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		49E2EB281673278200FA4FCE /* BasicGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicGLView.h; sourceTree = "<group>"; };
+		49E2EB291673278200FA4FCE /* BasicGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasicGLView.m; sourceTree = "<group>"; };
+		49E2EB2B16732A9A00FA4FCE /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/OpenGL.framework; sourceTree = DEVELOPER_DIR; };
+		49E2EB2D16732AA400FA4FCE /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/GLKit.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,13 +101,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		49E2EAF2167321F700FA4FCE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49E2EB2E16732AA400FA4FCE /* GLKit.framework in Frameworks */,
+				49E2EB2C16732A9A00FA4FCE /* OpenGL.framework in Frameworks */,
+				49E2EAF8167321F700FA4FCE /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		49E2E98F1672A22D00FA4FCE = {
 			isa = PBXGroup;
 			children = (
+				49E2EB2D16732AA400FA4FCE /* GLKit.framework */,
+				49E2EB2B16732A9A00FA4FCE /* OpenGL.framework */,
 				49E2E9A41672A22D00FA4FCE /* BasicGL */,
+				49E2EAFD167321F800FA4FCE /* BasicGL Mac */,
 				49E2E99D1672A22D00FA4FCE /* Frameworks */,
 				49E2E99B1672A22D00FA4FCE /* Products */,
 			);
@@ -91,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				49E2E99A1672A22D00FA4FCE /* BasicGL.app */,
+				49E2EAF5167321F700FA4FCE /* BasicGL Mac.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -110,6 +150,8 @@
 				49E2E99E1672A22D00FA4FCE /* UIKit.framework */,
 				49E2E9A01672A22D00FA4FCE /* Foundation.framework */,
 				49E2E9A21672A22D00FA4FCE /* CoreGraphics.framework */,
+				49E2EAF7167321F700FA4FCE /* Cocoa.framework */,
+				49E2EAF9167321F800FA4FCE /* Other Frameworks */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -140,6 +182,41 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		49E2EAF9167321F800FA4FCE /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				49E2EAFA167321F800FA4FCE /* AppKit.framework */,
+				49E2EAFB167321F800FA4FCE /* CoreData.framework */,
+				49E2EAFC167321F800FA4FCE /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		49E2EAFD167321F800FA4FCE /* BasicGL Mac */ = {
+			isa = PBXGroup;
+			children = (
+				49E2EB09167321F800FA4FCE /* AppDelegate.h */,
+				49E2EB0A167321F800FA4FCE /* AppDelegate.m */,
+				49E2EB281673278200FA4FCE /* BasicGLView.h */,
+				49E2EB291673278200FA4FCE /* BasicGLView.m */,
+				49E2EB0C167321F800FA4FCE /* MainMenu.xib */,
+				49E2EAFE167321F800FA4FCE /* Supporting Files */,
+			);
+			path = "BasicGL Mac";
+			sourceTree = "<group>";
+		};
+		49E2EAFE167321F800FA4FCE /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				49E2EAFF167321F800FA4FCE /* BasicGL Mac-Info.plist */,
+				49E2EB00167321F800FA4FCE /* InfoPlist.strings */,
+				49E2EB03167321F800FA4FCE /* main.m */,
+				49E2EB05167321F800FA4FCE /* BasicGL Mac-Prefix.pch */,
+				49E2EB06167321F800FA4FCE /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -158,6 +235,23 @@
 			name = BasicGL;
 			productName = BasicGL;
 			productReference = 49E2E99A1672A22D00FA4FCE /* BasicGL.app */;
+			productType = "com.apple.product-type.application";
+		};
+		49E2EAF4167321F700FA4FCE /* BasicGL Mac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 49E2EB11167321F800FA4FCE /* Build configuration list for PBXNativeTarget "BasicGL Mac" */;
+			buildPhases = (
+				49E2EAF1167321F700FA4FCE /* Sources */,
+				49E2EAF2167321F700FA4FCE /* Frameworks */,
+				49E2EAF3167321F700FA4FCE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "BasicGL Mac";
+			productName = "BasicGL Mac";
+			productReference = 49E2EAF5167321F700FA4FCE /* BasicGL Mac.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -182,6 +276,7 @@
 			projectRoot = "";
 			targets = (
 				49E2E9991672A22D00FA4FCE /* BasicGL */,
+				49E2EAF4167321F700FA4FCE /* BasicGL Mac */,
 			);
 		};
 /* End PBXProject section */
@@ -198,6 +293,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		49E2EAF3167321F700FA4FCE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49E2EB02167321F800FA4FCE /* InfoPlist.strings in Resources */,
+				49E2EB08167321F800FA4FCE /* Credits.rtf in Resources */,
+				49E2EB0E167321F800FA4FCE /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -211,6 +316,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		49E2EAF1167321F700FA4FCE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49E2EB04167321F800FA4FCE /* main.m in Sources */,
+				49E2EB0B167321F800FA4FCE /* AppDelegate.m in Sources */,
+				49E2EB2A1673278200FA4FCE /* BasicGLView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
@@ -220,6 +335,30 @@
 				49E2E9A81672A22D00FA4FCE /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		49E2EB00167321F800FA4FCE /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				49E2EB01167321F800FA4FCE /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		49E2EB06167321F800FA4FCE /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				49E2EB07167321F800FA4FCE /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		49E2EB0C167321F800FA4FCE /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				49E2EB0D167321F800FA4FCE /* en */,
+			);
+			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -311,6 +450,49 @@
 			};
 			name = Release;
 		};
+		49E2EB0F167321F800FA4FCE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+				);
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BasicGL Mac/BasicGL Mac-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				INFOPLIST_FILE = "BasicGL Mac/BasicGL Mac-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		49E2EB10167321F800FA4FCE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+				);
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BasicGL Mac/BasicGL Mac-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				INFOPLIST_FILE = "BasicGL Mac/BasicGL Mac-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -331,6 +513,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		49E2EB11167321F800FA4FCE /* Build configuration list for PBXNativeTarget "BasicGL Mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				49E2EB0F167321F800FA4FCE /* Debug */,
+				49E2EB10167321F800FA4FCE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

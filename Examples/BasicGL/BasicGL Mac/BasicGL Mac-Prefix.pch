@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'BasicGL Mac' target in the 'BasicGL Mac' project
+//
+
+#ifdef __OBJC__
+	#import <Cocoa/Cocoa.h>
+#endif

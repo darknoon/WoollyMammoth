@@ -62,7 +62,7 @@ typedef enum {
 	kWMTexture2DPixelFormat_BGRA8888,
 	kWMTexture2DPixelFormat_RGB565,
 	kWMTexture2DPixelFormat_A8,
-#if GL_EXT_texture_rg
+#if GL_EXT_texture_rg || GL_ARB_texture_rg
 	kWMTexture2DPixelFormat_R8,
 #endif
 	//TODO: kWMTexture2DPixelFormat_RGB422
