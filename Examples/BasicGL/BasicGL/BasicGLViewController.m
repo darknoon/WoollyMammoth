@@ -20,17 +20,6 @@
 	WMRenderObject *_quad;
 	
 	WMEAGLContext *_context;
-	WMTexture2D *_texture;
-	
-	dispatch_queue_t _renderQueue;
-}
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-	if (!self) return nil;
-	
-    return self;
 }
 
 - (void)viewDidLoad
@@ -43,7 +32,7 @@
 	
 	//Draw a circle into an OpenGL texture
 	CGSize textureSize = (CGSize){64,64};
-	_texture = [[WMTexture2D alloc] initWithBitmapSize:textureSize block:^(CGContextRef ctx) {
+	WMTexture2D *texture = [[WMTexture2D alloc] initWithBitmapSize:textureSize block:^(CGContextRef ctx) {
 		CGContextSetFillColorWithColor(ctx, [UIColor whiteColor].CGColor);
 		CGContextFillEllipseInRect(ctx, CGRectInset((CGRect){{0.f, 0.f}, textureSize}, 1.f, 1.f) );
 	}];
@@ -52,10 +41,10 @@
 	_quad = [WMRenderObject quadRenderObjectWithFrame:(CGRect){{0, 0}, textureSize}];
 	//Use the default shader (render a quad with a texture multiplied by a color)
 	_quad.shader = [WMShader defaultShader];
-	//Use standard (source-over) blending
+	//Use "normal" blending (source-over with premultiplied alpha)
 	_quad.renderBlendState = DNGLStateBlendEnabled;
 	//Attach the texture as the input for the "texture" uniform
-	[_quad setValue:_texture forUniformWithName:@"texture"];
+	[_quad setValue:texture forUniformWithName:@"texture"];
 
 	//Make a display link to drive updates
 	__weak BasicGLViewController *weakSelf = self;
@@ -101,10 +90,5 @@
 	
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 @end
