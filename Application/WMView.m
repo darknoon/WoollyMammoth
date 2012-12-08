@@ -8,16 +8,16 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#import "EAGLView.h"
+#import "WMView.h"
 
 #import "WMFramebuffer.h"
 
-@interface EAGLView (PrivateMethods)
+@interface WMView (PrivateMethods)
 - (void)createFramebuffer;
 - (void)deleteFramebuffer;
 @end
 
-@implementation EAGLView {
+@implementation WMView {
 @private
     WMEAGLContext *context;
     
