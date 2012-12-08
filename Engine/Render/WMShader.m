@@ -54,20 +54,37 @@ NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
 
 + (WMShader *)defaultShader;
 {
+	//These are embedded here so we don't have to worry about resources...
+	
+	NSString *fragmentShader = @"\
+uniform sampler2D texture;\
+uniform lowp vec4 color;\
+\
+varying highp vec2 v_tc;\
+\
+void main()\
+{\
+	gl_FragColor = color * texture2D(texture, v_tc);\
+}\
+";
+
+	NSString *vertexShader = @"\
+attribute vec4 position;\
+attribute vec2 texCoord0;\
+\
+uniform mat4 wm_T;\
+\
+varying highp vec2 v_tc;\
+\
+void main()\
+{\
+	gl_Position = wm_T * position;\
+	v_tc = texCoord0;\
+}\
+";
+	
 	//TODO: make a better system for default shaders!
-	NSError *defaultShaderError = nil;
-	NSString *vertexShader = [NSString stringWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"WMDefaultShader" withExtension:@"vsh"] encoding:NSASCIIStringEncoding error:&defaultShaderError];
-	if (defaultShaderError) {
-		NSLog(@"Error loading default vertex shader: %@", defaultShaderError);
-		return nil;
-	}
-	
-	NSString *fragmentShader = [NSString stringWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"WMDefaultShader" withExtension:@"fsh"] encoding:NSASCIIStringEncoding error:&defaultShaderError];
-	if (defaultShaderError) {
-		NSLog(@"Error loading default fragment shader: %@", defaultShaderError);
-		return nil;
-	}
-	
+	NSError *defaultShaderError = nil;	
 	WMShader *shader = [[WMShader alloc] initWithVertexShader:vertexShader fragmentShader:fragmentShader error:&defaultShaderError];
 	if (defaultShaderError) {
 		NSLog(@"Error loading default shader: %@", defaultShaderError);
