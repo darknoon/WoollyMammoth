@@ -10,4 +10,7 @@
    <FileRef
       location = "group:Examples/BasicGL/BasicGL.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:Examples/ParticleCascade/ParticleCascade.xcodeproj">
+   </FileRef>
 </Workspace>

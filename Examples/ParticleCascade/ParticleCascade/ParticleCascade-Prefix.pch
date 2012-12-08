@@ -1,0 +1,10 @@
+//
+// Prefix header for all source files of the 'ParticleCascade' target in the 'ParticleCascade' project
+//
+
+#import <Availability.h>
+
+#ifdef __OBJC__
+#import <GLKit/GLKMath.h>
+#import <WMLite/WMLite.h>
+#endif
