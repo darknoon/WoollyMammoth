@@ -23,6 +23,7 @@
 #import <WMLite/NSValue+GLKVector.h>
 #import <WMLite/WMEAGLContext.h>
 #import <WMLite/WMFramebuffer.h>
+#import <WMLite/WMFrameCounter.h>
 #import <WMLite/WMGLStateObject.h>
 #import <WMLite/WMMathUtil.h>
 #import <WMLite/WMRenderObject.h>
