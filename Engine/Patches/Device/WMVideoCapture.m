@@ -124,8 +124,6 @@
 {
 	[self stopCapture];
 #if TARGET_OS_EMBEDDED
-	if (videoCaptureQueue)
-		dispatch_release(videoCaptureQueue);
 	videoCaptureQueue = NULL;
 	
 	if (textureCache)

@@ -405,7 +405,6 @@ bail:
 	if (textureCache) CFRelease(textureCache);
 	
 	if (videoProcessingQueue) {
-		dispatch_release(videoProcessingQueue);
 		videoProcessingQueue = NULL;
 	}
 }

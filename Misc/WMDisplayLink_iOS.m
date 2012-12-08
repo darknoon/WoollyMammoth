@@ -26,7 +26,6 @@
 	if (!self) return nil;
 	
 	_targetQueue = queue;
-	dispatch_retain(_targetQueue);
 	_callback = [callback copy];
 	
 	_displayLink = [[UIScreen mainScreen] displayLinkWithTarget:self selector:@selector(_displayLinkCallback:)];
@@ -45,7 +44,6 @@
 - (void)dealloc
 {
 	[self invalidate];
-    dispatch_release(_targetQueue);
 }
 
 - (void)_runDisplayLinkThread;
