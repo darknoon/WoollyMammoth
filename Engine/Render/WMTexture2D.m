@@ -51,6 +51,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 #import "WMTexture2D_WMEAGLContext_Private.h"
 #import "WMGLStateObject_WMEAGLContext_Private.h"
+#import "EAGLContext+Extensions.h"
 
 NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation);
 
@@ -76,6 +77,45 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 	}
 }
 
+GLenum GLTypeForWMTexture2DPixelFormat(WMTexture2DPixelFormat format) {
+	switch (format) {
+		case kWMTexture2DPixelFormat_RGBA8888:
+		case kWMTexture2DPixelFormat_BGRA8888:
+		case kWMTexture2DPixelFormat_A8:
+		case kWMTexture2DPixelFormat_R8:
+			return GL_UNSIGNED_BYTE;
+		case kWMTexture2DPixelFormat_RGB565:
+			return GL_UNSIGNED_SHORT_5_6_5;
+		default:
+			return 0;
+	}
+}
+
+GLint GLFormatForWMTexture2DPixelFormat(WMTexture2DPixelFormat format) {
+	switch(format) {
+		case kWMTexture2DPixelFormat_RGBA8888:
+			return GL_RGBA;
+		case kWMTexture2DPixelFormat_BGRA8888:
+#if GL_APPLE_texture_format_BGRA8888
+			return GL_BGRA_EXT;
+#else
+			return GL_BGRA;
+#endif
+		case kWMTexture2DPixelFormat_RGB565:
+			return GL_RGB;
+		case kWMTexture2DPixelFormat_A8:
+			return GL_ALPHA;
+			break;
+#if GL_EXT_texture_rg
+		case kWMTexture2DPixelFormat_R8:
+			return GL_RED_EXT;
+#endif
+		default:
+			@throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Invalid texture format" userInfo:nil];
+			
+	}
+}
+
 @interface WMTexture2D ()
 - (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
 
@@ -85,7 +125,9 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 
 //CLASS IMPLEMENTATIONS:
 
-@implementation WMTexture2D
+@implementation WMTexture2D {
+	BOOL _immutable;
+}
 
 @synthesize orientation;
 @synthesize contentSize=_size;
@@ -93,6 +135,7 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 @synthesize pixelsWide=_width;
 @synthesize pixelsHigh=_height;
 @synthesize name=_name;
+
 
 
 - (void)createDefaultTexture;
@@ -106,6 +149,80 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 	}];
 
 }
+
+- (id)initEmptyTextureWithPixelFormat:(WMTexture2DPixelFormat)pixelFormat width:(GLuint)width height:(GLuint)height;
+{
+	self = [self init];
+	if (!self) return nil;
+	
+	static BOOL supported;
+	static BOOL supported_initialized;
+	
+	if (!supported_initialized) {
+#if GL_EXT_texture_storage
+		supported = [self.context supportsExtension:AS_NSSTRING(GL_EXT_texture_storage)];
+#endif
+		supported_initialized = YES;
+	}
+	
+	if (supported) {
+		
+#if GL_EXT_texture_storage
+		ZAssert([self.context supportsExtension:@"GL_EXT_texture_storage"], @"Oops, this impl doesn't support glTexStorage2DEXT");
+		ZAssert(pixelFormat < _WMTexture2DPixelFormat_count, @"Invalid format");
+		ZAssert(pixelFormat != kWMTexture2DPixelFormat_Automatic, @"Invalid format");
+		ZAssert(width < self.context.maxTextureSize, @"Texture width too big!");
+		ZAssert(height < self.context.maxTextureSize, @"Texture height too big!");
+		
+		GLint internalFormat;
+		switch (pixelFormat) {
+			case kWMTexture2DPixelFormat_BGRA8888:
+			case kWMTexture2DPixelFormat_RGBA8888:
+				internalFormat = GL_BGRA8_EXT;
+				break;
+			case kWMTexture2DPixelFormat_A8:
+				internalFormat = GL_ALPHA8_EXT;
+				break;
+#if GL_EXT_texture_rg
+			case kWMTexture2DPixelFormat_R8:
+				internalFormat = GL_LUMINANCE8_EXT;
+				break;
+#endif
+			default:
+				ZAssert(0, @"Invalid internal format!");
+				return nil;
+		}
+		
+		_format = pixelFormat;
+		
+		_size = (CGSize){width, height};
+		_width = width;
+		_height = height;
+		_format = pixelFormat;
+		
+		
+		glGenTextures(1, &_name);
+		[self.context bind2DTextureNameForModification:_name inBlock:^{
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			//Needed by default for npot
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			
+			GL_CHECK_ERROR;
+			
+			glTexStorage2DEXT(GL_TEXTURE_2D, 1, GL_BGRA8_EXT, width, height);
+			
+			GL_CHECK_ERROR;
+		}];
+		
+#endif
+		return self;
+	} else {
+		return [self initWithData:NULL pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:width pixelsHigh:height contentSize:(CGSize){width, height}];
+	}
+}
+	 
+
 
 - (id)initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;
 {
@@ -129,6 +246,7 @@ NSString *NSStringFromUIImageOrientation(UIImageOrientation orientation) {
 {
 	ZAssert(self.context, @"Weird! No context in which to set data!");
 	[self.context bind2DTextureNameForModification:_name inBlock:^{
+		
 		switch(pixelFormat) {
 				
 			case kWMTexture2DPixelFormat_RGBA8888:

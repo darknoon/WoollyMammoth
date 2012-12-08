@@ -13,8 +13,10 @@
 #import "WMFramebuffer.h"
 
 @interface WMEAGLContext (FramebufferPrivate)
+
 //This also controls glViewport at the moment. Perhaps this will change in the future.
 @property (nonatomic, strong) WMFramebuffer *boundFramebuffer;
+@property (nonatomic) CGRect viewport;
 
 @end
 

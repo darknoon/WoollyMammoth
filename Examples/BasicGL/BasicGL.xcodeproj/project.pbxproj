@@ -26,11 +26,6 @@
 		49E2E9F21672A78F00FA4FCE /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2E9E91672A78F00FA4FCE /* GLKit.framework */; };
 		49E2E9F31672A78F00FA4FCE /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2E9EA1672A78F00FA4FCE /* OpenGLES.framework */; };
 		49E2E9F41672A78F00FA4FCE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2E9EB1672A78F00FA4FCE /* QuartzCore.framework */; };
-		49E2EA041672AD6A00FA4FCE /* WMDefaultShader.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E9FF1672AD6A00FA4FCE /* WMDefaultShader.fsh */; };
-		49E2EA051672AD6A00FA4FCE /* WMDefaultShader.fsh.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 49E2EA001672AD6A00FA4FCE /* WMDefaultShader.fsh.glsl */; };
-		49E2EA061672AD6A00FA4FCE /* WMDefaultShader.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 49E2EA011672AD6A00FA4FCE /* WMDefaultShader.vsh */; };
-		49E2EA071672AD6A00FA4FCE /* WMDefaultShader.vsh.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 49E2EA021672AD6A00FA4FCE /* WMDefaultShader.vsh.glsl */; };
-		49E2EA081672AD6A00FA4FCE /* WMLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2EA031672AD6A00FA4FCE /* WMLite.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,11 +53,6 @@
 		49E2E9E91672A78F00FA4FCE /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/GLKit.framework; sourceTree = "<absolute>"; };
 		49E2E9EA1672A78F00FA4FCE /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/OpenGLES.framework; sourceTree = "<absolute>"; };
 		49E2E9EB1672A78F00FA4FCE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = "<absolute>"; };
-		49E2E9FF1672AD6A00FA4FCE /* WMDefaultShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = WMDefaultShader.fsh; sourceTree = "<group>"; };
-		49E2EA001672AD6A00FA4FCE /* WMDefaultShader.fsh.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WMDefaultShader.fsh.glsl; sourceTree = "<group>"; };
-		49E2EA011672AD6A00FA4FCE /* WMDefaultShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = WMDefaultShader.vsh; sourceTree = "<group>"; };
-		49E2EA021672AD6A00FA4FCE /* WMDefaultShader.vsh.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WMDefaultShader.vsh.glsl; sourceTree = "<group>"; };
-		49E2EA031672AD6A00FA4FCE /* WMLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WMLite.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +72,6 @@
 				49E2E9F21672A78F00FA4FCE /* GLKit.framework in Frameworks */,
 				49E2E9F31672A78F00FA4FCE /* OpenGLES.framework in Frameworks */,
 				49E2E9F41672A78F00FA4FCE /* QuartzCore.framework in Frameworks */,
-				49E2EA081672AD6A00FA4FCE /* WMLite.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,7 +98,6 @@
 		49E2E99D1672A22D00FA4FCE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				49E2E9FD1672AD6A00FA4FCE /* WMLite.embeddedframework */,
 				49E2E9E31672A78F00FA4FCE /* MobileCoreServices.framework */,
 				49E2E9E41672A78F00FA4FCE /* CoreMedia.framework */,
 				49E2E9E51672A78F00FA4FCE /* AssetsLibrary.framework */,
@@ -150,27 +138,6 @@
 				49E2E9B41672A22D00FA4FCE /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		49E2E9FD1672AD6A00FA4FCE /* WMLite.embeddedframework */ = {
-			isa = PBXGroup;
-			children = (
-				49E2E9FE1672AD6A00FA4FCE /* Resources */,
-				49E2EA031672AD6A00FA4FCE /* WMLite.framework */,
-			);
-			name = WMLite.embeddedframework;
-			path = "../../../../../Library/Developer/Xcode/DerivedData/WoollyMammoth-bgnqtjvmqnwalgazhysaiovvkhhp/Build/Products/Debug-iphoneos/WMLite.embeddedframework";
-			sourceTree = "<group>";
-		};
-		49E2E9FE1672AD6A00FA4FCE /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				49E2E9FF1672AD6A00FA4FCE /* WMDefaultShader.fsh */,
-				49E2EA001672AD6A00FA4FCE /* WMDefaultShader.fsh.glsl */,
-				49E2EA011672AD6A00FA4FCE /* WMDefaultShader.vsh */,
-				49E2EA021672AD6A00FA4FCE /* WMDefaultShader.vsh.glsl */,
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -228,8 +195,6 @@
 				49E2E9B11672A22D00FA4FCE /* Default.png in Resources */,
 				49E2E9B31672A22D00FA4FCE /* Default@2x.png in Resources */,
 				49E2E9B51672A22D00FA4FCE /* Default-568h@2x.png in Resources */,
-				49E2EA051672AD6A00FA4FCE /* WMDefaultShader.fsh.glsl in Resources */,
-				49E2EA071672AD6A00FA4FCE /* WMDefaultShader.vsh.glsl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,8 +208,6 @@
 				49E2E9AB1672A22D00FA4FCE /* main.m in Sources */,
 				49E2E9AF1672A22D00FA4FCE /* AppDelegate.m in Sources */,
 				49E2E9E11672A4DF00FA4FCE /* BasicGLViewController.m in Sources */,
-				49E2EA041672AD6A00FA4FCE /* WMDefaultShader.fsh in Sources */,
-				49E2EA061672AD6A00FA4FCE /* WMDefaultShader.vsh in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,6 +252,7 @@
 				OTHER_LDFLAGS = (
 					"-framework",
 					WMLite,
+					"-lstdc++",
 				);
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -315,6 +279,7 @@
 				OTHER_LDFLAGS = (
 					"-framework",
 					WMLite,
+					"-lstdc++",
 				);
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -325,11 +290,7 @@
 		49E2E9B91672A22D00FA4FCE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(BUILD_PRODUCTS_DIR)/WMLite.embeddedframework\"",
-					"\"$(SRCROOT)/../../../../../Library/Developer/Xcode/DerivedData/WoollyMammoth-bgnqtjvmqnwalgazhysaiovvkhhp/Build/Products/Debug-iphoneos/WMLite.embeddedframework\"",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BasicGL/BasicGL-Prefix.pch";
 				INFOPLIST_FILE = "BasicGL/BasicGL-Info.plist";
@@ -341,11 +302,7 @@
 		49E2E9BA1672A22D00FA4FCE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(BUILD_PRODUCTS_DIR)/WMLite.embeddedframework\"",
-					"\"$(SRCROOT)/../../../../../Library/Developer/Xcode/DerivedData/WoollyMammoth-bgnqtjvmqnwalgazhysaiovvkhhp/Build/Products/Debug-iphoneos/WMLite.embeddedframework\"",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BasicGL/BasicGL-Prefix.pch";
 				INFOPLIST_FILE = "BasicGL/BasicGL-Info.plist";

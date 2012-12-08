@@ -57,6 +57,8 @@
 	
 	WMVertexArrayObject *boundVAO;
 	
+	NSCache *_objectCache;
+	
 	GLKVector4 clearColor;
 	
 	int activeTexture;
@@ -75,6 +77,13 @@
 @synthesize maxTextureUnits;
 @synthesize maxVertexAttributes;
 
++ (WMEAGLContext *)currentContext;
+{
+	EAGLContext *ctx = [super currentContext];
+	ZAssert(!ctx || [ctx isKindOfClass:[WMEAGLContext class]], @"Not the expected context type!");
+	return (WMEAGLContext *)ctx;
+}
+
 - (id)initWithAPI:(EAGLRenderingAPI)api;
 {
 	return [self initWithAPI:api sharegroup:nil];
@@ -85,34 +94,41 @@
 	if (self == nil) return self; 
 	
 	BOOL success = [EAGLContext setCurrentContext:self];
-	
-	if (success) {
-		
-		//Assumed state
-		glEnable(GL_DEPTH_TEST);
-		depthState = DNGLStateDepthTestEnabled | DNGLStateDepthWriteEnabled;
-		
-		//Assume an source-over mode to start
-		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-		
-		glGetIntegerv(GL_ACTIVE_TEXTURE, &activeTexture);
-		activeTexture -= GL_TEXTURE0;
-		
-		glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &maxVertexAttributes);
-		
-		glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
-		
-		glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
-		
-	} else {
+	if (!success) {
 		NSLog(@"Couldn't set current EAGLContext to self in WMEAGLContext initWithAPI:sharegroup:");
 		return nil;
 	}
 	
+	_objectCache = [[NSCache alloc] init];
+	
+	//Assumed state
+	glEnable(GL_DEPTH_TEST);
+	depthState = DNGLStateDepthTestEnabled | DNGLStateDepthWriteEnabled;
+	
+	//Assume an source-over mode to start
+	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+	
+	glGetIntegerv(GL_ACTIVE_TEXTURE, &activeTexture);
+	activeTexture -= GL_TEXTURE0;
+	
+	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &maxVertexAttributes);
+	
+	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
+	
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
+	
 	return self;
 }
 
+- (WMGLStateObject *)cachedObjectForKey:(NSString *)key;
+{
+	return [_objectCache objectForKey:key];
+}
 
+- (void)setCachedObject:(WMGLStateObject *)object forKey:(NSString *)key;
+{
+	[_objectCache setObject:object forKey:key];
+}
 
 - (void)setBlendState:(int)inBlendState;
 {
@@ -169,6 +185,14 @@
 	return [[super description] stringByAppendingFormat:@"{\n%@\n}", stateDesc];
 }
 
+- (void)setViewport:(CGRect)desiredViewport;
+{
+	if (!CGRectEqualToRect(desiredViewport, viewport)) {
+		glViewport(desiredViewport.origin.x, desiredViewport.origin.y, desiredViewport.size.width, desiredViewport.size.height);
+		viewport = desiredViewport;
+	}
+}
+
 - (void)setBoundFramebuffer:(WMFramebuffer *)inFramebuffer;
 {
 	if (boundFramebuffer != inFramebuffer) {
@@ -178,10 +202,7 @@
 			[boundFramebuffer bind];
 			CGRect desiredViewport = (CGRect){.size.width = boundFramebuffer.framebufferWidth, .size.height = boundFramebuffer.framebufferHeight};
 			//Set viewport as necessary
-			if (!CGRectEqualToRect(desiredViewport, viewport)) {
-				glViewport(desiredViewport.origin.x, desiredViewport.origin.y, desiredViewport.size.width, desiredViewport.size.height);
-				viewport = desiredViewport;
-			}
+			self.viewport = desiredViewport;
 		} else {
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		}
@@ -304,9 +325,9 @@
 		[self setBound2DTextureName:[(WMTexture2D *)[textures objectAtIndex:i] name] onTextureUnit:i];
 	}
 	GL_CHECK_ERROR;
-
+	
 	// Validate program before drawing. This is a good check, but only really necessary in a debug build.
-#if DEBUG
+#if DEBUG_OPENGL
 	if (![shader validateProgram])
 	{
 		NSLog(@"Failed to validate program in shader: %@", shader);
@@ -376,6 +397,22 @@
 {
 	glClear(GL_DEPTH_BUFFER_BIT);
 }
+
+- (void)pushDebugGroup:(NSString *)group;
+{
+	glPushGroupMarkerEXT(0, [group cStringUsingEncoding:NSASCIIStringEncoding]);
+}
+
+- (void)popDebugGroup;
+{
+	glPopGroupMarkerEXT();
+}
+
+- (void)insertDebugText:(NSString *)text;
+{
+	glInsertEventMarkerEXT(0, [text cStringUsingEncoding:NSASCIIStringEncoding]);
+}
+
 
 @end
 

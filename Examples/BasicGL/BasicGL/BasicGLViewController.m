@@ -87,7 +87,6 @@
 	}];
 	
 	[_glView.framebuffer presentRenderbuffer];
-	
 }
 
 

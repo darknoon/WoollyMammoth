@@ -12,13 +12,20 @@
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
 
-@implementation EAGLContext (EAGLContext_Extensions)
+NSString *WMEAGLContextCachedExtensionsKey = @"WM.extensions";
+
+@implementation WMEAGLContext (EAGLContext_Extensions)
 
 - (NSSet *)supportedExtensions;
 {
-	NSString *extensionString = [NSString stringWithUTF8String:(char *)glGetString(GL_EXTENSIONS)];
-    NSArray *extensions = [extensionString componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-	return [NSSet setWithArray:extensions];
+	NSSet *supportedExtensions = [self cachedObjectForKey:WMEAGLContextCachedExtensionsKey];
+	if (!supportedExtensions) {
+		NSString *extensionString = [NSString stringWithUTF8String:(char *)glGetString(GL_EXTENSIONS)];
+		NSArray *extensions = [extensionString componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+		supportedExtensions = [NSSet setWithArray:extensions];
+		[self cachedObjectForKey:WMEAGLContextCachedExtensionsKey];
+	}
+	return supportedExtensions;
 }
 
 - (BOOL)supportsExtension:(NSString *)inExtension;

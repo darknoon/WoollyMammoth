@@ -21,6 +21,10 @@
 
 @interface WMVideoCapture : WMPatch <WMPatchEventSource>
 
+@property (nonatomic) NSTimeInterval targetFramerate;
+
+@property (nonatomic, copy) NSString *sessionPreset;
+
 @property (nonatomic, readonly) WMVector2Port *inputFocusPointOfInterest;
 @property (nonatomic, readonly) WMBooleanPort *inputUseFrontCamera;
 @property (nonatomic, readonly) WMBooleanPort *inputEnableTorch;

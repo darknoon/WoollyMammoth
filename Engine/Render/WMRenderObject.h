@@ -62,4 +62,7 @@ extern NSString *const WMRenderObjectTransformUniformName; // wm_T is selected f
 - (void)setValue:(id)inValue forUniformWithName:(NSString *)inUniformName;
 - (id)valueForUniformWithName:(NSString *)inUniformName;
 
+//Use this to identify objects as they pass throught the system
+@property (nonatomic, copy) NSString *debugLabel;
+
 @end

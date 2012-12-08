@@ -34,7 +34,7 @@
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
 	CGSize outputSize = [[args objectForKey:WMEngineArgumentsOutputDimensionsKey] CGSizeValue];
-	GLKMatrix4 transform = [WMEngine cameraMatrixWithRect:(CGRect){.size = outputSize}];
+	GLKMatrix4 transform = cameraMatrixForRect((CGRect){.size = outputSize});
 	
 	if (inputRenderable1.object) {
 		[self renderObject:inputRenderable1.object withTransform:transform inContext:context];

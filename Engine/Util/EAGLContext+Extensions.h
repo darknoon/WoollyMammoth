@@ -9,14 +9,12 @@
 #import <Foundation/Foundation.h>
 
 
-#import <OpenGLES/EAGL.h>
+#import "WMEAGLContext.h"
 
-
-@interface EAGLContext (EAGLContext_Extensions)
+@interface WMEAGLContext (EAGLContext_Extensions)
 
 - (NSSet *)supportedExtensions;
 
-//At the moment, just a convenience method
 - (BOOL)supportsExtension:(NSString *)inExtension;
 
 @end

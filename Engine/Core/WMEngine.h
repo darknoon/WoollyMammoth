@@ -28,7 +28,7 @@ extern NSString *const WMEngineArgumentsDocumentKey;
 - (id)initWithRootPatch:(WMPatch *)inPatch;
 - (id)initWithBundle:(WMBundleDocument *)inDocument;
 
-+ (GLKMatrix4)cameraMatrixWithRect:(CGRect)inBounds;
++ (GLKMatrix4)cameraMatrixWithRect:(CGRect)inBounds __attribute__((deprecated));
 
 @property (nonatomic, readonly) NSUInteger frameNumber;
 

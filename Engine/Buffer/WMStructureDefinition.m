@@ -63,7 +63,7 @@ size_t WMStructureTypeSize(WMStructureType inType) {
 	memcpy(fields, inFields, inCount * sizeof(WMStructureField));
 	fieldCount = inCount;
 	
-	NSUInteger sizeMinBound = 0.0;
+	NSUInteger sizeMinBound = 0;
 	
 	for (int i=0; i<fieldCount; i++) {
 		sizeMinBound += WMStructureFieldSize(fields[i]);

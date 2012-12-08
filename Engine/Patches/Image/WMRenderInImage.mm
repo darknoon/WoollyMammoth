@@ -56,6 +56,7 @@
 	[inContext renderObject:inObject];
 }
 
+
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
 	if (!_inputObject1.object && !_inputObject2.object && !_inputObject3.object && !_inputObject4.object) {
@@ -80,56 +81,8 @@
 		return YES;
 	}
 	
-	GLKMatrix4 transform;
-	
-	//All transforms have inverted y-axis
-	const float yInv = -1.0;
 	UIImageOrientation outputOrientation = (UIImageOrientation)_inputOrientation.index;
-	float aspectRatio = (float)renderHeight / renderWidth;
-	switch (outputOrientation) {
-		default:
-		case UIImageOrientationUp:
-			transform = [WMEngine cameraMatrixWithRect:(CGRect){0, 0, renderWidth, renderHeight}];
-			transform = GLKMatrix4Scale(transform, 1.0f, 1.0f * yInv, 1.0f);
-			break;
-		case UIImageOrientationUpMirrored:
-			transform = [WMEngine cameraMatrixWithRect:(CGRect){0, 0, renderWidth, renderHeight}];
-			transform = GLKMatrix4Scale(transform, -1.0f, 1.0f * yInv, 1.0);
-			break;
-		case UIImageOrientationDown:
-			transform = [WMEngine cameraMatrixWithRect:(CGRect){0, 0, renderWidth, renderHeight}];
-			transform = GLKMatrix4Scale(transform, -1.0f, -1.0f * yInv, 1.0);
-			break;
-		case UIImageOrientationDownMirrored:
-			transform = [WMEngine cameraMatrixWithRect:(CGRect){0, 0, renderWidth, renderHeight}];
-			transform = GLKMatrix4Scale(transform, 1.0f, -1.0f * yInv, 1.0);
-			break;
-		case UIImageOrientationLeft:
-			transform = [WMEngine cameraMatrixWithRect:(CGRect){0, 0, renderWidth, renderHeight}];
-			transform = GLKMatrix4RotateZ(transform, -M_PI_2);
-			transform = GLKMatrix4Scale(transform, 1.0f, 1.0f * yInv, 1.0);
-			transform = GLKMatrix4Scale(transform, aspectRatio, aspectRatio, 1.0);
-			break;
-		case UIImageOrientationLeftMirrored:
-			transform = [WMEngine cameraMatrixWithRect:(CGRect){0, 0, renderWidth, renderHeight}];
-			transform = GLKMatrix4RotateZ(transform, -M_PI_2);
-			transform = GLKMatrix4Scale(transform, -1.0f, 1.0f * yInv, 1.0);
-			transform = GLKMatrix4Scale(transform, aspectRatio, aspectRatio, 1.0);
-			break;
-		case UIImageOrientationRight:
-			transform = [WMEngine cameraMatrixWithRect:(CGRect){0, 0, renderWidth, renderHeight}];
-			transform = GLKMatrix4RotateZ(transform, M_PI_2);
-			transform = GLKMatrix4Scale(transform, 1.0f, 1.0f * yInv, 1.0f);
-			transform = GLKMatrix4Scale(transform, aspectRatio, aspectRatio, 1.0);
-			break;
-		case UIImageOrientationRightMirrored:
-			transform = [WMEngine cameraMatrixWithRect:(CGRect){0, 0, renderWidth, renderHeight}];
-			transform = GLKMatrix4RotateZ(transform, M_PI_2);
-			transform = GLKMatrix4Scale(transform, -1.0f, 1.0f * yInv, 1.0);
-			transform = GLKMatrix4Scale(transform, aspectRatio, aspectRatio, 1.0);
-			break;
-	}
-
+	GLKMatrix4 transform = transformForRenderingInOrientation(outputOrientation, renderWidth, renderHeight);
 	
 	WMTexture2D *texture = [context renderToTextureWithWidth:renderWidth height:renderHeight depthBufferDepth:useDepthBuffer ? GL_DEPTH_COMPONENT16 : 0 block:^{
 

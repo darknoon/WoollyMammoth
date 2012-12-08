@@ -19,20 +19,11 @@
 @class WMTexture2D;
 @class WMStructuredBuffer;
 
-@interface WMImageFilter : WMPatch {
-    WMShader *shader;
-	
-	WMFramebuffer *fbo;
-	WMTexture2D *texture0;
-	WMTexture2D *texture1;
-	
-	//For quad
-	WMStructuredBuffer *vertexBuffer;
-	WMStructuredBuffer *indexBuffer;
-	
-	WMNumberPort *inputRadius;
-	WMImagePort *inputImage;
-	WMImagePort *outputImage;
-}
+@interface WMImageFilter : WMPatch
+
+@property (nonatomic, readonly) WMNumberPort *inputRadius;
+@property (nonatomic, readonly) WMImagePort *inputImage;
+@property (nonatomic, readonly) WMImagePort *outputImage;
+
 
 @end

@@ -65,13 +65,15 @@ typedef enum {
 #if GL_EXT_texture_rg
 	kWMTexture2DPixelFormat_R8,
 #endif
+	//TODO: kWMTexture2DPixelFormat_RGB422
+	//TODO: kWMTexture2DPixelFormat_RGBA16F
+	//TODO: kWMTexture2DPixelFormat_RGBA32F
+	//TODO: kWMTexture2DPixelFormat_R32F
+	_WMTexture2DPixelFormat_count
 } WMTexture2DPixelFormat;
-
-//CLASS INTERFACES:
 
 /*
 This class allows to easily create OpenGL 2D textures from images, text or raw data.
-The created WMTexture2D object will always have power-of-two dimensions.
 Depending on how you create the WMTexture2D object, the actual image area of the texture might be smaller than the texture dimensions i.e. "contentSize" != (pixelsWide, pixelsHigh) and (maxS, maxT) != (1.0, 1.0).
 Be aware that the content of the generated textures will be upside-down!
 */
@@ -80,13 +82,18 @@ Be aware that the content of the generated textures will be upside-down!
 //Designated initializer
 - (id)initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;
 
-- (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;
-
-
-//These methods assume UIImageOrientationUp
 - (id)initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
 
+//Experimental method that creates a fixed-size texture. You cannot modify the size later with -setData
+//Only 1 mip level currently
+- (id)initEmptyTextureWithPixelFormat:(WMTexture2DPixelFormat)pixelFormat width:(GLuint)width height:(GLuint)height;
+
+//Indicates that the width or height of the texture may not be modified by one of the -setData APIs
+@property (nonatomic, readonly) BOOL immutable;
+
+//Resize the texture to the provided size and upload new data to it
 - (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
+- (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;
 
 //Get a texture in the current context from another context's texture (changes the current texture, as you need to keep the texture name alive)
 - (void)moveToContext:(WMEAGLContext *)inContext;
@@ -138,7 +145,7 @@ Extensions to make it easy to create a WMTexture2D object from a string of text.
 Note that the generated textures are of type A8 - use the blending mode (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA).
 */
 @interface WMTexture2D (Text)
-- (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions alignment:(UITextAlignment)alignment fontName:(NSString*)name fontSize:(CGFloat)size;
+- (id)initWithString:(NSString*)string dimensions:(CGSize)dimensions alignment:(UITextAlignment)alignment fontName:(NSString*)name fontSize:(CGFloat)size;
 @end
 
 #endif

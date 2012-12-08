@@ -80,7 +80,10 @@
 - (id) initWithPlistRepresentation:(id)inPlist {
 	self = [super initWithPlistRepresentation:inPlist];
 	if (!self) return self; 
-		
+	
+	_sessionPreset = AVCaptureSessionPreset640x480;
+	_eventDelegatePaused = YES; //paused, so setting not paused triggers setup & go
+	
 	return self;
 }
 
@@ -108,14 +111,12 @@
 	videoCaptureQueue = dispatch_queue_create([[NSString stringWithFormat:@"com.darknoon.%@.videoCaptureQueue", [self class]] UTF8String], DISPATCH_QUEUE_SERIAL);
 	dispatch_set_target_queue(videoCaptureQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0));
 		
-	CVReturn result = CVOpenGLESTextureCacheCreate(NULL, NULL, context, NULL, &textureCache);
+	CVReturn result = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, context, NULL, &textureCache);
 	if (result != kCVReturnSuccess) {
 		NSLog(@"Error creating CVOpenGLESTextureCache");
 	}
 	
 #endif
-	
-	[self startCapture];
 
 	return YES;
 }
@@ -154,12 +155,8 @@
 	DLog(@"Configuring capture for video device: %@", device);
 	
 	if (cameraDevice) {
-		if ([cameraDevice supportsAVCaptureSessionPreset:AVCaptureSessionPreset1280x720]) {
-			[captureSession setSessionPreset:AVCaptureSessionPreset1280x720];
-		} else if ([cameraDevice supportsAVCaptureSessionPreset:AVCaptureSessionPresetMedium]) {
-			[captureSession setSessionPreset:AVCaptureSessionPresetMedium];
-		} else if ([cameraDevice supportsAVCaptureSessionPreset:AVCaptureSessionPresetLow]) {
-			[captureSession setSessionPreset:AVCaptureSessionPresetLow];
+		if ([cameraDevice supportsAVCaptureSessionPreset:_sessionPreset]) {
+			[captureSession setSessionPreset:_sessionPreset];
 		} else {
 			NSLog(@"ERROR: could not set an appropriate session preset for capturing from video device: %@", device);
 			return NO;
@@ -167,6 +164,7 @@
 		
 
 		captureVideoInput = [[AVCaptureDeviceInput alloc] initWithDevice:cameraDevice error:&error];
+				
 		if (captureVideoInput) {
 			[captureSession addInput:captureVideoInput];
 		} else {
@@ -261,6 +259,12 @@
 	
 	[captureSession addOutput:videoDataOutput];
 	[captureSession addOutput:audioDataOutput];
+	
+	ZAssert(videoDataOutput.connections.count > 0, @"AVCaptureSession did not hook the videoDataOutput to any connections");
+	AVCaptureConnection *videoDataConnection = [videoDataOutput.connections objectAtIndex:0];
+	if (self.targetFramerate > 0) {
+		videoDataConnection.videoMinFrameDuration = CMTimeMakeWithSeconds(1.0 / _targetFramerate, 600);
+	}
 
 	[captureSession commitConfiguration];
 
@@ -304,9 +308,9 @@
 			if (captureOutput == audioDataOutput) {
 				
 				//Better to drop than accumulate a ton!
-				if (mostRecentAudioBuffer.sampleBuffers.count > 5) {
+				if (mostRecentAudioBuffer.sampleBuffers.count > 10) {
 					mostRecentAudioBuffer = nil;
-					NSLog(@"ERROR: audio buffer overflow (video underflow) delegate: %@", self.eventDelegate);
+					DLog(@"ERROR: audio buffer overflow (video underflow) delegate: %@", self.eventDelegate);
 				}
 				
 				mostRecentAudioBuffer = mostRecentAudioBuffer ? [mostRecentAudioBuffer bufferByAppendingSampleBuffer:sampleBuffer] : [[WMAudioBuffer alloc] initWithCMSampleBuffer:sampleBuffer];
@@ -351,8 +355,8 @@
 	[WMEAGLContext setCurrentContext:_context];
 	//Get the texture ready
 	
-	unsigned width = 640;
-	unsigned height = 480;
+	unsigned width = 320;
+	unsigned height = 240;
 	
 	static unsigned char ppp;
 	
@@ -361,8 +365,8 @@
 	for (int y=0, i=0; y<height; y++) {
 		for (int x=0; x<width; x++, i++) {
 			buffer[4*i + 0] = 255 - ppp;
-			buffer[4*i + 1] = ppp + x;
-			buffer[4*i + 2] = y;
+			buffer[4*i + 1] = 2 * ppp + x;
+			buffer[4*i + 2] = 2 * y;
 			buffer[4*i + 3] = 255;
 		}
 	}

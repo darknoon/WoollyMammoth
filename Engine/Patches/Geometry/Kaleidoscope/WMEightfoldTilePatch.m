@@ -62,7 +62,7 @@ static WMStructureField WMKaleidoscopeVertex_fields[] = {
 	inputAngle.minValue = -180.f;
 	inputAngle.maxValue = 180.f;
 
-	WMStructureDefinition *def = [[WMStructureDefinition alloc] initWithFields:WMKaleidoscopeVertex_fields count:3 totalSize:sizeof(KaleidoscopeGeometryPoint)];
+	WMStructureDefinition *def = [[WMStructureDefinition alloc] initWithFields:WMKaleidoscopeVertex_fields count:sizeof(WMKaleidoscopeVertex_fields) / sizeof(WMStructureField) totalSize:sizeof(KaleidoscopeGeometryPoint)];
 	vertices = [[WMStructuredBuffer alloc] initWithDefinition:def];
 	
 	WMStructureDefinition *idef = [[WMStructureDefinition alloc] initWithAnonymousFieldOfType:WMStructureTypeUnsignedShort];

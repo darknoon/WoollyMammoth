@@ -33,6 +33,14 @@ typedef int DNGLStateDepthMask;
 //ie WMStructuredBuffer only has gl backing when actually being used to render, transparent to the user
 //ie WMRenderObject only has a VAO backing when actually going to be rendered to the screen
 
++ (WMEAGLContext *)currentContext;
+
+/////// Caching methods  ///////
+
+// Used by various parts of the render system to avoid duplication of shaders etc
+- (id)cachedObjectForKey:(NSString *)key;
+- (void)setCachedObject:(id)object forKey:(NSString *)key;
+
 /////// State object factory methods ///////
 
 //Create a framebuffer to draw out to screen
@@ -78,5 +86,11 @@ typedef int DNGLStateDepthMask;
 @property (nonatomic, readonly) int maxTextureSize;
 @property (nonatomic, readonly) int maxVertexAttributes;
 @property (nonatomic, readonly) int maxTextureUnits;
+
+/////// Debug aids  ///////
+
+- (void)pushDebugGroup:(NSString *)group;
+- (void)popDebugGroup;
+- (void)insertDebugText:(NSString *)text;
 
 @end

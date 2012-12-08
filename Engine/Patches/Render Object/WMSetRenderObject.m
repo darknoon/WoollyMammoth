@@ -21,10 +21,6 @@
 @synthesize inputVertices;
 @synthesize inputIndices;
 
-//@synthesize inputBlendingType;
-//@synthesize inputDepthType;
-//@synthesize inputRenderType;
-
 + (NSString *)category;
 {
     return WMPatchCategoryUtil;

@@ -12,6 +12,11 @@
 
 @implementation WMImageOrientation
 
++ (NSString *)category;
+{
+    return WMPatchCategoryImage;
+}
+
 + (void)load;
 {
 	@autoreleasepool {

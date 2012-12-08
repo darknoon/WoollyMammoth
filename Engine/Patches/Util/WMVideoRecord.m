@@ -121,6 +121,10 @@ static inline double radians (double degrees) { return degrees * (M_PI / 180); }
 		goto bail;
 	}
 	{
+		//Neither of these approaches seems to be working properly.
+		//TODO: post on devforums
+		
+#if 0
 		AVMutableMetadataItem *usedFilterMetadata = [[AVMutableMetadataItem alloc] init];
 		usedFilterMetadata.keySpace = @"com.darknoon.take";
 		usedFilterMetadata.key = @"filter";
@@ -128,10 +132,20 @@ static inline double radians (double degrees) { return degrees * (M_PI / 180); }
 		usedFilterMetadata.extraAttributes = @{@"com.darknoon.take.extraAttributes.filter" : @"testFilterDataItem"};
 		
 		_assetWriter.metadata = @[ usedFilterMetadata ];
-	
+#endif
+#if 0
+		AVMutableMetadataItem *usedFilterMetadata = [[AVMutableMetadataItem alloc] init];
+		usedFilterMetadata.keySpace = AVMetadataKeySpaceID3;
+		usedFilterMetadata.key = AVMetadataID3MetadataKeyGeneralEncapsulatedObject;
+		usedFilterMetadata.value = @{@"com.darknoon.take.filter" : @"testFilterDataItem"};
+		
+		_assetWriter.metadata = @[ usedFilterMetadata ];
+#endif
 	}
 	//Video output setting / creation
 	{
+		//TODO: fully test movie fragments
+		//_assetWriter.movieFragmentInterval = CMTimeMakeWithSeconds(4.0, _assetWriter.movieTimeScale);
 		
 		//TODO: pick better encoding settings
 		
@@ -142,7 +156,10 @@ static inline double radians (double degrees) { return degrees * (M_PI / 180); }
 			bitsPerSecond = 87500 * 8;
 		else if (videoDimensions.width <= 640 && videoDimensions.height <= 480)
 			bitsPerSecond = 437500 * 8;
-		
+		else if (videoDimensions.width <= 1280 && videoDimensions.height <= 720)
+			bitsPerSecond = 1000000 * 8;
+		else
+			bitsPerSecond = 1500000 * 8;
 		NSDictionary *videoCompressionSettings = [NSDictionary dictionaryWithObjectsAndKeys:
 												  AVVideoCodecH264, AVVideoCodecKey,
 												  [NSNumber numberWithInt:videoDimensions.width], AVVideoWidthKey,
@@ -520,7 +537,7 @@ bail:
 				if (_inputAudio.objectValue) {
 					for (id sampleBuffer in ((WMAudioBuffer *)_inputAudio.objectValue).sampleBuffers) {
 						CMSampleBufferRef sbref = (__bridge CMSampleBufferRef)sampleBuffer;
-						[self appendAudioBufferToAssetWriterInput:sbref forTime:CMSampleBufferGetOutputPresentationTimeStamp(sbref)];
+						[self appendAudioBufferToAssetWriterInput:sbref forTime:CMSampleBufferGetPresentationTimeStamp(sbref)];
 					}
 				}
 			}
@@ -553,14 +570,13 @@ bail:
 
 	[context renderToFramebuffer:framebuffer block:^{
 				
-		[context clearToColor:(GLKVector4){0, 1, 0, 1}];
-		[context clearDepth];
+		[context clearToColor:(GLKVector4){0, 0, 0, 1}];
 		
 		if (!currentTexture || err) {
 			NSLog(@"displayAndRenderPixelBuffer error"); 
 		}
 		
-		GLKMatrix4 transform = [WMEngine cameraMatrixWithRect:(CGRect){.size.width = videoDimensions.width, .size.height = videoDimensions.height}];
+		GLKMatrix4 transform = cameraMatrixForRect((CGRect){.size.width = videoDimensions.width, .size.height = videoDimensions.height});
 
 		//Invert y-axis to account for different GL/CV coordinates
 		transform = GLKMatrix4Scale(transform, 1.0f, -1.0f, 1.0f);

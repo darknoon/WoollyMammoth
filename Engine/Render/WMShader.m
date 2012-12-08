@@ -12,6 +12,8 @@
 
 NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
 
+NSString *const WMDefaultShaderCacheKey = @"com.darknoon.WMShader.defaultShader";
+
 #import "WMShader_WMEAGLContext_Private.h"
 
 @implementation WMShader {
@@ -54,7 +56,7 @@ NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
 
 + (WMShader *)defaultShader;
 {
-	//These are embedded here so we don't have to worry about resources...
+	ZAssert([WMEAGLContext currentContext], @"Must have an WMEAGLContext active");
 	
 	NSString *fragmentShader = @"\
 uniform sampler2D texture;\

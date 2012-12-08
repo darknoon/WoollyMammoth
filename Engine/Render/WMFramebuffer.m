@@ -77,7 +77,7 @@
 	self = [super init];
 	if (!self) return nil;
 	
-	WMEAGLContext *context = (WMEAGLContext *)[EAGLContext currentContext];
+	WMEAGLContext *context = [WMEAGLContext currentContext];
 	ZAssert(context, @"nil current context creating RTT WMFramebuffer");
 	ZAssert([context isKindOfClass:[WMEAGLContext class]], @"Cannot use WMFramebuffer without WMEAGLContext");
 	
@@ -124,7 +124,7 @@
 	self = [super init];
 	if (!self) return nil;
 	
-	WMEAGLContext *context = (WMEAGLContext *)[EAGLContext currentContext];
+	WMEAGLContext *context = [WMEAGLContext currentContext];
 	
 	WMFramebuffer *oldFrameBuffer = context.boundFramebuffer;
 	
@@ -152,6 +152,7 @@
 	}
 	
 	
+#if DEBUG_OPENGL
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
 		
 		NSLog(@"Failed to make complete framebuffer object (%@) with layer %@", [WMFramebuffer descriptionOfFramebufferStatus:glCheckFramebufferStatus(GL_FRAMEBUFFER)], inLayer);
@@ -162,7 +163,7 @@
 	} else {
 		//NSLog(@"Created framebuffer %@ from layer: %@", self, inLayer);
 	}
-	
+#endif
 
 	[oldFrameBuffer bind];
 	
@@ -222,7 +223,7 @@
 	
 #if TARGET_OS_IPHONE
 	
-	WMEAGLContext *context = (WMEAGLContext *)[EAGLContext currentContext];
+	WMEAGLContext *context = [WMEAGLContext currentContext];
 	
 	__block BOOL success = NO;
 	[context renderToFramebuffer:self block:^{
@@ -248,9 +249,14 @@
 
 - (void)setColorAttachmentWithTexture:(WMTexture2D *)inTexture;
 {
-	WMEAGLContext *context = (WMEAGLContext *)[EAGLContext currentContext];
+	WMEAGLContext *context = [WMEAGLContext currentContext];
 	WMFramebuffer *oldFrameBuffer = context.boundFramebuffer;
-	context.boundFramebuffer = self;
+	if (oldFrameBuffer != self) {
+		context.boundFramebuffer = self;
+	} else {
+		CGRect desiredViewport = (CGRect){.size.width = inTexture.pixelsWide, .size.height = inTexture.pixelsHigh};
+		context.viewport = desiredViewport;
+	}
 	
 	GL_CHECK_ERROR;
 
@@ -263,7 +269,6 @@
 	_framebufferHeight = inTexture.pixelsHigh;
 	
 #if DEBUG_OPENGL
-	
 	if (inTexture) {
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
 			NSLog(@"Failed to make complete framebuffer object (%@) with texture %@", [WMFramebuffer descriptionOfFramebufferStatus:glCheckFramebufferStatus(GL_FRAMEBUFFER)], inTexture);		
