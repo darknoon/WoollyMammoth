@@ -40,15 +40,15 @@ static WMStructureField WMQuadVertex_fields[] = {
 		},
 		{
 			.v = {CGRectGetMaxX(inFrame), CGRectGetMinY(inFrame), 0, 1}, 
-			.tc = {255, 0}
+			.tc = {1, 0}
 		},
 		{
 			.v = {CGRectGetMinX(inFrame), CGRectGetMaxY(inFrame), 0, 1}, 
-			.tc = {0, 255}
+			.tc = {0, 1}
 		},
 		{
 			.v = {CGRectGetMaxX(inFrame), CGRectGetMaxY(inFrame), 0, 1}, 
-			.tc = {255, 255}
+			.tc = {1, 1}
 		}};	
 	
 	[vertexBuffer appendData:vertexDataPtr withStructure:vertexBuffer.definition count:4];
