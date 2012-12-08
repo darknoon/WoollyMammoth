@@ -16,7 +16,7 @@
 
 @class WMPatch;
 @class WMBundleDocument;
-@class EAGLView;
+@class WMView;
 
 @interface WMViewController : UIViewController <UIActionSheetDelegate, WMEngineDelegate> {
 }
@@ -27,7 +27,7 @@
 //If you want to read from a file, you can load from a nib and use this:
 @property (nonatomic, copy) NSURL *compositionURL;
 
-@property (nonatomic, weak) IBOutlet EAGLView *eaglView;
+@property (nonatomic, weak) IBOutlet WMView *eaglView;
 
 @property (nonatomic) BOOL alwaysPortrait;
 

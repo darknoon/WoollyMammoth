@@ -8,7 +8,7 @@
 
 
 #import "WMViewController.h"
-#import "EAGLView.h"
+#import "WMView.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -84,7 +84,7 @@
 	if (![self isViewLoaded]) {
 		CGRect defaultFrame = [[UIScreen mainScreen] applicationFrame];
 		
-		EAGLView *newView = [[EAGLView alloc] initWithFrame:defaultFrame];
+		WMView *newView = [[WMView alloc] initWithFrame:defaultFrame];
 		newView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
 		self.view = newView;
@@ -145,8 +145,8 @@
 {
 	[super viewDidLoad];
 	
-	if ([self.view isKindOfClass:[EAGLView class]]) {
-		self.eaglView = (EAGLView *)self.view;
+	if ([self.view isKindOfClass:[WMView class]]) {
+		self.eaglView = (WMView *)self.view;
 	}
 	
 	if (!document && self.compositionURL) {
