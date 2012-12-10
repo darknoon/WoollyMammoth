@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		49AE086C1675380400748B95 /* WMLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49AE086B1675380400748B95 /* WMLite.framework */; };
 		49E2E99F1672A22D00FA4FCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2E99E1672A22D00FA4FCE /* UIKit.framework */; };
 		49E2E9A11672A22D00FA4FCE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2E9A01672A22D00FA4FCE /* Foundation.framework */; };
 		49E2E9A31672A22D00FA4FCE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2E9A21672A22D00FA4FCE /* CoreGraphics.framework */; };
@@ -38,6 +39,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		49AE086B1675380400748B95 /* WMLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WMLite.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/WoollyMammoth-bgnqtjvmqnwalgazhysaiovvkhhp/Build/Products/Debug-iphoneos/WMLite.framework"; sourceTree = "<group>"; };
 		49E2E99A1672A22D00FA4FCE /* BasicGL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BasicGL.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E2E99E1672A22D00FA4FCE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		49E2E9A01672A22D00FA4FCE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -105,6 +107,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49AE086C1675380400748B95 /* WMLite.framework in Frameworks */,
 				49E2EB2E16732AA400FA4FCE /* GLKit.framework in Frameworks */,
 				49E2EB2C16732A9A00FA4FCE /* OpenGL.framework in Frameworks */,
 				49E2EAF8167321F700FA4FCE /* Cocoa.framework in Frameworks */,
@@ -117,8 +120,6 @@
 		49E2E98F1672A22D00FA4FCE = {
 			isa = PBXGroup;
 			children = (
-				49E2EB2D16732AA400FA4FCE /* GLKit.framework */,
-				49E2EB2B16732A9A00FA4FCE /* OpenGL.framework */,
 				49E2E9A41672A22D00FA4FCE /* BasicGL */,
 				49E2EAFD167321F800FA4FCE /* BasicGL Mac */,
 				49E2E99D1672A22D00FA4FCE /* Frameworks */,
@@ -138,6 +139,9 @@
 		49E2E99D1672A22D00FA4FCE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				49AE086B1675380400748B95 /* WMLite.framework */,
+				49E2EB2D16732AA400FA4FCE /* GLKit.framework */,
+				49E2EB2B16732A9A00FA4FCE /* OpenGL.framework */,
 				49E2E9E31672A78F00FA4FCE /* MobileCoreServices.framework */,
 				49E2E9E41672A78F00FA4FCE /* CoreMedia.framework */,
 				49E2E9E51672A78F00FA4FCE /* AssetsLibrary.framework */,
@@ -388,11 +392,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = (
-					"-framework",
-					WMLite,
-					"-lstdc++",
-				);
+				OTHER_LDFLAGS = "-lstdc++";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -415,11 +415,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				OTHER_LDFLAGS = (
-					"-framework",
-					WMLite,
-					"-lstdc++",
-				);
+				OTHER_LDFLAGS = "-lstdc++";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -458,6 +454,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+					"\"$(SRCROOT)/../../../../../Library/Developer/Xcode/DerivedData/WoollyMammoth-bgnqtjvmqnwalgazhysaiovvkhhp/Build/Products/Debug-iphoneos\"",
 				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -480,6 +477,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+					"\"$(SRCROOT)/../../../../../Library/Developer/Xcode/DerivedData/WoollyMammoth-bgnqtjvmqnwalgazhysaiovvkhhp/Build/Products/Debug-iphoneos\"",
 				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -521,6 +519,7 @@
 				49E2EB10167321F800FA4FCE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
