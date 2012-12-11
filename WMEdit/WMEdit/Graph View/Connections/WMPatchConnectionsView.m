@@ -8,8 +8,8 @@
 
 #import "WMPatchConnectionsView.h"
 
-#import "WMPatch.h"
-#import "WMConnection.h"
+#import <WMGraph/WMGraph.h>
+
 #import "WMConnectionView.h"
 #import "WMGraphEditView.h"
 

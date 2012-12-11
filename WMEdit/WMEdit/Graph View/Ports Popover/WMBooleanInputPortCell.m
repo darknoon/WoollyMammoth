@@ -8,7 +8,7 @@
 
 #import "WMBooleanInputPortCell.h"
 
-#import "WMBooleanPort.h"
+#import <WMGraph/WMGraph.h>
 
 @implementation WMBooleanInputPortCell {
 	NSNumberFormatter *formatter;

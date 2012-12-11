@@ -6,14 +6,9 @@
 
 #import "WMImageFalseColor.h"
 
-#import "WMEAGLContext.h"
-#import "WMShader.h"
-#import "WMFramebuffer.h"
-#import "WMTexture2D.h"
-#import "WMFramebuffer.h"
-#import "WMMathUtil.h"
-#import "WMRenderObject.h"
-#import "WMStructuredBuffer.h"
+
+#import <WMGraph/WMGraph.h>
+#import <WMGraph/WMMathUtil.h>
 
 typedef struct {
 	float v[4];

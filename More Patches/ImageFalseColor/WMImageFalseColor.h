@@ -9,9 +9,7 @@
 
 //For now, hardcoded to a gaussan filter
 
-#import "WMPatch.h"
-#import "WMPorts.h"
-#import "WMRenderCommon.h"
+#import <WMGraph/WMGraph.h>
 
 @class WMShader;
 @class WMFramebuffer;

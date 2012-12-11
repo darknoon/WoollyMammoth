@@ -8,7 +8,7 @@
 
 #import "WMPatchCategoryListTableViewController.h"
 
-#import "WMPatch.h"
+#import <WMGraph/WMGraph.h>
 #import "WMPatchListTableViewController.h"
 @implementation WMPatchCategoryListTableViewController {
 	NSArray *patchCategoryList;

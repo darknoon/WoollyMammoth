@@ -8,17 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		07C99A9113D38E8B00712EFA /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 07C99A9013D38E8B00712EFA /* Icon-72.png */; };
-		4905F12C157D729600488306 /* DNKaleidoscopeGeometryVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4905F127157D729600488306 /* DNKaleidoscopeGeometryVariable.m */; };
-		4905F12D157D729600488306 /* DNTriangleTriangleClip.m in Sources */ = {isa = PBXBuildFile; fileRef = 4905F129157D729600488306 /* DNTriangleTriangleClip.m */; };
-		4905F12E157D729600488306 /* WMEightfoldTilePatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 4905F12B157D729600488306 /* WMEightfoldTilePatch.m */; };
 		490AC1E713D8F10F005E61CD /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 490AC1E613D8F10F005E61CD /* GLKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
-		49174AAC13D235BD008B5B8D /* DNAssertionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174AA413D235BD008B5B8D /* DNAssertionHandler.m */; };
-		49174AAD13D235BD008B5B8D /* WMView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174AA613D235BD008B5B8D /* WMView.m */; };
-		49174AB013D235BD008B5B8D /* WMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49174AAB13D235BD008B5B8D /* WMViewController.m */; };
-		4917AC9F13F9C722008AD2CB /* WMBundleDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917AC9C13F9C722008AD2CB /* WMBundleDocument.m */; };
-		4917ACA113F9C722008AD2CB /* WMCompositionSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917AC9E13F9C722008AD2CB /* WMCompositionSerialization.m */; };
-		4917ACA213F9C722008AD2CB /* WMCompositionSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 4917AC9E13F9C722008AD2CB /* WMCompositionSerialization.m */; };
-		4918B9C2161FAE6200C6D1A9 /* WMImageResize.m in Sources */ = {isa = PBXBuildFile; fileRef = 4918B9C1161FAE6200C6D1A9 /* WMImageResize.m */; };
 		491C1CC61454735000554C73 /* popoverArrowDown.png in Resources */ = {isa = PBXBuildFile; fileRef = 491C1CBA1454735000554C73 /* popoverArrowDown.png */; };
 		491C1CC71454735000554C73 /* popoverArrowDown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 491C1CBB1454735000554C73 /* popoverArrowDown@2x.png */; };
 		491C1CC81454735000554C73 /* popoverArrowDownSimple.png in Resources */ = {isa = PBXBuildFile; fileRef = 491C1CBC1454735000554C73 /* popoverArrowDownSimple.png */; };
@@ -32,7 +22,6 @@
 		491C1CD01454735000554C73 /* popoverArrowUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 491C1CC41454735000554C73 /* popoverArrowUp@2x.png */; };
 		491C1CD11454735000554C73 /* popoverArrowUpSimple.png in Resources */ = {isa = PBXBuildFile; fileRef = 491C1CC51454735000554C73 /* popoverArrowUpSimple.png */; };
 		491D665513D630BD003C609B /* plugstrip-stretchable~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 491D665413D630BD003C609B /* plugstrip-stretchable~ipad.png */; };
-		491E26AB15C94A9F0087D52B /* WMImageOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 491E26AA15C94A9F0087D52B /* WMImageOrientation.m */; };
 		493A1A2B1400C1CB001BB458 /* background-tile~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 493A1A2A1400C1CB001BB458 /* background-tile~ipad.png */; };
 		493A1A2E1400E491001BB458 /* WMIndexInputPortCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 493A1A2D1400E491001BB458 /* WMIndexInputPortCell.m */; };
 		493A1A301400E4B4001BB458 /* WMIndexInputPortCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 493A1A2F1400E4B4001BB458 /* WMIndexInputPortCell.xib */; };
@@ -51,9 +40,6 @@
 		494E4EF213D25D2B00402784 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494E4EF113D25D2B00402784 /* CoreMedia.framework */; };
 		496150C013D2D807006C8B57 /* plug-popover-arrow~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 496150BE13D2D807006C8B57 /* plug-popover-arrow~ipad.png */; };
 		496150C113D2D807006C8B57 /* plug-popover~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 496150BF13D2D807006C8B57 /* plug-popover~ipad.png */; };
-		496AF5F8144A127600082FBD /* WMBufferPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 496AF5F7144A127600082FBD /* WMBufferPort.m */; };
-		496AF5F9144A127600082FBD /* WMBufferPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 496AF5F7144A127600082FBD /* WMBufferPort.m */; };
-		496AF5FD144A169900082FBD /* WMSetRenderObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 496AF5FC144A169900082FBD /* WMSetRenderObject.m */; };
 		496F554213E128A30065BB67 /* WMSetShaderSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 496F554013E128A30065BB67 /* WMSetShaderSettingsController.m */; };
 		496F554313E128A30065BB67 /* WMSetShaderSettingsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 496F554113E128A30065BB67 /* WMSetShaderSettingsController.xib */; };
 		496F554613E12D2E0065BB67 /* WMPatch+SettingsControllerClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 496F554513E12D2E0065BB67 /* WMPatch+SettingsControllerClass.m */; };
@@ -62,8 +48,6 @@
 		49752EA213D3709D00F20447 /* connection-lighting~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49752EA113D3709D00F20447 /* connection-lighting~ipad.png */; };
 		49752EA513D374D100F20447 /* background~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49752EA413D374D100F20447 /* background~ipad.png */; };
 		49752EAF13D3807800F20447 /* compositions-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49752EAE13D3807800F20447 /* compositions-button~ipad.png */; };
-		49791BC713EB98E9003B20EA /* WMPatch+GraphAlgorithms.m in Sources */ = {isa = PBXBuildFile; fileRef = 49791BC613EB98E9003B20EA /* WMPatch+GraphAlgorithms.m */; };
-		49791BC813EB9C45003B20EA /* WMPatch+GraphAlgorithms.m in Sources */ = {isa = PBXBuildFile; fileRef = 49791BC613EB98E9003B20EA /* WMPatch+GraphAlgorithms.m */; };
 		497928A913E2AA6800DDBD2A /* SnowChunk.png in Resources */ = {isa = PBXBuildFile; fileRef = 497928A613E2AA6700DDBD2A /* SnowChunk.png */; };
 		497928AA13E2AA6800DDBD2A /* SnowParticle.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 497928A713E2AA6700DDBD2A /* SnowParticle.fsh */; };
 		497928AB13E2AA6800DDBD2A /* SnowParticle.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 497928A813E2AA6700DDBD2A /* SnowParticle.vsh */; };
@@ -75,40 +59,12 @@
 		4979F36C14478B8600D25116 /* popoverBg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4979F36A14478B8600D25116 /* popoverBg@2x.png */; };
 		4979F38814479E7100D25116 /* CKVOBlockNotificationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4979F37314479E7100D25116 /* CKVOBlockNotificationHelper.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4979F38A14479E7100D25116 /* NSObject_KVOBlockNotificationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4979F37614479E7100D25116 /* NSObject_KVOBlockNotificationExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		49858E2613DE4C1F0061A1A8 /* WMStructuredBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC213DE4C1F0061A1A8 /* WMStructuredBuffer.m */; };
-		49858E2713DE4C1F0061A1A8 /* WMStructureDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC413DE4C1F0061A1A8 /* WMStructureDefinition.m */; };
-		49858E2913DE4C1F0061A1A8 /* WMConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC913DE4C1F0061A1A8 /* WMConnection.m */; };
-		49858E2A13DE4C1F0061A1A8 /* WMEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49858DCB13DE4C1F0061A1A8 /* WMEngine.mm */; };
-		49858E2B13DE4C1F0061A1A8 /* WMPatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DCD13DE4C1F0061A1A8 /* WMPatch.m */; };
-		49858E2C13DE4C1F0061A1A8 /* WMPatchCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DCF13DE4C1F0061A1A8 /* WMPatchCategories.m */; };
-		49858E2D13DE4C1F0061A1A8 /* WMAccelerometer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49858DD313DE4C1F0061A1A8 /* WMAccelerometer.mm */; };
-		49858E2E13DE4C1F0061A1A8 /* WMVideoCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DD513DE4C1F0061A1A8 /* WMVideoCapture.m */; };
-		49858E2F13DE4C1F0061A1A8 /* WMClear.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DD813DE4C1F0061A1A8 /* WMClear.m */; };
-		49858E3013DE4C1F0061A1A8 /* WMParticleSystem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49858DDA13DE4C1F0061A1A8 /* WMParticleSystem.mm */; };
-		49858E3113DE4C1F0061A1A8 /* WMQuad.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49858DDC13DE4C1F0061A1A8 /* WMQuad.mm */; };
-		49858E3213DE4C1F0061A1A8 /* WMSphere.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49858DDE13DE4C1F0061A1A8 /* WMSphere.mm */; };
-		49858E3313DE4C1F0061A1A8 /* WMGaussianBlur.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 49858DE013DE4C1F0061A1A8 /* WMGaussianBlur.glsl */; };
-		49858E3413DE4C1F0061A1A8 /* WMImageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DE213DE4C1F0061A1A8 /* WMImageFilter.m */; };
-		49858E3513DE4C1F0061A1A8 /* WMImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DE413DE4C1F0061A1A8 /* WMImageLoader.m */; };
-		49858E3613DE4C1F0061A1A8 /* WMRenderInImage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49858DE613DE4C1F0061A1A8 /* WMRenderInImage.mm */; };
-		49858E3713DE4C1F0061A1A8 /* WMColorFromComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DE913DE4C1F0061A1A8 /* WMColorFromComponents.m */; };
-		49858E3813DE4C1F0061A1A8 /* WMLFO.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DEB13DE4C1F0061A1A8 /* WMLFO.m */; };
-		49858E3913DE4C1F0061A1A8 /* WMMathOp.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DED13DE4C1F0061A1A8 /* WMMathOp.m */; };
-		49858E3A13DE4C1F0061A1A8 /* WMSplitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DEF13DE4C1F0061A1A8 /* WMSplitter.m */; };
-		49858E3B13DE4C1F0061A1A8 /* WMBooleanPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DF213DE4C1F0061A1A8 /* WMBooleanPort.m */; };
-		49858E3C13DE4C1F0061A1A8 /* WMColorPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DF413DE4C1F0061A1A8 /* WMColorPort.m */; };
-		49858E3D13DE4C1F0061A1A8 /* WMImagePort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DF613DE4C1F0061A1A8 /* WMImagePort.m */; };
-		49858E3E13DE4C1F0061A1A8 /* WMIndexPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DF813DE4C1F0061A1A8 /* WMIndexPort.m */; };
-		49858E3F13DE4C1F0061A1A8 /* WMNumberPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DFA13DE4C1F0061A1A8 /* WMNumberPort.m */; };
-		49858E4013DE4C1F0061A1A8 /* WMPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DFC13DE4C1F0061A1A8 /* WMPort.m */; };
-		49858E4113DE4C1F0061A1A8 /* WMStringPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DFF13DE4C1F0061A1A8 /* WMStringPort.m */; };
-		49858E4213DE4C1F0061A1A8 /* GLDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E0213DE4C1F0061A1A8 /* GLDefines.m */; };
-		49858E4313DE4C1F0061A1A8 /* WMEAGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E0413DE4C1F0061A1A8 /* WMEAGLContext.m */; };
-		49858E4413DE4C1F0061A1A8 /* WMFramebuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E0613DE4C1F0061A1A8 /* WMFramebuffer.m */; };
-		49858E4513DE4C1F0061A1A8 /* WMRenderObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E0A13DE4C1F0061A1A8 /* WMRenderObject.m */; };
-		49858E4613DE4C1F0061A1A8 /* WMShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E0C13DE4C1F0061A1A8 /* WMShader.m */; };
-		49858E4713DE4C1F0061A1A8 /* WMTexture2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E0F13DE4C1F0061A1A8 /* WMTexture2D.m */; };
-		49858E4813DE4C1F0061A1A8 /* WMTextureCubeMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E1113DE4C1F0061A1A8 /* WMTextureCubeMap.m */; };
+		497F551E167683E200209E30 /* WMAPI.lua in Resources */ = {isa = PBXBuildFile; fileRef = 497F5514167683E200209E30 /* WMAPI.lua */; };
+		497F551F167683E200209E30 /* WMAPIBuffer.lua in Resources */ = {isa = PBXBuildFile; fileRef = 497F5515167683E200209E30 /* WMAPIBuffer.lua */; };
+		497F5520167683E200209E30 /* WMLua.m in Sources */ = {isa = PBXBuildFile; fileRef = 497F5517167683E200209E30 /* WMLua.m */; };
+		497F5521167683E200209E30 /* WMLuaBufferBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 497F5519167683E200209E30 /* WMLuaBufferBridge.m */; };
+		497F5522167683E200209E30 /* WMLuaScriptingContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 497F551B167683E200209E30 /* WMLuaScriptingContext.m */; };
+		497F5523167683E200209E30 /* WMPatchLuaBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 497F551D167683E200209E30 /* WMPatchLuaBridge.m */; };
 		49858E9813DE4C800061A1A8 /* About More Patches.txt in Resources */ = {isa = PBXBuildFile; fileRef = 49858E5013DE4C800061A1A8 /* About More Patches.txt */; };
 		49858E9913DE4C800061A1A8 /* RainbowDark.pal in Resources */ = {isa = PBXBuildFile; fileRef = 49858E5213DE4C800061A1A8 /* RainbowDark.pal */; };
 		49858E9A13DE4C800061A1A8 /* RainbowLight.pal in Resources */ = {isa = PBXBuildFile; fileRef = 49858E5313DE4C800061A1A8 /* RainbowLight.pal */; };
@@ -133,7 +89,6 @@
 		49858EBB13DE85BC0061A1A8 /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 49858EB813DE85BC0061A1A8 /* Icon-Small.png */; };
 		49858EBC13DE85BC0061A1A8 /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49858EB913DE85BC0061A1A8 /* Icon-Small@2x.png */; };
 		49858EBD13DE85BC0061A1A8 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49858EBA13DE85BC0061A1A8 /* Icon@2x.png */; };
-		498C2BC113F6630F0071B87F /* WMCVTexture2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 498C2BC013F6630F0071B87F /* WMCVTexture2D.m */; };
 		498DDEB913DF465400D10642 /* WMCompositionLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = 498DDE9F13DF465400D10642 /* WMCompositionLibrary.m */; };
 		498DDEBA13DF465400D10642 /* WMCompositionLibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498DDEA113DF465400D10642 /* WMCompositionLibraryViewController.m */; };
 		498DDEBB13DF465400D10642 /* WMCompositionLibraryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498DDEA213DF465400D10642 /* WMCompositionLibraryViewController.xib */; };
@@ -164,14 +119,9 @@
 		498DDF0A13DF907600D10642 /* WMNumberInputPortCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498DDF0913DF907600D10642 /* WMNumberInputPortCell.xib */; };
 		498DDF0D13DF921B00D10642 /* WMNumberInputPortCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 498DDF0C13DF921B00D10642 /* WMNumberInputPortCell.m */; };
 		498DDF0F13DF952400D10642 /* WMInputPortCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498DDF0E13DF952400D10642 /* WMInputPortCell.xib */; };
-		498E4E9813E13628003BB056 /* WMDefaultShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 498E4E9613E1342B003BB056 /* WMDefaultShader.vsh */; };
-		498E4E9913E13628003BB056 /* WMDefaultShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 498E4E9313E13421003BB056 /* WMDefaultShader.fsh */; };
-		499C9173156C7D6100EC8895 /* DNDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 499C915E156C7D6100EC8895 /* DNDocument.m */; };
-		499C9174156C7D6100EC8895 /* DNMemoryInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 499C9161156C7D6100EC8895 /* DNMemoryInfo.m */; };
-		499C9175156C7D6100EC8895 /* EAGLContext+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 499C9164156C7D6100EC8895 /* EAGLContext+Extensions.m */; };
-		499C9176156C7D6100EC8895 /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 499C916D156C7D6100EC8895 /* NSString+URLEncoding.m */; };
-		499C9177156C7D6100EC8895 /* SimplexNoise.c in Sources */ = {isa = PBXBuildFile; fileRef = 499C916E156C7D6100EC8895 /* SimplexNoise.c */; };
-		499C9178156C7D6100EC8895 /* WMMathUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = 499C9170156C7D6100EC8895 /* WMMathUtil.c */; };
+		498EAFF216767C5C0095356A /* GLKVectorCGCompatibility.c in Sources */ = {isa = PBXBuildFile; fileRef = 498EAFF016767C5C0095356A /* GLKVectorCGCompatibility.c */; };
+		498EAFF416767C930095356A /* WMGraph.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 498EAFF316767C930095356A /* WMGraph.framework */; };
+		498EB0011676821D0095356A /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EB0001676821D0095356A /* NSString+URLEncoding.m */; };
 		49A5263C13D172BC004EC7F6 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5263B13D172BC004EC7F6 /* CoreMIDI.framework */; };
 		49A5263E13D172C6004EC7F6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5263D13D172C6004EC7F6 /* QuartzCore.framework */; };
 		49A5264013D172CF004EC7F6 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5263F13D172CF004EC7F6 /* CFNetwork.framework */; };
@@ -187,15 +137,6 @@
 		49A5285D13D173B8004EC7F6 /* PGMidiFind.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49A5285A13D173B8004EC7F6 /* PGMidiFind.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		49A5286313D174C6004EC7F6 /* connection-white~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49A5286213D174C6004EC7F6 /* connection-white~ipad.png */; };
 		49A5286513D17A03004EC7F6 /* connection-shadow~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49A5286413D17A03004EC7F6 /* connection-shadow~ipad.png */; };
-		49AA853D1442B228005BC6F7 /* WMGLStateObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AA853C1442B227005BC6F7 /* WMGLStateObject.m */; };
-		49AD650C13DE8FF600A2CC66 /* WMVectorPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD650B13DE8FF600A2CC66 /* WMVectorPort.m */; };
-		49AD651713DE9E1200A2CC66 /* WMVectorFromComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD651613DE9E1200A2CC66 /* WMVectorFromComponents.m */; };
-		49B3DB4D13E10F03002DC713 /* WMRenderObjectPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB4C13E10F03002DC713 /* WMRenderObjectPort.m */; };
-		49B3DB5B13E11039002DC713 /* WMRenderOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB5813E11039002DC713 /* WMRenderOutput.m */; };
-		49B3DB5F13E1115B002DC713 /* WMSetShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB5E13E1115B002DC713 /* WMSetShader.m */; };
-		49B4500615C362EA00113D82 /* GLKVectorCGCompatibility.c in Sources */ = {isa = PBXBuildFile; fileRef = 49B4500415C362EA00113D82 /* GLKVectorCGCompatibility.c */; };
-		49B4500A15C36F2B00113D82 /* WMImageSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B4500915C36F2B00113D82 /* WMImageSize.m */; };
-		49B4501115C4244B00113D82 /* NSValue+GLKVector.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B4501015C4244B00113D82 /* NSValue+GLKVector.m */; };
 		49B792D01581F1E8009E81EB /* DNZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B792C21581F1E8009E81EB /* DNZipArchive.m */; };
 		49B792D11581F1E8009E81EB /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 49B792C41581F1E8009E81EB /* ioapi.c */; };
 		49B792D31581F1E8009E81EB /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 49B792C71581F1E8009E81EB /* mztools.c */; };
@@ -207,52 +148,10 @@
 		49B792E91581F819009E81EB /* ASIS3ObjectRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B792E11581F819009E81EB /* ASIS3ObjectRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		49B792EA1581F819009E81EB /* ASIS3Request.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B792E31581F819009E81EB /* ASIS3Request.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		49B792EB1581F819009E81EB /* ASIS3ServiceRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B792E51581F819009E81EB /* ASIS3ServiceRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		49B9900E1459E436009F3CBD /* WMGLStateObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AA853C1442B227005BC6F7 /* WMGLStateObject.m */; };
-		49B99014145E4634009F3CBD /* WMVertexArrayObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B99013145E4634009F3CBD /* WMVertexArrayObject.m */; };
-		49B9A6BD1415C473001DB45B /* WMVideoRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B9A6BC1415C473001DB45B /* WMVideoRecord.m */; };
 		49BACB4B13EB592A008ED051 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49BACB4A13EB592A008ED051 /* SenTestingKit.framework */; };
 		49BACB4C13EB592A008ED051 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595013D15F640056C506 /* UIKit.framework */; };
 		49BACB4D13EB592A008ED051 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595213D15F640056C506 /* Foundation.framework */; };
 		49BACB4E13EB592A008ED051 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595413D15F640056C506 /* CoreGraphics.framework */; };
-		49BACB5E13EB59D9008ED051 /* WMGraphTopologyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BACB4113EB5847008ED051 /* WMGraphTopologyTests.m */; };
-		49BACB6213EB5A08008ED051 /* WMConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC913DE4C1F0061A1A8 /* WMConnection.m */; };
-		49BACB6413EB5A08008ED051 /* WMEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49858DCB13DE4C1F0061A1A8 /* WMEngine.mm */; };
-		49BACB6613EB5A08008ED051 /* WMPatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DCD13DE4C1F0061A1A8 /* WMPatch.m */; };
-		49BACB6813EB5A08008ED051 /* WMPatchCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DCF13DE4C1F0061A1A8 /* WMPatchCategories.m */; };
-		49BACB6A13EB5A08008ED051 /* WMAccelerometer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49858DD313DE4C1F0061A1A8 /* WMAccelerometer.mm */; };
-		49BACB6C13EB5A08008ED051 /* WMVideoCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DD513DE4C1F0061A1A8 /* WMVideoCapture.m */; };
-		49BACB6E13EB5A08008ED051 /* WMClear.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DD813DE4C1F0061A1A8 /* WMClear.m */; };
-		49BACB7013EB5A08008ED051 /* WMParticleSystem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49858DDA13DE4C1F0061A1A8 /* WMParticleSystem.mm */; };
-		49BACB7213EB5A08008ED051 /* WMQuad.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49858DDC13DE4C1F0061A1A8 /* WMQuad.mm */; };
-		49BACB7413EB5A08008ED051 /* WMSphere.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49858DDE13DE4C1F0061A1A8 /* WMSphere.mm */; };
-		49BACB7613EB5A08008ED051 /* WMRenderOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB5813E11039002DC713 /* WMRenderOutput.m */; };
-		49BACB7813EB5A08008ED051 /* WMSetShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB5E13E1115B002DC713 /* WMSetShader.m */; };
-		49BACB7B13EB5A08008ED051 /* WMImageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DE213DE4C1F0061A1A8 /* WMImageFilter.m */; };
-		49BACB7D13EB5A08008ED051 /* WMImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DE413DE4C1F0061A1A8 /* WMImageLoader.m */; };
-		49BACB7F13EB5A08008ED051 /* WMRenderInImage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49858DE613DE4C1F0061A1A8 /* WMRenderInImage.mm */; };
-		49BACB8113EB5A08008ED051 /* WMColorFromComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DE913DE4C1F0061A1A8 /* WMColorFromComponents.m */; };
-		49BACB8313EB5A08008ED051 /* WMLFO.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DEB13DE4C1F0061A1A8 /* WMLFO.m */; };
-		49BACB8513EB5A08008ED051 /* WMMathOp.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DED13DE4C1F0061A1A8 /* WMMathOp.m */; };
-		49BACB8713EB5A08008ED051 /* WMSplitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DEF13DE4C1F0061A1A8 /* WMSplitter.m */; };
-		49BACB8913EB5A08008ED051 /* WMVectorFromComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD651613DE9E1200A2CC66 /* WMVectorFromComponents.m */; };
-		49BACB8B13EB5A08008ED051 /* WMBooleanPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DF213DE4C1F0061A1A8 /* WMBooleanPort.m */; };
-		49BACB8D13EB5A08008ED051 /* WMColorPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DF413DE4C1F0061A1A8 /* WMColorPort.m */; };
-		49BACB8F13EB5A08008ED051 /* WMImagePort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DF613DE4C1F0061A1A8 /* WMImagePort.m */; };
-		49BACB9113EB5A08008ED051 /* WMIndexPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DF813DE4C1F0061A1A8 /* WMIndexPort.m */; };
-		49BACB9313EB5A08008ED051 /* WMNumberPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DFA13DE4C1F0061A1A8 /* WMNumberPort.m */; };
-		49BACB9513EB5A08008ED051 /* WMPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DFC13DE4C1F0061A1A8 /* WMPort.m */; };
-		49BACB9813EB5A08008ED051 /* WMStringPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DFF13DE4C1F0061A1A8 /* WMStringPort.m */; };
-		49BACB9A13EB5A08008ED051 /* WMVectorPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD650B13DE8FF600A2CC66 /* WMVectorPort.m */; };
-		49BACB9C13EB5A08008ED051 /* WMRenderObjectPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B3DB4C13E10F03002DC713 /* WMRenderObjectPort.m */; };
-		49BACB9E13EB5A08008ED051 /* WMStructuredBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC213DE4C1F0061A1A8 /* WMStructuredBuffer.m */; };
-		49BACBA013EB5A08008ED051 /* WMStructureDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858DC413DE4C1F0061A1A8 /* WMStructureDefinition.m */; };
-		49BACBA413EB5A08008ED051 /* GLDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E0213DE4C1F0061A1A8 /* GLDefines.m */; };
-		49BACBA613EB5A08008ED051 /* WMEAGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E0413DE4C1F0061A1A8 /* WMEAGLContext.m */; };
-		49BACBA813EB5A08008ED051 /* WMFramebuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E0613DE4C1F0061A1A8 /* WMFramebuffer.m */; };
-		49BACBAC13EB5A08008ED051 /* WMRenderObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E0A13DE4C1F0061A1A8 /* WMRenderObject.m */; };
-		49BACBAE13EB5A08008ED051 /* WMShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E0C13DE4C1F0061A1A8 /* WMShader.m */; };
-		49BACBB113EB5A08008ED051 /* WMTexture2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E0F13DE4C1F0061A1A8 /* WMTexture2D.m */; };
-		49BACBB313EB5A08008ED051 /* WMTextureCubeMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 49858E1113DE4C1F0061A1A8 /* WMTextureCubeMap.m */; };
 		49BACBCE13EB5BBB008ED051 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 490AC1E613D8F10F005E61CD /* GLKit.framework */; };
 		49BACBCF13EB5BBF008ED051 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494E4EF113D25D2B00402784 /* CoreMedia.framework */; };
 		49BACBD013EB5BC2008ED051 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494E4EEF13D25D1C00402784 /* AVFoundation.framework */; };
@@ -267,11 +166,6 @@
 		49BACBD913EB5BDA008ED051 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5263F13D172CF004EC7F6 /* CFNetwork.framework */; };
 		49BACBDA13EB5BDD008ED051 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5263D13D172C6004EC7F6 /* QuartzCore.framework */; };
 		49BACBDB13EB5BDF008ED051 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5263B13D172BC004EC7F6 /* CoreMIDI.framework */; };
-		49D52FCE1447A93C00739E84 /* WMAPI.lua in Resources */ = {isa = PBXBuildFile; fileRef = 49D52FC81447A93C00739E84 /* WMAPI.lua */; };
-		49D52FCF1447A93C00739E84 /* WMAPIBuffer.lua in Resources */ = {isa = PBXBuildFile; fileRef = 49D52FC91447A93C00739E84 /* WMAPIBuffer.lua */; };
-		49D52FD01447A93C00739E84 /* WMLuaBufferBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D52FCB1447A93C00739E84 /* WMLuaBufferBridge.m */; };
-		49D52FD11447A93C00739E84 /* WMLuaScriptingContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D52FCD1447A93C00739E84 /* WMLuaScriptingContext.m */; };
-		49D52FD51447AA6000739E84 /* WMLua.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D52FD41447AA6000739E84 /* WMLua.m */; };
 		49D530121447AB4C00739E84 /* lapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 49D52FD71447AB4B00739E84 /* lapi.c */; };
 		49D530131447AB4C00739E84 /* lauxlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 49D52FD91447AB4B00739E84 /* lauxlib.c */; };
 		49D530141447AB4C00739E84 /* lbaselib.c in Sources */ = {isa = PBXBuildFile; fileRef = 49D52FDB1447AB4B00739E84 /* lbaselib.c */; };
@@ -304,13 +198,9 @@
 		49D530351447AB4C00739E84 /* print.c in Sources */ = {isa = PBXBuildFile; fileRef = 49D530111447AB4C00739E84 /* print.c */; };
 		49D5303A1447AC9100739E84 /* WMLuaSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D530381447AC9000739E84 /* WMLuaSettingsController.m */; };
 		49D5303B1447AC9100739E84 /* WMLuaSettingsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49D530391447AC9100739E84 /* WMLuaSettingsController.xib */; };
-		49D5303D1447CF4C00739E84 /* WMPatchLuaBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D5303C1447CF4C00739E84 /* WMPatchLuaBridge.m */; };
 		49D73A8713FEE0F60028AF22 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D73A8613FEE0F60028AF22 /* AssetsLibrary.framework */; };
-		49E1E966162CACA200B52262 /* WMRenderObject+CreateWithGeometry.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49E1E963162CACA200B52262 /* WMRenderObject+CreateWithGeometry.mm */; };
-		49E1E967162CACA200B52262 /* WMTransforms.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49E1E965162CACA200B52262 /* WMTransforms.mm */; };
 		49E3145913DA44F600813CE0 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49E3145613DA44F600813CE0 /* Random.cpp */; };
 		49E3145A13DA44F600813CE0 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49E3145613DA44F600813CE0 /* Random.cpp */; };
-		49EAAFD215900A2100B7030C /* WMFrameCounter.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EAAFCC15900A2100B7030C /* WMFrameCounter.m */; };
 		49F0595113D15F640056C506 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595013D15F640056C506 /* UIKit.framework */; };
 		49F0595313D15F640056C506 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595213D15F640056C506 /* Foundation.framework */; };
 		49F0595513D15F640056C506 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595413D15F640056C506 /* CoreGraphics.framework */; };
@@ -322,8 +212,6 @@
 		49F0597B13D15F640056C506 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49F0597913D15F640056C506 /* InfoPlist.strings */; };
 		49F0597E13D15F640056C506 /* WMEditTests.h in Resources */ = {isa = PBXBuildFile; fileRef = 49F0597D13D15F640056C506 /* WMEditTests.h */; };
 		49F0598013D15F640056C506 /* WMEditTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F0597F13D15F640056C506 /* WMEditTests.m */; };
-		49F638C5157414AF00BA9C39 /* WMAudioPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F638C4157414AF00BA9C39 /* WMAudioPort.m */; };
-		49F638CA15741AD000BA9C39 /* WMAudioBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F638C915741AD000BA9C39 /* WMAudioBuffer.m */; };
 		49F638D115742B3900BA9C39 /* WMBooleanInputPortCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F638CF15742B3800BA9C39 /* WMBooleanInputPortCell.m */; };
 		49F638D215742B3900BA9C39 /* WMBooleanInputPortCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49F638D015742B3900BA9C39 /* WMBooleanInputPortCell.xib */; };
 		49F8A94513E69778000D4A3A /* WMImageLoaderSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F8A94313E69778000D4A3A /* WMImageLoaderSettingsController.m */; };
@@ -343,26 +231,7 @@
 
 /* Begin PBXFileReference section */
 		07C99A9013D38E8B00712EFA /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
-		4905F126157D729600488306 /* DNKaleidoscopeGeometryVariable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNKaleidoscopeGeometryVariable.h; sourceTree = "<group>"; };
-		4905F127157D729600488306 /* DNKaleidoscopeGeometryVariable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNKaleidoscopeGeometryVariable.m; sourceTree = "<group>"; };
-		4905F128157D729600488306 /* DNTriangleTriangleClip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNTriangleTriangleClip.h; sourceTree = "<group>"; };
-		4905F129157D729600488306 /* DNTriangleTriangleClip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNTriangleTriangleClip.m; sourceTree = "<group>"; };
-		4905F12A157D729600488306 /* WMEightfoldTilePatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMEightfoldTilePatch.h; sourceTree = "<group>"; };
-		4905F12B157D729600488306 /* WMEightfoldTilePatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMEightfoldTilePatch.m; sourceTree = "<group>"; };
 		490AC1E613D8F10F005E61CD /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
-		49174AA313D235BD008B5B8D /* DNAssertionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNAssertionHandler.h; sourceTree = "<group>"; };
-		49174AA413D235BD008B5B8D /* DNAssertionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNAssertionHandler.m; sourceTree = "<group>"; };
-		49174AA513D235BD008B5B8D /* WMView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMView.h; sourceTree = "<group>"; };
-		49174AA613D235BD008B5B8D /* WMView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMView.m; sourceTree = "<group>"; };
-		49174AAA13D235BD008B5B8D /* WMViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMViewController.h; sourceTree = "<group>"; };
-		49174AAB13D235BD008B5B8D /* WMViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMViewController.m; sourceTree = "<group>"; };
-		4917AC9B13F9C722008AD2CB /* WMBundleDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMBundleDocument.h; sourceTree = "<group>"; };
-		4917AC9C13F9C722008AD2CB /* WMBundleDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMBundleDocument.m; sourceTree = "<group>"; };
-		4917AC9D13F9C722008AD2CB /* WMCompositionSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMCompositionSerialization.h; sourceTree = "<group>"; };
-		4917AC9E13F9C722008AD2CB /* WMCompositionSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMCompositionSerialization.m; sourceTree = "<group>"; };
-		4918B9C0161FAE6200C6D1A9 /* WMImageResize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMImageResize.h; sourceTree = "<group>"; };
-		4918B9C1161FAE6200C6D1A9 /* WMImageResize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMImageResize.m; sourceTree = "<group>"; };
-		4918B9D3161FB07100C6D1A9 /* WMRenderObject+CreateWithGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMRenderObject+CreateWithGeometry.h"; sourceTree = "<group>"; };
 		491C1CBA1454735000554C73 /* popoverArrowDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverArrowDown.png; sourceTree = "<group>"; };
 		491C1CBB1454735000554C73 /* popoverArrowDown@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popoverArrowDown@2x.png"; sourceTree = "<group>"; };
 		491C1CBC1454735000554C73 /* popoverArrowDownSimple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverArrowDownSimple.png; sourceTree = "<group>"; };
@@ -376,8 +245,6 @@
 		491C1CC41454735000554C73 /* popoverArrowUp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popoverArrowUp@2x.png"; sourceTree = "<group>"; };
 		491C1CC51454735000554C73 /* popoverArrowUpSimple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverArrowUpSimple.png; sourceTree = "<group>"; };
 		491D665413D630BD003C609B /* plugstrip-stretchable~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plugstrip-stretchable~ipad.png"; sourceTree = "<group>"; };
-		491E26A915C94A9F0087D52B /* WMImageOrientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMImageOrientation.h; sourceTree = "<group>"; };
-		491E26AA15C94A9F0087D52B /* WMImageOrientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMImageOrientation.m; sourceTree = "<group>"; };
 		493A1A2A1400C1CB001BB458 /* background-tile~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-tile~ipad.png"; sourceTree = "<group>"; };
 		493A1A2C1400E491001BB458 /* WMIndexInputPortCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMIndexInputPortCell.h; sourceTree = "<group>"; };
 		493A1A2D1400E491001BB458 /* WMIndexInputPortCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMIndexInputPortCell.m; sourceTree = "<group>"; };
@@ -410,10 +277,6 @@
 		494E4EF113D25D2B00402784 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		496150BE13D2D807006C8B57 /* plug-popover-arrow~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plug-popover-arrow~ipad.png"; sourceTree = "<group>"; };
 		496150BF13D2D807006C8B57 /* plug-popover~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plug-popover~ipad.png"; sourceTree = "<group>"; };
-		496AF5F6144A127600082FBD /* WMBufferPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMBufferPort.h; sourceTree = "<group>"; };
-		496AF5F7144A127600082FBD /* WMBufferPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMBufferPort.m; sourceTree = "<group>"; };
-		496AF5FB144A169900082FBD /* WMSetRenderObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WMSetRenderObject.h; path = "../Render Object/WMSetRenderObject.h"; sourceTree = "<group>"; };
-		496AF5FC144A169900082FBD /* WMSetRenderObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WMSetRenderObject.m; path = "../Render Object/WMSetRenderObject.m"; sourceTree = "<group>"; };
 		496F553F13E128A30065BB67 /* WMSetShaderSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSetShaderSettingsController.h; sourceTree = "<group>"; };
 		496F554013E128A30065BB67 /* WMSetShaderSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSetShaderSettingsController.m; sourceTree = "<group>"; };
 		496F554113E128A30065BB67 /* WMSetShaderSettingsController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSetShaderSettingsController.xib; sourceTree = "<group>"; };
@@ -424,8 +287,6 @@
 		49752EA113D3709D00F20447 /* connection-lighting~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "connection-lighting~ipad.png"; sourceTree = "<group>"; };
 		49752EA413D374D100F20447 /* background~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background~ipad.png"; sourceTree = "<group>"; };
 		49752EAE13D3807800F20447 /* compositions-button~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "compositions-button~ipad.png"; sourceTree = "<group>"; };
-		49791BC513EB98E8003B20EA /* WMPatch+GraphAlgorithms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMPatch+GraphAlgorithms.h"; sourceTree = "<group>"; };
-		49791BC613EB98E9003B20EA /* WMPatch+GraphAlgorithms.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WMPatch+GraphAlgorithms.m"; sourceTree = "<group>"; };
 		497928A613E2AA6700DDBD2A /* SnowChunk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SnowChunk.png; sourceTree = "<group>"; };
 		497928A713E2AA6700DDBD2A /* SnowParticle.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SnowParticle.fsh; sourceTree = "<group>"; };
 		497928A813E2AA6700DDBD2A /* SnowParticle.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SnowParticle.vsh; sourceTree = "<group>"; };
@@ -444,76 +305,16 @@
 		4979F37314479E7100D25116 /* CKVOBlockNotificationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CKVOBlockNotificationHelper.m; sourceTree = "<group>"; };
 		4979F37514479E7100D25116 /* NSObject_KVOBlockNotificationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSObject_KVOBlockNotificationExtensions.h; sourceTree = "<group>"; };
 		4979F37614479E7100D25116 /* NSObject_KVOBlockNotificationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSObject_KVOBlockNotificationExtensions.m; sourceTree = "<group>"; };
-		49858DC113DE4C1F0061A1A8 /* WMStructuredBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMStructuredBuffer.h; sourceTree = "<group>"; };
-		49858DC213DE4C1F0061A1A8 /* WMStructuredBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMStructuredBuffer.m; sourceTree = "<group>"; };
-		49858DC313DE4C1F0061A1A8 /* WMStructureDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMStructureDefinition.h; sourceTree = "<group>"; };
-		49858DC413DE4C1F0061A1A8 /* WMStructureDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMStructureDefinition.m; sourceTree = "<group>"; };
-		49858DC813DE4C1F0061A1A8 /* WMConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMConnection.h; sourceTree = "<group>"; };
-		49858DC913DE4C1F0061A1A8 /* WMConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMConnection.m; sourceTree = "<group>"; };
-		49858DCA13DE4C1F0061A1A8 /* WMEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMEngine.h; sourceTree = "<group>"; };
-		49858DCB13DE4C1F0061A1A8 /* WMEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WMEngine.mm; sourceTree = "<group>"; };
-		49858DCC13DE4C1F0061A1A8 /* WMPatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatch.h; sourceTree = "<group>"; };
-		49858DCD13DE4C1F0061A1A8 /* WMPatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPatch.m; sourceTree = "<group>"; };
-		49858DCE13DE4C1F0061A1A8 /* WMPatchCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchCategories.h; sourceTree = "<group>"; };
-		49858DCF13DE4C1F0061A1A8 /* WMPatchCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPatchCategories.m; sourceTree = "<group>"; };
-		49858DD213DE4C1F0061A1A8 /* WMAccelerometer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMAccelerometer.h; sourceTree = "<group>"; };
-		49858DD313DE4C1F0061A1A8 /* WMAccelerometer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = WMAccelerometer.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		49858DD413DE4C1F0061A1A8 /* WMVideoCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMVideoCapture.h; sourceTree = "<group>"; };
-		49858DD513DE4C1F0061A1A8 /* WMVideoCapture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WMVideoCapture.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		49858DD713DE4C1F0061A1A8 /* WMClear.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMClear.h; sourceTree = "<group>"; };
-		49858DD813DE4C1F0061A1A8 /* WMClear.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WMClear.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		49858DD913DE4C1F0061A1A8 /* WMParticleSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMParticleSystem.h; sourceTree = "<group>"; };
-		49858DDA13DE4C1F0061A1A8 /* WMParticleSystem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = WMParticleSystem.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		49858DDB13DE4C1F0061A1A8 /* WMQuad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMQuad.h; sourceTree = "<group>"; };
-		49858DDC13DE4C1F0061A1A8 /* WMQuad.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = WMQuad.mm; sourceTree = "<group>"; };
-		49858DDD13DE4C1F0061A1A8 /* WMSphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSphere.h; sourceTree = "<group>"; };
-		49858DDE13DE4C1F0061A1A8 /* WMSphere.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = WMSphere.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		49858DE013DE4C1F0061A1A8 /* WMGaussianBlur.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WMGaussianBlur.glsl; sourceTree = "<group>"; };
-		49858DE113DE4C1F0061A1A8 /* WMImageFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMImageFilter.h; sourceTree = "<group>"; };
-		49858DE213DE4C1F0061A1A8 /* WMImageFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WMImageFilter.m; sourceTree = "<group>"; };
-		49858DE313DE4C1F0061A1A8 /* WMImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMImageLoader.h; sourceTree = "<group>"; };
-		49858DE413DE4C1F0061A1A8 /* WMImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WMImageLoader.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		49858DE513DE4C1F0061A1A8 /* WMRenderInImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMRenderInImage.h; sourceTree = "<group>"; };
-		49858DE613DE4C1F0061A1A8 /* WMRenderInImage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = WMRenderInImage.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		49858DE813DE4C1F0061A1A8 /* WMColorFromComponents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMColorFromComponents.h; sourceTree = "<group>"; };
-		49858DE913DE4C1F0061A1A8 /* WMColorFromComponents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WMColorFromComponents.m; sourceTree = "<group>"; };
-		49858DEA13DE4C1F0061A1A8 /* WMLFO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMLFO.h; sourceTree = "<group>"; };
-		49858DEB13DE4C1F0061A1A8 /* WMLFO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WMLFO.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		49858DEC13DE4C1F0061A1A8 /* WMMathOp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMMathOp.h; sourceTree = "<group>"; };
-		49858DED13DE4C1F0061A1A8 /* WMMathOp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WMMathOp.m; sourceTree = "<group>"; };
-		49858DEE13DE4C1F0061A1A8 /* WMSplitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSplitter.h; sourceTree = "<group>"; };
-		49858DEF13DE4C1F0061A1A8 /* WMSplitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WMSplitter.m; sourceTree = "<group>"; };
-		49858DF113DE4C1F0061A1A8 /* WMBooleanPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMBooleanPort.h; sourceTree = "<group>"; };
-		49858DF213DE4C1F0061A1A8 /* WMBooleanPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMBooleanPort.m; sourceTree = "<group>"; };
-		49858DF313DE4C1F0061A1A8 /* WMColorPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMColorPort.h; sourceTree = "<group>"; };
-		49858DF413DE4C1F0061A1A8 /* WMColorPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMColorPort.m; sourceTree = "<group>"; };
-		49858DF513DE4C1F0061A1A8 /* WMImagePort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMImagePort.h; sourceTree = "<group>"; };
-		49858DF613DE4C1F0061A1A8 /* WMImagePort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMImagePort.m; sourceTree = "<group>"; };
-		49858DF713DE4C1F0061A1A8 /* WMIndexPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMIndexPort.h; sourceTree = "<group>"; };
-		49858DF813DE4C1F0061A1A8 /* WMIndexPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMIndexPort.m; sourceTree = "<group>"; };
-		49858DF913DE4C1F0061A1A8 /* WMNumberPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMNumberPort.h; sourceTree = "<group>"; };
-		49858DFA13DE4C1F0061A1A8 /* WMNumberPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMNumberPort.m; sourceTree = "<group>"; };
-		49858DFB13DE4C1F0061A1A8 /* WMPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPort.h; sourceTree = "<group>"; };
-		49858DFC13DE4C1F0061A1A8 /* WMPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPort.m; sourceTree = "<group>"; };
-		49858DFD13DE4C1F0061A1A8 /* WMPorts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPorts.h; sourceTree = "<group>"; };
-		49858DFE13DE4C1F0061A1A8 /* WMStringPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMStringPort.h; sourceTree = "<group>"; };
-		49858DFF13DE4C1F0061A1A8 /* WMStringPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMStringPort.m; sourceTree = "<group>"; };
-		49858E0113DE4C1F0061A1A8 /* GLDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDefines.h; sourceTree = "<group>"; };
-		49858E0213DE4C1F0061A1A8 /* GLDefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLDefines.m; sourceTree = "<group>"; };
-		49858E0313DE4C1F0061A1A8 /* WMEAGLContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMEAGLContext.h; sourceTree = "<group>"; };
-		49858E0413DE4C1F0061A1A8 /* WMEAGLContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMEAGLContext.m; sourceTree = "<group>"; };
-		49858E0513DE4C1F0061A1A8 /* WMFramebuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMFramebuffer.h; sourceTree = "<group>"; };
-		49858E0613DE4C1F0061A1A8 /* WMFramebuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMFramebuffer.m; sourceTree = "<group>"; };
-		49858E0813DE4C1F0061A1A8 /* WMRenderCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMRenderCommon.h; sourceTree = "<group>"; };
-		49858E0913DE4C1F0061A1A8 /* WMRenderObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMRenderObject.h; sourceTree = "<group>"; };
-		49858E0A13DE4C1F0061A1A8 /* WMRenderObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMRenderObject.m; sourceTree = "<group>"; };
-		49858E0B13DE4C1F0061A1A8 /* WMShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMShader.h; sourceTree = "<group>"; };
-		49858E0C13DE4C1F0061A1A8 /* WMShader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMShader.m; sourceTree = "<group>"; };
-		49858E0D13DE4C1F0061A1A8 /* WMStructuredBuffer_WMEAGLContext_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WMStructuredBuffer_WMEAGLContext_Private.h; path = ../Render/WMStructuredBuffer_WMEAGLContext_Private.h; sourceTree = "<group>"; };
-		49858E0E13DE4C1F0061A1A8 /* WMTexture2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMTexture2D.h; sourceTree = "<group>"; };
-		49858E0F13DE4C1F0061A1A8 /* WMTexture2D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMTexture2D.m; sourceTree = "<group>"; };
-		49858E1013DE4C1F0061A1A8 /* WMTextureCubeMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMTextureCubeMap.h; sourceTree = "<group>"; };
-		49858E1113DE4C1F0061A1A8 /* WMTextureCubeMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMTextureCubeMap.m; sourceTree = "<group>"; };
+		497F5514167683E200209E30 /* WMAPI.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WMAPI.lua; sourceTree = "<group>"; };
+		497F5515167683E200209E30 /* WMAPIBuffer.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WMAPIBuffer.lua; sourceTree = "<group>"; };
+		497F5516167683E200209E30 /* WMLua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMLua.h; sourceTree = "<group>"; };
+		497F5517167683E200209E30 /* WMLua.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMLua.m; sourceTree = "<group>"; };
+		497F5518167683E200209E30 /* WMLuaBufferBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMLuaBufferBridge.h; sourceTree = "<group>"; };
+		497F5519167683E200209E30 /* WMLuaBufferBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMLuaBufferBridge.m; sourceTree = "<group>"; };
+		497F551A167683E200209E30 /* WMLuaScriptingContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMLuaScriptingContext.h; sourceTree = "<group>"; };
+		497F551B167683E200209E30 /* WMLuaScriptingContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMLuaScriptingContext.m; sourceTree = "<group>"; };
+		497F551C167683E200209E30 /* WMPatchLuaBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchLuaBridge.h; sourceTree = "<group>"; };
+		497F551D167683E200209E30 /* WMPatchLuaBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPatchLuaBridge.m; sourceTree = "<group>"; };
 		49858E5013DE4C800061A1A8 /* About More Patches.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "About More Patches.txt"; sourceTree = "<group>"; };
 		49858E5213DE4C800061A1A8 /* RainbowDark.pal */ = {isa = PBXFileReference; lastKnownFileType = file; path = RainbowDark.pal; sourceTree = "<group>"; };
 		49858E5313DE4C800061A1A8 /* RainbowLight.pal */ = {isa = PBXFileReference; lastKnownFileType = file; path = RainbowLight.pal; sourceTree = "<group>"; };
@@ -564,8 +365,6 @@
 		49858EB813DE85BC0061A1A8 /* Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small.png"; sourceTree = "<group>"; };
 		49858EB913DE85BC0061A1A8 /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@2x.png"; sourceTree = "<group>"; };
 		49858EBA13DE85BC0061A1A8 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
-		498C2BBF13F6630F0071B87F /* WMCVTexture2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMCVTexture2D.h; sourceTree = "<group>"; };
-		498C2BC013F6630F0071B87F /* WMCVTexture2D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMCVTexture2D.m; sourceTree = "<group>"; };
 		498DDE9E13DF465400D10642 /* WMCompositionLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMCompositionLibrary.h; sourceTree = "<group>"; };
 		498DDE9F13DF465400D10642 /* WMCompositionLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMCompositionLibrary.m; sourceTree = "<group>"; };
 		498DDEA013DF465400D10642 /* WMCompositionLibraryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMCompositionLibraryViewController.h; sourceTree = "<group>"; };
@@ -615,30 +414,12 @@
 		498DDF0B13DF921A00D10642 /* WMNumberInputPortCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMNumberInputPortCell.h; sourceTree = "<group>"; };
 		498DDF0C13DF921B00D10642 /* WMNumberInputPortCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMNumberInputPortCell.m; sourceTree = "<group>"; };
 		498DDF0E13DF952400D10642 /* WMInputPortCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMInputPortCell.xib; sourceTree = "<group>"; };
-		498E4E9313E13421003BB056 /* WMDefaultShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = WMDefaultShader.fsh; sourceTree = "<group>"; };
-		498E4E9613E1342B003BB056 /* WMDefaultShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = WMDefaultShader.vsh; sourceTree = "<group>"; };
-		499C915D156C7D6100EC8895 /* DNDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNDocument.h; sourceTree = "<group>"; };
-		499C915E156C7D6100EC8895 /* DNDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNDocument.m; sourceTree = "<group>"; };
-		499C915F156C7D6100EC8895 /* DNKVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNKVC.h; sourceTree = "<group>"; };
-		499C9160156C7D6100EC8895 /* DNMemoryInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNMemoryInfo.h; sourceTree = "<group>"; };
-		499C9161156C7D6100EC8895 /* DNMemoryInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNMemoryInfo.m; sourceTree = "<group>"; };
-		499C9162156C7D6100EC8895 /* DNTimingMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNTimingMacros.h; sourceTree = "<group>"; };
-		499C9163156C7D6100EC8895 /* EAGLContext+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EAGLContext+Extensions.h"; sourceTree = "<group>"; };
-		499C9164156C7D6100EC8895 /* EAGLContext+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EAGLContext+Extensions.m"; sourceTree = "<group>"; };
-		499C9165156C7D6100EC8895 /* GLKMath_cpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKMath_cpp.h; sourceTree = "<group>"; };
-		499C9166156C7D6100EC8895 /* GLKMatrix3_cpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKMatrix3_cpp.h; sourceTree = "<group>"; };
-		499C9167156C7D6100EC8895 /* GLKMatrix4_cpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKMatrix4_cpp.h; sourceTree = "<group>"; };
-		499C9168156C7D6100EC8895 /* GLKQuaternion_cpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKQuaternion_cpp.h; sourceTree = "<group>"; };
-		499C9169156C7D6100EC8895 /* GLKVector2_cpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKVector2_cpp.h; sourceTree = "<group>"; };
-		499C916A156C7D6100EC8895 /* GLKVector3_cpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKVector3_cpp.h; sourceTree = "<group>"; };
-		499C916B156C7D6100EC8895 /* GLKVector4_cpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKVector4_cpp.h; sourceTree = "<group>"; };
-		499C916C156C7D6100EC8895 /* NSString+URLEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+URLEncoding.h"; sourceTree = "<group>"; };
-		499C916D156C7D6100EC8895 /* NSString+URLEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+URLEncoding.m"; sourceTree = "<group>"; };
-		499C916E156C7D6100EC8895 /* SimplexNoise.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SimplexNoise.c; sourceTree = "<group>"; };
-		499C916F156C7D6100EC8895 /* SimplexNoise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimplexNoise.h; sourceTree = "<group>"; };
-		499C9170156C7D6100EC8895 /* WMMathUtil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = WMMathUtil.c; sourceTree = "<group>"; };
-		499C9171156C7D6100EC8895 /* WMMathUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMMathUtil.h; sourceTree = "<group>"; };
-		499C9172156C7D6100EC8895 /* WMPrefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPrefix.pch; sourceTree = "<group>"; };
+		498EAFEF16767C350095356A /* GLDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLDefines.h; path = ../../Engine/Render/GLDefines.h; sourceTree = "<group>"; };
+		498EAFF016767C5C0095356A /* GLKVectorCGCompatibility.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = GLKVectorCGCompatibility.c; path = ../../Misc/GLKVectorCGCompatibility.c; sourceTree = "<group>"; };
+		498EAFF116767C5C0095356A /* GLKVectorCGCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLKVectorCGCompatibility.h; path = ../../Misc/GLKVectorCGCompatibility.h; sourceTree = "<group>"; };
+		498EAFF316767C930095356A /* WMGraph.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WMGraph.framework; path = ../WMGraph/build/Release/WMGraph.framework; sourceTree = "<group>"; };
+		498EAFFF1676821D0095356A /* NSString+URLEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+URLEncoding.h"; sourceTree = "<group>"; };
+		498EB0001676821D0095356A /* NSString+URLEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+URLEncoding.m"; sourceTree = "<group>"; };
 		49A5263B13D172BC004EC7F6 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
 		49A5263D13D172C6004EC7F6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		49A5263F13D172CF004EC7F6 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -659,28 +440,6 @@
 		49A5285A13D173B8004EC7F6 /* PGMidiFind.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PGMidiFind.mm; sourceTree = "<group>"; };
 		49A5286213D174C6004EC7F6 /* connection-white~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "connection-white~ipad.png"; sourceTree = "<group>"; };
 		49A5286413D17A03004EC7F6 /* connection-shadow~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "connection-shadow~ipad.png"; sourceTree = "<group>"; };
-		49AA853914428B0F005BC6F7 /* WMFramebuffer_WMEAGLContext_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMFramebuffer_WMEAGLContext_Private.h; sourceTree = "<group>"; };
-		49AA853B1442B227005BC6F7 /* WMGLStateObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMGLStateObject.h; sourceTree = "<group>"; };
-		49AA853C1442B227005BC6F7 /* WMGLStateObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMGLStateObject.m; sourceTree = "<group>"; };
-		49AA853E1442B2F7005BC6F7 /* WMGLStateObject_WMEAGLContext_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMGLStateObject_WMEAGLContext_Private.h; sourceTree = "<group>"; };
-		49AA853F1442D3AC005BC6F7 /* WMShader_WMEAGLContext_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMShader_WMEAGLContext_Private.h; sourceTree = "<group>"; };
-		49AC77F613F19E9000BC6584 /* WMRenderObject_WMEAGLContext_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMRenderObject_WMEAGLContext_Private.h; sourceTree = "<group>"; };
-		49AD650A13DE8FF600A2CC66 /* WMVectorPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMVectorPort.h; sourceTree = "<group>"; };
-		49AD650B13DE8FF600A2CC66 /* WMVectorPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMVectorPort.m; sourceTree = "<group>"; };
-		49AD651513DE9E1200A2CC66 /* WMVectorFromComponents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMVectorFromComponents.h; sourceTree = "<group>"; };
-		49AD651613DE9E1200A2CC66 /* WMVectorFromComponents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WMVectorFromComponents.m; sourceTree = "<group>"; };
-		49B3DB4B13E10F03002DC713 /* WMRenderObjectPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMRenderObjectPort.h; sourceTree = "<group>"; };
-		49B3DB4C13E10F03002DC713 /* WMRenderObjectPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMRenderObjectPort.m; sourceTree = "<group>"; };
-		49B3DB5713E11039002DC713 /* WMRenderOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMRenderOutput.h; sourceTree = "<group>"; };
-		49B3DB5813E11039002DC713 /* WMRenderOutput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WMRenderOutput.m; sourceTree = "<group>"; };
-		49B3DB5D13E1115B002DC713 /* WMSetShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSetShader.h; sourceTree = "<group>"; };
-		49B3DB5E13E1115B002DC713 /* WMSetShader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WMSetShader.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		49B4500415C362EA00113D82 /* GLKVectorCGCompatibility.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GLKVectorCGCompatibility.c; sourceTree = "<group>"; };
-		49B4500515C362EA00113D82 /* GLKVectorCGCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKVectorCGCompatibility.h; sourceTree = "<group>"; };
-		49B4500815C36F2B00113D82 /* WMImageSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMImageSize.h; sourceTree = "<group>"; };
-		49B4500915C36F2B00113D82 /* WMImageSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMImageSize.m; sourceTree = "<group>"; };
-		49B4500F15C4244B00113D82 /* NSValue+GLKVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValue+GLKVector.h"; sourceTree = "<group>"; };
-		49B4501015C4244B00113D82 /* NSValue+GLKVector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSValue+GLKVector.m"; sourceTree = "<group>"; };
 		49B792C01581F1E8009E81EB /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
 		49B792C11581F1E8009E81EB /* DNZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNZipArchive.h; sourceTree = "<group>"; };
 		49B792C21581F1E8009E81EB /* DNZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNZipArchive.m; sourceTree = "<group>"; };
@@ -706,24 +465,8 @@
 		49B792E31581F819009E81EB /* ASIS3Request.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIS3Request.m; sourceTree = "<group>"; };
 		49B792E41581F819009E81EB /* ASIS3ServiceRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIS3ServiceRequest.h; sourceTree = "<group>"; };
 		49B792E51581F819009E81EB /* ASIS3ServiceRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIS3ServiceRequest.m; sourceTree = "<group>"; };
-		49B99012145E4633009F3CBD /* WMVertexArrayObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMVertexArrayObject.h; sourceTree = "<group>"; };
-		49B99013145E4634009F3CBD /* WMVertexArrayObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMVertexArrayObject.m; sourceTree = "<group>"; };
-		49B9A6BB1415C473001DB45B /* WMVideoRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMVideoRecord.h; sourceTree = "<group>"; };
-		49B9A6BC1415C473001DB45B /* WMVideoRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMVideoRecord.m; sourceTree = "<group>"; };
-		49BACB4013EB5847008ED051 /* WMGraphTopologyTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMGraphTopologyTests.h; sourceTree = "<group>"; };
-		49BACB4113EB5847008ED051 /* WMGraphTopologyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMGraphTopologyTests.m; sourceTree = "<group>"; };
 		49BACB4913EB592A008ED051 /* WMEngineTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WMEngineTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		49BACB4A13EB592A008ED051 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		49BACB5C13EB59D4008ED051 /* WMEngineTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "WMEngineTests-Info.plist"; sourceTree = "<group>"; };
-		49BACBC913EB5B54008ED051 /* WMEngineTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMEngineTests-Prefix.pch"; sourceTree = "<group>"; };
-		49D52FC81447A93C00739E84 /* WMAPI.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WMAPI.lua; sourceTree = "<group>"; };
-		49D52FC91447A93C00739E84 /* WMAPIBuffer.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WMAPIBuffer.lua; sourceTree = "<group>"; };
-		49D52FCA1447A93C00739E84 /* WMLuaBufferBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMLuaBufferBridge.h; sourceTree = "<group>"; };
-		49D52FCB1447A93C00739E84 /* WMLuaBufferBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMLuaBufferBridge.m; sourceTree = "<group>"; };
-		49D52FCC1447A93C00739E84 /* WMLuaScriptingContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMLuaScriptingContext.h; sourceTree = "<group>"; };
-		49D52FCD1447A93C00739E84 /* WMLuaScriptingContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMLuaScriptingContext.m; sourceTree = "<group>"; };
-		49D52FD31447AA6000739E84 /* WMLua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMLua.h; sourceTree = "<group>"; };
-		49D52FD41447AA6000739E84 /* WMLua.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMLua.m; sourceTree = "<group>"; };
 		49D52FD71447AB4B00739E84 /* lapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lapi.c; sourceTree = "<group>"; };
 		49D52FD81447AB4B00739E84 /* lapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lapi.h; sourceTree = "<group>"; };
 		49D52FD91447AB4B00739E84 /* lauxlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lauxlib.c; sourceTree = "<group>"; };
@@ -780,18 +523,10 @@
 		49D530371447AC9000739E84 /* WMLuaSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMLuaSettingsController.h; sourceTree = "<group>"; };
 		49D530381447AC9000739E84 /* WMLuaSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMLuaSettingsController.m; sourceTree = "<group>"; };
 		49D530391447AC9100739E84 /* WMLuaSettingsController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMLuaSettingsController.xib; sourceTree = "<group>"; };
-		49D5303C1447CF4C00739E84 /* WMPatchLuaBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPatchLuaBridge.m; sourceTree = "<group>"; };
-		49D5303E144809C400739E84 /* WMPatchLuaBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPatchLuaBridge.h; sourceTree = "<group>"; };
 		49D73A8613FEE0F60028AF22 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
-		49E1E963162CACA200B52262 /* WMRenderObject+CreateWithGeometry.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "WMRenderObject+CreateWithGeometry.mm"; sourceTree = "<group>"; };
-		49E1E964162CACA200B52262 /* WMTransforms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMTransforms.h; sourceTree = "<group>"; };
-		49E1E965162CACA200B52262 /* WMTransforms.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WMTransforms.mm; sourceTree = "<group>"; };
 		49E3145613DA44F600813CE0 /* Random.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Random.cpp; sourceTree = "<group>"; };
 		49E3145713DA44F600813CE0 /* Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Random.h; sourceTree = "<group>"; };
 		49E3145813DA44F600813CE0 /* Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Types.h; sourceTree = "<group>"; };
-		49EAAFB415900A0900B7030C /* WMPatchEventSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WMPatchEventSource.h; sourceTree = "<group>"; };
-		49EAAFCB15900A2100B7030C /* WMFrameCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMFrameCounter.h; sourceTree = "<group>"; };
-		49EAAFCC15900A2100B7030C /* WMFrameCounter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMFrameCounter.m; sourceTree = "<group>"; };
 		49F0594C13D15F640056C506 /* WMEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WMEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49F0595013D15F640056C506 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		49F0595213D15F640056C506 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -806,12 +541,6 @@
 		49F0597C13D15F640056C506 /* WMEditTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WMEditTests-Prefix.pch"; sourceTree = "<group>"; };
 		49F0597D13D15F640056C506 /* WMEditTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WMEditTests.h; sourceTree = "<group>"; };
 		49F0597F13D15F640056C506 /* WMEditTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WMEditTests.m; sourceTree = "<group>"; };
-		49F425B413EE07D00093EE5F /* WMTexture2D_WMEAGLContext_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMTexture2D_WMEAGLContext_Private.h; sourceTree = "<group>"; };
-		49F425BA13EE14B40093EE5F /* WMTexture2D_RenderPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMTexture2D_RenderPrivate.h; sourceTree = "<group>"; };
-		49F638C3157414AF00BA9C39 /* WMAudioPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMAudioPort.h; sourceTree = "<group>"; };
-		49F638C4157414AF00BA9C39 /* WMAudioPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMAudioPort.m; sourceTree = "<group>"; };
-		49F638C815741AD000BA9C39 /* WMAudioBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMAudioBuffer.h; sourceTree = "<group>"; };
-		49F638C915741AD000BA9C39 /* WMAudioBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMAudioBuffer.m; sourceTree = "<group>"; };
 		49F638CE15742B3800BA9C39 /* WMBooleanInputPortCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMBooleanInputPortCell.h; sourceTree = "<group>"; };
 		49F638CF15742B3800BA9C39 /* WMBooleanInputPortCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMBooleanInputPortCell.m; sourceTree = "<group>"; };
 		49F638D015742B3900BA9C39 /* WMBooleanInputPortCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMBooleanInputPortCell.xib; sourceTree = "<group>"; };
@@ -851,6 +580,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				498EAFF416767C930095356A /* WMGraph.framework in Frameworks */,
 				49D73A8713FEE0F60028AF22 /* AssetsLibrary.framework in Frameworks */,
 				490AC1E713D8F10F005E61CD /* GLKit.framework in Frameworks */,
 				494E4EF213D25D2B00402784 /* CoreMedia.framework in Frameworks */,
@@ -885,44 +615,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4905F125157D729600488306 /* Kaleidoscope */ = {
-			isa = PBXGroup;
-			children = (
-				4905F126157D729600488306 /* DNKaleidoscopeGeometryVariable.h */,
-				4905F127157D729600488306 /* DNKaleidoscopeGeometryVariable.m */,
-				4905F128157D729600488306 /* DNTriangleTriangleClip.h */,
-				4905F129157D729600488306 /* DNTriangleTriangleClip.m */,
-				4905F12A157D729600488306 /* WMEightfoldTilePatch.h */,
-				4905F12B157D729600488306 /* WMEightfoldTilePatch.m */,
-			);
-			path = Kaleidoscope;
-			sourceTree = "<group>";
-		};
-		49174AA213D235BD008B5B8D /* Application */ = {
-			isa = PBXGroup;
-			children = (
-				49174AA313D235BD008B5B8D /* DNAssertionHandler.h */,
-				49174AA413D235BD008B5B8D /* DNAssertionHandler.m */,
-				49174AA513D235BD008B5B8D /* WMView.h */,
-				49174AA613D235BD008B5B8D /* WMView.m */,
-				49174AAA13D235BD008B5B8D /* WMViewController.h */,
-				49174AAB13D235BD008B5B8D /* WMViewController.m */,
-			);
-			name = Application;
-			path = ../Application;
-			sourceTree = "<group>";
-		};
-		4917AC9A13F9C722008AD2CB /* Bundle */ = {
-			isa = PBXGroup;
-			children = (
-				4917AC9B13F9C722008AD2CB /* WMBundleDocument.h */,
-				4917AC9C13F9C722008AD2CB /* WMBundleDocument.m */,
-				4917AC9D13F9C722008AD2CB /* WMCompositionSerialization.h */,
-				4917AC9E13F9C722008AD2CB /* WMCompositionSerialization.m */,
-			);
-			path = Bundle;
-			sourceTree = "<group>";
-		};
 		494E4D2313D24A4C00402784 /* ASIHTTPRequest */ = {
 			isa = PBXGroup;
 			children = (
@@ -1012,199 +704,21 @@
 			path = "KVO-Notification-Manager";
 			sourceTree = "<group>";
 		};
-		49858DBF13DE4C1F0061A1A8 /* Engine */ = {
+		497F5513167683E200209E30 /* Lua */ = {
 			isa = PBXGroup;
 			children = (
-				49F638C715741AAD00BA9C39 /* Audio */,
-				49858DC513DE4C1F0061A1A8 /* Core */,
-				4917AC9A13F9C722008AD2CB /* Bundle */,
-				49858DD013DE4C1F0061A1A8 /* Patches */,
-				49858DF013DE4C1F0061A1A8 /* Ports */,
-				49858DC013DE4C1F0061A1A8 /* Buffer */,
-				49BACB3E13EB5827008ED051 /* Tests */,
-				49858E0013DE4C1F0061A1A8 /* Render */,
-				49D52FC61447A91900739E84 /* Scripting */,
-				499C915C156C7D6100EC8895 /* Util */,
+				497F5514167683E200209E30 /* WMAPI.lua */,
+				497F5515167683E200209E30 /* WMAPIBuffer.lua */,
+				497F5516167683E200209E30 /* WMLua.h */,
+				497F5517167683E200209E30 /* WMLua.m */,
+				497F5518167683E200209E30 /* WMLuaBufferBridge.h */,
+				497F5519167683E200209E30 /* WMLuaBufferBridge.m */,
+				497F551A167683E200209E30 /* WMLuaScriptingContext.h */,
+				497F551B167683E200209E30 /* WMLuaScriptingContext.m */,
+				497F551C167683E200209E30 /* WMPatchLuaBridge.h */,
+				497F551D167683E200209E30 /* WMPatchLuaBridge.m */,
 			);
-			name = Engine;
-			path = ../Engine;
-			sourceTree = "<group>";
-		};
-		49858DC013DE4C1F0061A1A8 /* Buffer */ = {
-			isa = PBXGroup;
-			children = (
-				49858DC113DE4C1F0061A1A8 /* WMStructuredBuffer.h */,
-				49858DC213DE4C1F0061A1A8 /* WMStructuredBuffer.m */,
-				49858E0D13DE4C1F0061A1A8 /* WMStructuredBuffer_WMEAGLContext_Private.h */,
-				49858DC313DE4C1F0061A1A8 /* WMStructureDefinition.h */,
-				49858DC413DE4C1F0061A1A8 /* WMStructureDefinition.m */,
-			);
-			path = Buffer;
-			sourceTree = "<group>";
-		};
-		49858DC513DE4C1F0061A1A8 /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				49858DC813DE4C1F0061A1A8 /* WMConnection.h */,
-				49858DC913DE4C1F0061A1A8 /* WMConnection.m */,
-				49858DCA13DE4C1F0061A1A8 /* WMEngine.h */,
-				49858DCB13DE4C1F0061A1A8 /* WMEngine.mm */,
-				49858DCC13DE4C1F0061A1A8 /* WMPatch.h */,
-				49858DCD13DE4C1F0061A1A8 /* WMPatch.m */,
-				49EAAFB415900A0900B7030C /* WMPatchEventSource.h */,
-				49791BC513EB98E8003B20EA /* WMPatch+GraphAlgorithms.h */,
-				49791BC613EB98E9003B20EA /* WMPatch+GraphAlgorithms.m */,
-				49858DCE13DE4C1F0061A1A8 /* WMPatchCategories.h */,
-				49858DCF13DE4C1F0061A1A8 /* WMPatchCategories.m */,
-			);
-			path = Core;
-			sourceTree = "<group>";
-		};
-		49858DD013DE4C1F0061A1A8 /* Patches */ = {
-			isa = PBXGroup;
-			children = (
-				49858DD113DE4C1F0061A1A8 /* Device */,
-				49858DD613DE4C1F0061A1A8 /* Geometry */,
-				49B3DB5613E11039002DC713 /* Render Object */,
-				49858DDF13DE4C1F0061A1A8 /* Image */,
-				49D52FD21447AA6000739E84 /* Scripting */,
-				49858DE713DE4C1F0061A1A8 /* Util */,
-			);
-			path = Patches;
-			sourceTree = "<group>";
-		};
-		49858DD113DE4C1F0061A1A8 /* Device */ = {
-			isa = PBXGroup;
-			children = (
-				49858DD213DE4C1F0061A1A8 /* WMAccelerometer.h */,
-				49858DD313DE4C1F0061A1A8 /* WMAccelerometer.mm */,
-				49858DD413DE4C1F0061A1A8 /* WMVideoCapture.h */,
-				49858DD513DE4C1F0061A1A8 /* WMVideoCapture.m */,
-				498C2BBF13F6630F0071B87F /* WMCVTexture2D.h */,
-				498C2BC013F6630F0071B87F /* WMCVTexture2D.m */,
-			);
-			path = Device;
-			sourceTree = "<group>";
-		};
-		49858DD613DE4C1F0061A1A8 /* Geometry */ = {
-			isa = PBXGroup;
-			children = (
-				4905F125157D729600488306 /* Kaleidoscope */,
-				49858DD713DE4C1F0061A1A8 /* WMClear.h */,
-				49858DD813DE4C1F0061A1A8 /* WMClear.m */,
-				49858DD913DE4C1F0061A1A8 /* WMParticleSystem.h */,
-				49858DDA13DE4C1F0061A1A8 /* WMParticleSystem.mm */,
-				49858DDB13DE4C1F0061A1A8 /* WMQuad.h */,
-				49858DDC13DE4C1F0061A1A8 /* WMQuad.mm */,
-				49858DDD13DE4C1F0061A1A8 /* WMSphere.h */,
-				49858DDE13DE4C1F0061A1A8 /* WMSphere.mm */,
-			);
-			path = Geometry;
-			sourceTree = "<group>";
-		};
-		49858DDF13DE4C1F0061A1A8 /* Image */ = {
-			isa = PBXGroup;
-			children = (
-				49858DE013DE4C1F0061A1A8 /* WMGaussianBlur.glsl */,
-				49858DE113DE4C1F0061A1A8 /* WMImageFilter.h */,
-				49858DE213DE4C1F0061A1A8 /* WMImageFilter.m */,
-				49858DE313DE4C1F0061A1A8 /* WMImageLoader.h */,
-				49858DE413DE4C1F0061A1A8 /* WMImageLoader.m */,
-				49858DE513DE4C1F0061A1A8 /* WMRenderInImage.h */,
-				49858DE613DE4C1F0061A1A8 /* WMRenderInImage.mm */,
-				49B4500815C36F2B00113D82 /* WMImageSize.h */,
-				49B4500915C36F2B00113D82 /* WMImageSize.m */,
-				491E26A915C94A9F0087D52B /* WMImageOrientation.h */,
-				491E26AA15C94A9F0087D52B /* WMImageOrientation.m */,
-				4918B9C0161FAE6200C6D1A9 /* WMImageResize.h */,
-				4918B9C1161FAE6200C6D1A9 /* WMImageResize.m */,
-			);
-			path = Image;
-			sourceTree = "<group>";
-		};
-		49858DE713DE4C1F0061A1A8 /* Util */ = {
-			isa = PBXGroup;
-			children = (
-				49858DE813DE4C1F0061A1A8 /* WMColorFromComponents.h */,
-				49858DE913DE4C1F0061A1A8 /* WMColorFromComponents.m */,
-				49858DEA13DE4C1F0061A1A8 /* WMLFO.h */,
-				49858DEB13DE4C1F0061A1A8 /* WMLFO.m */,
-				49858DEC13DE4C1F0061A1A8 /* WMMathOp.h */,
-				49858DED13DE4C1F0061A1A8 /* WMMathOp.m */,
-				49858DEE13DE4C1F0061A1A8 /* WMSplitter.h */,
-				49858DEF13DE4C1F0061A1A8 /* WMSplitter.m */,
-				49AD651513DE9E1200A2CC66 /* WMVectorFromComponents.h */,
-				49AD651613DE9E1200A2CC66 /* WMVectorFromComponents.m */,
-				49B9A6BB1415C473001DB45B /* WMVideoRecord.h */,
-				49B9A6BC1415C473001DB45B /* WMVideoRecord.m */,
-				496AF5FB144A169900082FBD /* WMSetRenderObject.h */,
-				496AF5FC144A169900082FBD /* WMSetRenderObject.m */,
-			);
-			path = Util;
-			sourceTree = "<group>";
-		};
-		49858DF013DE4C1F0061A1A8 /* Ports */ = {
-			isa = PBXGroup;
-			children = (
-				49858DF113DE4C1F0061A1A8 /* WMBooleanPort.h */,
-				49858DF213DE4C1F0061A1A8 /* WMBooleanPort.m */,
-				49858DF313DE4C1F0061A1A8 /* WMColorPort.h */,
-				49858DF413DE4C1F0061A1A8 /* WMColorPort.m */,
-				49858DF513DE4C1F0061A1A8 /* WMImagePort.h */,
-				49858DF613DE4C1F0061A1A8 /* WMImagePort.m */,
-				49858DF713DE4C1F0061A1A8 /* WMIndexPort.h */,
-				49858DF813DE4C1F0061A1A8 /* WMIndexPort.m */,
-				49858DF913DE4C1F0061A1A8 /* WMNumberPort.h */,
-				49858DFA13DE4C1F0061A1A8 /* WMNumberPort.m */,
-				49858DFB13DE4C1F0061A1A8 /* WMPort.h */,
-				49858DFC13DE4C1F0061A1A8 /* WMPort.m */,
-				49858DFD13DE4C1F0061A1A8 /* WMPorts.h */,
-				49858DFE13DE4C1F0061A1A8 /* WMStringPort.h */,
-				49858DFF13DE4C1F0061A1A8 /* WMStringPort.m */,
-				49AD650A13DE8FF600A2CC66 /* WMVectorPort.h */,
-				49AD650B13DE8FF600A2CC66 /* WMVectorPort.m */,
-				49B3DB4B13E10F03002DC713 /* WMRenderObjectPort.h */,
-				49B3DB4C13E10F03002DC713 /* WMRenderObjectPort.m */,
-				496AF5F6144A127600082FBD /* WMBufferPort.h */,
-				496AF5F7144A127600082FBD /* WMBufferPort.m */,
-				49F638C3157414AF00BA9C39 /* WMAudioPort.h */,
-				49F638C4157414AF00BA9C39 /* WMAudioPort.m */,
-			);
-			path = Ports;
-			sourceTree = "<group>";
-		};
-		49858E0013DE4C1F0061A1A8 /* Render */ = {
-			isa = PBXGroup;
-			children = (
-				49858E0113DE4C1F0061A1A8 /* GLDefines.h */,
-				49858E0213DE4C1F0061A1A8 /* GLDefines.m */,
-				49858E0313DE4C1F0061A1A8 /* WMEAGLContext.h */,
-				49858E0413DE4C1F0061A1A8 /* WMEAGLContext.m */,
-				49AA853B1442B227005BC6F7 /* WMGLStateObject.h */,
-				49AA853C1442B227005BC6F7 /* WMGLStateObject.m */,
-				49AA853E1442B2F7005BC6F7 /* WMGLStateObject_WMEAGLContext_Private.h */,
-				49858E0513DE4C1F0061A1A8 /* WMFramebuffer.h */,
-				49858E0613DE4C1F0061A1A8 /* WMFramebuffer.m */,
-				49AA853914428B0F005BC6F7 /* WMFramebuffer_WMEAGLContext_Private.h */,
-				49858E0813DE4C1F0061A1A8 /* WMRenderCommon.h */,
-				49858E0913DE4C1F0061A1A8 /* WMRenderObject.h */,
-				49858E0A13DE4C1F0061A1A8 /* WMRenderObject.m */,
-				49AC77F613F19E9000BC6584 /* WMRenderObject_WMEAGLContext_Private.h */,
-				49858E0B13DE4C1F0061A1A8 /* WMShader.h */,
-				49858E0C13DE4C1F0061A1A8 /* WMShader.m */,
-				49AA853F1442D3AC005BC6F7 /* WMShader_WMEAGLContext_Private.h */,
-				49858E0E13DE4C1F0061A1A8 /* WMTexture2D.h */,
-				49858E0F13DE4C1F0061A1A8 /* WMTexture2D.m */,
-				49F425BA13EE14B40093EE5F /* WMTexture2D_RenderPrivate.h */,
-				49F425B413EE07D00093EE5F /* WMTexture2D_WMEAGLContext_Private.h */,
-				49858E1013DE4C1F0061A1A8 /* WMTextureCubeMap.h */,
-				49858E1113DE4C1F0061A1A8 /* WMTextureCubeMap.m */,
-				498E4E9613E1342B003BB056 /* WMDefaultShader.vsh */,
-				498E4E9313E13421003BB056 /* WMDefaultShader.fsh */,
-				49B99012145E4633009F3CBD /* WMVertexArrayObject.h */,
-				49B99013145E4634009F3CBD /* WMVertexArrayObject.m */,
-			);
-			path = Render;
+			path = Lua;
 			sourceTree = "<group>";
 		};
 		49858E4F13DE4C800061A1A8 /* More Patches */ = {
@@ -1212,6 +726,7 @@
 			children = (
 				49858E5013DE4C800061A1A8 /* About More Patches.txt */,
 				49858E5113DE4C800061A1A8 /* ImageFalseColor */,
+				497F5513167683E200209E30 /* Lua */,
 				49858E5713DE4C800061A1A8 /* MIDI */,
 				49858E5A13DE4C800061A1A8 /* OSC */,
 				49858E8D13DE4C800061A1A8 /* Quad Particles */,
@@ -1360,6 +875,8 @@
 		498DDEB413DF465400D10642 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				498EAFFF1676821D0095356A /* NSString+URLEncoding.h */,
+				498EB0001676821D0095356A /* NSString+URLEncoding.m */,
 				498DDEB513DF465400D10642 /* CGRoundRect.c */,
 				498DDEB613DF465400D10642 /* CGRoundRect.h */,
 			);
@@ -1444,41 +961,6 @@
 				493A1A2F1400E4B4001BB458 /* WMIndexInputPortCell.xib */,
 			);
 			path = "Ports Popover";
-			sourceTree = "<group>";
-		};
-		499C915C156C7D6100EC8895 /* Util */ = {
-			isa = PBXGroup;
-			children = (
-				49E1E964162CACA200B52262 /* WMTransforms.h */,
-				49E1E965162CACA200B52262 /* WMTransforms.mm */,
-				499C915D156C7D6100EC8895 /* DNDocument.h */,
-				499C915E156C7D6100EC8895 /* DNDocument.m */,
-				499C915F156C7D6100EC8895 /* DNKVC.h */,
-				499C9160156C7D6100EC8895 /* DNMemoryInfo.h */,
-				499C9161156C7D6100EC8895 /* DNMemoryInfo.m */,
-				499C9162156C7D6100EC8895 /* DNTimingMacros.h */,
-				499C9163156C7D6100EC8895 /* EAGLContext+Extensions.h */,
-				499C9164156C7D6100EC8895 /* EAGLContext+Extensions.m */,
-				499C9165156C7D6100EC8895 /* GLKMath_cpp.h */,
-				499C9166156C7D6100EC8895 /* GLKMatrix3_cpp.h */,
-				499C9167156C7D6100EC8895 /* GLKMatrix4_cpp.h */,
-				499C9168156C7D6100EC8895 /* GLKQuaternion_cpp.h */,
-				499C9169156C7D6100EC8895 /* GLKVector2_cpp.h */,
-				499C916A156C7D6100EC8895 /* GLKVector3_cpp.h */,
-				499C916B156C7D6100EC8895 /* GLKVector4_cpp.h */,
-				499C916C156C7D6100EC8895 /* NSString+URLEncoding.h */,
-				499C916D156C7D6100EC8895 /* NSString+URLEncoding.m */,
-				499C916E156C7D6100EC8895 /* SimplexNoise.c */,
-				499C916F156C7D6100EC8895 /* SimplexNoise.h */,
-				499C9170156C7D6100EC8895 /* WMMathUtil.c */,
-				499C9171156C7D6100EC8895 /* WMMathUtil.h */,
-				499C9172156C7D6100EC8895 /* WMPrefix.pch */,
-				49B4500F15C4244B00113D82 /* NSValue+GLKVector.h */,
-				49B4501015C4244B00113D82 /* NSValue+GLKVector.m */,
-				4918B9D3161FB07100C6D1A9 /* WMRenderObject+CreateWithGeometry.h */,
-				49E1E963162CACA200B52262 /* WMRenderObject+CreateWithGeometry.mm */,
-			);
-			path = Util;
 			sourceTree = "<group>";
 		};
 		49A5264D13D17330004EC7F6 /* Externals */ = {
@@ -1568,17 +1050,6 @@
 			path = "Patch Settings";
 			sourceTree = "<group>";
 		};
-		49B3DB5613E11039002DC713 /* Render Object */ = {
-			isa = PBXGroup;
-			children = (
-				49B3DB5713E11039002DC713 /* WMRenderOutput.h */,
-				49B3DB5813E11039002DC713 /* WMRenderOutput.m */,
-				49B3DB5D13E1115B002DC713 /* WMSetShader.h */,
-				49B3DB5E13E1115B002DC713 /* WMSetShader.m */,
-			);
-			path = "Render Object";
-			sourceTree = "<group>";
-		};
 		49B792BF1581F1E8009E81EB /* ZipFile-OC */ = {
 			isa = PBXGroup;
 			children = (
@@ -1624,41 +1095,6 @@
 				49B792E51581F819009E81EB /* ASIS3ServiceRequest.m */,
 			);
 			path = S3;
-			sourceTree = "<group>";
-		};
-		49BACB3E13EB5827008ED051 /* Tests */ = {
-			isa = PBXGroup;
-			children = (
-				49BACB5C13EB59D4008ED051 /* WMEngineTests-Info.plist */,
-				49BACBC913EB5B54008ED051 /* WMEngineTests-Prefix.pch */,
-				49BACB4013EB5847008ED051 /* WMGraphTopologyTests.h */,
-				49BACB4113EB5847008ED051 /* WMGraphTopologyTests.m */,
-			);
-			path = Tests;
-			sourceTree = "<group>";
-		};
-		49D52FC61447A91900739E84 /* Scripting */ = {
-			isa = PBXGroup;
-			children = (
-				49D52FC81447A93C00739E84 /* WMAPI.lua */,
-				49D52FC91447A93C00739E84 /* WMAPIBuffer.lua */,
-				49D52FCA1447A93C00739E84 /* WMLuaBufferBridge.h */,
-				49D52FCB1447A93C00739E84 /* WMLuaBufferBridge.m */,
-				49D52FCC1447A93C00739E84 /* WMLuaScriptingContext.h */,
-				49D52FCD1447A93C00739E84 /* WMLuaScriptingContext.m */,
-				49D5303E144809C400739E84 /* WMPatchLuaBridge.h */,
-				49D5303C1447CF4C00739E84 /* WMPatchLuaBridge.m */,
-			);
-			path = Scripting;
-			sourceTree = "<group>";
-		};
-		49D52FD21447AA6000739E84 /* Scripting */ = {
-			isa = PBXGroup;
-			children = (
-				49D52FD31447AA6000739E84 /* WMLua.h */,
-				49D52FD41447AA6000739E84 /* WMLua.m */,
-			);
-			path = Scripting;
 			sourceTree = "<group>";
 		};
 		49D52FD61447AB4B00739E84 /* lua */ = {
@@ -1732,26 +1168,11 @@
 			path = Math;
 			sourceTree = "<group>";
 		};
-		49EAAFB615900A2100B7030C /* Misc */ = {
-			isa = PBXGroup;
-			children = (
-				49B4500415C362EA00113D82 /* GLKVectorCGCompatibility.c */,
-				49B4500515C362EA00113D82 /* GLKVectorCGCompatibility.h */,
-				49EAAFCB15900A2100B7030C /* WMFrameCounter.h */,
-				49EAAFCC15900A2100B7030C /* WMFrameCounter.m */,
-			);
-			name = Misc;
-			path = ../Misc;
-			sourceTree = "<group>";
-		};
 		49F0594113D15F640056C506 = {
 			isa = PBXGroup;
 			children = (
 				49F0595613D15F640056C506 /* WMEdit */,
-				49174AA213D235BD008B5B8D /* Application */,
 				49A5286113D174C6004EC7F6 /* Resources */,
-				49858DBF13DE4C1F0061A1A8 /* Engine */,
-				49EAAFB615900A2100B7030C /* Misc */,
 				49858E4F13DE4C800061A1A8 /* More Patches */,
 				49A5264D13D17330004EC7F6 /* Externals */,
 				49F0597613D15F640056C506 /* WMEditTests */,
@@ -1773,6 +1194,7 @@
 		49F0594F13D15F640056C506 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				498EAFF316767C930095356A /* WMGraph.framework */,
 				49D73A8613FEE0F60028AF22 /* AssetsLibrary.framework */,
 				490AC1E613D8F10F005E61CD /* GLKit.framework */,
 				494E4EF113D25D2B00402784 /* CoreMedia.framework */,
@@ -1799,6 +1221,9 @@
 		49F0595613D15F640056C506 /* WMEdit */ = {
 			isa = PBXGroup;
 			children = (
+				498EAFF016767C5C0095356A /* GLKVectorCGCompatibility.c */,
+				498EAFF116767C5C0095356A /* GLKVectorCGCompatibility.h */,
+				498EAFEF16767C350095356A /* GLDefines.h */,
 				498DDE9D13DF465400D10642 /* Composition List */,
 				498DDEC613DF469F00D10642 /* Graph View */,
 				498DDEB413DF465400D10642 /* Util */,
@@ -1839,15 +1264,6 @@
 				49F0597C13D15F640056C506 /* WMEditTests-Prefix.pch */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		49F638C715741AAD00BA9C39 /* Audio */ = {
-			isa = PBXGroup;
-			children = (
-				49F638C815741AD000BA9C39 /* WMAudioBuffer.h */,
-				49F638C915741AD000BA9C39 /* WMAudioBuffer.m */,
-			);
-			path = Audio;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1950,8 +1366,6 @@
 			files = (
 				497928AA13E2AA6800DDBD2A /* SnowParticle.fsh in Resources */,
 				497928AB13E2AA6800DDBD2A /* SnowParticle.vsh in Resources */,
-				498E4E9813E13628003BB056 /* WMDefaultShader.vsh in Resources */,
-				498E4E9913E13628003BB056 /* WMDefaultShader.fsh in Resources */,
 				49F0595B13D15F640056C506 /* InfoPlist.strings in Resources */,
 				49A5286313D174C6004EC7F6 /* connection-white~ipad.png in Resources */,
 				49A5286513D17A03004EC7F6 /* connection-shadow~ipad.png in Resources */,
@@ -1965,7 +1379,6 @@
 				07C99A9113D38E8B00712EFA /* Icon-72.png in Resources */,
 				491D665513D630BD003C609B /* plugstrip-stretchable~ipad.png in Resources */,
 				49752EAF13D3807800F20447 /* compositions-button~ipad.png in Resources */,
-				49858E3313DE4C1F0061A1A8 /* WMGaussianBlur.glsl in Resources */,
 				49858E9813DE4C800061A1A8 /* About More Patches.txt in Resources */,
 				49858E9913DE4C800061A1A8 /* RainbowDark.pal in Resources */,
 				49858E9A13DE4C800061A1A8 /* RainbowLight.pal in Resources */,
@@ -1991,8 +1404,6 @@
 				493A1A301400E4B4001BB458 /* WMIndexInputPortCell.xib in Resources */,
 				4979F36B14478B8600D25116 /* popoverBg.png in Resources */,
 				4979F36C14478B8600D25116 /* popoverBg@2x.png in Resources */,
-				49D52FCE1447A93C00739E84 /* WMAPI.lua in Resources */,
-				49D52FCF1447A93C00739E84 /* WMAPIBuffer.lua in Resources */,
 				49D5303B1447AC9100739E84 /* WMLuaSettingsController.xib in Resources */,
 				491C1CC61454735000554C73 /* popoverArrowDown.png in Resources */,
 				491C1CC71454735000554C73 /* popoverArrowDown@2x.png in Resources */,
@@ -2007,6 +1418,8 @@
 				491C1CD01454735000554C73 /* popoverArrowUp@2x.png in Resources */,
 				491C1CD11454735000554C73 /* popoverArrowUpSimple.png in Resources */,
 				49F638D215742B3900BA9C39 /* WMBooleanInputPortCell.xib in Resources */,
+				497F551E167683E200209E30 /* WMAPI.lua in Resources */,
+				497F551F167683E200209E30 /* WMAPIBuffer.lua in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2055,49 +1468,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49BACB6213EB5A08008ED051 /* WMConnection.m in Sources */,
-				49BACB6413EB5A08008ED051 /* WMEngine.mm in Sources */,
-				49BACB6613EB5A08008ED051 /* WMPatch.m in Sources */,
-				49BACB6813EB5A08008ED051 /* WMPatchCategories.m in Sources */,
-				49BACB6A13EB5A08008ED051 /* WMAccelerometer.mm in Sources */,
-				49BACB6C13EB5A08008ED051 /* WMVideoCapture.m in Sources */,
-				49BACB6E13EB5A08008ED051 /* WMClear.m in Sources */,
-				49BACB7013EB5A08008ED051 /* WMParticleSystem.mm in Sources */,
-				49BACB7213EB5A08008ED051 /* WMQuad.mm in Sources */,
-				49BACB7413EB5A08008ED051 /* WMSphere.mm in Sources */,
-				49BACB7613EB5A08008ED051 /* WMRenderOutput.m in Sources */,
-				49BACB7813EB5A08008ED051 /* WMSetShader.m in Sources */,
-				49BACB7B13EB5A08008ED051 /* WMImageFilter.m in Sources */,
-				49BACB7D13EB5A08008ED051 /* WMImageLoader.m in Sources */,
-				49BACB7F13EB5A08008ED051 /* WMRenderInImage.mm in Sources */,
-				49BACB8113EB5A08008ED051 /* WMColorFromComponents.m in Sources */,
-				49BACB8313EB5A08008ED051 /* WMLFO.m in Sources */,
-				49BACB8513EB5A08008ED051 /* WMMathOp.m in Sources */,
-				49BACB8713EB5A08008ED051 /* WMSplitter.m in Sources */,
-				49BACB8913EB5A08008ED051 /* WMVectorFromComponents.m in Sources */,
-				49BACB8B13EB5A08008ED051 /* WMBooleanPort.m in Sources */,
-				49BACB8D13EB5A08008ED051 /* WMColorPort.m in Sources */,
-				49BACB8F13EB5A08008ED051 /* WMImagePort.m in Sources */,
-				49BACB9113EB5A08008ED051 /* WMIndexPort.m in Sources */,
-				49BACB9313EB5A08008ED051 /* WMNumberPort.m in Sources */,
-				49BACB9513EB5A08008ED051 /* WMPort.m in Sources */,
-				49BACB9813EB5A08008ED051 /* WMStringPort.m in Sources */,
-				49BACB9A13EB5A08008ED051 /* WMVectorPort.m in Sources */,
-				49BACB9C13EB5A08008ED051 /* WMRenderObjectPort.m in Sources */,
-				49BACB9E13EB5A08008ED051 /* WMStructuredBuffer.m in Sources */,
-				49BACBA013EB5A08008ED051 /* WMStructureDefinition.m in Sources */,
-				49BACBA413EB5A08008ED051 /* GLDefines.m in Sources */,
-				49BACBA613EB5A08008ED051 /* WMEAGLContext.m in Sources */,
-				49BACBA813EB5A08008ED051 /* WMFramebuffer.m in Sources */,
-				49BACBAC13EB5A08008ED051 /* WMRenderObject.m in Sources */,
-				49BACBAE13EB5A08008ED051 /* WMShader.m in Sources */,
-				49BACBB113EB5A08008ED051 /* WMTexture2D.m in Sources */,
-				49BACBB313EB5A08008ED051 /* WMTextureCubeMap.m in Sources */,
-				49BACB5E13EB59D9008ED051 /* WMGraphTopologyTests.m in Sources */,
-				49791BC813EB9C45003B20EA /* WMPatch+GraphAlgorithms.m in Sources */,
-				4917ACA213F9C722008AD2CB /* WMCompositionSerialization.m in Sources */,
-				496AF5F9144A127600082FBD /* WMBufferPort.m in Sources */,
-				49B9900E1459E436009F3CBD /* WMGLStateObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2110,9 +1480,6 @@
 				49A5285B13D173B8004EC7F6 /* PGMidi.mm in Sources */,
 				49A5285C13D173B8004EC7F6 /* PGMidiAllSources.mm in Sources */,
 				49A5285D13D173B8004EC7F6 /* PGMidiFind.mm in Sources */,
-				49174AAC13D235BD008B5B8D /* DNAssertionHandler.m in Sources */,
-				49174AAD13D235BD008B5B8D /* WMView.m in Sources */,
-				49174AB013D235BD008B5B8D /* WMViewController.m in Sources */,
 				494E4D7613D24A4C00402784 /* ASIAuthenticationDialog.m in Sources */,
 				494E4D7713D24A4C00402784 /* ASIDataCompressor.m in Sources */,
 				494E4D7813D24A4C00402784 /* ASIDataDecompressor.m in Sources */,
@@ -2129,39 +1496,6 @@
 				49B792EA1581F819009E81EB /* ASIS3Request.m in Sources */,
 				49B792EB1581F819009E81EB /* ASIS3ServiceRequest.m in Sources */,
 				49E3145913DA44F600813CE0 /* Random.cpp in Sources */,
-				49858E2613DE4C1F0061A1A8 /* WMStructuredBuffer.m in Sources */,
-				49858E2713DE4C1F0061A1A8 /* WMStructureDefinition.m in Sources */,
-				49858E2913DE4C1F0061A1A8 /* WMConnection.m in Sources */,
-				49858E2A13DE4C1F0061A1A8 /* WMEngine.mm in Sources */,
-				49858E2B13DE4C1F0061A1A8 /* WMPatch.m in Sources */,
-				49858E2C13DE4C1F0061A1A8 /* WMPatchCategories.m in Sources */,
-				49858E2D13DE4C1F0061A1A8 /* WMAccelerometer.mm in Sources */,
-				49858E2E13DE4C1F0061A1A8 /* WMVideoCapture.m in Sources */,
-				49858E2F13DE4C1F0061A1A8 /* WMClear.m in Sources */,
-				49858E3013DE4C1F0061A1A8 /* WMParticleSystem.mm in Sources */,
-				49858E3113DE4C1F0061A1A8 /* WMQuad.mm in Sources */,
-				49858E3213DE4C1F0061A1A8 /* WMSphere.mm in Sources */,
-				49858E3413DE4C1F0061A1A8 /* WMImageFilter.m in Sources */,
-				49858E3513DE4C1F0061A1A8 /* WMImageLoader.m in Sources */,
-				49858E3613DE4C1F0061A1A8 /* WMRenderInImage.mm in Sources */,
-				49858E3713DE4C1F0061A1A8 /* WMColorFromComponents.m in Sources */,
-				49858E3813DE4C1F0061A1A8 /* WMLFO.m in Sources */,
-				49858E3913DE4C1F0061A1A8 /* WMMathOp.m in Sources */,
-				49858E3A13DE4C1F0061A1A8 /* WMSplitter.m in Sources */,
-				49858E3B13DE4C1F0061A1A8 /* WMBooleanPort.m in Sources */,
-				49858E3C13DE4C1F0061A1A8 /* WMColorPort.m in Sources */,
-				49858E3D13DE4C1F0061A1A8 /* WMImagePort.m in Sources */,
-				49858E3E13DE4C1F0061A1A8 /* WMIndexPort.m in Sources */,
-				49858E3F13DE4C1F0061A1A8 /* WMNumberPort.m in Sources */,
-				49858E4013DE4C1F0061A1A8 /* WMPort.m in Sources */,
-				49858E4113DE4C1F0061A1A8 /* WMStringPort.m in Sources */,
-				49858E4213DE4C1F0061A1A8 /* GLDefines.m in Sources */,
-				49858E4313DE4C1F0061A1A8 /* WMEAGLContext.m in Sources */,
-				49858E4413DE4C1F0061A1A8 /* WMFramebuffer.m in Sources */,
-				49858E4513DE4C1F0061A1A8 /* WMRenderObject.m in Sources */,
-				49858E4613DE4C1F0061A1A8 /* WMShader.m in Sources */,
-				49858E4713DE4C1F0061A1A8 /* WMTexture2D.m in Sources */,
-				49858E4813DE4C1F0061A1A8 /* WMTextureCubeMap.m in Sources */,
 				49858E9C13DE4C800061A1A8 /* WMImageFalseColor.m in Sources */,
 				49858E9D13DE4C800061A1A8 /* WMMIDIReciever.m in Sources */,
 				49858E9E13DE4C800061A1A8 /* OscArg.cpp in Sources */,
@@ -2179,8 +1513,6 @@
 				49858EAA13DE4C800061A1A8 /* OscTypes.cpp in Sources */,
 				49858EAD13DE4C800061A1A8 /* WMOsc.mm in Sources */,
 				49858EAE13DE4C800061A1A8 /* WMQuadParticleSystem.mm in Sources */,
-				49AD650C13DE8FF600A2CC66 /* WMVectorPort.m in Sources */,
-				49AD651713DE9E1200A2CC66 /* WMVectorFromComponents.m in Sources */,
 				498DDEB913DF465400D10642 /* WMCompositionLibrary.m in Sources */,
 				498DDEBA13DF465400D10642 /* WMCompositionLibraryViewController.m in Sources */,
 				498DDEC413DF465400D10642 /* CGRoundRect.c in Sources */,
@@ -2200,28 +1532,16 @@
 				498DDF0413DF8F1900D10642 /* WMInputPortsController.m in Sources */,
 				498DDF0813DF905500D10642 /* WMInputPortCell.m in Sources */,
 				498DDF0D13DF921B00D10642 /* WMNumberInputPortCell.m in Sources */,
-				49B3DB4D13E10F03002DC713 /* WMRenderObjectPort.m in Sources */,
-				49B3DB5B13E11039002DC713 /* WMRenderOutput.m in Sources */,
-				49B3DB5F13E1115B002DC713 /* WMSetShader.m in Sources */,
 				496F554213E128A30065BB67 /* WMSetShaderSettingsController.m in Sources */,
 				496F554613E12D2E0065BB67 /* WMPatch+SettingsControllerClass.m in Sources */,
 				49F8A94513E69778000D4A3A /* WMImageLoaderSettingsController.m in Sources */,
-				49791BC713EB98E9003B20EA /* WMPatch+GraphAlgorithms.m in Sources */,
-				498C2BC113F6630F0071B87F /* WMCVTexture2D.m in Sources */,
-				4917AC9F13F9C722008AD2CB /* WMBundleDocument.m in Sources */,
-				4917ACA113F9C722008AD2CB /* WMCompositionSerialization.m in Sources */,
 				493A1A2E1400E491001BB458 /* WMIndexInputPortCell.m in Sources */,
-				49B9A6BD1415C473001DB45B /* WMVideoRecord.m in Sources */,
-				49AA853D1442B228005BC6F7 /* WMGLStateObject.m in Sources */,
 				4979F347144783A400D25116 /* UIBarButtonItem+WEPopover.m in Sources */,
 				4979F348144783A400D25116 /* WEPopoverContainerView.m in Sources */,
 				4979F349144783A400D25116 /* WEPopoverController.m in Sources */,
 				4979F34A144783A400D25116 /* WETouchableView.m in Sources */,
 				4979F38814479E7100D25116 /* CKVOBlockNotificationHelper.m in Sources */,
 				4979F38A14479E7100D25116 /* NSObject_KVOBlockNotificationExtensions.m in Sources */,
-				49D52FD01447A93C00739E84 /* WMLuaBufferBridge.m in Sources */,
-				49D52FD11447A93C00739E84 /* WMLuaScriptingContext.m in Sources */,
-				49D52FD51447AA6000739E84 /* WMLua.m in Sources */,
 				49D530121447AB4C00739E84 /* lapi.c in Sources */,
 				49D530131447AB4C00739E84 /* lauxlib.c in Sources */,
 				49D530141447AB4C00739E84 /* lbaselib.c in Sources */,
@@ -2253,35 +1573,18 @@
 				49D530331447AB4C00739E84 /* lzio.c in Sources */,
 				49D530351447AB4C00739E84 /* print.c in Sources */,
 				49D5303A1447AC9100739E84 /* WMLuaSettingsController.m in Sources */,
-				49D5303D1447CF4C00739E84 /* WMPatchLuaBridge.m in Sources */,
-				496AF5F8144A127600082FBD /* WMBufferPort.m in Sources */,
-				496AF5FD144A169900082FBD /* WMSetRenderObject.m in Sources */,
-				49B99014145E4634009F3CBD /* WMVertexArrayObject.m in Sources */,
-				499C9173156C7D6100EC8895 /* DNDocument.m in Sources */,
-				499C9174156C7D6100EC8895 /* DNMemoryInfo.m in Sources */,
-				499C9175156C7D6100EC8895 /* EAGLContext+Extensions.m in Sources */,
-				499C9176156C7D6100EC8895 /* NSString+URLEncoding.m in Sources */,
-				499C9177156C7D6100EC8895 /* SimplexNoise.c in Sources */,
-				499C9178156C7D6100EC8895 /* WMMathUtil.c in Sources */,
-				49F638C5157414AF00BA9C39 /* WMAudioPort.m in Sources */,
-				49F638CA15741AD000BA9C39 /* WMAudioBuffer.m in Sources */,
 				49F638D115742B3900BA9C39 /* WMBooleanInputPortCell.m in Sources */,
-				4905F12C157D729600488306 /* DNKaleidoscopeGeometryVariable.m in Sources */,
-				4905F12D157D729600488306 /* DNTriangleTriangleClip.m in Sources */,
-				4905F12E157D729600488306 /* WMEightfoldTilePatch.m in Sources */,
 				49B792D01581F1E8009E81EB /* DNZipArchive.m in Sources */,
 				49B792D11581F1E8009E81EB /* ioapi.c in Sources */,
 				49B792D31581F1E8009E81EB /* mztools.c in Sources */,
 				49B792D41581F1E8009E81EB /* unzip.c in Sources */,
 				49B792D51581F1E8009E81EB /* zip.c in Sources */,
-				49EAAFD215900A2100B7030C /* WMFrameCounter.m in Sources */,
-				49B4500615C362EA00113D82 /* GLKVectorCGCompatibility.c in Sources */,
-				49B4500A15C36F2B00113D82 /* WMImageSize.m in Sources */,
-				49B4501115C4244B00113D82 /* NSValue+GLKVector.m in Sources */,
-				491E26AB15C94A9F0087D52B /* WMImageOrientation.m in Sources */,
-				4918B9C2161FAE6200C6D1A9 /* WMImageResize.m in Sources */,
-				49E1E966162CACA200B52262 /* WMRenderObject+CreateWithGeometry.mm in Sources */,
-				49E1E967162CACA200B52262 /* WMTransforms.mm in Sources */,
+				498EAFF216767C5C0095356A /* GLKVectorCGCompatibility.c in Sources */,
+				498EB0011676821D0095356A /* NSString+URLEncoding.m in Sources */,
+				497F5520167683E200209E30 /* WMLua.m in Sources */,
+				497F5521167683E200209E30 /* WMLuaBufferBridge.m in Sources */,
+				497F5522167683E200209E30 /* WMLuaScriptingContext.m in Sources */,
+				497F5523167683E200209E30 /* WMPatchLuaBridge.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

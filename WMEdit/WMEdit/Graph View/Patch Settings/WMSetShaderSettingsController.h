@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "WMPatch+SettingsControllerClass.h"
-#import "WMSetShader.h"
+#import <WMGraph/WMSetShader.h>
 
 @interface WMSetShaderSettingsController : UIViewController <WMPatchSettingsController>
 

@@ -7,10 +7,11 @@
 //
 
 #import "WMCompositionLibrary.h"
-#import "WMPatch.h"
+
 #import "NSString+URLEncoding.h"
-#import "WMBundleDocument.h"
-#import "DNKVC.h"
+#import <WMGraph/WMGraph.h>
+#import <WMGraph/DNKVC.h>
+
 
 NSString *CompositionsChangedNotification = @"CompositionsChangedNotification";
 

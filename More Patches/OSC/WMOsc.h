@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "WMPatch.h"
+#import <WMGraph/WMGraph.h>
 #import "OscReceiver.h"
 
 

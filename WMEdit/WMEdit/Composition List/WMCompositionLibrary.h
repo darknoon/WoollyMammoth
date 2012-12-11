@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "WMPatch.h"
+#import <WMGraph/WMGraph.h>
 
 @interface WMCompositionLibrary : NSObject 
 @property (nonatomic, readonly) NSArray *compositions;

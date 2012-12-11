@@ -8,12 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import <WMGraph/WMGraph.h>
 #import "Random.h"
-#import "WMPatch.h"
-
-#import "WMRenderCommon.h"
-
-#import "WMPorts.h"
 
 struct WMQuadParticle;
 

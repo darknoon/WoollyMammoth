@@ -11,7 +11,7 @@
 #import "WMEditViewController.h"
 
 #import "WMCompositionLibrary.h"
-#import "DNAssertionHandler.h"
+#import <WMGraph/DNAssertionHandler.h>
 
 @implementation WMEditAppDelegate
 

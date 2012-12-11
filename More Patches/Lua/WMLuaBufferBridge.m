@@ -9,7 +9,7 @@
 #import "WMLuaBufferBridge.h"
 
 #import "lauxlib.h"
-#import "WMStructuredBuffer.h"
+#import <WMGraph/WMGraph.h>
 
 NSString *const WMStructuredBufferLibraryLuaName = @"WMBuffer";
 

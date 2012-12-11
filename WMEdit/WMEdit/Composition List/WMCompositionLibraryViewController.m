@@ -9,10 +9,11 @@
 #import "WMCompositionLibraryViewController.h"
 #import "WMCompositionLibrary.h"
 
-#import "WMBundleDocument.h"
+#import <WMGraph/WMBundleDocument.h>
+
 #import "WMEditViewController.h"
 #import "NSObject_KVOBlockNotificationExtensions.h"
-#import "DNKVC.h"
+#import <WMGraph/DNKVC.h>
 
 @implementation WMCompositionLibraryViewController {
 	NSMutableArray *compositions;

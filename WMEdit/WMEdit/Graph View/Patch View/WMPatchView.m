@@ -9,11 +9,12 @@
 #import "WMPatchView.h"
 #import "WMPatchPlugStripView.h"
 #import "CGRoundRect.h"
-#import "WMPatch.h"
+
+#import <WMGraph/WMGraph.h>
+
 #import "WMGraphEditView.h"
 #import "WMPatch+SettingsControllerClass.h"
 #import "NSObject_KVOBlockNotificationExtensions.h"
-#import "DNKVC.h"
 
 static const CGFloat bodyRadius = 9.f;
 static const CGFloat bodyHeight = 45.f;

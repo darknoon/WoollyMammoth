@@ -6,6 +6,9 @@
 //  Copyright 2011 Darknoon. All rights reserved.
 //
 
+#import <WMGraph/WMGraph.h>
+#import <WMGraph/DNMemoryInfo.h>
+
 #import "WMEditViewController.h"
 #import "WMPatchView.h"
 #import "WMPatchConnectionsView.h"
@@ -13,15 +16,11 @@
 #import "WMPatchCategoryListTableViewController.h"
 #import "WMPatchListTableViewController.h"
 #import "WMGraphEditView.h"
-#import "WMPatch.h"
-#import "WMViewController.h"
+
 #import "WEPopoverController.h"
 #import "WMInputPortsController.h"
 #import "WMPatch+SettingsControllerClass.h"
-#import "WMBundleDocument.h"
-#import "WMEngine.h"
 
-#import "DNMemoryInfo.h"
 
 #import "WMCompositionLibrary.h"
 

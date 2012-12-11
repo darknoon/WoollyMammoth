@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "WMConnection.h"
+#import <WMGraph/WMGraph.h>
 
 @interface WMDraggingConnection : WMConnection {
     

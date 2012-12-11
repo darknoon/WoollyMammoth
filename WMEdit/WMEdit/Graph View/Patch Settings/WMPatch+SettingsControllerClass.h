@@ -6,7 +6,7 @@
 //  Copyright 2011 Darknoon. All rights reserved.
 //
 
-#import "WMPatch.h"
+#import <WMGraph/WMGraph.h>
 
 @class WMEditViewController;
 

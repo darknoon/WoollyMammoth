@@ -8,17 +8,11 @@
 
 #import "WMQuadParticleSystem.h"
 
-#import "GLKMath_cpp.h"
-
-#import "WMShader.h"
-#import "WMEngine.h"
-#import "WMTexture2D.h"
-#import "WMRenderObject.h"
-
-#import "WMEAGLContext.h"
+#import <WMGraph/WMGraph.h>
+#import <WMGraph/GLKMath_cpp.h>
 
 extern "C" {
-#import "SimplexNoise.h"
+#import <WMGraph/SimplexNoise.h>
 }
 CTrivialRandomGenerator rng;
 

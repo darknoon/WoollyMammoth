@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <WMGraph/WMGraph.h>
 
 #import "WMPatch+SettingsControllerClass.h"
-#import "WMImageLoader.h"
 
 @class WMEditViewController;
 

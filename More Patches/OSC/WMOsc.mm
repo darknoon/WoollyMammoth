@@ -8,8 +8,8 @@
 
 #import "WMOsc.h"
 #import "OscReceiver.h"
-#import "WMIndexPort.h"
-#import "WMNumberPort.h"
+
+#import <WMGraph/WMGraph.h>
 
 @implementation WMOsc
 

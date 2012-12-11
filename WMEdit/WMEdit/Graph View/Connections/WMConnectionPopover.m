@@ -8,7 +8,7 @@
 
 #import "WMConnectionPopover.h"
 
-#import "WMPort.h"
+#import <WMGraph/WMGraph.h>
 
 const CGFloat insetLeft = 32;
 const CGFloat spacing = 30;

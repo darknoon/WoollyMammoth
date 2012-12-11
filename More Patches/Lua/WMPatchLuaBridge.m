@@ -12,8 +12,7 @@
 #import "WMPatchLuaBridge.h"
 #import "WMLuaBufferBridge.h"
 
-#import "WMPatch.h"
-#import "WMPorts.h"
+#import <WMGraph/WMGraph.h>
 
 static const char *WMLuaPatchKey = "com.darknoon.wm.current_patch";
 

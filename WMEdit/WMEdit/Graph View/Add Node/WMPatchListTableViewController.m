@@ -8,7 +8,7 @@
 
 #import "WMPatchListTableViewController.h"
 
-#import "WMPatch.h"
+#import <WMGraph/WMGraph.h>
 
 @implementation WMPatchListTableViewController
 

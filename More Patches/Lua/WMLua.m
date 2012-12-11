@@ -11,7 +11,7 @@
 #import "WMLuaScriptingContext.h"
 #import "WMPatchLuaBridge.h"
 
-#import "DNTimingMacros.h"
+#import <WMGraph/DNTimingMacros.h>
 
 NSString *WMLuaProgramTextKey = @"text";
 

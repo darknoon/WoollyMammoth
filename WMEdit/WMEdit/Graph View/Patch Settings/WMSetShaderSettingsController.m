@@ -8,12 +8,13 @@
 
 #import "WMSetShaderSettingsController.h"
 
-#import "WMSetShader.h"
 #import "WMPatch+SettingsControllerClass.h"
 #import "WMEditViewController.h"
 
 #import "NSObject_KVOBlockNotificationExtensions.h"
-#import "DNKVC.h"
+
+#import <WMGraph/WMGraph.h>
+#import <WMGraph/DNKVC.h>
 
 @implementation WMSetShader (WMPatch_SettingsControllerClass)
 

@@ -8,7 +8,7 @@
 
 #import "WMImageLoaderSettingsController.h"
 #import "WMEditViewController.h"
-#import "WMBundleDocument.h"
+#import <WMGraph/WMGraph.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
 @implementation WMImageLoader (WMPatch_SettingsControllerClass)

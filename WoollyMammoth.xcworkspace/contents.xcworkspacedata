@@ -5,6 +5,9 @@
       location = "group:WMLite/WMLite.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:WMGraph/WMGraph.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:WMEdit/WMEdit.xcodeproj">
    </FileRef>
    <FileRef

@@ -14,10 +14,8 @@
 #import "WMCustomPopover.h"
 #import "WMEditViewController.h"
 #import "NSObject_KVOBlockNotificationExtensions.h"
-#import "DNKVC.h"
 
-#import "WMPatch.h"
-#import "WMConnection.h"
+#import <WMGraph/WMGraph.h>
 
 @implementation WMGraphEditView {
     NSMutableArray *patchViews;

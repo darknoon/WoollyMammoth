@@ -8,7 +8,7 @@
 
 #import "WMInputPortsController.h"
 
-#import "WMPorts.h"
+#import <WMGraph/WMGraph.h>
 
 #import "WMInputPortCell.h"
 #import "WMNumberInputPortCell.h"

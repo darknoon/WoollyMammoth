@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "WMPort.h"
+#import <WMGraph/WMGraph.h>
 
 @interface WMInputPortCell : UITableViewCell
 

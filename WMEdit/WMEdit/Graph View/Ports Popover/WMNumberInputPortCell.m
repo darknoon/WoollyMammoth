@@ -8,7 +8,7 @@
 
 #import "WMNumberInputPortCell.h"
 
-#import "WMNumberPort.h"
+#import <WMGraph/WMGraph.h>
 
 @implementation WMNumberInputPortCell {
 	NSNumberFormatter *formatter;
