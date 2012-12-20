@@ -57,14 +57,6 @@
 		49E2E91F167296FE00FA4FCE /* WMMathUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E87C167296FE00FA4FCE /* WMMathUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2E920167296FE00FA4FCE /* WMPrefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E87D167296FE00FA4FCE /* WMPrefix.pch */; settings = {ATTRIBUTES = (); }; };
 		49E2E921167296FE00FA4FCE /* WMRenderObject+CreateWithGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E87E167296FE00FA4FCE /* WMRenderObject+CreateWithGeometry.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		49E2E93D1672988600FA4FCE /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2E9371672988600FA4FCE /* AVFoundation.framework */; };
-		49E2E93E1672988600FA4FCE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2E9381672988600FA4FCE /* CoreGraphics.framework */; };
-		49E2E93F1672988600FA4FCE /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2E9391672988600FA4FCE /* CoreVideo.framework */; };
-		49E2E9401672988600FA4FCE /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2E93A1672988600FA4FCE /* GLKit.framework */; };
-		49E2E9411672988600FA4FCE /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2E93B1672988600FA4FCE /* OpenGLES.framework */; };
-		49E2E9421672988600FA4FCE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2E93C1672988600FA4FCE /* QuartzCore.framework */; };
-		49E2E9461672989900FA4FCE /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2E9451672989900FA4FCE /* CoreMedia.framework */; };
-		49E2E9481672989F00FA4FCE /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2E9471672989F00FA4FCE /* MobileCoreServices.framework */; };
 		49E2E96816729B3000FA4FCE /* GLKMath.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E95116729B3000FA4FCE /* GLKMath.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2E96916729B3000FA4FCE /* GLKMathTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E95216729B3000FA4FCE /* GLKMathTypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2E96A16729B3000FA4FCE /* GLKMathUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E95316729B3000FA4FCE /* GLKMathUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -90,7 +82,6 @@
 		49E2E9DC1672A40000FA4FCE /* WMView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E9D61672A40000FA4FCE /* WMView.m */; };
 		49E2EA2D1672C2DA00FA4FCE /* WMTransforms.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2EA2B1672C2DA00FA4FCE /* WMTransforms.h */; };
 		49E2EA2E1672C2DA00FA4FCE /* WMTransforms.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49E2EA2C1672C2DA00FA4FCE /* WMTransforms.mm */; };
-		49E2EA311672C35400FA4FCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2EA301672C35400FA4FCE /* UIKit.framework */; };
 		49E2EA341672C51700FA4FCE /* WMRenderObject+CreateWithGeometry.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49E2EA331672C51700FA4FCE /* WMRenderObject+CreateWithGeometry.mm */; };
 		49E2EA98167319F000FA4FCE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49E2EA96167319F000FA4FCE /* InfoPlist.strings */; };
 		49E2EAA116731A9E00FA4FCE /* WMLite.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2EA9A167319F000FA4FCE /* WMLite.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -278,15 +269,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49E2EA311672C35400FA4FCE /* UIKit.framework in Frameworks */,
-				49E2E9421672988600FA4FCE /* QuartzCore.framework in Frameworks */,
-				49E2E9401672988600FA4FCE /* GLKit.framework in Frameworks */,
-				49E2E9481672989F00FA4FCE /* MobileCoreServices.framework in Frameworks */,
-				49E2E9461672989900FA4FCE /* CoreMedia.framework in Frameworks */,
-				49E2E93D1672988600FA4FCE /* AVFoundation.framework in Frameworks */,
-				49E2E93E1672988600FA4FCE /* CoreGraphics.framework in Frameworks */,
-				49E2E93F1672988600FA4FCE /* CoreVideo.framework in Frameworks */,
-				49E2E9411672988600FA4FCE /* OpenGLES.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
