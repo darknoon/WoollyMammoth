@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4962329616867E6F001CA7F2 /* GLKMathCACompatibility.c in Sources */ = {isa = PBXBuildFile; fileRef = 4962329316867E6F001CA7F2 /* GLKMathCACompatibility.c */; };
+		4962329716867E6F001CA7F2 /* GLKMathCGCompatibility.c in Sources */ = {isa = PBXBuildFile; fileRef = 4962329416867E6F001CA7F2 /* GLKMathCGCompatibility.c */; };
+		4962329816867E6F001CA7F2 /* GLKMathCGCompatibility.h in Headers */ = {isa = PBXBuildFile; fileRef = 4962329516867E6F001CA7F2 /* GLKMathCGCompatibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4962329A16867E7E001CA7F2 /* GLKMathCACompatibility.h in Headers */ = {isa = PBXBuildFile; fileRef = 4962329916867E7E001CA7F2 /* GLKMathCACompatibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4962329B16867E7E001CA7F2 /* GLKMathCACompatibility.h in Headers */ = {isa = PBXBuildFile; fileRef = 4962329916867E7E001CA7F2 /* GLKMathCACompatibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4962329C16867E80001CA7F2 /* GLKMathCACompatibility.c in Sources */ = {isa = PBXBuildFile; fileRef = 4962329316867E6F001CA7F2 /* GLKMathCACompatibility.c */; };
+		4962329D16867EC5001CA7F2 /* GLKMathCGCompatibility.h in Headers */ = {isa = PBXBuildFile; fileRef = 4962329516867E6F001CA7F2 /* GLKMathCGCompatibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4962329E16868182001CA7F2 /* GLKMathCGCompatibility.c in Sources */ = {isa = PBXBuildFile; fileRef = 4962329416867E6F001CA7F2 /* GLKMathCGCompatibility.c */; };
 		49E2E7C4167296B400FA4FCE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49E2E7C2167296B400FA4FCE /* InfoPlist.strings */; };
 		49E2E882167296FE00FA4FCE /* WMStructuredBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E7D0167296FE00FA4FCE /* WMStructuredBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2E883167296FE00FA4FCE /* WMStructuredBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E7D1167296FE00FA4FCE /* WMStructuredBuffer.m */; };
@@ -69,8 +77,6 @@
 		49E2E97116729B3000FA4FCE /* GLKVector2.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E95A16729B3000FA4FCE /* GLKVector2.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2E97216729B3000FA4FCE /* GLKVector3.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E95B16729B3000FA4FCE /* GLKVector3.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2E97316729B3000FA4FCE /* GLKVector4.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E95C16729B3000FA4FCE /* GLKVector4.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		49E2E97416729B3000FA4FCE /* GLKVectorCGCompatibility.c in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E95D16729B3000FA4FCE /* GLKVectorCGCompatibility.c */; };
-		49E2E97516729B3000FA4FCE /* GLKVectorCGCompatibility.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E95E16729B3000FA4FCE /* GLKVectorCGCompatibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2E97816729B3000FA4FCE /* WMDisplayLink.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E96116729B3000FA4FCE /* WMDisplayLink.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2E97916729B3000FA4FCE /* WMDisplayLink_iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E96216729B3000FA4FCE /* WMDisplayLink_iOS.m */; };
 		49E2E97B16729B3000FA4FCE /* WMFrameCounter.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E96416729B3000FA4FCE /* WMFrameCounter.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -148,14 +154,16 @@
 		49E2EB161673231200FA4FCE /* WMDisplayLink.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E96116729B3000FA4FCE /* WMDisplayLink.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2EB171673231700FA4FCE /* WMCompatibilityMac.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E95F16729B3000FA4FCE /* WMCompatibilityMac.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2EB181673231B00FA4FCE /* WMCompatibilityMac.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E96016729B3000FA4FCE /* WMCompatibilityMac.m */; };
-		49E2EB191673233500FA4FCE /* GLKVectorCGCompatibility.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E95E16729B3000FA4FCE /* GLKVectorCGCompatibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		49E2EB1A1673233900FA4FCE /* GLKVectorCGCompatibility.c in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E95D16729B3000FA4FCE /* GLKVectorCGCompatibility.c */; };
 		49E2EB1C1673236C00FA4FCE /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2EB1B1673236C00FA4FCE /* CoreVideo.framework */; };
 		49E2EB261673274B00FA4FCE /* WMFrameCounter.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E96416729B3000FA4FCE /* WMFrameCounter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2EB271673274F00FA4FCE /* WMFrameCounter.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E96516729B3000FA4FCE /* WMFrameCounter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4962329316867E6F001CA7F2 /* GLKMathCACompatibility.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GLKMathCACompatibility.c; sourceTree = "<group>"; };
+		4962329416867E6F001CA7F2 /* GLKMathCGCompatibility.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GLKMathCGCompatibility.c; sourceTree = "<group>"; };
+		4962329516867E6F001CA7F2 /* GLKMathCGCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKMathCGCompatibility.h; sourceTree = "<group>"; };
+		4962329916867E7E001CA7F2 /* GLKMathCACompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKMathCACompatibility.h; sourceTree = "<group>"; };
 		49E2E7BD167296B400FA4FCE /* WMLite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WMLite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E2E7C1167296B400FA4FCE /* WMLite-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WMLite-Info.plist"; sourceTree = "<group>"; };
 		49E2E7C3167296B400FA4FCE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -232,8 +240,6 @@
 		49E2E95A16729B3000FA4FCE /* GLKVector2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKVector2.h; sourceTree = "<group>"; };
 		49E2E95B16729B3000FA4FCE /* GLKVector3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKVector3.h; sourceTree = "<group>"; };
 		49E2E95C16729B3000FA4FCE /* GLKVector4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKVector4.h; sourceTree = "<group>"; };
-		49E2E95D16729B3000FA4FCE /* GLKVectorCGCompatibility.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GLKVectorCGCompatibility.c; sourceTree = "<group>"; };
-		49E2E95E16729B3000FA4FCE /* GLKVectorCGCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKVectorCGCompatibility.h; sourceTree = "<group>"; };
 		49E2E95F16729B3000FA4FCE /* WMCompatibilityMac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMCompatibilityMac.h; sourceTree = "<group>"; };
 		49E2E96016729B3000FA4FCE /* WMCompatibilityMac.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMCompatibilityMac.m; sourceTree = "<group>"; };
 		49E2E96116729B3000FA4FCE /* WMDisplayLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMDisplayLink.h; sourceTree = "<group>"; };
@@ -250,7 +256,6 @@
 		49E2EA301672C35400FA4FCE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		49E2EA331672C51700FA4FCE /* WMRenderObject+CreateWithGeometry.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "WMRenderObject+CreateWithGeometry.mm"; sourceTree = "<group>"; };
 		49E2EA8C167319F000FA4FCE /* WMLite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WMLite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		49E2EA8D167319F000FA4FCE /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		49E2EA90167319F000FA4FCE /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		49E2EA91167319F000FA4FCE /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		49E2EA92167319F000FA4FCE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -426,11 +431,13 @@
 		49E2E94D16729B3000FA4FCE /* Misc */ = {
 			isa = PBXGroup;
 			children = (
+				4962329916867E7E001CA7F2 /* GLKMathCACompatibility.h */,
+				4962329316867E6F001CA7F2 /* GLKMathCACompatibility.c */,
+				4962329516867E6F001CA7F2 /* GLKMathCGCompatibility.h */,
+				4962329416867E6F001CA7F2 /* GLKMathCGCompatibility.c */,
 				49E2E94E16729B3000FA4FCE /* EAGLContextMac.h */,
 				49E2E94F16729B3000FA4FCE /* EAGLContextMac.m */,
 				49E2E95016729B3000FA4FCE /* GLKit */,
-				49E2E95E16729B3000FA4FCE /* GLKVectorCGCompatibility.h */,
-				49E2E95D16729B3000FA4FCE /* GLKVectorCGCompatibility.c */,
 				49E2E95F16729B3000FA4FCE /* WMCompatibilityMac.h */,
 				49E2E96016729B3000FA4FCE /* WMCompatibilityMac.m */,
 				49E2E96116729B3000FA4FCE /* WMDisplayLink.h */,
@@ -509,7 +516,6 @@
 				49E2EB1B1673236C00FA4FCE /* CoreVideo.framework */,
 				49E2EAC816731C7800FA4FCE /* Cocoa.framework */,
 				49E2EAC616731C7400FA4FCE /* AppKit.framework */,
-				49E2EA8D167319F000FA4FCE /* Cocoa.framework */,
 				49E2EAC216731C3C00FA4FCE /* GLKit.framework */,
 				49E2EAC316731C3C00FA4FCE /* OpenGL.framework */,
 			);
@@ -565,7 +571,6 @@
 				49E2E97116729B3000FA4FCE /* GLKVector2.h in Headers */,
 				49E2E97216729B3000FA4FCE /* GLKVector3.h in Headers */,
 				49E2E97316729B3000FA4FCE /* GLKVector4.h in Headers */,
-				49E2E97516729B3000FA4FCE /* GLKVectorCGCompatibility.h in Headers */,
 				49E2E97816729B3000FA4FCE /* WMDisplayLink.h in Headers */,
 				49E2E97B16729B3000FA4FCE /* WMFrameCounter.h in Headers */,
 				49E2E8F3167296FE00FA4FCE /* WMShader_WMEAGLContext_Private.h in Headers */,
@@ -575,6 +580,8 @@
 				49E2E9D91672A40000FA4FCE /* DNAssertionHandler.h in Headers */,
 				49E2E9DB1672A40000FA4FCE /* WMView.h in Headers */,
 				49E2EA2D1672C2DA00FA4FCE /* WMTransforms.h in Headers */,
+				4962329816867E6F001CA7F2 /* GLKMathCGCompatibility.h in Headers */,
+				4962329A16867E7E001CA7F2 /* GLKMathCACompatibility.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -622,8 +629,9 @@
 				49E2EB14167322A800FA4FCE /* EAGLContextMac.h in Headers */,
 				49E2EB161673231200FA4FCE /* WMDisplayLink.h in Headers */,
 				49E2EB171673231700FA4FCE /* WMCompatibilityMac.h in Headers */,
-				49E2EB191673233500FA4FCE /* GLKVectorCGCompatibility.h in Headers */,
 				49E2EB261673274B00FA4FCE /* WMFrameCounter.h in Headers */,
+				4962329B16867E7E001CA7F2 /* GLKMathCACompatibility.h in Headers */,
+				4962329D16867EC5001CA7F2 /* GLKMathCGCompatibility.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -778,13 +786,14 @@
 				49E2E91B167296FE00FA4FCE /* NSValue+GLKVector.m in Sources */,
 				49E2E91E167296FE00FA4FCE /* WMMathUtil.c in Sources */,
 				49E2E96C16729B3000FA4FCE /* GLKMatrix4.c in Sources */,
-				49E2E97416729B3000FA4FCE /* GLKVectorCGCompatibility.c in Sources */,
 				49E2E97916729B3000FA4FCE /* WMDisplayLink_iOS.m in Sources */,
 				49E2E97C16729B3000FA4FCE /* WMFrameCounter.m in Sources */,
 				49E2E9DA1672A40000FA4FCE /* DNAssertionHandler.m in Sources */,
 				49E2E9DC1672A40000FA4FCE /* WMView.m in Sources */,
 				49E2EA2E1672C2DA00FA4FCE /* WMTransforms.mm in Sources */,
 				49E2EA341672C51700FA4FCE /* WMRenderObject+CreateWithGeometry.mm in Sources */,
+				4962329616867E6F001CA7F2 /* GLKMathCACompatibility.c in Sources */,
+				4962329716867E6F001CA7F2 /* GLKMathCGCompatibility.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -812,8 +821,9 @@
 				49E2EAF016731DF200FA4FCE /* EAGLContextMac.m in Sources */,
 				49E2EB151673230F00FA4FCE /* WMDisplayLink_Mac.m in Sources */,
 				49E2EB181673231B00FA4FCE /* WMCompatibilityMac.m in Sources */,
-				49E2EB1A1673233900FA4FCE /* GLKVectorCGCompatibility.c in Sources */,
 				49E2EB271673274F00FA4FCE /* WMFrameCounter.m in Sources */,
+				4962329C16867E80001CA7F2 /* GLKMathCACompatibility.c in Sources */,
+				4962329E16868182001CA7F2 /* GLKMathCGCompatibility.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

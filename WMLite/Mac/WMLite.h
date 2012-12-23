@@ -15,6 +15,8 @@
 #import <WMLite/DNKVC.h>
 #import <WMLite/DNMemoryInfo.h>
 #import <WMLite/DNTimingMacros.h>
+#import <WMLite/GLKMathCGCompatibility.h>
+#import <WMLite/GLKMathCACompatibility.h>
 
 #import <WMLite/WMDisplayLink.h>
 #import <WMLite/EAGLContext+Extensions.h>

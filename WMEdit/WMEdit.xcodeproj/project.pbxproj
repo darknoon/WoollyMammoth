@@ -119,7 +119,6 @@
 		498DDF0A13DF907600D10642 /* WMNumberInputPortCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498DDF0913DF907600D10642 /* WMNumberInputPortCell.xib */; };
 		498DDF0D13DF921B00D10642 /* WMNumberInputPortCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 498DDF0C13DF921B00D10642 /* WMNumberInputPortCell.m */; };
 		498DDF0F13DF952400D10642 /* WMInputPortCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498DDF0E13DF952400D10642 /* WMInputPortCell.xib */; };
-		498EAFF216767C5C0095356A /* GLKVectorCGCompatibility.c in Sources */ = {isa = PBXBuildFile; fileRef = 498EAFF016767C5C0095356A /* GLKVectorCGCompatibility.c */; };
 		498EAFF416767C930095356A /* WMGraph.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 498EAFF316767C930095356A /* WMGraph.framework */; };
 		498EB0011676821D0095356A /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EB0001676821D0095356A /* NSString+URLEncoding.m */; };
 		49A5263C13D172BC004EC7F6 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5263B13D172BC004EC7F6 /* CoreMIDI.framework */; };
@@ -415,8 +414,6 @@
 		498DDF0C13DF921B00D10642 /* WMNumberInputPortCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMNumberInputPortCell.m; sourceTree = "<group>"; };
 		498DDF0E13DF952400D10642 /* WMInputPortCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMInputPortCell.xib; sourceTree = "<group>"; };
 		498EAFEF16767C350095356A /* GLDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLDefines.h; path = ../../Engine/Render/GLDefines.h; sourceTree = "<group>"; };
-		498EAFF016767C5C0095356A /* GLKVectorCGCompatibility.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = GLKVectorCGCompatibility.c; path = ../../Misc/GLKVectorCGCompatibility.c; sourceTree = "<group>"; };
-		498EAFF116767C5C0095356A /* GLKVectorCGCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLKVectorCGCompatibility.h; path = ../../Misc/GLKVectorCGCompatibility.h; sourceTree = "<group>"; };
 		498EAFF316767C930095356A /* WMGraph.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WMGraph.framework; path = ../WMGraph/build/Release/WMGraph.framework; sourceTree = "<group>"; };
 		498EAFFF1676821D0095356A /* NSString+URLEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+URLEncoding.h"; sourceTree = "<group>"; };
 		498EB0001676821D0095356A /* NSString+URLEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+URLEncoding.m"; sourceTree = "<group>"; };
@@ -1221,8 +1218,6 @@
 		49F0595613D15F640056C506 /* WMEdit */ = {
 			isa = PBXGroup;
 			children = (
-				498EAFF016767C5C0095356A /* GLKVectorCGCompatibility.c */,
-				498EAFF116767C5C0095356A /* GLKVectorCGCompatibility.h */,
 				498EAFEF16767C350095356A /* GLDefines.h */,
 				498DDE9D13DF465400D10642 /* Composition List */,
 				498DDEC613DF469F00D10642 /* Graph View */,
@@ -1579,7 +1574,6 @@
 				49B792D31581F1E8009E81EB /* mztools.c in Sources */,
 				49B792D41581F1E8009E81EB /* unzip.c in Sources */,
 				49B792D51581F1E8009E81EB /* zip.c in Sources */,
-				498EAFF216767C5C0095356A /* GLKVectorCGCompatibility.c in Sources */,
 				498EB0011676821D0095356A /* NSString+URLEncoding.m in Sources */,
 				497F5520167683E200209E30 /* WMLua.m in Sources */,
 				497F5521167683E200209E30 /* WMLuaBufferBridge.m in Sources */,

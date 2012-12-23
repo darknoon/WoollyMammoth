@@ -68,6 +68,9 @@ static __inline__ GLKVector4 GLKVector4FromCGSize(CGSize v) {
 	return (GLKVector4){v.width, v.height, 0.0f, 0.0f};
 }
 
+//CGColor to GLKVector4
+
+GLKVector4 CGColorGetComponentsAsGLKVector4(CGColorRef c);
 
 #endif
 

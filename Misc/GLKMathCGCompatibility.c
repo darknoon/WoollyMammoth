@@ -6,4 +6,9 @@
 //  Copyright (c) 2012 Darknoon. All rights reserved.
 //
 
-#import "GLKVectorCGCompatibility.h"
+#import "GLKMathCGCompatibility.h"
+
+GLKVector4 CGColorGetComponentsAsGLKVector4(CGColorRef c) {
+	GLKVector4 v;
+	v.v = CGColorGetComponents(c);
+}

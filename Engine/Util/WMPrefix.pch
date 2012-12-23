@@ -27,7 +27,8 @@
 #define ZAssert(condition, ...) do { if (!(condition)) { ALog(__VA_ARGS__); }} while(0)
 
 #import "GLDefines.h"
-#import "GLKVectorCGCompatibility.h"
+#import "GLKMathCGCompatibility.h"
+#import "GLKMathCACompatibility.h"
 #import "DNKVC.h"
 #import "GLKMath_cpp.h"
 

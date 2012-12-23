@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		496232881682F089001CA7F2 /* WMLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49AE086B1675380400748B95 /* WMLite.framework */; };
 		49AE086C1675380400748B95 /* WMLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49AE086B1675380400748B95 /* WMLite.framework */; };
 		49E2E99F1672A22D00FA4FCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2E99E1672A22D00FA4FCE /* UIKit.framework */; };
 		49E2E9A11672A22D00FA4FCE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2E9A01672A22D00FA4FCE /* Foundation.framework */; };
@@ -88,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				496232881682F089001CA7F2 /* WMLite.framework in Frameworks */,
 				49E2E99F1672A22D00FA4FCE /* UIKit.framework in Frameworks */,
 				49E2E9A11672A22D00FA4FCE /* Foundation.framework in Frameworks */,
 				49E2E9A31672A22D00FA4FCE /* CoreGraphics.framework in Frameworks */,
@@ -425,7 +427,10 @@
 		49E2E9B91672A22D00FA4FCE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../../Library/Developer/Xcode/DerivedData/WoollyMammoth-bgnqtjvmqnwalgazhysaiovvkhhp/Build/Products/Debug-iphoneos\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BasicGL/BasicGL-Prefix.pch";
 				INFOPLIST_FILE = "BasicGL/BasicGL-Info.plist";
@@ -437,7 +442,10 @@
 		49E2E9BA1672A22D00FA4FCE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../../Library/Developer/Xcode/DerivedData/WoollyMammoth-bgnqtjvmqnwalgazhysaiovvkhhp/Build/Products/Debug-iphoneos\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BasicGL/BasicGL-Prefix.pch";
 				INFOPLIST_FILE = "BasicGL/BasicGL-Info.plist";
