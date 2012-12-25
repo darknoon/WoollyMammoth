@@ -300,7 +300,6 @@
 		49E2E97B16729B3000FA4FCE /* WMFrameCounter.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E96416729B3000FA4FCE /* WMFrameCounter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2E97C16729B3000FA4FCE /* WMFrameCounter.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E96516729B3000FA4FCE /* WMFrameCounter.m */; };
 		49E2E98B16729F6A00FA4FCE /* WMGraph.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E98A16729F6A00FA4FCE /* WMGraph.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		49E2E98D16729F7400FA4FCE /* WMGraph-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49E2E98C16729F7400FA4FCE /* WMGraph-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1212,7 +1211,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				49E2E8AB167296FE00FA4FCE /* WMGaussianBlur.glsl in Resources */,
-				49E2E98D16729F7400FA4FCE /* WMGraph-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

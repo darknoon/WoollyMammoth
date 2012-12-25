@@ -34,10 +34,9 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 	//Track all file handles open copying files
 	NSMutableArray *_copyOperations;
 }
-
-@synthesize rootPatch;
-@synthesize userDictionary;
-@synthesize resourceWrappers;
+#if TARGET_OS_IPHONE
+@synthesize preview = _preview;
+#endif
 
 - (id)initWithFileURL:(NSURL *)url;
 {
@@ -45,12 +44,12 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 	if (!self) return nil;
 	
 	//Start off with a default patch. Can replace later by -loadFromContents..
-	rootPatch = [[WMPatch alloc] initWithPlistRepresentation:nil];
-	rootPatch.key = @"root";
+	_rootPatch = [[WMPatch alloc] initWithPlistRepresentation:nil];
+	_rootPatch.key = @"root";
 	
 	//Add a render output patch
 	WMRenderOutput *output = [[WMRenderOutput alloc] initWithPlistRepresentation:nil];
-	[rootPatch addChild:output];
+	[_rootPatch addChild:output];
 	
 	_copyOperations = [[NSMutableArray alloc] init];
 		
@@ -224,7 +223,7 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 
 - (void)addResourceNamed:(NSString *)inResourceName fromURL:(NSURL *)inFileURL completion:(void (^)(NSError *error))completion;
 {
-	NSMutableDictionary *resourceWrappersMutable = [resourceWrappers mutableCopy];
+	NSMutableDictionary *resourceWrappersMutable = [_resourceWrappers mutableCopy];
 	
 	NSError *error = nil;
 	
@@ -312,16 +311,16 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 - (UIImage *)preview;
 {
 	//This has to be synchronous... Any way to get around that?
-	if (!preview) {
-		preview = [UIImage imageWithContentsOfFile:[[self.fileURL URLByAppendingPathComponent:WMBundleDocumentPreviewFileName] path]];
+	if (!_preview) {
+		_preview = [UIImage imageWithContentsOfFile:[[self.fileURL URLByAppendingPathComponent:WMBundleDocumentPreviewFileName] path]];
 	}
-	return preview;
+	return _preview;
 }
 
 - (void)setPreview:(UIImage *)inPreview;
 {
-	if (preview != inPreview) {
-		preview = inPreview;
+	if (_preview != inPreview) {
+		_preview = inPreview;
 		[self performAsynchronousFileAccessUsingBlock:^() {
 			[UIImagePNGRepresentation(inPreview) writeToURL:[self.fileURL URLByAppendingPathComponent:WMBundleDocumentPreviewFileName] atomically:YES];
 		}];
@@ -331,7 +330,7 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 
 - (void)removeResourceNamed:(NSString *)inResourceName;
 {
-	NSMutableDictionary *resourceWrappersMutable = [resourceWrappers mutableCopy];
+	NSMutableDictionary *resourceWrappersMutable = [_resourceWrappers mutableCopy];
 	
 	[resourceWrappersMutable removeObjectForKey:inResourceName];
 	//Delete file if exists

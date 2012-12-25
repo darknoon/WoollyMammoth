@@ -32,7 +32,7 @@ size_t WMStructureTypeSize(WMStructureType inType) {
 };
 
 @implementation WMStructureDefinition {
-	int fieldCount;
+	NSUInteger fieldCount;
 	WMStructureField *fields;
 }
 
@@ -72,7 +72,7 @@ size_t WMStructureTypeSize(WMStructureType inType) {
 	size = MAX(sizeMinBound, totalSize);
 	
 	if (fieldCount > 100 || size > 1000 ) {
-		NSLog(@"Huge structure size: %d fieldCount: %d", size, fieldCount);
+		NSLog(@"Huge structure size: %d fieldCount: %d", (int)size, (int)fieldCount);
 	}
 		
 	return self;
