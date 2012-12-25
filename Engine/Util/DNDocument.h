@@ -10,7 +10,7 @@
 
 #define USE_UIDOCUMENT 0
 
-#if TARGET_OS_MAC
+#if TARGET_OS_MAC && !TARGET_OS_IPHONE
 typedef NS_ENUM(NSInteger, UIDocumentChangeKind) {
     UIDocumentChangeDone,
     UIDocumentChangeUndone,

@@ -9,6 +9,11 @@
 #import "GLKMathCGCompatibility.h"
 
 GLKVector4 CGColorGetComponentsAsGLKVector4(CGColorRef c) {
-	GLKVector4 v;
-	v.v = CGColorGetComponents(c);
+	const CGFloat *colorComponents = CGColorGetComponents(c);
+	size_t componentCount = CGColorGetNumberOfComponents(c);
+	if (componentCount == 4) {
+		return (GLKVector4){colorComponents[0], colorComponents[1], colorComponents[2], colorComponents[3]};
+	} else {
+		return (GLKVector4){};
+	}
 }
