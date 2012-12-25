@@ -685,11 +685,12 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
     return [s uncamelcase];
 }
 
-
+#if TARGET_OS_IPHONE
 - (UIColor *)editorColor;
 {
 	return [UIColor colorWithWhite:0.0f alpha:0.3f];
 }
+#endif
 
 @end
 

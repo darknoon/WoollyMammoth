@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#if TARGET_OS_IPHONE
+
 #import "WMRenderCommon.h"
 
 #import "WMPatch.h"
@@ -23,3 +25,6 @@
 }
 
 @end
+
+
+#endif

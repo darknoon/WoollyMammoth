@@ -14,7 +14,7 @@
 #define TRACK_ALL_CVTEXTURES 0
 
 @implementation WMCVTexture2D {
-	CVOpenGLESTextureRef cvTexture;
+	CVOGLTexRef_t cvTexture;
 }
 
 #if TRACK_ALL_CVTEXTURES
@@ -66,7 +66,7 @@ static dispatch_semaphore_t sem;
 
 #endif
 
-- (id)initWithCVImageBuffer:(CVImageBufferRef)inImageBuffer inTextureCache:(CVOpenGLESTextureCacheRef)inTextureCache format:(WMTexture2DPixelFormat)inFormat use:(NSString *)useInfo;
+- (id)initWithCVImageBuffer:(CVImageBufferRef)inImageBuffer inTextureCache:(CVOGLTexCacheRef_t)inTextureCache format:(WMTexture2DPixelFormat)inFormat use:(NSString *)useInfo;
 {
 	self = [super init];
 	if (!self) return nil;
@@ -82,23 +82,35 @@ static dispatch_semaphore_t sem;
 	CFDictionaryRef textureAttributes = NULL;
 	
 	ZAssert(inFormat == kWMTexture2DPixelFormat_BGRA8888, @"Other CV Texture formats currently unimplemented.");
-		
+	
+#if TARGET_OS_IPHONE
+	
 	//Get width and height
 	CGSize size = CVImageBufferGetEncodedSize(inImageBuffer);
-	
+
 	CVReturn err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault, inTextureCache, inImageBuffer, textureAttributes, GL_TEXTURE_2D, GL_RGBA, size.width, size.height, GL_BGRA, GL_UNSIGNED_BYTE, 0, &cvTexture);
+#elif TARGET_OS_MAC
+	CVReturn err = CVOpenGLTextureCacheCreateTextureFromImage(kCFAllocatorDefault, inTextureCache, inImageBuffer, textureAttributes, &cvTexture);
+#endif
 	
 	if (err == 0) {
 		ZAssert(cvTexture, @"Texture null");
-		ZAssert(CVOpenGLESTextureGetName(cvTexture) != 0, @"Texture has 0 name!");
+		GLKVector2 lowerLeft, lowerRight, upperLeft, upperRight;
+		
+#if TARGET_OS_IPHONE
+		GLuint name = CVOpenGLESTextureGetName(cvTexture);
+		ZAssert(name != 0, @"Texture has 0 name!");
 		ZAssert(CVOpenGLESTextureGetTarget(cvTexture) == GL_TEXTURE_2D, @"Got a rect texture :(");
 
-		GLKVector2 lowerLeft;
-		GLKVector2 lowerRight;
-		GLKVector2 upperLeft;
-		GLKVector2 upperRight;
 		
 		CVOpenGLESTextureGetCleanTexCoords(cvTexture, lowerLeft.v, lowerRight.v, upperRight.v, upperLeft.v);
+#elif TARGET_OS_MAC
+		GLuint name = CVOpenGLTextureGetName(cvTexture);
+		ZAssert(name != 0, @"Texture has 0 name!");
+		ZAssert(CVOpenGLTextureGetTarget(cvTexture) == GL_TEXTURE_2D, @"Got a rect texture :(");
+		
+		CVOpenGLTextureGetCleanTexCoords(cvTexture, lowerLeft.v, lowerRight.v, upperRight.v, upperLeft.v);
+#endif
 		
 		ZAssert(fabsf(lowerRight.x - lowerLeft.x) > 0.1f && fabsf(upperLeft.y - lowerLeft.y) > 0.1f, @"Unexpected texture coordinate rotation!");
 		
@@ -109,7 +121,7 @@ static dispatch_semaphore_t sem;
 		_size.height = fabsf(upperLeft.y - lowerLeft.y) * _height;
 		
 		//TODO: is this actually necessary?
-		[self.context bind2DTextureNameForModification:CVOpenGLESTextureGetName(cvTexture) inBlock:^{
+		[self.context bind2DTextureNameForModification:name inBlock:^{
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -125,7 +137,11 @@ static dispatch_semaphore_t sem;
 
 - (GLuint)name;
 {
+#if TARGET_OS_IPHONE
 	GLuint name =  CVOpenGLESTextureGetName(cvTexture);
+#elif TARGET_OS_MAC
+	GLuint name =  CVOpenGLTextureGetName(cvTexture);
+#endif
 	ZAssert(name != 0, @"Could not get texture name!");
 	return name;
 }

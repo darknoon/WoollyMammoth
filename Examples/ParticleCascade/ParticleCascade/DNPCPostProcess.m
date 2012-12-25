@@ -12,7 +12,6 @@
 
 @implementation DNPCPostProcess {
 	WMRenderObject *_quad;
-	WMStructureDefinition *_structure;
 }
 
 - (id)init;

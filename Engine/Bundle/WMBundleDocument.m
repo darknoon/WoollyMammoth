@@ -9,7 +9,10 @@
 #import "WMBundleDocument.h"
 #import "WMCompositionSerialization.h"
 #import "WMRenderOutput.h"
+
+#if TARGET_OS_IPHONE
 #import <AssetsLibrary/AssetsLibrary.h>
+#endif
 
 NSString *WMBundleDocumentErrorDomain = @"com.darknoon.WMBundleDocument";
 
@@ -35,7 +38,6 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 @synthesize rootPatch;
 @synthesize userDictionary;
 @synthesize resourceWrappers;
-@synthesize preview;
 
 - (id)initWithFileURL:(NSURL *)url;
 {
@@ -241,6 +243,7 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 	completion(nil);
 }
 
+#if TARGET_OS_IPHONE
 - (void)addResourceNamed:(NSString *)inResourceName fromAssetRepresentation:(ALAssetRepresentation *)inAsset completion:(void (^)(NSError *error))completion;
 {
 	//Write 1 MB at a time
@@ -324,6 +327,7 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 		}];
 	}
 }
+#endif
 
 - (void)removeResourceNamed:(NSString *)inResourceName;
 {

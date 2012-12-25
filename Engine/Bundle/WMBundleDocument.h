@@ -6,7 +6,6 @@
 //  Copyright (c) 2011 Darknoon. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 
 #import "WMPatch.h"
 #import "WMCompositionSerialization.h"
@@ -32,7 +31,9 @@ extern NSString *WMBundleDocumentErrorDomain;
 @property (nonatomic, strong, readonly) WMPatch *rootPatch;
 @property (nonatomic, copy) NSDictionary *userDictionary;
 
+#if TARGET_OS_IPHONE
 @property (nonatomic, retain) UIImage *preview;
+#endif
 
 //Dictionary of name => file wrapper representing the resources for this bundle
 @property (nonatomic, copy) NSDictionary *resourceWrappers;

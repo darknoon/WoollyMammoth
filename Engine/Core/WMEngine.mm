@@ -263,11 +263,13 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 
 - (void)patchGeneratedUpdateEvent:(id <WMPatchEventSource>)patch atTime:(double)time;
 {
+#if TARGET_OS_IPHONE
 	BOOL applicationCanUseOpenGL = [UIApplication sharedApplication].applicationState != UIApplicationStateBackground;
 	if (!applicationCanUseOpenGL) {
 		NSLog(@"Trying to update when GL not allowed: %lf", time);
 		return;
 	}
+#endif
 	
 	BOOL ok = [self.delegate engineShouldRenderFrame:self];
 	
@@ -367,7 +369,7 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 {
 	//Pass along the device orientation. This is necessary for patches whose semantics are dependent on which direction is "up" for the user.
 	//Examples: accelerometer, camera input.
-	[compositionUserData setObject:[NSNumber numberWithInt:inInterfaceOrientation] forKey:WMEngineArgumentsInterfaceOrientationKey];
+	[compositionUserData setObject:[NSNumber numberWithInteger:inInterfaceOrientation] forKey:WMEngineArgumentsInterfaceOrientationKey];
 	if (document) {
 		[compositionUserData setObject:document forKey:WMEngineArgumentsDocumentKey];
 	}

@@ -10,7 +10,7 @@
 #if !TARGET_OS_IPHONE
 
 
-typedef enum {
+typedef NS_ENUM(NSInteger, UIImageOrientation) {
     UIImageOrientationUp,            // default orientation
     UIImageOrientationDown,          // 180 deg rotation
     UIImageOrientationLeft,          // 90 deg CCW
@@ -19,7 +19,45 @@ typedef enum {
     UIImageOrientationDownMirrored,  // horizontal flip
     UIImageOrientationLeftMirrored,  // vertical flip
     UIImageOrientationRightMirrored, // vertical flip
-} UIImageOrientation;
+};
+
+typedef NS_ENUM(NSInteger, UIDeviceOrientation) {
+    UIDeviceOrientationUnknown,
+    UIDeviceOrientationPortrait,            // Device oriented vertically, home button on the bottom
+    UIDeviceOrientationPortraitUpsideDown,  // Device oriented vertically, home button on the top
+    UIDeviceOrientationLandscapeLeft,       // Device oriented horizontally, home button on the right
+    UIDeviceOrientationLandscapeRight,      // Device oriented horizontally, home button on the left
+    UIDeviceOrientationFaceUp,              // Device oriented flat, face up
+    UIDeviceOrientationFaceDown             // Device oriented flat, face down
+};
+
+typedef NS_ENUM(NSInteger, UIInterfaceOrientation) {
+    UIInterfaceOrientationPortrait           = UIDeviceOrientationPortrait,
+    UIInterfaceOrientationPortraitUpsideDown = UIDeviceOrientationPortraitUpsideDown,
+    UIInterfaceOrientationLandscapeLeft      = UIDeviceOrientationLandscapeRight,
+    UIInterfaceOrientationLandscapeRight     = UIDeviceOrientationLandscapeLeft
+};
+
+
+NSString *NSStringFromCGPoint(CGPoint p);
+
+NSString *NSStringFromCGRect(CGRect r);
+
+NSString *NSStringFromCGSize(CGSize s);
+
+CGPoint CGPointFromString(NSString *string);
+
+@interface NSValue (NSValueUIGeometryExtensions)
+
++ (NSValue *)valueWithCGPoint:(CGPoint)point;
++ (NSValue *)valueWithCGSize:(CGSize)size;
++ (NSValue *)valueWithCGRect:(CGRect)rect;
+
+- (CGPoint)CGPointValue;
+- (CGSize)CGSizeValue;
+- (CGRect)CGRectValue;
+
+@end
 
 
 #endif

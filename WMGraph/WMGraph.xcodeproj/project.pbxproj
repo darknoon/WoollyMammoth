@@ -74,6 +74,42 @@
 		496232EE16870C6F001CA7F2 /* WMStructuredBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E7D1167296FE00FA4FCE /* WMStructuredBuffer.m */; };
 		496232EF16870C73001CA7F2 /* WMStructuredBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E7D0167296FE00FA4FCE /* WMStructuredBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		496232F016870C77001CA7F2 /* WMStructureDefinition.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E7D2167296FE00FA4FCE /* WMStructureDefinition.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		496232F116870EEE001CA7F2 /* WMStructureDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E7D3167296FE00FA4FCE /* WMStructureDefinition.m */; };
+		496232F216870EFC001CA7F2 /* WMBundleDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E7D5167296FE00FA4FCE /* WMBundleDocument.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		496232F316870EFC001CA7F2 /* WMBundleDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E7D6167296FE00FA4FCE /* WMBundleDocument.m */; };
+		496232F416870EFC001CA7F2 /* WMCompositionSerialization.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E7D7167296FE00FA4FCE /* WMCompositionSerialization.h */; };
+		496232F516870EFC001CA7F2 /* WMCompositionSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E7D8167296FE00FA4FCE /* WMCompositionSerialization.m */; };
+		496232F616870F0A001CA7F2 /* WMConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E7DA167296FE00FA4FCE /* WMConnection.h */; };
+		496232F716870F0A001CA7F2 /* WMConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E7DB167296FE00FA4FCE /* WMConnection.m */; };
+		496232F816870F0A001CA7F2 /* WMEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E7DC167296FE00FA4FCE /* WMEngine.h */; };
+		496232F916870F0A001CA7F2 /* WMEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E7DD167296FE00FA4FCE /* WMEngine.mm */; };
+		496232FA16870F0A001CA7F2 /* WMPatch+GraphAlgorithms.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E7DE167296FE00FA4FCE /* WMPatch+GraphAlgorithms.h */; };
+		496232FB16870F0A001CA7F2 /* WMPatch+GraphAlgorithms.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E7DF167296FE00FA4FCE /* WMPatch+GraphAlgorithms.m */; };
+		496232FC16870F0A001CA7F2 /* WMPatch.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E7E0167296FE00FA4FCE /* WMPatch.h */; };
+		496232FD16870F0A001CA7F2 /* WMPatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E7E1167296FE00FA4FCE /* WMPatch.m */; };
+		496232FE16870F0A001CA7F2 /* WMPatchCategories.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E7E2167296FE00FA4FCE /* WMPatchCategories.h */; };
+		496232FF16870F0A001CA7F2 /* WMPatchCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E7E3167296FE00FA4FCE /* WMPatchCategories.m */; };
+		4962330016870F0A001CA7F2 /* WMPatchEventSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E7E4167296FE00FA4FCE /* WMPatchEventSource.h */; };
+		4962330116871209001CA7F2 /* WMCompatibilityMac.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E96016729B3000FA4FCE /* WMCompatibilityMac.m */; };
+		496233031687123B001CA7F2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 496233021687123A001CA7F2 /* QuartzCore.framework */; };
+		4962330516871266001CA7F2 /* WMFrameCounter.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E96516729B3000FA4FCE /* WMFrameCounter.m */; };
+		496233061687126E001CA7F2 /* WMDisplayLink_Mac.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E96316729B3000FA4FCE /* WMDisplayLink_Mac.m */; };
+		4962330716871272001CA7F2 /* WMDisplayLink.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E96116729B3000FA4FCE /* WMDisplayLink.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		496233081687127C001CA7F2 /* WMCompatibilityMac.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E95F16729B3000FA4FCE /* WMCompatibilityMac.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4962330916871284001CA7F2 /* EAGLContextMac.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E94E16729B3000FA4FCE /* EAGLContextMac.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4962330A168712AA001CA7F2 /* WMAudioBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E7CD167296FE00FA4FCE /* WMAudioBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4962330B168712C2001CA7F2 /* WMAccelerometer.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E7E7167296FE00FA4FCE /* WMAccelerometer.h */; };
+		4962330D168712C2001CA7F2 /* WMCVTexture2D.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E7E9167296FE00FA4FCE /* WMCVTexture2D.h */; };
+		4962330E168712C2001CA7F2 /* WMCVTexture2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E7EA167296FE00FA4FCE /* WMCVTexture2D.m */; };
+		496233111687160A001CA7F2 /* WMQuad.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E7FA167296FE00FA4FCE /* WMQuad.mm */; };
+		496233121687160E001CA7F2 /* WMClear.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E7F6167296FE00FA4FCE /* WMClear.m */; };
+		496233131687161B001CA7F2 /* WMRenderOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E80D167296FE00FA4FCE /* WMRenderOutput.m */; };
+		4962331416871626001CA7F2 /* WMSetRenderObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E80F167296FE00FA4FCE /* WMSetRenderObject.m */; };
+		496233151687162B001CA7F2 /* WMSetShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E811167296FE00FA4FCE /* WMSetShader.m */; };
+		4962331616871631001CA7F2 /* WMImageSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E808167296FE00FA4FCE /* WMImageSize.m */; };
+		4962331716871635001CA7F2 /* WMRenderInImage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E80A167296FE00FA4FCE /* WMRenderInImage.mm */; };
+		4962331816871638001CA7F2 /* WMImageOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E806167296FE00FA4FCE /* WMImageOrientation.m */; };
+		4962331A168716D3001CA7F2 /* DNDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E867167296FE00FA4FCE /* DNDocument.m */; };
 		497F5525167684B200209E30 /* SimplexNoise.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E87A167296FE00FA4FCE /* SimplexNoise.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		497F55281676854300209E30 /* WMTransforms.h in Headers */ = {isa = PBXBuildFile; fileRef = 497F55261676854300209E30 /* WMTransforms.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		497F55291676854300209E30 /* WMTransforms.h in Headers */ = {isa = PBXBuildFile; fileRef = 497F55261676854300209E30 /* WMTransforms.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -279,6 +315,7 @@
 		496232E616870B5D001CA7F2 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/OpenGL.framework; sourceTree = DEVELOPER_DIR; };
 		496232E916870B9A001CA7F2 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		496232EB16870BC0001CA7F2 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/CoreVideo.framework; sourceTree = DEVELOPER_DIR; };
+		496233021687123A001CA7F2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		497F55261676854300209E30 /* WMTransforms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMTransforms.h; sourceTree = "<group>"; };
 		497F55271676854300209E30 /* WMTransforms.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WMTransforms.mm; sourceTree = "<group>"; };
 		498EAFD616767ABD0095356A /* WMGraph.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WMGraph.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -482,6 +519,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				496233031687123B001CA7F2 /* QuartzCore.framework in Frameworks */,
 				496232EC16870BC0001CA7F2 /* CoreVideo.framework in Frameworks */,
 				496232EA16870B9A001CA7F2 /* Cocoa.framework in Frameworks */,
 				496232E716870B5D001CA7F2 /* OpenGL.framework in Frameworks */,
@@ -513,6 +551,7 @@
 		496232E816870B7F001CA7F2 /* Frameworks (Mac) */ = {
 			isa = PBXGroup;
 			children = (
+				496233021687123A001CA7F2 /* QuartzCore.framework */,
 				496232EB16870BC0001CA7F2 /* CoreVideo.framework */,
 				496232E916870B9A001CA7F2 /* Cocoa.framework */,
 				496232E616870B5D001CA7F2 /* OpenGL.framework */,
@@ -962,6 +1001,20 @@
 				496232E416870B49001CA7F2 /* WMVertexArrayObject.h in Headers */,
 				496232EF16870C73001CA7F2 /* WMStructuredBuffer.h in Headers */,
 				496232F016870C77001CA7F2 /* WMStructureDefinition.h in Headers */,
+				496232F216870EFC001CA7F2 /* WMBundleDocument.h in Headers */,
+				496232F416870EFC001CA7F2 /* WMCompositionSerialization.h in Headers */,
+				496232F616870F0A001CA7F2 /* WMConnection.h in Headers */,
+				496232F816870F0A001CA7F2 /* WMEngine.h in Headers */,
+				496232FA16870F0A001CA7F2 /* WMPatch+GraphAlgorithms.h in Headers */,
+				496232FC16870F0A001CA7F2 /* WMPatch.h in Headers */,
+				496232FE16870F0A001CA7F2 /* WMPatchCategories.h in Headers */,
+				4962330016870F0A001CA7F2 /* WMPatchEventSource.h in Headers */,
+				4962330716871272001CA7F2 /* WMDisplayLink.h in Headers */,
+				496233081687127C001CA7F2 /* WMCompatibilityMac.h in Headers */,
+				4962330916871284001CA7F2 /* EAGLContextMac.h in Headers */,
+				4962330A168712AA001CA7F2 /* WMAudioBuffer.h in Headers */,
+				4962330B168712C2001CA7F2 /* WMAccelerometer.h in Headers */,
+				4962330D168712C2001CA7F2 /* WMCVTexture2D.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1238,6 +1291,27 @@
 				496232E516870B49001CA7F2 /* WMVertexArrayObject.m in Sources */,
 				496232ED16870C4C001CA7F2 /* EAGLContextMac.m in Sources */,
 				496232EE16870C6F001CA7F2 /* WMStructuredBuffer.m in Sources */,
+				496232F116870EEE001CA7F2 /* WMStructureDefinition.m in Sources */,
+				496232F316870EFC001CA7F2 /* WMBundleDocument.m in Sources */,
+				496232F516870EFC001CA7F2 /* WMCompositionSerialization.m in Sources */,
+				496232F716870F0A001CA7F2 /* WMConnection.m in Sources */,
+				496232F916870F0A001CA7F2 /* WMEngine.mm in Sources */,
+				496232FB16870F0A001CA7F2 /* WMPatch+GraphAlgorithms.m in Sources */,
+				496232FD16870F0A001CA7F2 /* WMPatch.m in Sources */,
+				496232FF16870F0A001CA7F2 /* WMPatchCategories.m in Sources */,
+				4962330116871209001CA7F2 /* WMCompatibilityMac.m in Sources */,
+				4962330516871266001CA7F2 /* WMFrameCounter.m in Sources */,
+				496233061687126E001CA7F2 /* WMDisplayLink_Mac.m in Sources */,
+				4962330E168712C2001CA7F2 /* WMCVTexture2D.m in Sources */,
+				496233111687160A001CA7F2 /* WMQuad.mm in Sources */,
+				496233121687160E001CA7F2 /* WMClear.m in Sources */,
+				496233131687161B001CA7F2 /* WMRenderOutput.m in Sources */,
+				4962331416871626001CA7F2 /* WMSetRenderObject.m in Sources */,
+				496233151687162B001CA7F2 /* WMSetShader.m in Sources */,
+				4962331616871631001CA7F2 /* WMImageSize.m in Sources */,
+				4962331716871635001CA7F2 /* WMRenderInImage.mm in Sources */,
+				4962331816871638001CA7F2 /* WMImageOrientation.m in Sources */,
+				4962331A168716D3001CA7F2 /* DNDocument.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

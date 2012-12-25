@@ -16,7 +16,11 @@ static const CGFloat plugstripHeight = 22.f;
 
 @class WMEditViewController;
 
+#if TARGET_OS_IPHONE
 @interface WMGraphEditView : UIScrollView
+#elif TARGET_OS_MAC
+@interface WMGraphEditView : NSScrollView
+#endif
 
 @property (nonatomic, weak) WMEditViewController *viewController;
 

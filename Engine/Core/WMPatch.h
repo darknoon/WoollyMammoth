@@ -73,7 +73,11 @@
 //Editor
 
 + (NSString *)category;
+#if TARGET_OS_IPHONE
 @property (nonatomic, readonly) UIColor *editorColor;
+#else
+@property (nonatomic, readonly) CGColorRef editorColor;
+#endif
 
 @property (nonatomic) CGPoint editorPosition;
 - (void)addChild:(WMPatch *)inPatch;
