@@ -1,7 +1,0 @@
-//
-// Prefix header for all source files of the 'WMEditTests' target in the 'WMEditTests' project
-//
-
-#ifdef __OBJC__
-	#import <UIKit/UIKit.h>
-#endif
