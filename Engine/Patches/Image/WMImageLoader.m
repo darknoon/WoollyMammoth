@@ -11,7 +11,7 @@
 #import "WMTexture2D.h"
 #import "WMImagePort.h"
 #import "WMEngine.h"
-#import "WMBundleDocument.h"
+#import "WMComposition.h"
 
 //Deprecated
 NSString *const WMImageLoaderImageDataKey = @"imageData";
@@ -53,7 +53,7 @@ NSString *const WMImageLoaderImageResourceKey = @"imageResource";
 	return state;
 }
 
-- (UIImage *)imageInDocument:(WMBundleDocument *)inDocument;
+- (UIImage *)imageInDocument:(WMComposition *)inDocument;
 {
 	NSFileWrapper *wrapper = [[inDocument resourceWrappers] objectForKey:self.imageResource];
 	
@@ -76,10 +76,10 @@ NSString *const WMImageLoaderImageResourceKey = @"imageResource";
 
 - (BOOL)execute:(WMEAGLContext *)context time:(double)time arguments:(NSDictionary *)args;
 {
-	WMBundleDocument *document = [args objectForKey:WMEngineArgumentsDocumentKey];
+	WMComposition *composition = [args objectForKey:WMEngineArgumentsCompositionKey];
 	
-	if (!outputImage.image && document && self.imageResource) {
-		UIImage *image = [self imageInDocument:document];
+	if (!outputImage.image && composition && self.imageResource) {
+		UIImage *image = [self imageInDocument:composition];
 		if (image) {
 			WMTexture2D *texture = [[WMTexture2D alloc] initWithImage:image];
 			outputImage.image = texture;

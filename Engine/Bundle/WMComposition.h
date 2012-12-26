@@ -1,5 +1,5 @@
 //
-//  WMBundleDocument.h
+//  WMComposition.h
 //  WMEdit
 //
 //  Created by Andrew Pouliot on 8/15/11.
@@ -15,7 +15,6 @@
 
 #import "WMPatch.h"
 #import "WMCompositionSerialization.h"
-#import "DNDocument.h"
 
 //File extension for Woolly Mammoth bundles
 extern NSString *WMBundleDocumentExtension;
@@ -32,7 +31,15 @@ enum WMBundleDocumentError {
 extern NSString *WMBundleDocumentErrorDomain;
 
 @class ALAssetRepresentation;
-@interface WMBundleDocument : DNDocument
+
+@interface WMComposition : NSObject
+
+- (id)initWithFileURL:(NSURL *)url error:(NSError **)outError;
+- (id)initWithFileWrapper:(NSFileWrapper *)fileWrapper error:(NSError **)outError;
+
+- (NSFileWrapper *)fileWrapperRepresentationWithError:(NSError **)outError;
+
+@property (readonly) NSURL *fileURL;
 
 @property (nonatomic, strong, readonly) WMPatch *rootPatch;
 @property (nonatomic, copy) NSDictionary *userDictionary;

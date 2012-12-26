@@ -15,20 +15,20 @@
 @class WMPatch;
 @class WMEAGLContext;
 @class WMCompositionSerialization;
-@class WMBundleDocument;
+@class WMComposition;
 @class WMFramebuffer;
 @protocol WMEngineDelegate;
 
 extern NSString *const WMEngineArgumentsInterfaceOrientationKey;
 extern NSString *const WMEngineArgumentsOutputDimensionsKey;
-extern NSString *const WMEngineArgumentsDocumentKey;
+#if TARGET_OS_IPHONE
+extern NSString *const WMEngineArgumentsCompositionKey;
+#endif
 
 @interface WMEngine : NSObject <WMPatchEventDelegate> //Recieve events from render output or camera input
 
 - (id)initWithRootPatch:(WMPatch *)inPatch;
-- (id)initWithBundle:(WMBundleDocument *)inDocument;
-
-+ (GLKMatrix4)cameraMatrixWithRect:(CGRect)inBounds __attribute__((deprecated));
+- (id)initWithBundle:(WMComposition *)inDocument;
 
 @property (nonatomic, readonly) NSUInteger frameNumber;
 
@@ -37,7 +37,7 @@ extern NSString *const WMEngineArgumentsDocumentKey;
 
 @property (nonatomic, strong, readonly) WMEAGLContext *renderContext;
 @property (nonatomic, strong, readonly) WMPatch *rootObject;
-@property (nonatomic, strong) WMBundleDocument *document;
+@property (nonatomic, strong) WMComposition *document;
 
 @property (nonatomic, strong) WMFramebuffer *renderFramebuffer;
 

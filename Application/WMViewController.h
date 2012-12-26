@@ -15,14 +15,15 @@
 #import "WMEngine.h"
 
 @class WMPatch;
-@class WMBundleDocument;
+@class WMComposition;
 @class WMView;
 
 @interface WMViewController : UIViewController <UIActionSheetDelegate, WMEngineDelegate> {
 }
 
 //Designated initalizer for an existing document
-- (id)initWithDocument:(WMBundleDocument *)inDocument;
+//TODO: rename initWithBundle:
+- (id)initWithDocument:(WMComposition *)inDocument;
 
 //If you want to read from a file, you can load from a nib and use this:
 @property (nonatomic, copy) NSURL *compositionURL;
@@ -31,7 +32,7 @@
 
 @property (nonatomic) BOOL alwaysPortrait;
 
-@property (nonatomic, strong) WMBundleDocument *document;
+@property (nonatomic, strong) WMComposition *document;
 @property (readonly, strong, readonly) WMEngine *engine;
 @property (readonly, nonatomic, getter=isAnimating) BOOL animating;
 @property (nonatomic) NSInteger animationFrameInterval;

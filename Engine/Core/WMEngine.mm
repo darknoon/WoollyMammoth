@@ -19,7 +19,7 @@
 #import "WMEAGLContext.h"
 #import "WMFramebuffer.h"
 #import "wMCompositionSerialization.h"
-#import "WMBundleDocument.h"
+#import "WMComposition.h"
 #import "WMFrameCounter.h"
 
 #import <QuartzCore/QuartzCore.h>
@@ -27,7 +27,7 @@
 #define DEBUG_LOG_RENDER_MATRICES 0
 
 NSString *const WMEngineArgumentsInterfaceOrientationKey = @"interfaceOrientation";
-NSString *const WMEngineArgumentsDocumentKey = @"document";
+NSString *const WMEngineArgumentsCompositionKey = @"composition";
 NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 
 @interface WMEngine ()
@@ -63,11 +63,15 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 	renderContext = [[WMEAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
 	_frameCounter = [[WMFrameCounter alloc] init];
 	self.rootObject = inPatch;
+	compositionUserData = [[NSMutableDictionary alloc] init];
+
+	_orderingCache = [[NSCache alloc] init];
+	_connectionCache = [[NSCache alloc] init];
 	
 	return self;
 }
 
-- (id)initWithBundle:(WMBundleDocument *)inDocument;
+- (id)initWithBundle:(WMComposition *)inDocument;
 {
 	if (!inDocument) {
 		return nil;
@@ -77,10 +81,8 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 	if (self == nil) return self; 
 	
 	self.document = inDocument;
-	compositionUserData = document.userDictionary ? [document.userDictionary mutableCopy] : [[NSMutableDictionary alloc] init];
-	
-	_orderingCache = [[NSCache alloc] init];
-	_connectionCache = [[NSCache alloc] init];
+	if (document.userDictionary)
+		[compositionUserData addEntriesFromDictionary:document.userDictionary];
 	
 	return self;
 }
@@ -198,50 +200,6 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 }
 
 #pragma -
-
-+ (GLKMatrix4)cameraMatrixWithRect:(CGRect)inBounds;
-{
-	GLKMatrix4 cameraMatrix;
-		
-	const float near = 0.1;
-	const float far = 10.0;
-	
-	const float aspectRatio = inBounds.size.height / inBounds.size.width;
-	
-	const float eyeZ = 3.0f; //rsl / nearZ
-	
-	const float scale = near / eyeZ;
-	
-	//GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(viewAngle, aspectRatio, near, far);
-	GLKMatrix4 projectionMatrix = GLKMatrix4MakeFrustum(-scale, scale, -scale * aspectRatio, scale * aspectRatio, near, far);
-	
-	const GLKVector3 cameraPosition = {0, 0, eyeZ};
-	const GLKVector3 cameraTarget = {0, 0, 0};
-	const GLKVector3 upVec = {0, 1, 0};
-	
-	GLKMatrix4 viewMatrix = GLKMatrix4MakeLookAt(cameraPosition.x, cameraPosition.y, cameraPosition.z,
-												   cameraTarget.x,   cameraTarget.y,   cameraTarget.z,
-												          upVec.x,          upVec.y,          upVec.z);
-	
-	cameraMatrix = projectionMatrix * viewMatrix;
-	
-#if DEBUG_LOG_RENDER_MATRICES
-	
-	NSLog(@"Perspective: %@", NSStringFromGLKMatrix4(projectionMatrix));
-	
-	NSLog(@"Look At: %@", NSStringFromGLKMatrix4(viewMatrix));
-	
-	NSLog(@"Final: %@", NSStringFromGLKMatrix4(cameraMatrix));
-	
-	NSLog(@"Position of 0,0,0 in screen space: %@", NSStringFromGLKVector3(GLKMatrix4MultiplyVector3(cameraMatrix, (GLKVector3){0,0,0})));
-
-	NSLog(@"Position of 1,1,0 in screen space: %@", NSStringFromGLKVector3(GLKMatrix4MultiplyVector3(cameraMatrix, (GLKVector3){1,1,0})));
-	
-#endif
-	
-	return cameraMatrix;
-}
-
 
 - (WMConnection *)connectionToInputPort:(WMPort *)inPort ofNode:(WMPatch *)inPatch inParent:(WMPatch *)inParent;
 {
@@ -371,7 +329,7 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 	//Examples: accelerometer, camera input.
 	[compositionUserData setObject:[NSNumber numberWithInteger:inInterfaceOrientation] forKey:WMEngineArgumentsInterfaceOrientationKey];
 	if (document) {
-		[compositionUserData setObject:document forKey:WMEngineArgumentsDocumentKey];
+		[compositionUserData setObject:document forKey:WMEngineArgumentsCompositionKey];
 	}
 	
 	[compositionUserData setObject:[NSValue valueWithCGSize:inBounds.size] forKey:WMEngineArgumentsOutputDimensionsKey];

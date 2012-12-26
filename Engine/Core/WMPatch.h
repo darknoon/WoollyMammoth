@@ -16,7 +16,6 @@
 @class WMEAGLContext;
 @class WMPort;
 @class WMNumberPort;
-@class WMBundleDocument;
 
 @interface WMPatch : NSObject
 

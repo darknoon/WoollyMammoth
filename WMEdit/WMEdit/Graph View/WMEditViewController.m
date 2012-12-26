@@ -20,7 +20,7 @@
 #import "WEPopoverController.h"
 #import "WMInputPortsController.h"
 #import "WMPatch+SettingsControllerClass.h"
-
+#import "WMBundleDocument.h"
 
 #import "WMCompositionLibrary.h"
 
@@ -68,7 +68,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 @synthesize titleLabel;
 @synthesize addNodeRecognizer;
 
-- (id)initWithDocument:(WMBundleDocument *)inDocument;
+- (id)initWithDocument:(WMComposition *)inDocument;
 {
 	self = [super init];
 	if (!self) return nil;
@@ -81,16 +81,10 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 
 	patchViewsByKey = [[NSMutableDictionary alloc] init];
 	
-	rootPatch = document.rootPatch;
+	rootPatch = document.composition.rootPatch;
 	rootPatch.key = @"root";
 
 	return self;
-}
-
-
-- (NSURL *)fileURL;
-{
-	return document.fileURL;
 }
 
 - (void)didReceiveMemoryWarning
@@ -120,7 +114,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 		}
 	}];
 	
-	previewController = [[WMViewController alloc] initWithDocument:document];
+	previewController = [[WMViewController alloc] initWithDocument:document.composition];
 	if (externalScreen) {
 		previewWindow = [[UIWindow alloc] initWithFrame:externalScreen.applicationFrame];
 		previewWindow.rootViewController = previewController;

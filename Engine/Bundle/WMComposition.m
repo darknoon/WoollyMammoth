@@ -1,12 +1,12 @@
 //
-//  WMBundleDocument.m
+//  WMComposition.m
 //  WMEdit
 //
 //  Created by Andrew Pouliot on 8/15/11.
 //  Copyright (c) 2011 Darknoon. All rights reserved.
 //
 
-#import "WMBundleDocument.h"
+#import "WMComposition.h"
 #import "WMCompositionSerialization.h"
 #import "WMRenderOutput.h"
 
@@ -24,13 +24,13 @@ NSString *WMBundleDocumentExtension = @"wmbundle";
 //1 MB maximum
 static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 
-@interface WMBundleDocument ()
+@interface WMComposition ()
 
 @property (nonatomic, strong) WMPatch *rootPatch;
 
 @end
 
-@implementation WMBundleDocument {
+@implementation WMComposition {
 	//Track all file handles open copying files
 	NSMutableArray *_copyOperations;
 }
@@ -38,9 +38,9 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 @synthesize preview = _preview;
 #endif
 
-- (id)initWithFileURL:(NSURL *)url;
+- (id)init;
 {
-	self = [super initWithFileURL:url];
+	self = [super init];
 	if (!self) return nil;
 	
 	//Start off with a default patch. Can replace later by -loadFromContents..
@@ -52,10 +52,28 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 	[_rootPatch addChild:output];
 	
 	_copyOperations = [[NSMutableArray alloc] init];
-		
+	
 	return self;
 }
 
+- (id)initWithFileWrapper:(NSFileWrapper *)fileWrapper error:(NSError **)outError;
+{
+	self = [super init];
+	if (!self) return nil;
+	
+	BOOL ok = [self loadFromContents:fileWrapper ofType:@"com.darknoon.wmbundle" error:outError];
+	if (!ok) return nil;
+	
+	return self;
+}
+
+- (id)initWithFileURL:(NSURL *)url error:(NSError **)outError;
+{
+	NSFileWrapper *wrapper = [[NSFileWrapper alloc] initWithURL:url options:0 error:outError];
+	if (!wrapper) return nil;
+	
+	return [self initWithFileWrapper:wrapper error:outError];
+}
 
 
 - (BOOL)loadFromContents:(id)contents ofType:(NSString *)typeName error:(NSError **)outError;
@@ -180,7 +198,7 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 	}
 }
 
-- (id)contentsForType:(NSString *)typeName error:(NSError **)outError;
+- (NSFileWrapper *)fileWrapperRepresentationWithError:(NSError **)outError
 {
 	//Serialize object graph
 	NSError *plistError = nil;
@@ -252,67 +270,62 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 	//Copy data into our bundle
 	NSURL *destinationURL = [[self fileURL] URLByAppendingPathComponent:inResourceName];
 	
-	//If the destination already exists, overwrite
-
-	dispatch_queue_t currentQueue = dispatch_get_current_queue();
+	//If the destination already exists, overwrite	
+	BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:destinationURL.path];
 	
-	[self performAsynchronousFileAccessUsingBlock:^{
+	BOOL ok = [[NSFileManager defaultManager] createFileAtPath:[destinationURL path] contents:nil attributes:nil];
+	
+	NSFileHandle *file = [NSFileHandle fileHandleForWritingAtPath:[destinationURL path]];
+	[file truncateFileAtOffset:0];
+	
+	//Don't get rid of the file until it's done
+	[_copyOperations addObject:file];
+	__weak WMComposition *weakSelf = self;
+	
+	NSLog(@"Beginning file write to : %@ (%@) exists: %d create ok %d. Asset size %lld", file, destinationURL.path, exists, ok, assetSize);
+	
+	uint8_t *tempBuffer = malloc(bufferSize);
+	file.writeabilityHandler = ^(NSFileHandle *handle) {
 		
-		BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:destinationURL.path];
+		NSLog(@"Write handler called");
 		
-		BOOL ok = [[NSFileManager defaultManager] createFileAtPath:[destinationURL path] contents:nil attributes:nil];
+		long long offset = handle.offsetInFile;
 		
-		NSFileHandle *file = [NSFileHandle fileHandleForWritingAtPath:[destinationURL path]];
-		[file truncateFileAtOffset:0];
-		
-		//Don't get rid of the file until it's done
-		[_copyOperations addObject:file];
-		__weak WMBundleDocument *weakSelf = self;
-		
-		NSLog(@"Beginning file write to : %@ (%@) exists: %d create ok %d. Asset size %lld", file, destinationURL.path, exists, ok, assetSize);
-		
-		uint8_t *tempBuffer = malloc(bufferSize);	
-		file.writeabilityHandler = ^(NSFileHandle *handle) {
-			
-			NSLog(@"Write handler called");
-			
-			long long offset = handle.offsetInFile;
-			
-			NSError *error = nil;
-			NSUInteger readBytes = [inAsset getBytes:tempBuffer fromOffset:offset length:bufferSize error:&error];
-			if (readBytes > 0) {
-				[handle writeData:[NSData dataWithBytesNoCopy:tempBuffer length:bufferSize freeWhenDone:NO]];
-				NSLog(@"Wrote some data. Offset: %lld size:%lld", offset, bufferSize);
-			} else if (error) {
+		NSError *error = nil;
+		NSUInteger readBytes = [inAsset getBytes:tempBuffer fromOffset:offset length:bufferSize error:&error];
+		if (readBytes > 0) {
+			[handle writeData:[NSData dataWithBytesNoCopy:tempBuffer length:bufferSize freeWhenDone:NO]];
+			NSLog(@"Wrote some data. Offset: %lld size:%lld", offset, bufferSize);
+		} else if (error) {
+			free(tempBuffer);
+			NSLog(@"error getting %lld bytes of data: %@ for buffer:%p", bufferSize, error, tempBuffer);
+			completion(error);
+			return;
+		} else { //Read 0 bytes = EOF?
+			offset = handle.offsetInFile;
+			if (offset >= assetSize) {
+				handle.writeabilityHandler = nil;
 				free(tempBuffer);
-				NSLog(@"error getting %lld bytes of data: %@ for buffer:%p", bufferSize, error, tempBuffer);
-				completion(error);
-				return;
-			} else { //Read 0 bytes = EOF?
-				offset = handle.offsetInFile;
-				if (offset >= assetSize) {
-					handle.writeabilityHandler = nil;
-					free(tempBuffer);
-					//Call back to main thread (whatever we were called on)
-					dispatch_async(currentQueue, ^() {
-						WMBundleDocument *self = weakSelf;
-						//Success. Add this file to our assets
-						[self->_copyOperations removeObject:handle];
-						[self addResourceNamed:inResourceName fromURL:destinationURL completion:completion];
-					});
-				}
-
+				//Call back to main thread (whatever we were called on)
+				dispatch_async(dispatch_get_main_queue(), ^() {
+					WMComposition *self = weakSelf;
+					//Success. Add this file to our assets
+					[self->_copyOperations removeObject:handle];
+					[self addResourceNamed:inResourceName fromURL:destinationURL completion:completion];
+				});
 			}
 			
-		};
-	}];
+		}
+		
+	};
 }
 
 - (UIImage *)preview;
 {
 	//This has to be synchronous... Any way to get around that?
 	if (!_preview) {
-		_preview = [UIImage imageWithContentsOfFile:[[self.fileURL URLByAppendingPathComponent:WMBundleDocumentPreviewFileName] path]];
+		NSData *data = [[self.resourceWrappers objectForKey:WMBundleDocumentPreviewFileName] regularFileContents];
+		_preview = [[UIImage alloc] initWithData:data];
 	}
 	return _preview;
 }
@@ -321,9 +334,9 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 {
 	if (_preview != inPreview) {
 		_preview = inPreview;
-		[self performAsynchronousFileAccessUsingBlock:^() {
-			[UIImagePNGRepresentation(inPreview) writeToURL:[self.fileURL URLByAppendingPathComponent:WMBundleDocumentPreviewFileName] atomically:YES];
-		}];
+		NSMutableDictionary *resourceWrappersMutable = [_resourceWrappers mutableCopy];
+		[resourceWrappersMutable setObject:[[NSFileWrapper alloc] initRegularFileWithContents:UIImagePNGRepresentation(inPreview)] forKey:WMBundleDocumentPreviewFileName];
+		self.resourceWrappers = resourceWrappersMutable;
 	}
 }
 #endif
@@ -336,12 +349,6 @@ static NSUInteger maxPlistSize = 1 * 1024 * 1024;
 	//Delete file if exists
 	
 	self.resourceWrappers = resourceWrappersMutable;
-}
-
-- (void)handleError:(NSError *)error userInteractionPermitted:(BOOL)userInteractionPermitted;
-{
-	NSLog(@"handle error: %@", error);
-	[super handleError:error userInteractionPermitted:userInteractionPermitted];
 }
 
 @end

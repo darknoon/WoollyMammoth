@@ -11,7 +11,6 @@
 #import "WMPatch.h"
 
 @class WMImagePort;
-@class WMBundleDocument;
 @interface WMImageLoader : WMPatch {
 	WMImagePort *outputImage;
 }

@@ -13,7 +13,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "WMEngine.h"
-#import "WMBundleDocument.h"
+#import "WMComposition.h"
 
 #import "WMCompositionSerialization.h"
 
@@ -23,8 +23,6 @@
 
 @implementation WMViewController {
     CADisplayLink *displayLink;
-	
-	BOOL openingDocument;
 	
 	UILabel *fpsLabel;
 }
@@ -47,7 +45,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
-- (id)initWithDocument:(WMBundleDocument *)inDocument;
+- (id)initWithDocument:(WMComposition *)inDocument;
 {
 	self = [self initWithNibName:nil bundle:nil];
 	if (!self) return nil;
@@ -106,33 +104,14 @@
 	[self engineDidLoad];
 }
 
-- (void)openDocumentAndSetupIfNecessary;
-{
-	if (!openingDocument) {
-		if (document.documentState == UIDocumentStateClosed) {
-			[document openWithCompletionHandler:^(BOOL success) {
-				if (success) {
-					[self setup];
-				} else {
-					NSLog(@"Error loading composition");
-				}
-				openingDocument = NO;
-			}];
-			openingDocument = YES;
-		} else if (!_engine) {
-			[self setup];
-		} 
-	}
-}
-
-- (void)setDocument:(WMBundleDocument *)inDocument;
+- (void)setDocument:(WMComposition *)inDocument;
 {
 	if ([document.fileURL isEqual:inDocument.fileURL]) return;
 
 	document = inDocument;
 	_engine = nil;
 	
-	[self openDocumentAndSetupIfNecessary];
+	[self setup];
 }
 
 
@@ -145,9 +124,9 @@
 	}
 	
 	if (!document && self.compositionURL) {
-		self.document = [[WMBundleDocument alloc] initWithFileURL:self.compositionURL];
+		self.document = [[WMComposition alloc] initWithFileURL:self.compositionURL error:NULL];
 	} else {
-		[self openDocumentAndSetupIfNecessary];
+		[self setup];
 	}
 
 #if DEBUG

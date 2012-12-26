@@ -9,9 +9,10 @@
 #import "WMCompositionLibraryViewController.h"
 #import "WMCompositionLibrary.h"
 
-#import <WMGraph/WMBundleDocument.h>
+#import <WMGraph/WMComposition.h>
 
 #import "WMEditViewController.h"
+#import "WMBundleDocument.h"
 #import "NSObject_KVOBlockNotificationExtensions.h"
 #import <WMGraph/DNKVC.h>
 

@@ -38,6 +38,16 @@
 		494E4ED913D24ADD00402784 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 494E4ED813D24ADD00402784 /* libz.dylib */; };
 		494E4EF013D25D1C00402784 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494E4EEF13D25D1C00402784 /* AVFoundation.framework */; };
 		494E4EF213D25D2B00402784 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494E4EF113D25D2B00402784 /* CoreMedia.framework */; };
+		494FEA0916897A3E00EE9BE8 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494FEA0816897A3E00EE9BE8 /* Cocoa.framework */; };
+		494FEA1316897A3E00EE9BE8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 494FEA1116897A3E00EE9BE8 /* InfoPlist.strings */; };
+		494FEA1516897A3E00EE9BE8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 494FEA1416897A3E00EE9BE8 /* main.m */; };
+		494FEA1916897A3E00EE9BE8 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 494FEA1716897A3E00EE9BE8 /* Credits.rtf */; };
+		494FEA1C16897A3E00EE9BE8 /* WMBundleDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 494FEA1B16897A3E00EE9BE8 /* WMBundleDocument.m */; };
+		494FEA1F16897A3E00EE9BE8 /* WMBundleDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 494FEA1D16897A3E00EE9BE8 /* WMBundleDocument.xib */; };
+		494FEA2216897A3E00EE9BE8 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 494FEA2016897A3E00EE9BE8 /* MainMenu.xib */; };
+		494FEA2816897AD500EE9BE8 /* WMGraph.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494FEA2716897AD500EE9BE8 /* WMGraph.framework */; };
+		4958CD4C1689A2150042FA31 /* WMBundleDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4958CD4B1689A2150042FA31 /* WMBundleDocument.m */; };
+		4958CD4F1689A2390042FA31 /* DNDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4958CD4E1689A2390042FA31 /* DNDocument.m */; };
 		496150C013D2D807006C8B57 /* plug-popover-arrow~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 496150BE13D2D807006C8B57 /* plug-popover-arrow~ipad.png */; };
 		496150C113D2D807006C8B57 /* plug-popover~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 496150BF13D2D807006C8B57 /* plug-popover~ipad.png */; };
 		496F554213E128A30065BB67 /* WMSetShaderSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 496F554013E128A30065BB67 /* WMSetShaderSettingsController.m */; };
@@ -257,6 +267,25 @@
 		494E4ED813D24ADD00402784 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		494E4EEF13D25D1C00402784 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		494E4EF113D25D2B00402784 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		494FEA0616897A3E00EE9BE8 /* WMEdit Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WMEdit Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		494FEA0816897A3E00EE9BE8 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		494FEA0B16897A3E00EE9BE8 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		494FEA0C16897A3E00EE9BE8 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		494FEA0D16897A3E00EE9BE8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		494FEA1016897A3E00EE9BE8 /* WMEdit Mac-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WMEdit Mac-Info.plist"; sourceTree = "<group>"; };
+		494FEA1216897A3E00EE9BE8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		494FEA1416897A3E00EE9BE8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		494FEA1616897A3E00EE9BE8 /* WMEdit Mac-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WMEdit Mac-Prefix.pch"; sourceTree = "<group>"; };
+		494FEA1816897A3E00EE9BE8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		494FEA1A16897A3E00EE9BE8 /* WMBundleDocument.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WMBundleDocument.h; sourceTree = "<group>"; };
+		494FEA1B16897A3E00EE9BE8 /* WMBundleDocument.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WMBundleDocument.m; sourceTree = "<group>"; };
+		494FEA1E16897A3E00EE9BE8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/WMBundleDocument.xib; sourceTree = "<group>"; };
+		494FEA2116897A3E00EE9BE8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		494FEA2716897AD500EE9BE8 /* WMGraph.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WMGraph.framework; path = "../../../../Library/Developer/Xcode/DerivedData/WoollyMammoth-bgnqtjvmqnwalgazhysaiovvkhhp/Build/Products/Debug-iphoneos/WMGraph.framework"; sourceTree = "<group>"; };
+		4958CD4A1689A2150042FA31 /* WMBundleDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMBundleDocument.h; sourceTree = "<group>"; };
+		4958CD4B1689A2150042FA31 /* WMBundleDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMBundleDocument.m; sourceTree = "<group>"; };
+		4958CD4D1689A2390042FA31 /* DNDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNDocument.h; sourceTree = "<group>"; };
+		4958CD4E1689A2390042FA31 /* DNDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNDocument.m; sourceTree = "<group>"; };
 		496150BE13D2D807006C8B57 /* plug-popover-arrow~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plug-popover-arrow~ipad.png"; sourceTree = "<group>"; };
 		496150BF13D2D807006C8B57 /* plug-popover~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plug-popover~ipad.png"; sourceTree = "<group>"; };
 		496F553F13E128A30065BB67 /* WMSetShaderSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSetShaderSettingsController.h; sourceTree = "<group>"; };
@@ -525,6 +554,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		494FEA0316897A3E00EE9BE8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				494FEA2816897AD500EE9BE8 /* WMGraph.framework in Frameworks */,
+				494FEA0916897A3E00EE9BE8 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		49BACB4513EB592A008ED051 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -617,6 +655,59 @@
 			);
 			name = Reachability;
 			path = ../External/Reachability;
+			sourceTree = "<group>";
+		};
+		494FEA0A16897A3E00EE9BE8 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				494FEA0B16897A3E00EE9BE8 /* AppKit.framework */,
+				494FEA0C16897A3E00EE9BE8 /* CoreData.framework */,
+				494FEA0D16897A3E00EE9BE8 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		494FEA0E16897A3E00EE9BE8 /* WMEdit Mac */ = {
+			isa = PBXGroup;
+			children = (
+				494FEA1A16897A3E00EE9BE8 /* WMBundleDocument.h */,
+				494FEA1B16897A3E00EE9BE8 /* WMBundleDocument.m */,
+				494FEA1D16897A3E00EE9BE8 /* WMBundleDocument.xib */,
+				494FEA2016897A3E00EE9BE8 /* MainMenu.xib */,
+				494FEA0F16897A3E00EE9BE8 /* Supporting Files */,
+			);
+			path = "WMEdit Mac";
+			sourceTree = "<group>";
+		};
+		494FEA0F16897A3E00EE9BE8 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				494FEA1016897A3E00EE9BE8 /* WMEdit Mac-Info.plist */,
+				494FEA1116897A3E00EE9BE8 /* InfoPlist.strings */,
+				494FEA1416897A3E00EE9BE8 /* main.m */,
+				494FEA1616897A3E00EE9BE8 /* WMEdit Mac-Prefix.pch */,
+				494FEA1716897A3E00EE9BE8 /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		494FEA2916897AE400EE9BE8 /* Frameworks (Mac) */ = {
+			isa = PBXGroup;
+			children = (
+				494FEA2716897AD500EE9BE8 /* WMGraph.framework */,
+			);
+			name = "Frameworks (Mac)";
+			sourceTree = "<group>";
+		};
+		4958CD491689A2150042FA31 /* WMEdit iOS */ = {
+			isa = PBXGroup;
+			children = (
+				4958CD4D1689A2390042FA31 /* DNDocument.h */,
+				4958CD4E1689A2390042FA31 /* DNDocument.m */,
+				4958CD4A1689A2150042FA31 /* WMBundleDocument.h */,
+				4958CD4B1689A2150042FA31 /* WMBundleDocument.m */,
+			);
+			path = "WMEdit iOS";
 			sourceTree = "<group>";
 		};
 		4979F33D144783A400D25116 /* WEPopover */ = {
@@ -1136,9 +1227,12 @@
 			isa = PBXGroup;
 			children = (
 				49F0595613D15F640056C506 /* WMEdit */,
+				4958CD491689A2150042FA31 /* WMEdit iOS */,
+				494FEA0E16897A3E00EE9BE8 /* WMEdit Mac */,
 				49A5286113D174C6004EC7F6 /* Resources */,
 				49858E4F13DE4C800061A1A8 /* More Patches */,
 				49A5264D13D17330004EC7F6 /* Externals */,
+				494FEA2916897AE400EE9BE8 /* Frameworks (Mac) */,
 				49F0594F13D15F640056C506 /* Frameworks */,
 				49F0594D13D15F640056C506 /* Products */,
 			);
@@ -1149,6 +1243,7 @@
 			children = (
 				49F0594C13D15F640056C506 /* WMEdit.app */,
 				49BACB4913EB592A008ED051 /* WMEngineTests.octest */,
+				494FEA0616897A3E00EE9BE8 /* WMEdit Mac.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1176,6 +1271,8 @@
 				49F0595213D15F640056C506 /* Foundation.framework */,
 				49F0595413D15F640056C506 /* CoreGraphics.framework */,
 				49BACB4A13EB592A008ED051 /* SenTestingKit.framework */,
+				494FEA0816897A3E00EE9BE8 /* Cocoa.framework */,
+				494FEA0A16897A3E00EE9BE8 /* Other Frameworks */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1209,6 +1306,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		494FEA0516897A3E00EE9BE8 /* WMEdit Mac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 494FEA2516897A3E00EE9BE8 /* Build configuration list for PBXNativeTarget "WMEdit Mac" */;
+			buildPhases = (
+				494FEA0216897A3E00EE9BE8 /* Sources */,
+				494FEA0316897A3E00EE9BE8 /* Frameworks */,
+				494FEA0416897A3E00EE9BE8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "WMEdit Mac";
+			productName = "WMEdit Mac";
+			productReference = 494FEA0616897A3E00EE9BE8 /* WMEdit Mac.app */;
+			productType = "com.apple.product-type.application";
+		};
 		49BACB4813EB592A008ED051 /* WMEngineTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49BACB5913EB592A008ED051 /* Build configuration list for PBXNativeTarget "WMEngineTests" */;
@@ -1267,12 +1381,24 @@
 			projectRoot = "";
 			targets = (
 				49F0594B13D15F640056C506 /* WMEdit */,
+				494FEA0516897A3E00EE9BE8 /* WMEdit Mac */,
 				49BACB4813EB592A008ED051 /* WMEngineTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		494FEA0416897A3E00EE9BE8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				494FEA1316897A3E00EE9BE8 /* InfoPlist.strings in Resources */,
+				494FEA1916897A3E00EE9BE8 /* Credits.rtf in Resources */,
+				494FEA1F16897A3E00EE9BE8 /* WMBundleDocument.xib in Resources */,
+				494FEA2216897A3E00EE9BE8 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		49BACB4613EB592A008ED051 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1362,6 +1488,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		494FEA0216897A3E00EE9BE8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				494FEA1516897A3E00EE9BE8 /* main.m in Sources */,
+				494FEA1C16897A3E00EE9BE8 /* WMBundleDocument.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		49BACB4413EB592A008ED051 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1482,12 +1617,46 @@
 				497F5521167683E200209E30 /* WMLuaBufferBridge.m in Sources */,
 				497F5522167683E200209E30 /* WMLuaScriptingContext.m in Sources */,
 				497F5523167683E200209E30 /* WMPatchLuaBridge.m in Sources */,
+				4958CD4C1689A2150042FA31 /* WMBundleDocument.m in Sources */,
+				4958CD4F1689A2390042FA31 /* DNDocument.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		494FEA1116897A3E00EE9BE8 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				494FEA1216897A3E00EE9BE8 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		494FEA1716897A3E00EE9BE8 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				494FEA1816897A3E00EE9BE8 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		494FEA1D16897A3E00EE9BE8 /* WMBundleDocument.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				494FEA1E16897A3E00EE9BE8 /* en */,
+			);
+			name = WMBundleDocument.xib;
+			sourceTree = "<group>";
+		};
+		494FEA2016897A3E00EE9BE8 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				494FEA2116897A3E00EE9BE8 /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
 		498DDEEA13DF496000D10642 /* MainWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1507,6 +1676,73 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		494FEA2316897A3E00EE9BE8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+					"\"$(SRCROOT)/../../../../Library/Developer/Xcode/DerivedData/WoollyMammoth-bgnqtjvmqnwalgazhysaiovvkhhp/Build/Products/Debug-iphoneos\"",
+				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WMEdit Mac/WMEdit Mac-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				INFOPLIST_FILE = "WMEdit Mac/WMEdit Mac-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		494FEA2416897A3E00EE9BE8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+					"\"$(SRCROOT)/../../../../Library/Developer/Xcode/DerivedData/WoollyMammoth-bgnqtjvmqnwalgazhysaiovvkhhp/Build/Products/Debug-iphoneos\"",
+				);
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WMEdit Mac/WMEdit Mac-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				INFOPLIST_FILE = "WMEdit Mac/WMEdit Mac-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 		49BACB5A13EB592A008ED051 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1628,6 +1864,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		494FEA2516897A3E00EE9BE8 /* Build configuration list for PBXNativeTarget "WMEdit Mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				494FEA2316897A3E00EE9BE8 /* Debug */,
+				494FEA2416897A3E00EE9BE8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		49BACB5913EB592A008ED051 /* Build configuration list for PBXNativeTarget "WMEngineTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

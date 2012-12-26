@@ -11,6 +11,7 @@
 #define USE_UIDOCUMENT 0
 
 #if TARGET_OS_MAC && !TARGET_OS_IPHONE
+#import <AppKit/AppKit.h>
 typedef NS_ENUM(NSInteger, UIDocumentChangeKind) {
     UIDocumentChangeDone,
     UIDocumentChangeUndone,

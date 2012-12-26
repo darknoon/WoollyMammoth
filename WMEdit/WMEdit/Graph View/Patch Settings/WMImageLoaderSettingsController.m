@@ -10,6 +10,7 @@
 #import "WMEditViewController.h"
 #import <WMGraph/WMGraph.h>
 #import <AssetsLibrary/AssetsLibrary.h>
+#import "WMBundleDocument.h"
 
 @implementation WMImageLoader (WMPatch_SettingsControllerClass)
 
@@ -51,7 +52,7 @@
 - (void)refreshImageFromPatch;
 {
 	if (patch.imageResource) {
-		NSFileWrapper *wrapper = [[self.editViewController.document resourceWrappers] objectForKey:patch.imageResource];
+		NSFileWrapper *wrapper = [[self.editViewController.document.composition resourceWrappers] objectForKey:patch.imageResource];
 		self.imageView.image = [UIImage imageWithData:[wrapper regularFileContents]];
 	} else {
 		self.imageView.image = nil;
@@ -100,7 +101,7 @@
 		ALAssetRepresentation *rep = [asset defaultRepresentation];
 		if (rep) {
 			//Copy this asset into the document
-			[self.editViewController.document addResourceNamed:rep.filename fromAssetRepresentation:rep completion:^(NSError *error) {
+			[self.editViewController.document.composition addResourceNamed:rep.filename fromAssetRepresentation:rep completion:^(NSError *error) {
 				if (error) {
 					fail(error);
 				} else {

@@ -65,18 +65,6 @@
 		49E2E91F167296FE00FA4FCE /* WMMathUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E87C167296FE00FA4FCE /* WMMathUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2E920167296FE00FA4FCE /* WMPrefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E87D167296FE00FA4FCE /* WMPrefix.pch */; settings = {ATTRIBUTES = (); }; };
 		49E2E921167296FE00FA4FCE /* WMRenderObject+CreateWithGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E87E167296FE00FA4FCE /* WMRenderObject+CreateWithGeometry.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		49E2E96816729B3000FA4FCE /* GLKMath.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E95116729B3000FA4FCE /* GLKMath.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		49E2E96916729B3000FA4FCE /* GLKMathTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E95216729B3000FA4FCE /* GLKMathTypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		49E2E96A16729B3000FA4FCE /* GLKMathUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E95316729B3000FA4FCE /* GLKMathUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		49E2E96B16729B3000FA4FCE /* GLKMatrix3.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E95416729B3000FA4FCE /* GLKMatrix3.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		49E2E96C16729B3000FA4FCE /* GLKMatrix4.c in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E95516729B3000FA4FCE /* GLKMatrix4.c */; };
-		49E2E96D16729B3000FA4FCE /* GLKMatrix4.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E95616729B3000FA4FCE /* GLKMatrix4.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		49E2E96E16729B3000FA4FCE /* GLKMatrixStack.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E95716729B3000FA4FCE /* GLKMatrixStack.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		49E2E96F16729B3000FA4FCE /* GLKNamedEffect.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E95816729B3000FA4FCE /* GLKNamedEffect.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		49E2E97016729B3000FA4FCE /* GLKQuaternion.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E95916729B3000FA4FCE /* GLKQuaternion.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		49E2E97116729B3000FA4FCE /* GLKVector2.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E95A16729B3000FA4FCE /* GLKVector2.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		49E2E97216729B3000FA4FCE /* GLKVector3.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E95B16729B3000FA4FCE /* GLKVector3.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		49E2E97316729B3000FA4FCE /* GLKVector4.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E95C16729B3000FA4FCE /* GLKVector4.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2E97816729B3000FA4FCE /* WMDisplayLink.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E96116729B3000FA4FCE /* WMDisplayLink.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2E97916729B3000FA4FCE /* WMDisplayLink_iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E96216729B3000FA4FCE /* WMDisplayLink_iOS.m */; };
 		49E2E97B16729B3000FA4FCE /* WMFrameCounter.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E96416729B3000FA4FCE /* WMFrameCounter.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -228,18 +216,6 @@
 		49E2E94C167299EC00FA4FCE /* WMLite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WMLite.h; sourceTree = "<group>"; };
 		49E2E94E16729B3000FA4FCE /* EAGLContextMac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLContextMac.h; sourceTree = "<group>"; };
 		49E2E94F16729B3000FA4FCE /* EAGLContextMac.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EAGLContextMac.m; sourceTree = "<group>"; };
-		49E2E95116729B3000FA4FCE /* GLKMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKMath.h; sourceTree = "<group>"; };
-		49E2E95216729B3000FA4FCE /* GLKMathTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKMathTypes.h; sourceTree = "<group>"; };
-		49E2E95316729B3000FA4FCE /* GLKMathUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKMathUtils.h; sourceTree = "<group>"; };
-		49E2E95416729B3000FA4FCE /* GLKMatrix3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKMatrix3.h; sourceTree = "<group>"; };
-		49E2E95516729B3000FA4FCE /* GLKMatrix4.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GLKMatrix4.c; sourceTree = "<group>"; };
-		49E2E95616729B3000FA4FCE /* GLKMatrix4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKMatrix4.h; sourceTree = "<group>"; };
-		49E2E95716729B3000FA4FCE /* GLKMatrixStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKMatrixStack.h; sourceTree = "<group>"; };
-		49E2E95816729B3000FA4FCE /* GLKNamedEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKNamedEffect.h; sourceTree = "<group>"; };
-		49E2E95916729B3000FA4FCE /* GLKQuaternion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKQuaternion.h; sourceTree = "<group>"; };
-		49E2E95A16729B3000FA4FCE /* GLKVector2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKVector2.h; sourceTree = "<group>"; };
-		49E2E95B16729B3000FA4FCE /* GLKVector3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKVector3.h; sourceTree = "<group>"; };
-		49E2E95C16729B3000FA4FCE /* GLKVector4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKVector4.h; sourceTree = "<group>"; };
 		49E2E95F16729B3000FA4FCE /* WMCompatibilityMac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMCompatibilityMac.h; sourceTree = "<group>"; };
 		49E2E96016729B3000FA4FCE /* WMCompatibilityMac.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMCompatibilityMac.m; sourceTree = "<group>"; };
 		49E2E96116729B3000FA4FCE /* WMDisplayLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMDisplayLink.h; sourceTree = "<group>"; };
@@ -437,7 +413,6 @@
 				4962329416867E6F001CA7F2 /* GLKMathCGCompatibility.c */,
 				49E2E94E16729B3000FA4FCE /* EAGLContextMac.h */,
 				49E2E94F16729B3000FA4FCE /* EAGLContextMac.m */,
-				49E2E95016729B3000FA4FCE /* GLKit */,
 				49E2E95F16729B3000FA4FCE /* WMCompatibilityMac.h */,
 				49E2E96016729B3000FA4FCE /* WMCompatibilityMac.m */,
 				49E2E96116729B3000FA4FCE /* WMDisplayLink.h */,
@@ -448,25 +423,6 @@
 			);
 			name = Misc;
 			path = ../Misc;
-			sourceTree = "<group>";
-		};
-		49E2E95016729B3000FA4FCE /* GLKit */ = {
-			isa = PBXGroup;
-			children = (
-				49E2E95116729B3000FA4FCE /* GLKMath.h */,
-				49E2E95216729B3000FA4FCE /* GLKMathTypes.h */,
-				49E2E95316729B3000FA4FCE /* GLKMathUtils.h */,
-				49E2E95416729B3000FA4FCE /* GLKMatrix3.h */,
-				49E2E95516729B3000FA4FCE /* GLKMatrix4.c */,
-				49E2E95616729B3000FA4FCE /* GLKMatrix4.h */,
-				49E2E95716729B3000FA4FCE /* GLKMatrixStack.h */,
-				49E2E95816729B3000FA4FCE /* GLKNamedEffect.h */,
-				49E2E95916729B3000FA4FCE /* GLKQuaternion.h */,
-				49E2E95A16729B3000FA4FCE /* GLKVector2.h */,
-				49E2E95B16729B3000FA4FCE /* GLKVector3.h */,
-				49E2E95C16729B3000FA4FCE /* GLKVector4.h */,
-			);
-			path = GLKit;
 			sourceTree = "<group>";
 		};
 		49E2E9D21672A40000FA4FCE /* Application */ = {
@@ -560,17 +516,6 @@
 				49E2E8E9167296FE00FA4FCE /* WMFramebuffer_WMEAGLContext_Private.h in Headers */,
 				49E2E8EC167296FE00FA4FCE /* WMGLStateObject_WMEAGLContext_Private.h in Headers */,
 				49E2E8F0167296FE00FA4FCE /* WMRenderObject_WMEAGLContext_Private.h in Headers */,
-				49E2E96816729B3000FA4FCE /* GLKMath.h in Headers */,
-				49E2E96916729B3000FA4FCE /* GLKMathTypes.h in Headers */,
-				49E2E96A16729B3000FA4FCE /* GLKMathUtils.h in Headers */,
-				49E2E96B16729B3000FA4FCE /* GLKMatrix3.h in Headers */,
-				49E2E96D16729B3000FA4FCE /* GLKMatrix4.h in Headers */,
-				49E2E96E16729B3000FA4FCE /* GLKMatrixStack.h in Headers */,
-				49E2E96F16729B3000FA4FCE /* GLKNamedEffect.h in Headers */,
-				49E2E97016729B3000FA4FCE /* GLKQuaternion.h in Headers */,
-				49E2E97116729B3000FA4FCE /* GLKVector2.h in Headers */,
-				49E2E97216729B3000FA4FCE /* GLKVector3.h in Headers */,
-				49E2E97316729B3000FA4FCE /* GLKVector4.h in Headers */,
 				49E2E97816729B3000FA4FCE /* WMDisplayLink.h in Headers */,
 				49E2E97B16729B3000FA4FCE /* WMFrameCounter.h in Headers */,
 				49E2E8F3167296FE00FA4FCE /* WMShader_WMEAGLContext_Private.h in Headers */,
@@ -785,7 +730,6 @@
 				49E2E910167296FE00FA4FCE /* EAGLContext+Extensions.m in Sources */,
 				49E2E91B167296FE00FA4FCE /* NSValue+GLKVector.m in Sources */,
 				49E2E91E167296FE00FA4FCE /* WMMathUtil.c in Sources */,
-				49E2E96C16729B3000FA4FCE /* GLKMatrix4.c in Sources */,
 				49E2E97916729B3000FA4FCE /* WMDisplayLink_iOS.m in Sources */,
 				49E2E97C16729B3000FA4FCE /* WMFrameCounter.m in Sources */,
 				49E2E9DA1672A40000FA4FCE /* DNAssertionHandler.m in Sources */,
