@@ -60,6 +60,8 @@
 		495DF359168C05DE00D89EA5 /* EditorBackgroundPattern@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 495DF357168C05DE00D89EA5 /* EditorBackgroundPattern@2x.png */; };
 		495DF35C168C1C1200D89EA5 /* AddNodeHighlight.png in Resources */ = {isa = PBXBuildFile; fileRef = 495DF35A168C1C1200D89EA5 /* AddNodeHighlight.png */; };
 		495DF35D168C1C1200D89EA5 /* AddNodeHighlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 495DF35B168C1C1200D89EA5 /* AddNodeHighlight@2x.png */; };
+		495DF35F168C270200D89EA5 /* WMEdit.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 495DF35E168C270200D89EA5 /* WMEdit.iconset */; };
+		495DF361168C275D00D89EA5 /* WMEdit.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 495DF360168C275D00D89EA5 /* WMEdit.iconset */; };
 		496150C013D2D807006C8B57 /* plug-popover-arrow~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 496150BE13D2D807006C8B57 /* plug-popover-arrow~ipad.png */; };
 		496150C113D2D807006C8B57 /* plug-popover~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 496150BF13D2D807006C8B57 /* plug-popover~ipad.png */; };
 		496F554213E128A30065BB67 /* WMSetShaderSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 496F554013E128A30065BB67 /* WMSetShaderSettingsController.m */; };
@@ -279,7 +281,7 @@
 		494E4ED813D24ADD00402784 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		494E4EEF13D25D1C00402784 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		494E4EF113D25D2B00402784 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		494FEA0616897A3E00EE9BE8 /* WMEdit Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WMEdit Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		494FEA0616897A3E00EE9BE8 /* WMEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WMEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		494FEA0816897A3E00EE9BE8 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		494FEA0B16897A3E00EE9BE8 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		494FEA0C16897A3E00EE9BE8 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -314,6 +316,8 @@
 		495DF357168C05DE00D89EA5 /* EditorBackgroundPattern@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EditorBackgroundPattern@2x.png"; sourceTree = "<group>"; };
 		495DF35A168C1C1200D89EA5 /* AddNodeHighlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AddNodeHighlight.png; sourceTree = "<group>"; };
 		495DF35B168C1C1200D89EA5 /* AddNodeHighlight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AddNodeHighlight@2x.png"; sourceTree = "<group>"; };
+		495DF35E168C270200D89EA5 /* WMEdit.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = WMEdit.iconset; sourceTree = "<group>"; };
+		495DF360168C275D00D89EA5 /* WMEdit.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = WMEdit.iconset; sourceTree = "<group>"; };
 		496150BE13D2D807006C8B57 /* plug-popover-arrow~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plug-popover-arrow~ipad.png"; sourceTree = "<group>"; };
 		496150BF13D2D807006C8B57 /* plug-popover~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plug-popover~ipad.png"; sourceTree = "<group>"; };
 		496F553F13E128A30065BB67 /* WMSetShaderSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSetShaderSettingsController.h; sourceTree = "<group>"; };
@@ -782,6 +786,7 @@
 				4958CD6E168BDADB0042FA31 /* EditorWindowInnerShadow@2x.png */,
 				495DF356168C05DE00D89EA5 /* EditorBackgroundPattern.png */,
 				495DF357168C05DE00D89EA5 /* EditorBackgroundPattern@2x.png */,
+				495DF35E168C270200D89EA5 /* WMEdit.iconset */,
 			);
 			path = "Resources Mac";
 			sourceTree = "<group>";
@@ -1302,6 +1307,7 @@
 		49F0594113D15F640056C506 = {
 			isa = PBXGroup;
 			children = (
+				495DF360168C275D00D89EA5 /* WMEdit.iconset */,
 				49F0595613D15F640056C506 /* WMEdit */,
 				4958CD491689A2150042FA31 /* WMEdit iOS */,
 				494FEA0E16897A3E00EE9BE8 /* WMEdit Mac */,
@@ -1320,7 +1326,7 @@
 			children = (
 				49F0594C13D15F640056C506 /* WMEdit.app */,
 				49BACB4913EB592A008ED051 /* WMEngineTests.octest */,
-				494FEA0616897A3E00EE9BE8 /* WMEdit Mac.app */,
+				494FEA0616897A3E00EE9BE8 /* WMEdit.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1397,7 +1403,7 @@
 			);
 			name = "WMEdit Mac";
 			productName = "WMEdit Mac";
-			productReference = 494FEA0616897A3E00EE9BE8 /* WMEdit Mac.app */;
+			productReference = 494FEA0616897A3E00EE9BE8 /* WMEdit.app */;
 			productType = "com.apple.product-type.application";
 		};
 		49BACB4813EB592A008ED051 /* WMEngineTests */ = {
@@ -1480,6 +1486,8 @@
 				495DF359168C05DE00D89EA5 /* EditorBackgroundPattern@2x.png in Resources */,
 				495DF35C168C1C1200D89EA5 /* AddNodeHighlight.png in Resources */,
 				495DF35D168C1C1200D89EA5 /* AddNodeHighlight@2x.png in Resources */,
+				495DF35F168C270200D89EA5 /* WMEdit.iconset in Resources */,
+				495DF361168C275D00D89EA5 /* WMEdit.iconset in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1794,7 +1802,7 @@
 				INFOPLIST_FILE = "WMEdit Mac/WMEdit Mac-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = WMEdit;
 				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1825,7 +1833,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				INFOPLIST_FILE = "WMEdit Mac/WMEdit Mac-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = WMEdit;
 				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
