@@ -102,7 +102,7 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 {
 	NSMutableArray *outPatchClasses = [NSMutableArray array];
 	[[self _classMap] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-		[outPatchClasses addObject:NSStringFromClass(obj)];
+		[outPatchClasses addObject:obj];
 	}];
 	return outPatchClasses;
 }
