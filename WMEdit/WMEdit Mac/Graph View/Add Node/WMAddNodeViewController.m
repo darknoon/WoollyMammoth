@@ -17,6 +17,10 @@
 
 @end
 
+@interface WMAddNodeCellView : NSTableCellView
+
+@end
+
 @implementation WMAddNodeViewController {
 	NSArray *_allNodesList;
 }
@@ -41,7 +45,13 @@
 - (void)awakeFromNib;
 {
 	[super awakeFromNib];
+	
+	self.view.wantsLayer = YES;
+	
 	[self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:0] byExtendingSelection:NO];
+	
+	self.tableView.backgroundColor = [NSColor colorWithDeviceWhite:0.0 alpha:0.0];
+	self.tableView.layer.backgroundColor = [NSColor redColor].CGColor;
 }
 
 - (NSString *)filterTextForComparison;
@@ -136,6 +146,15 @@ static BOOL NSSelectorIsEqual(SEL a, SEL b) {
 	self.filterText = self.searchField.stringValue;
 	[self.tableView reloadData];
 	[self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:0] byExtendingSelection:NO];
+}
+
+@end
+
+@implementation WMAddNodeCellView
+
+- (void)awakeFromNib;
+{
+	self.layer.backgroundColor = [NSColor clearColor].CGColor;
 }
 
 @end

@@ -15,6 +15,8 @@
 
 @implementation WMGraphEditView {
 	NSPopover *_nodeCreationPopover;
+	
+	NSView *_addNodePlaceholderView;
 }
 
 - (void)awakeFromNib;
@@ -45,8 +47,33 @@
 		popover.delegate = self;
 		popover.appearance = NSPopoverAppearanceHUD;
 		
-		[popover showRelativeToRect:(NSRect){theEvent.locationInWindow.x, theEvent.locationInWindow.y, 1, 1} ofView:self preferredEdge:CGRectMinYEdge];
+		NSPoint p = theEvent.locationInWindow;
+		[popover showRelativeToRect:(NSRect){p.x, p.y, 1, 1} ofView:self preferredEdge:CGRectMinYEdge];
 		_nodeCreationPopover = popover;
+		
+		if (!_addNodePlaceholderView) {
+			_addNodePlaceholderView = [[NSView alloc] initWithFrame:NSZeroRect];
+			_addNodePlaceholderView.wantsLayer = YES;
+			_addNodePlaceholderView.layer.contents = [NSImage imageNamed:@"AddNodeHighlight"];
+			_addNodePlaceholderView.layer.contentsGravity = kCAGravityCenter;
+		}
+		_addNodePlaceholderView.frame = (NSRect){p, 0, 0};
+		_addNodePlaceholderView.layer.opacity = 1.0;
+		CABasicAnimation *fadeIn = [CABasicAnimation animationWithKeyPath:@"opacity"];
+		fadeIn.fromValue = @(0.0);
+		fadeIn.toValue = @(1.0);
+		fadeIn.additive = YES;
+		[_addNodePlaceholderView.layer addAnimation:fadeIn forKey:fadeIn.keyPath];
+		[self addSubview:_addNodePlaceholderView];
+		
+		CAKeyframeAnimation *pulseAnimation = [CAKeyframeAnimation animationWithKeyPath:@"opacity"];
+		pulseAnimation.values = @[@(1.0), @(0.3), @(1.0)];
+		pulseAnimation.duration = 4.0;
+		pulseAnimation.timeOffset = 1.0;
+		pulseAnimation.repeatCount = HUGE_VALF;
+		[_addNodePlaceholderView.layer addAnimation:pulseAnimation forKey:@"pulse"];
+		pulseAnimation.additive = YES;
+
 	}
 }
 
@@ -60,11 +87,19 @@
 - (void)popoverWillClose:(NSNotification *)notification;
 {
 	[[((WMAddNodeViewController *)_nodeCreationPopover.contentViewController) searchField] resignFirstResponder];
+	CABasicAnimation *fadeOut = [CABasicAnimation animationWithKeyPath:@"opacity"];
+	fadeOut.fromValue = @(((CALayer *)_addNodePlaceholderView.layer.presentationLayer).opacity);
+	fadeOut.toValue = @(0.0);
+	fadeOut.additive = YES;
+	[_addNodePlaceholderView.layer addAnimation:fadeOut forKey:fadeOut.keyPath];
+	_addNodePlaceholderView.layer.opacity = 0.0;
+	[_addNodePlaceholderView.layer removeAnimationForKey:@"pulse"];
 }
 
 - (void)popoverDidClose:(NSNotification *)notification;
 {
 	_nodeCreationPopover = nil;
+
 }
 
 #pragma mark - WMAddNodeViewControllerDelegate
