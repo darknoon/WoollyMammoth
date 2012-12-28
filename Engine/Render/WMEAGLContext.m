@@ -21,8 +21,14 @@
 #import "WMShader_WMEAGLContext_Private.h"
 #import "WMVertexArrayObject.h"
 
-#if TARGET_OS_IPHONE && GL_OES_vertex_array_object
-#define glBindVertexArray glBindVertexArrayOES
+#if !TARGET_OS_IPHONE
+@interface EAGLSharegroup : NSObject
+@property (nonatomic, weak) NSOpenGLContext *context;
+@end
+
+@implementation EAGLSharegroup
+@synthesize context = _context;
+@end
 #endif
 
 //TODO: where should this live?
@@ -47,6 +53,8 @@
 @property (nonatomic, strong) WMFramebuffer *boundFramebuffer;
 
 @end
+
+NSString *const EAGLMacThreadDictionaryKey = @"com.darknoon.EAGLMacContext";
 
 @implementation WMEAGLContext {
 @public
@@ -77,8 +85,35 @@
 @synthesize maxTextureUnits;
 @synthesize maxVertexAttributes;
 
+- (void)sharedInit;
+{
+	GL_CHECK_ERROR;
+	_objectCache = [[NSCache alloc] init];
+	
+	//Assumed state
+	glEnable(GL_DEPTH_TEST);
+	depthState = DNGLStateDepthTestEnabled | DNGLStateDepthWriteEnabled;
+	
+	//Assume an source-over mode to start
+	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+	
+	glGetIntegerv(GL_ACTIVE_TEXTURE, &activeTexture);
+	activeTexture -= GL_TEXTURE0;
+	
+	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &maxVertexAttributes);
+	
+	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
+	
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
+	
+	glEnable(GL_TEXTURE_2D);
+	GL_CHECK_ERROR;
+}
+
+#if TARGET_OS_IPHONE
 + (WMEAGLContext *)currentContext;
 {
+	
 	EAGLContext *ctx = [super currentContext];
 	ZAssert(!ctx || [ctx isKindOfClass:[WMEAGLContext class]], @"Not the expected context type!");
 	return (WMEAGLContext *)ctx;
@@ -99,26 +134,96 @@
 		return nil;
 	}
 	
-	_objectCache = [[NSCache alloc] init];
-	
-	//Assumed state
-	glEnable(GL_DEPTH_TEST);
-	depthState = DNGLStateDepthTestEnabled | DNGLStateDepthWriteEnabled;
-	
-	//Assume an source-over mode to start
-	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-	
-	glGetIntegerv(GL_ACTIVE_TEXTURE, &activeTexture);
-	activeTexture -= GL_TEXTURE0;
-	
-	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &maxVertexAttributes);
-	
-	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
-	
-	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
+	[self sharedInit];
 	
 	return self;
 }
+
+
+#elif TARGET_OS_MAC
+
+- (id)initWithOpenGLContext:(NSOpenGLContext *)context;
+{
+	self = [self init];
+	if (!self) return nil;
+	//TODO: check context compatibility
+	
+	_openGLContext = context;
+
+	[self sharedInit];
+	glEnable(GL_TEXTURE_2D);
+	
+	return self;
+}
+
+- (id)initWithSharegroup:(EAGLSharegroup *)sharegroup;
+{
+    NSOpenGLPixelFormatAttribute attrs[] =
+	{
+		NSOpenGLPFADoubleBuffer,
+		NSOpenGLPFADepthSize, 24,
+		//		// Must specify the 3.2 Core Profile to use OpenGL 3.2
+		//		NSOpenGLPFAOpenGLProfile,
+		//		NSOpenGLProfileVersion3_2Core,
+		0
+	};
+	
+	
+	NSOpenGLPixelFormat *pf = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
+	
+	if (!pf) {
+		NSLog(@"No OpenGL pixel format");
+		return nil;
+	}
+    
+	NSOpenGLContext *context = [[NSOpenGLContext alloc] initWithFormat:pf shareContext:sharegroup.context];
+	if (!context) return nil;
+	self = [self initWithOpenGLContext:context];
+	
+	_sharegroup = sharegroup;
+	if (!_sharegroup) {
+		_sharegroup = [[EAGLSharegroup alloc] init];
+		_sharegroup.context = self.openGLContext;
+	}
+	
+	return self;
+}
+
++ (BOOL)setCurrentContext:(WMEAGLContext *)context;
+{
+	if (context) {
+		[context.openGLContext makeCurrentContext];
+#warning excessive
+		ZAssert([NSOpenGLContext currentContext] == context.openGLContext, @"Did not set context");
+		[[[NSThread currentThread] threadDictionary] setObject:context forKey:EAGLMacThreadDictionaryKey];
+	} else {
+		[NSOpenGLContext clearCurrentContext];
+	}
+	return YES;
+}
+
++ (WMEAGLContext *)currentContext;
+{
+	WMEAGLContext *currentContext = [[[NSThread currentThread] threadDictionary] objectForKey:EAGLMacThreadDictionaryKey];
+	ZAssert([NSOpenGLContext currentContext] == currentContext.openGLContext, @"Wrong context set!");
+	return currentContext;
+}
+
+- (void)wm__assumeBoundFramebufferHack;
+{
+#warning SKEEZY
+	int boundFramebufferName = -1;
+	glGetIntegerv(GL_FRAMEBUFFER_BINDING, &boundFramebufferName);
+	if (boundFramebufferName > 0 && boundFramebufferName != boundFramebuffer.framebufferName) {
+		WMFramebuffer *currentFakeFramebuffer = [[WMFramebuffer alloc] initWithGLFramebufferName:boundFramebufferName deleteWhenDone:NO];
+		
+		boundFramebuffer = currentFakeFramebuffer;
+	}
+}
+
+#endif
+
+
 
 - (WMGLStateObject *)cachedObjectForKey:(NSString *)key;
 {
@@ -207,6 +312,9 @@
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		}
 	}
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+		NSLog(@"Set framebuffer %@ invalid (%@)", inFramebuffer, [WMFramebuffer descriptionOfFramebufferStatus:glCheckFramebufferStatus(GL_FRAMEBUFFER)]);
+	}
 }
 
 - (void)renderToFramebuffer:(WMFramebuffer *)inFramebuffer block:(void (^)())renderingOperations;
@@ -266,7 +374,7 @@
 	//Bind it
 	if (![boundVAO isEqualToVertexArrayObject:inObject.vertexArrayObject]) {
 		boundVAO = inObject.vertexArrayObject;
-		glBindVertexArray(inObject.vertexArrayObject.glObject);
+		wm_glBindVertexArray(inObject.vertexArrayObject.glObject);
 		GL_CHECK_ERROR;
 	}
 
@@ -375,7 +483,7 @@
 	}
 	
 	//Unbind or can we leave it bound?
-	glBindVertexArray(0);
+	wm_glBindVertexArray(0);
 	boundVAO = 0;
 	
 	//TODO: unbind unused textures, but keep used ones bound?
@@ -610,7 +718,7 @@
 		//Bind it
 		if (![context->boundVAO isEqualToVertexArrayObject:self.vertexArrayObject]) {
 			context->boundVAO = self.vertexArrayObject;
-			glBindVertexArray(self.vertexArrayObject.glObject);
+			wm_glBindVertexArray(self.vertexArrayObject.glObject);
 			GL_CHECK_ERROR;
 		}
 		

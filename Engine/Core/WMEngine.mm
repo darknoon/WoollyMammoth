@@ -60,7 +60,9 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 	self = [super init];
 	if (self == nil) return self; 
 
+#if TARGET_OS_IPHONE
 	renderContext = [[WMEAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+#endif
 	_frameCounter = [[WMFrameCounter alloc] init];
 	self.rootObject = inPatch;
 	compositionUserData = [[NSMutableDictionary alloc] init];
@@ -241,7 +243,7 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 		
 		NSTimeInterval timeToDrawFrame = frameEndTime - frameStartTime;
 		[_frameCounter recordFrameWithTime:frameEndTime duration:timeToDrawFrame];
-
+		
 		[self.delegate engineDidRenderFrame:self];
 	}
 }

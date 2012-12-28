@@ -321,7 +321,7 @@ GLint GLFormatForWMTexture2DPixelFormat(WMTexture2DPixelFormat format) {
 - (void)moveToContext:(WMEAGLContext *)inContext;
 {
 	if (inContext.sharegroup == self.context.sharegroup) {
-		[EAGLContext setCurrentContext:self.context];
+		[WMEAGLContext setCurrentContext:self.context];
 		if (self.context) {		
 			[self.context forgetTexture2DName:_name];
 		}

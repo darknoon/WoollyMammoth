@@ -19,11 +19,7 @@
 #import <WMGraph/DNTimingMacros.h>
 
 #import <WMGraph/WMDisplayLink.h>
-
-#if TARGET_OS_IPHONE
-//TODO: make this available on Mac as well
 #import <WMGraph/WMView.h>
-#endif
 
 #import <WMGraph/EAGLContext+Extensions.h>
 #import <WMGraph/GLKMath_cpp.h>
@@ -46,19 +42,17 @@
 #import <WMGraph/WMPatchCategories.h>
 #import <WMGraph/WMPatchEventSource.h>
 #import <WMGraph/WMAudioBuffer.h>
-#if TARGET_OS_IPHONE
 #import <WMGraph/WMViewController.h>
-#endif
 #import <WMGraph/WMComposition.h>
 #import <WMGraph/WMCompositionSerialization.h>
 #import <WMGraph/WMConnection.h>
 
-//CoreVideo integration with CVOpenGLESTextureCache
+//CoreVideo integration with CVOpenGLESTextureCache / CVOpenGLTextureCache
 #import <WMGraph/WMCVTexture2D.h>
 
 //Core patches
 #import <WMGraph/WMAccelerometer.h>
-//TODO: #import <WMGraph/WMVideoCapture.h>
+#import <WMGraph/WMVideoCapture.h>
 #import <WMGraph/WMClear.h>
 #import <WMGraph/WMQuad.h>
 #import <WMGraph/WMSphere.h>
@@ -76,7 +70,9 @@
 #import <WMGraph/WMMathOp.h>
 #import <WMGraph/WMSplitter.h>
 #import <WMGraph/WMVectorFromComponents.h>
+#if TARGET_OS_IPHONE
 #import <WMGraph/WMVideoRecord.h>
+#endif
 
 //Port types
 #import <WMGraph/WMPort.h>

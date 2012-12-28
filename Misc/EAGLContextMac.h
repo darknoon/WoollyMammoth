@@ -19,16 +19,19 @@ typedef int EAGLRenderingAPI;
 
 @class EAGLSharegroup;
 
-@interface EAGLContext : NSOpenGLContext {
+@interface EAGLContext : NSObject {
 	int simulatedAPI;
 }
 
+- (id)initWithOpenGLContext:(NSOpenGLContext *)context;
 - (id)initWithAPI:(int)inSimulatedAPI;
 - (id)initWithAPI:(int)inSimulatedAPI sharegroup:(EAGLSharegroup *)sharegroup;
 
-@property (readonly) int API;
+@property (nonatomic, readonly) int API;
 
-@property (readonly) EAGLSharegroup *sharegroup;
+@property (nonatomic, readonly) NSOpenGLContext *openGLContext;
+
+@property (nonatomic, readonly) EAGLSharegroup *sharegroup;
 
 + (BOOL)setCurrentContext:(EAGLContext *)inCurrentContext;
 + (EAGLContext *)currentContext;

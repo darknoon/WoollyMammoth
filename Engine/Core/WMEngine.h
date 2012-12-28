@@ -35,7 +35,7 @@ extern NSString *const WMEngineArgumentsCompositionKey;
 @property (nonatomic, readonly) CFAbsoluteTime previousAbsoluteTime;
 @property (nonatomic, readonly) CFAbsoluteTime t;
 
-@property (nonatomic, strong, readonly) WMEAGLContext *renderContext;
+@property (nonatomic, strong) WMEAGLContext *renderContext;
 @property (nonatomic, strong, readonly) WMPatch *rootObject;
 @property (nonatomic, strong) WMComposition *document;
 
@@ -70,6 +70,7 @@ extern NSString *const WMEngineArgumentsCompositionKey;
 
 
 @protocol WMEngineDelegate <NSObject>
+//TODO: @optional
 
 //Set frame, interfaceOrientation, framebuffer
 - (BOOL)engineShouldRenderFrame:(WMEngine *)engine;

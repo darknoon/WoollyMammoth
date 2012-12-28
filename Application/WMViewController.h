@@ -6,24 +6,21 @@
 //  Copyright 2010 Darknoon. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
-#import <OpenGLES/EAGL.h>
-#import <OpenGLES/ES2/gl.h>
-#import <OpenGLES/ES2/glext.h>
-
+#import "WMRenderCommon.h"
 #import "WMEngine.h"
 
 @class WMPatch;
 @class WMComposition;
 @class WMView;
 
-@interface WMViewController : UIViewController <UIActionSheetDelegate, WMEngineDelegate> {
-}
-
+//TODO: rename WMCompositionViewController?
+#if TARGET_OS_IPHONE
+@interface WMViewController : UIViewController <WMEngineDelegate>
+#elif TARGET_OS_MAC
+@interface WMViewController : NSViewController <WMEngineDelegate>
+#endif
 //Designated initalizer for an existing document
-//TODO: rename initWithBundle:
-- (id)initWithDocument:(WMComposition *)inDocument;
+- (id)initWithComposition:(WMComposition *)inDocument;
 
 //If you want to read from a file, you can load from a nib and use this:
 @property (nonatomic, copy) NSURL *compositionURL;
@@ -37,12 +34,17 @@
 @property (readonly, nonatomic, getter=isAnimating) BOOL animating;
 @property (nonatomic) NSInteger animationFrameInterval;
 
+#if TARGET_OS_IPHONE
 - (UIImage *)screenshotImage;
+#endif
 
 - (void)startAnimation;
 - (void)stopAnimation;
 
+#if TARGET_OS_IPHONE
 //Override if you want WM to render in an orientation NOT the current -[UIViewController interfaceOrientation]
 - (UIInterfaceOrientation)renderOrientation;
-
+#else
+@property (nonatomic) UIInterfaceOrientation renderOrientation;
+#endif
 @end

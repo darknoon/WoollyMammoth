@@ -8,8 +8,29 @@
 
 #import "WMVideoCapture.h"
 
+//Device
+#if (TARGET_OS_IPHONE && TARGET_OS_EMBEDDED)
+#define USE_CVTEXTURE_2D 1
+#define FAKE_CAPTURE_CONTENT 0
+
+//Simulator
+#elif TARGET_OS_IPHONE
+#define FAKE_CAPTURE_CONTENT 1
+#define USE_CVTEXTURE_2D 0
+
+//Mac
+#elif TARGET_OS_MAC
+#define FAKE_CAPTURE_CONTENT 0
+#define USE_CVTEXTURE_2D 0
+
+#endif
+
 #import <CoreVideo/CoreVideo.h>
+#if TARGET_OS_IPHONE
 #import <CoreVideo/CVOpenGLESTextureCache.h>
+#elif TARGET_OS_MAC
+#import <CoreVideo/CVOpenGLTextureCache.h>
+#endif
 
 #import "WMEAGLContext.h"
 #import "WMTexture2D.h"
@@ -24,7 +45,7 @@
 //For the interfaceOrientation argument
 #import "WMEngine.h"
 
-#if TARGET_OS_EMBEDDED
+#if !FAKE_CAPTURE_CONTENT
 @interface WMVideoCapture ()
 <AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate>
 @end
@@ -42,7 +63,7 @@
 	
 	WMEAGLContext *_context;
 
-#if TARGET_OS_EMBEDDED
+#if !FAKE_CAPTURE_CONTENT
 	
 	dispatch_queue_t videoCaptureQueue;
 
@@ -56,7 +77,7 @@
 	AVCaptureVideoDataOutput *videoDataOutput;
 	AVCaptureAudioDataOutput *audioDataOutput;
 	
-	CVOpenGLESTextureCacheRef textureCache;
+	CVOGLTexCacheRef_t textureCache;
 #else
 	NSTimer *simulatorDebugTimer;
 #endif
@@ -107,14 +128,44 @@
 	
 	GL_CHECK_ERROR;
 	
-#if TARGET_OS_EMBEDDED
+#if !FAKE_CAPTURE_CONTENT
 	videoCaptureQueue = dispatch_queue_create([[NSString stringWithFormat:@"com.darknoon.%@.videoCaptureQueue", [self class]] UTF8String], DISPATCH_QUEUE_SERIAL);
 	dispatch_set_target_queue(videoCaptureQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0));
-		
+
+#if TARGET_OS_IPHONE
 	CVReturn result = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, context, NULL, &textureCache);
 	if (result != kCVReturnSuccess) {
-		NSLog(@"Error creating CVOpenGLESTextureCache");
+		NSLog(@"Error creating CVOpenGLESTextureCache: %d", result);
 	}
+#elif TARGET_OS_MAC
+	
+	CFDictionaryRef cacheAttributes = nil;
+	CFDictionaryRef textureAttributes = nil;
+	CGLPixelFormatObj pixFormat = NULL;
+#if 0
+	//Try to get an BRGA888 pixel format...
+	const CGLPixelFormatAttribute attribs[] = {
+		kCGLPFAColorSize, 8,
+		0,0,
+	};
+	GLint npix;
+	CGLError pixelFormatError = CGLChoosePixelFormat(attribs, &pixFormat, &npix);
+	if (npix > 1) {
+		NSLog(@"Found %d pixel formats", npix);
+	}
+	if (pixelFormatError != kCGLNoError) {
+		NSLog(@"Error finding pixel format for capture: %s", CGLErrorString(kCGLNoError));
+	}
+#else
+	pixFormat = CGLGetPixelFormat(_context.openGLContext.CGLContextObj);
+#endif
+	CVReturn result = CVOpenGLTextureCacheCreate(kCFAllocatorDefault, cacheAttributes, _context.openGLContext.CGLContextObj, pixFormat, textureAttributes, &textureCache);
+	if (result != kCVReturnSuccess) {
+		NSLog(@"Error creating CVOpenGLTextureCache: %d", result);
+		return NO;
+	}
+	
+#endif
 	
 #endif
 
@@ -124,7 +175,7 @@
 - (void)cleanup:(WMEAGLContext *)context;
 {
 	[self stopCapture];
-#if TARGET_OS_EMBEDDED
+#if !FAKE_CAPTURE_CONTENT
 	videoCaptureQueue = NULL;
 	
 	if (textureCache)
@@ -140,7 +191,7 @@
 	_context = nil;
 }
 
-#if TARGET_OS_EMBEDDED
+#if !FAKE_CAPTURE_CONTENT
 - (BOOL)configureForVideoInputDevice:(AVCaptureDevice *)device error:(NSError **)outError;
 {
 	NSError *error = nil;
@@ -216,19 +267,23 @@
 	//TODO: make this hack less hacky
 	if (capturing) return;
 		
-#if TARGET_OS_EMBEDDED
+#if !FAKE_CAPTURE_CONTENT
 	captureSession = [[AVCaptureSession alloc] init];
 	
 	[captureSession beginConfiguration];
 
 	NSError *error = nil;
 	
+#if TARGET_OS_EMBEDDED
 	for (AVCaptureDevice *device in [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo]) {
 		if (device.position == (useFrontCamera ? AVCaptureDevicePositionFront : AVCaptureDevicePositionBack)) {
 			[self configureForVideoInputDevice:device error:&error];
 			break;
 		}
 	}
+#elif TARGET_OS_MAC
+	[self configureForVideoInputDevice:[AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo] error:&error];
+#endif
 	
 	[self configureForAudioInputDevice:[AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio] error:&error];
 	
@@ -241,11 +296,9 @@
 		return;
 	}
 	
-	NSDictionary *videoSettings = [NSDictionary dictionaryWithObjectsAndKeys:
-								   [NSNumber numberWithUnsignedInt:kCVPixelFormatType_32BGRA], (id)kCVPixelBufferPixelFormatTypeKey,
-								   [NSNumber numberWithBool:YES], (id)kCVPixelBufferOpenGLCompatibilityKey, nil];
-	
-	[videoDataOutput setVideoSettings:videoSettings];	
+	[videoDataOutput setVideoSettings:@{
+	 	(id)kCVPixelBufferPixelFormatTypeKey: @(kCVPixelFormatType_32BGRA)
+	 }];
 	[videoDataOutput setAlwaysDiscardsLateVideoFrames:YES];
 	
 	[videoDataOutput setSampleBufferDelegate:self queue:videoCaptureQueue];
@@ -280,7 +333,7 @@
 
 - (void)stopCapture;
 {
-#if TARGET_OS_EMBEDDED
+#if !FAKE_CAPTURE_CONTENT
 	[captureSession stopRunning];
 	captureSession = nil;
 	captureVideoInput = nil;
@@ -297,7 +350,7 @@
 	capturing = NO;
 }
 
-#if TARGET_OS_EMBEDDED
+#if !FAKE_CAPTURE_CONTENT
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer 
 	   fromConnection:(AVCaptureConnection *)connection;
@@ -317,10 +370,13 @@
 				
 			} else if (captureOutput == videoDataOutput) {
 
+#if TARGET_OS_IPHONE
 				BOOL applicationCanUseOpenGL = [UIApplication sharedApplication].applicationState != UIApplicationStateBackground;
 				if (!applicationCanUseOpenGL) {
 					NSLog(@"Camera update when app is in background");
 				}
+#endif
+				[WMEAGLContext setCurrentContext:_context];
 				
 				//Get buffer info
 				CVPixelBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
@@ -328,10 +384,18 @@
 				//NSLog(@"Is ready: %@ samples:%uld sampleSize:%d width:%d height:%d bytes/row:%d baseAddr:%x", ready ? @"Y" : @"N", numsamples, sampleSize, width, height, bytesPerRow, baseAddress);
 
 				GL_CHECK_ERROR;
-				
+#if USE_CVTEXTURE_2D
 				WMCVTexture2D *texture = [[WMCVTexture2D alloc] initWithCVImageBuffer:imageBuffer inTextureCache:textureCache format:kWMTexture2DPixelFormat_BGRA8888 use:@"Video Capture"];
 				texture.orientation = currentVideoOrientation;
 				
+#else
+				CVPixelBufferLockBaseAddress(imageBuffer, 0);
+				void *baseAddr = CVPixelBufferGetBaseAddress(imageBuffer);
+				CGSize size = CVImageBufferGetEncodedSize(imageBuffer);
+
+				WMTexture2D *texture = [[WMTexture2D alloc] initWithData:baseAddr pixelFormat:kWMTexture2DPixelFormat_BGRA8888 pixelsWide:size.width pixelsHigh:size.height contentSize:size orientation:currentVideoOrientation];
+				CVPixelBufferUnlockBaseAddress(imageBuffer, 0);
+#endif
 				GL_CHECK_ERROR;
 				
 				mostRecentTexture = texture;
@@ -399,7 +463,7 @@
 {
 	UIInterfaceOrientation interfaceOrientation = [[args objectForKey:WMEngineArgumentsInterfaceOrientationKey] intValue];
 	
-#if TARGET_OS_EMBEDDED
+#if !FAKE_CAPTURE_CONTENT
 	//Switich camera devices
 	if (capturing && useFrontCamera != self.inputUseFrontCamera.value) {
 		useFrontCamera = self.inputUseFrontCamera.value;
@@ -477,7 +541,7 @@
 #endif
 	
 	//Set focus point of interest if supported
-#if TARGET_OS_EMBEDDED
+#if !FAKE_CAPTURE_CONTENT
 	if (cameraDevice.focusPointOfInterestSupported) {
 		CGPoint inputFocusPoint = CGPointFromGLKVector2(_inputFocusPointOfInterest.v);
 		CGPoint currentFocusPoint = cameraDevice.focusPointOfInterest;
@@ -505,8 +569,10 @@
 	
 	GL_CHECK_ERROR;
 	
-#if TARGET_OS_EMBEDDED
+#if !FAKE_CAPTURE_CONTENT && TARGET_OS_IPHONE
 	CVOpenGLESTextureCacheFlush(textureCache, 0);
+#elif !FAKE_CAPTURE_CONTENT && TARGET_OS_MAC
+	CVOpenGLTextureCacheFlush(textureCache, 0);
 #endif
 	
 	GL_CHECK_ERROR;
@@ -514,9 +580,16 @@
 	return YES;
 }
 
+#if TARGET_OS_IPHONE
 - (UIColor *)editorColor;
 {
 	return [UIColor colorWithRed:0.798f green:0.349f blue:0.061f alpha:0.8f];
 }
+#elif TARGET_OS_MAC
+- (CGColorRef)editorColor;
+{
+	return [NSColor colorWithDeviceRed:0.798f green:0.349f blue:0.061f alpha:0.8f].CGColor;
+}
+#endif
 
 @end

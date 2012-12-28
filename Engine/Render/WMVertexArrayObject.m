@@ -10,6 +10,20 @@
 #import "WMStructuredBuffer.h"
 #import "WMStructuredBuffer_WMEAGLContext_Private.h"
 
+#if TARGET_OS_IPHONE && GL_OES_vertex_array_object
+void (* const wm_glBindVertexArray)(GLuint) = &glBindVertexArrayOES;
+void (* const wm_glDeleteVertexArrays)(GLsizei n, const GLuint *arrays) = &glDeleteVertexArraysOES;
+void (* const wm_glGenVertexArrays)(GLsizei n, GLuint *arrays) = &glGenVertexArraysOES;
+#elif (WM_OGL_VERSION == 3)
+void (* const wm_glBindVertexArray)(GLuint) = &glBindVertexArray;
+void (* const wm_glDeleteVertexArrays)(GLsizei n, const GLuint *arrays) = &glDeleteVertexArrays;
+void (* const wm_glGenVertexArrays)(GLsizei n, GLuint *arrays) = &glGenVertexArrays;
+#elif TARGET_OS_MAC && (WM_OGL_VERSION == 2)
+void (* const wm_glBindVertexArray)(GLuint) = &glBindVertexArrayAPPLE;
+void (* const wm_glDeleteVertexArrays)(GLsizei n, const GLuint *arrays) = &glDeleteVertexArraysAPPLE;
+void (* const wm_glGenVertexArrays)(GLsizei n, GLuint *arrays) = &glGenVertexArraysAPPLE;
+#endif
+
 @implementation WMVertexArrayObject {
 	GLuint vao;
 	NSArray *buffers;
@@ -39,11 +53,7 @@
 	attributeLocations = [inAttributeLocations copy];
 	indexBuffer = inIndexBuffer;
 
-#if GL_OES_vertex_array_object
-	glGenVertexArraysOES(1, &vao);
-#else
-	glGenVertexArrays(1, &vao);
-#endif
+	wm_glGenVertexArrays(1, &vao);
 	ZAssert(vao, @"couldn't create vao");
 
 	return self;
@@ -87,11 +97,7 @@
 - (void)deleteInternalState;
 {
 	if (vao) {
-#if GL_OES_vertex_array_object
-		glDeleteVertexArraysOES(1, &vao);
-#else
-		glDeleteVertexArrays(1, &vao);
-#endif
+		wm_glDeleteVertexArrays(1, &vao);
 	}
 }
 

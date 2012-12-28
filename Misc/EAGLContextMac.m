@@ -8,6 +8,7 @@
 
 #import "EAGLContextMac.h"
 
+NSString *const EAGLMacThreadDictionaryKey = @"com.darknoon.EAGLMacContext";
 
 @interface EAGLSharegroup : NSObject
 @property (nonatomic, weak) NSOpenGLContext *context;
@@ -22,8 +23,16 @@
 
 @implementation EAGLContext
 
-@synthesize API = _API;
-@synthesize sharegroup = _sharegroup;
+- (id)initWithOpenGLContext:(NSOpenGLContext *)context;
+{
+	self = [self init];
+	if (!self) return nil;
+	//TODO: check context compatibility
+	
+	_openGLContext = context;
+	
+	return self;
+}
 
 - (id)initWithAPI:(int)inSimulatedAPI;
 {
@@ -36,27 +45,28 @@
 	{
 		NSOpenGLPFADoubleBuffer,
 		NSOpenGLPFADepthSize, 24,
-		// Must specify the 3.2 Core Profile to use OpenGL 3.2
-		NSOpenGLPFAOpenGLProfile,
-		NSOpenGLProfileVersion3_2Core,
+//		// Must specify the 3.2 Core Profile to use OpenGL 3.2
+//		NSOpenGLPFAOpenGLProfile,
+//		NSOpenGLProfileVersion3_2Core,
 		0
 	};
 	
 	
 	NSOpenGLPixelFormat *pf = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
 	
-	if (!pf)
-	{
+	if (!pf) {
 		NSLog(@"No OpenGL pixel format");
+		return nil;
 	}
     
-	self = [super initWithFormat:pf shareContext:sharegroup.context];
-	if (!self) return nil;
+	NSOpenGLContext *context = [[NSOpenGLContext alloc] initWithFormat:pf shareContext:sharegroup.context];
+	if (!context) return nil;
+	self = [self initWithOpenGLContext:context];
 
 	_sharegroup = sharegroup;
 	if (!_sharegroup) {
 		_sharegroup = [[EAGLSharegroup alloc] init];
-		_sharegroup.context = self;
+		_sharegroup.context = self.openGLContext;
 	}
 	
 	_API = inSimulatedAPI;
@@ -66,13 +76,22 @@
 
 + (BOOL)setCurrentContext:(EAGLContext *)context;
 {
-	[context makeCurrentContext];
+	if (context) {
+		[context.openGLContext makeCurrentContext];
+#warning excessive
+		ZAssert([NSOpenGLContext currentContext] == context.openGLContext, @"Did not set context");
+		[[[NSThread currentThread] threadDictionary] setObject:context forKey:EAGLMacThreadDictionaryKey];
+	} else {
+		[NSOpenGLContext clearCurrentContext];
+	}
 	return YES;
 }
 
 + (EAGLContext *)currentContext;
 {
-	return (EAGLContext *)[NSOpenGLContext currentContext];
+	EAGLContext *currentContext = [[[NSThread currentThread] threadDictionary] objectForKey:EAGLMacThreadDictionaryKey];
+	ZAssert([NSOpenGLContext currentContext] == currentContext.openGLContext, @"Wrong context set!");
+	return currentContext;
 }
 
 @end

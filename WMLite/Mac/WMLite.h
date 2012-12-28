@@ -19,6 +19,7 @@
 #import <WMLite/GLKMathCACompatibility.h>
 
 #import <WMLite/WMDisplayLink.h>
+#import <WMLite/WMView.h>
 #import <WMLite/EAGLContext+Extensions.h>
 #import <WMLite/GLKMath_cpp.h>
 #import <WMLite/NSValue+GLKVector.h>

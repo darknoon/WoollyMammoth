@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		492276FF168D1CE5002F5D85 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 492276FE168D1CE5002F5D85 /* QuartzCore.framework */; };
 		496232881682F089001CA7F2 /* WMLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49AE086B1675380400748B95 /* WMLite.framework */; };
 		49AE086C1675380400748B95 /* WMLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49AE086B1675380400748B95 /* WMLite.framework */; };
 		49E2E99F1672A22D00FA4FCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2E99E1672A22D00FA4FCE /* UIKit.framework */; };
@@ -40,6 +41,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		492276FE168D1CE5002F5D85 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		49AE086B1675380400748B95 /* WMLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WMLite.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/WoollyMammoth-bgnqtjvmqnwalgazhysaiovvkhhp/Build/Products/Debug-iphoneos/WMLite.framework"; sourceTree = "<group>"; };
 		49E2E99A1672A22D00FA4FCE /* BasicGL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BasicGL.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E2E99E1672A22D00FA4FCE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -109,6 +111,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				492276FF168D1CE5002F5D85 /* QuartzCore.framework in Frameworks */,
 				49AE086C1675380400748B95 /* WMLite.framework in Frameworks */,
 				49E2EB2E16732AA400FA4FCE /* GLKit.framework in Frameworks */,
 				49E2EB2C16732A9A00FA4FCE /* OpenGL.framework in Frameworks */,
@@ -141,6 +144,7 @@
 		49E2E99D1672A22D00FA4FCE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				492276FE168D1CE5002F5D85 /* QuartzCore.framework */,
 				49AE086B1675380400748B95 /* WMLite.framework */,
 				49E2EB2D16732AA400FA4FCE /* GLKit.framework */,
 				49E2EB2B16732A9A00FA4FCE /* OpenGL.framework */,

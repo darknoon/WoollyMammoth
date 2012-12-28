@@ -53,7 +53,10 @@ extern NSString *WMBundleDocumentErrorDomain;
 
 //Resource name should include the file path extension
 - (void)addResourceNamed:(NSString *)inResourceName fromURL:(NSURL *)inFileURL completion:(void (^)(NSError *error))completion;
+
+#if TARGET_OS_IPHONE
 - (void)addResourceNamed:(NSString *)inResourceName fromAssetRepresentation:(ALAssetRepresentation *)inAsset completion:(void (^)(NSError *error))completion;
+#endif
 
 - (void)removeResourceNamed:(NSString *)inResourceName;
 

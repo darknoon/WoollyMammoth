@@ -11,17 +11,22 @@
 @interface WMBundleDocument ()
 
 @property (nonatomic, weak) IBOutlet NSView *titleBarContainer;
+@property (nonatomic, weak) IBOutlet WMView *previewView;
+@property (nonatomic, weak) IBOutlet NSScrollView *graphScrollView;
 
 @end
 
 @implementation WMBundleDocument {
 	WMComposition *_composition;
+	WMViewController *_previewController;
 }
 
 - (id)init
 {
     self = [super init];
 	if (!self) return nil;
+	
+	_composition = [[WMComposition alloc] init];
 	
     return self;
 }
@@ -35,7 +40,14 @@
 {
 	[super windowControllerDidLoadNib:aController];
 	[aController.window setCollectionBehavior:NSWindowCollectionBehaviorFullScreenPrimary];
-	// Add any code here that needs to be executed once the windowController has loaded the document's window.
+	
+	WMViewController *vc = [[WMViewController alloc] initWithComposition:_composition];
+	WMView *view = [[WMView alloc] initWithFrame:((NSView *)aController.window.contentView).bounds];
+	vc.view = view;
+	view.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+	[(NSView *)aController.window.contentView addSubview:view positioned:NSWindowBelow relativeTo:self.graphScrollView];
+	_previewController = vc;
+	self.previewView = view;
 }
 
 + (BOOL)autosavesInPlace
@@ -45,9 +57,10 @@
 
 - (BOOL)readFromFileWrapper:(NSFileWrapper *)fileWrapper ofType:(NSString *)typeName error:(NSError **)outError;
 {
-	WMComposition *c = [[WMComposition alloc] init];
+	WMComposition *c = [[WMComposition alloc] initWithFileWrapper:fileWrapper error:outError];
 	if (c) {
 		_composition = c;
+		_previewController.document = c;
 		return YES;
 	} else {
 		return NO;

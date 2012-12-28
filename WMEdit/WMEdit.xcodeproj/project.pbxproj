@@ -60,8 +60,7 @@
 		495DF359168C05DE00D89EA5 /* EditorBackgroundPattern@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 495DF357168C05DE00D89EA5 /* EditorBackgroundPattern@2x.png */; };
 		495DF35C168C1C1200D89EA5 /* AddNodeHighlight.png in Resources */ = {isa = PBXBuildFile; fileRef = 495DF35A168C1C1200D89EA5 /* AddNodeHighlight.png */; };
 		495DF35D168C1C1200D89EA5 /* AddNodeHighlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 495DF35B168C1C1200D89EA5 /* AddNodeHighlight@2x.png */; };
-		495DF35F168C270200D89EA5 /* WMEdit.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 495DF35E168C270200D89EA5 /* WMEdit.iconset */; };
-		495DF361168C275D00D89EA5 /* WMEdit.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 495DF360168C275D00D89EA5 /* WMEdit.iconset */; };
+		495DF374168C2E3600D89EA5 /* WMEdit.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 495DF373168C2E3600D89EA5 /* WMEdit.iconset */; };
 		496150C013D2D807006C8B57 /* plug-popover-arrow~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 496150BE13D2D807006C8B57 /* plug-popover-arrow~ipad.png */; };
 		496150C113D2D807006C8B57 /* plug-popover~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 496150BF13D2D807006C8B57 /* plug-popover~ipad.png */; };
 		496F554213E128A30065BB67 /* WMSetShaderSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 496F554013E128A30065BB67 /* WMSetShaderSettingsController.m */; };
@@ -316,8 +315,7 @@
 		495DF357168C05DE00D89EA5 /* EditorBackgroundPattern@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EditorBackgroundPattern@2x.png"; sourceTree = "<group>"; };
 		495DF35A168C1C1200D89EA5 /* AddNodeHighlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AddNodeHighlight.png; sourceTree = "<group>"; };
 		495DF35B168C1C1200D89EA5 /* AddNodeHighlight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AddNodeHighlight@2x.png"; sourceTree = "<group>"; };
-		495DF35E168C270200D89EA5 /* WMEdit.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = WMEdit.iconset; sourceTree = "<group>"; };
-		495DF360168C275D00D89EA5 /* WMEdit.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = WMEdit.iconset; sourceTree = "<group>"; };
+		495DF373168C2E3600D89EA5 /* WMEdit.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = WMEdit.iconset; sourceTree = "<group>"; };
 		496150BE13D2D807006C8B57 /* plug-popover-arrow~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plug-popover-arrow~ipad.png"; sourceTree = "<group>"; };
 		496150BF13D2D807006C8B57 /* plug-popover~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plug-popover~ipad.png"; sourceTree = "<group>"; };
 		496F553F13E128A30065BB67 /* WMSetShaderSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSetShaderSettingsController.h; sourceTree = "<group>"; };
@@ -786,7 +784,7 @@
 				4958CD6E168BDADB0042FA31 /* EditorWindowInnerShadow@2x.png */,
 				495DF356168C05DE00D89EA5 /* EditorBackgroundPattern.png */,
 				495DF357168C05DE00D89EA5 /* EditorBackgroundPattern@2x.png */,
-				495DF35E168C270200D89EA5 /* WMEdit.iconset */,
+				495DF373168C2E3600D89EA5 /* WMEdit.iconset */,
 			);
 			path = "Resources Mac";
 			sourceTree = "<group>";
@@ -1307,7 +1305,6 @@
 		49F0594113D15F640056C506 = {
 			isa = PBXGroup;
 			children = (
-				495DF360168C275D00D89EA5 /* WMEdit.iconset */,
 				49F0595613D15F640056C506 /* WMEdit */,
 				4958CD491689A2150042FA31 /* WMEdit iOS */,
 				494FEA0E16897A3E00EE9BE8 /* WMEdit Mac */,
@@ -1486,8 +1483,7 @@
 				495DF359168C05DE00D89EA5 /* EditorBackgroundPattern@2x.png in Resources */,
 				495DF35C168C1C1200D89EA5 /* AddNodeHighlight.png in Resources */,
 				495DF35D168C1C1200D89EA5 /* AddNodeHighlight@2x.png in Resources */,
-				495DF35F168C270200D89EA5 /* WMEdit.iconset in Resources */,
-				495DF361168C275D00D89EA5 /* WMEdit.iconset in Resources */,
+				495DF374168C2E3600D89EA5 /* WMEdit.iconset in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

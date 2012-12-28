@@ -44,6 +44,8 @@
 #endif
 
 #if !TARGET_OS_IPHONE && TARGET_OS_MAC
+#define WM_OGL_VERSION 2
+
 #import "WMCompatibilityMac.h"
 #endif
 

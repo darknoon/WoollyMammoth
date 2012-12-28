@@ -27,40 +27,37 @@ typedef int DNGLStateDepthMask;
 @class WMVertexArrayObject;
 @class CAEAGLLayer;
 
+#if TARGET_OS_IPHONE
 @interface WMEAGLContext : EAGLContext
+#elif TARGET_OS_MAC
+@class EAGLSharegroup;
+@interface WMEAGLContext : NSObject
+
+- (id)initWithOpenGLContext:(NSOpenGLContext *)context;
+
+@property (nonatomic, readonly) EAGLSharegroup *sharegroup;
+@property (nonatomic, readonly) NSOpenGLContext *openGLContext;
+
+//TODO: figure out another way to handle this
+- (void)setViewport:(CGRect)desiredViewport;
+
+//We had some state mutated behind our back. Deal with it.
+- (void)wm__assumeBoundFramebufferHack;
+
+#endif
 
 //Some objects should have gl state backing, some not
 //ie WMStructuredBuffer only has gl backing when actually being used to render, transparent to the user
 //ie WMRenderObject only has a VAO backing when actually going to be rendered to the screen
 
 + (WMEAGLContext *)currentContext;
++ (BOOL)setCurrentContext:(WMEAGLContext *)context;
 
 /////// Caching methods  ///////
 
 // Used by various parts of the render system to avoid duplication of shaders etc
 - (id)cachedObjectForKey:(NSString *)key;
 - (void)setCachedObject:(id)object forKey:(NSString *)key;
-
-/////// State object factory methods ///////
-
-//Create a framebuffer to draw out to screen
-#if 0
-- (WMFramebuffer *)newFramebufferFromLayer:(CAEAGLLayer *)inLayer;
-
-//Texture must be associated with this GL context
-- (WMFramebuffer *)newFramebufferFromTexture:(WMTexture2D *)inTexture;
-
-//Creates a new texture.
-//Binding of textures is controlled exclusively by the render object system and glsl uniforms
-- (WMTexture2D *)newTexture;
-
-//Creates a new VAO
-//Binding of VAOs is controlled
-- (WMVertexArrayObject *)newVertexArrayObject;
-
-//Create a new shader
-- (WMShader *)newShaderWithVertexProgram:(NSString *)inVertexProgram fragmentProgram:(NSString *)inFragmentProgram error:(NSError **)outError;
-#endif
 
 ////// Rendering functions ///////
 

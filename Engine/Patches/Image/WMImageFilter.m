@@ -107,7 +107,16 @@ NSString *WMImageFilterCacheKey = @"WMImageFilterShader";
 	shader = (WMShader *)[[WMEAGLContext currentContext] cachedObjectForKey:WMImageFilterCacheKey];
 	if (!shader) {
 		NSError *error = nil;
-		NSString *combindedShader = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"WMGaussianBlur" ofType:@"glsl"]
+		
+		
+#warning Fix this for framework build target on iOS
+#if TARGET_OS_IPHONE
+		NSBundle *resourceBundle = [NSBundle mainBundle];
+#elif TARGET_OS_MAC
+		NSBundle *resourceBundle = [NSBundle bundleForClass:self.class];
+#endif
+		
+		NSString *combindedShader = [NSString stringWithContentsOfFile:[resourceBundle pathForResource:@"WMGaussianBlur" ofType:@"glsl"]
 															  encoding:NSUTF8StringEncoding
 																 error:&error];
 		if (!combindedShader) {

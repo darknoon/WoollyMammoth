@@ -27,6 +27,9 @@
 	GLuint _colorRenderbuffer;
 	GLuint _depthRenderbuffer;
 	GLuint _framebufferObject;
+#if TARGET_OS_MAC
+	BOOL _doNotDeleteWhenDone;
+#endif
 }
 
 + (NSString *)descriptionOfFramebufferStatus:(GLenum)inStatus;
@@ -54,8 +57,11 @@
 		case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE_APPLE:
 			return @"Incomplete multisample";
 #endif
-			
-}
+#ifdef GL_FRAMEBUFFER_UNDEFINED
+		case GL_FRAMEBUFFER_UNDEFINED:
+			return @"Undefined";
+#endif
+	}
 }
 
 - (void)createAndAttachDepthBufferOfDepth:(GLuint)inDepthBufferDepth;
@@ -123,7 +129,6 @@
 {
 	self = [super init];
 	if (!self) return nil;
-	
 	WMEAGLContext *context = [WMEAGLContext currentContext];
 	
 	WMFramebuffer *oldFrameBuffer = context.boundFramebuffer;
@@ -177,22 +182,36 @@
 }
 
 #elif TARGET_OS_MAC
-
-- (id)initWithNSOpenGLContext:(NSOpenGLContext *)nsOGLContext;
+- (id)initWithGLFramebufferName:(GLuint)framebufferName deleteWhenDone:(BOOL)deleteWhenDone;
 {
-	self = [super init];
+	self = [self init];
 	if (!self) return nil;
 	
-	//yay, we're a fake framebuffer
+	_framebufferObject = framebufferName;
 	
+	int getViewport[4];
+	glGetIntegerv(GL_VIEWPORT, getViewport);
+	_framebufferWidth = getViewport[2];
+	_framebufferHeight = getViewport[3];
+	
+	_doNotDeleteWhenDone = !deleteWhenDone;
 	return self;
+}
 
+- (GLuint)framebufferName;
+{
+	return _framebufferObject;
 }
 
 #endif
 
 - (void)deleteInternalState;
 {
+#if TARGET_OS_MAC && !TARGET_OS_IPHONE
+	if (_doNotDeleteWhenDone) {
+		return;
+	}
+#endif
 	if (_framebufferObject)
 	{
 		glDeleteFramebuffers(1, &_framebufferObject);
@@ -241,10 +260,11 @@
 
 	}];
 	return success;
-
-#endif
+#elif TARGET_OS_MAC
 	
-	return 1;
+	
+	return YES;	
+#endif
 }
 
 - (void)setColorAttachmentWithTexture:(WMTexture2D *)inTexture;

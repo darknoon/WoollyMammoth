@@ -9,6 +9,7 @@
 #import "WMShader.h"
 #import "WMEAGLContext.h"
 #import "WMGLStateObject_WMEAGLContext_Private.h"
+#import "WMFramebuffer.h"
 
 NSString *WMShaderErrorDomain = @"com.darknoon.WMShader";
 
@@ -58,7 +59,6 @@ NSString *const WMDefaultShaderCacheKey = @"com.darknoon.WMShader.defaultShader"
 {
 	ZAssert([WMEAGLContext currentContext], @"Must have an WMEAGLContext active");
 	
-#if TARGET_OS_IPHONE
 	NSString *fragmentShader = @"\
 uniform sampler2D texture;\
 uniform lowp vec4 color;\
@@ -85,39 +85,7 @@ void main()\
 	v_tc = texCoord0;\
 }\
 ";
-	
-#else
-	
-		NSString *fragmentShader = @"\
-uniform sampler2D texture;\
-uniform vec4 color;\
-\
-in vec2 v_tc;\
-out vec4 wm_fragColor;\
-\
-void main()\
-{\
-	wm_fragColor = color * texture(texture, v_tc);\
-}\
-";
-
-	NSString *vertexShader = @"\
-in vec4 position;\
-in vec2 texCoord0;\
-\
-uniform mat4 wm_T;\
-\
-out vec2 v_tc;\
-\
-void main()\
-{\
-	gl_Position = wm_T * position;\
-	v_tc = texCoord0;\
-}\
-";
-
-#endif
-	
+		
 	//TODO: make a better system for default shaders!
 	NSError *defaultShaderError = nil;	
 	WMShader *shader = [[WMShader alloc] initWithVertexShader:vertexShader fragmentShader:fragmentShader error:&defaultShaderError];
@@ -255,6 +223,9 @@ void main()\
 #elif TARGET_OS_MAC
 						  @"0", @"TARGET_OS_IPHONE",
 						  @"1", @"TARGET_OS_MAC",
+						  @" ", @"highp",
+						  @" ", @"mediump",
+						  @" ", @"lowp",
 #endif
 						  nil];
 	[defs enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
@@ -343,20 +314,24 @@ void main()\
     GLint logLength, status;
     
     glValidateProgram(program);
-    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
-    if (logLength > 0)
-    {
-        GLchar *log = (GLchar *)malloc(logLength);
-        glGetProgramInfoLog(program, logLength, &logLength, log);
-        NSLog(@"Program validate log:\n%s", log);
-        free(log);
+	
+	glGetProgramiv(program, GL_VALIDATE_STATUS, &status);
+	if (!status) {
+		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
+		if (logLength > 0) {
+			GLchar *log = (GLchar *)malloc(logLength);
+			glGetProgramInfoLog(program, logLength, &logLength, log);
+			NSLog(@"Program validate log:\n%s", log);
+			free(log);
+		}
+		//Check framebuffer status
+		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+			NSLog(@"Incomplete framebuffer (%@)", [WMFramebuffer descriptionOfFramebufferStatus:glCheckFramebufferStatus(GL_FRAMEBUFFER)]);
+		}
+		return NO;
     }
     
-    glGetProgramiv(program, GL_VALIDATE_STATUS, &status);
-    if (status == GL_FALSE)
-        return FALSE;
-    
-    return TRUE;
+    return YES;
 }
 
 - (BOOL)loadShadersWithError:(NSError **)outError;

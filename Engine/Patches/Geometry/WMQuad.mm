@@ -137,7 +137,8 @@
 				renderObject.renderBlendState = DNGLStateBlendEnabled | DNGLStateBlendModeAdd;
 				break;
 		}
-						
+
+#warning is this leaking textures?
 		if (inputImage.image) {
 			[renderObject setValue:inputImage.image forUniformWithName:@"texture"];
 		}

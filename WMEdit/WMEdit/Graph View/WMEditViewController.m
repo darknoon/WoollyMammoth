@@ -61,27 +61,27 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
     WMGraphEditView *graphicView;
 }
 
-@synthesize document;
+@synthesize document = _document;
 @synthesize graphView;
 @synthesize libraryButton;
 @synthesize patchesButton;
 @synthesize titleLabel;
 @synthesize addNodeRecognizer;
 
-- (id)initWithDocument:(WMComposition *)inDocument;
+- (id)initWithDocument:(WMBundleDocument *)document;
 {
 	self = [super init];
 	if (!self) return nil;
 	
-	if (!inDocument) {
+	if (!document) {
 		return nil;
 	}
 	
-	document = inDocument;
+	_document = document;
 
 	patchViewsByKey = [[NSMutableDictionary alloc] init];
 	
-	rootPatch = document.composition.rootPatch;
+	rootPatch = _document.composition.rootPatch;
 	rootPatch.key = @"root";
 
 	return self;
@@ -114,7 +114,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 		}
 	}];
 	
-	previewController = [[WMViewController alloc] initWithDocument:document.composition];
+	previewController = [[WMViewController alloc] initWithComposition:_document.composition];
 	if (externalScreen) {
 		previewWindow = [[UIWindow alloc] initWithFrame:externalScreen.applicationFrame];
 		previewWindow.rootViewController = previewController;
@@ -139,7 +139,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
     self.navigationItem.titleView = titleLabel;
     UITapGestureRecognizer *editRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(editCompositionNameAction:)];
 	[titleLabel addGestureRecognizer:editRecognizer];
-    titleLabel.text = document.localizedName;
+    titleLabel.text = _document.localizedName;
 	[self addPatchViews];
 }
 
@@ -147,12 +147,12 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 {
     NSString *shortName = textField.text;
     if (shortName.length > 0) {
-		NSURL *oldFileURL = document.fileURL;
+		NSURL *oldFileURL = _document.fileURL;
 		NSURL *newFileURL = [[WMCompositionLibrary compositionLibrary] URLForResourceShortName:shortName];
 		//TODO: should we duplicate document here?
-		[document saveToURL:newFileURL forSaveOperation:UIDocumentSaveForCreating completionHandler:^(BOOL success) {
+		[_document saveToURL:newFileURL forSaveOperation:UIDocumentSaveForCreating completionHandler:^(BOOL success) {
 			if (success) {
-				titleLabel.text = document.localizedName;
+				titleLabel.text = _document.localizedName;
 			}
 			//Now let the composition library know
 			[[WMCompositionLibrary compositionLibrary] removeCompositionURL:oldFileURL];
@@ -346,9 +346,9 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 - (IBAction)close:(id)sender;
 {
 	//Save
-	NSLog(@"Attempting to close document: %@", document);
-	[document closeWithCompletionHandler:^(BOOL success) {
-		NSLog(@"Success in closing document: %@", document);
+	NSLog(@"Attempting to close document: %@", _document);
+	[_document closeWithCompletionHandler:^(BOOL success) {
+		NSLog(@"Success in closing document: %@", _document);
 		[self.navigationController popViewControllerAnimated:YES];
 	}];
 }
@@ -420,7 +420,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 
 - (IBAction)_hackUpload:(UIButton *)sender;
 {
-	NSString *patchName = document.fileURL.lastPathComponent;
+	NSString *patchName = _document.fileURL.lastPathComponent;
 	NSString *zipFileName = [patchName stringByAppendingPathExtension:@"zip"];
 	
 	//Write contents to temporary location
@@ -430,8 +430,8 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	//TODO: write in block to other file
 	
 	NSError *writeError = NULL;
-	NSFileWrapper *contents = [document contentsForType:@"wmbundle" error:NULL];
-	BOOL success = [contents writeToURL:tempBundleDirectory options:NSFileWrapperWritingAtomic originalContentsURL:document.fileURL error:&writeError];
+	NSFileWrapper *contents = [_document contentsForType:@"wmbundle" error:NULL];
+	BOOL success = [contents writeToURL:tempBundleDirectory options:NSFileWrapperWritingAtomic originalContentsURL:_document.fileURL error:&writeError];
 	if (success) {
 		NSLog(@"Saved to url %@", tempBundleDirectory);
 	} else {

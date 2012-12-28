@@ -14,43 +14,39 @@
 
 #import "WMEngine.h"
 #import "WMComposition.h"
+#import "WMDisplayLink.h"
 
 #import "WMCompositionSerialization.h"
 
-@interface WMViewController ()
+#if TARGET_OS_IPHONE
+@interface WMViewController () <UIActionSheetDelegate>
 
 @end
+#endif
 
 @implementation WMViewController {
-    CADisplayLink *displayLink;
+//    WMDisplayLink *_displayLink;
 	
+#if TARGET_OS_IPHONE
 	UILabel *fpsLabel;
+#endif
 }
 
-@synthesize document;
+@synthesize document = _document;
 @synthesize engine = _engine;
 @synthesize animating;
-@synthesize eaglView;
+@synthesize eaglView = eaglView;
 @synthesize animationFrameInterval;
 @synthesize compositionURL;
 @synthesize alwaysPortrait = _alwaysPortrait;
 
-- (void)sharedInit;
-{
-    animationFrameInterval = 1;
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
-}
 
-- (id)initWithDocument:(WMComposition *)inDocument;
+- (id)initWithComposition:(WMComposition *)inDocument;
 {
 	self = [self initWithNibName:nil bundle:nil];
 	if (!self) return nil;
 	
-	document = inDocument;
+	_document = inDocument;
 	
 	return self;
 }
@@ -63,6 +59,45 @@
 	
     return self;
 }
+
+- (void)setup;
+{
+	//Recreate engine
+	_engine = [[WMEngine alloc] initWithBundle:_document];
+	_engine.delegate = self;
+	
+	[self engineDidLoad];
+}
+
+- (void)setDocument:(WMComposition *)inDocument;
+{
+	if ([_document.fileURL isEqual:inDocument.fileURL]) return;
+	
+	_document = inDocument;
+	_engine = nil;
+	
+	[self setup];
+	[self.engine start];
+}
+
+- (void)engineDidLoad;
+{
+#if TARGET_OS_IPHONE
+	[eaglView setContext:_engine.renderContext];
+#endif
+}
+
+#if TARGET_OS_IPHONE
+- (void)sharedInit;
+{
+    animationFrameInterval = 1;
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil;
 {
@@ -90,31 +125,6 @@
 	}
 }
 
-- (void)engineDidLoad;
-{
-	[eaglView setContext:_engine.renderContext];
-}
-
-- (void)setup;
-{
-	//Recreate engine
-	_engine = [[WMEngine alloc] initWithBundle:document];
-	_engine.delegate = self;
-	
-	[self engineDidLoad];
-}
-
-- (void)setDocument:(WMComposition *)inDocument;
-{
-	if ([document.fileURL isEqual:inDocument.fileURL]) return;
-
-	document = inDocument;
-	_engine = nil;
-	
-	[self setup];
-}
-
-
 - (void)viewDidLoad;
 {
 	[super viewDidLoad];
@@ -123,7 +133,7 @@
 		self.eaglView = (WMView *)self.view;
 	}
 	
-	if (!document && self.compositionURL) {
+	if (!_document && self.compositionURL) {
 		self.document = [[WMComposition alloc] initWithFileURL:self.compositionURL error:NULL];
 	} else {
 		[self setup];
@@ -156,8 +166,6 @@
 {
     [self stopAnimation];
     
-//	document.preview = [eaglView screenshotImage];
-	
 	[[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 	
     [super viewWillDisappear:animated];
@@ -174,41 +182,6 @@
 	return !_alwaysPortrait || UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
 }
 
-- (void)startAnimation
-{
-	[_engine start];
-}
-
-- (void)stopAnimation
-{
-	[_engine stop];
-}
-
-- (UIInterfaceOrientation)renderOrientation;
-{
-	return self.interfaceOrientation;
-}
-
-- (BOOL)engineShouldRenderFrame:(WMEngine *)engine;
-{
-	engine.renderFramebuffer = eaglView.framebuffer;
-	engine.frame = eaglView.bounds;
-	engine.interfaceOrientation = self.renderOrientation;
-	
-	if (!engine.renderFramebuffer) return NO;
-	
-	return YES;
-}
-
-- (void)engineDidRenderFrame:(WMEngine *)engine;
-{
-	//TODO: only when changed
-	fpsLabel.text = [NSString stringWithFormat:@"%.0lf fps", engine.frameRate];
-	fpsLabel.textColor = engine.frameRate > 29.0 ? [UIColor whiteColor] : [UIColor redColor];
-}
-
-#pragma mark -
-
 - (UIImage *)screenshotImage;
 {
 	return [eaglView screenshotImage];
@@ -221,16 +194,6 @@
 - (void)toggleNavigationBar;
 {
 	[self.navigationController setNavigationBarHidden:!self.navigationController.navigationBarHidden animated:NO];
-}
-
-#pragma mark -
-
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc. that aren't in use.
 }
 
 #pragma mark -
@@ -259,6 +222,87 @@
 - (void)applicationWillTerminate:(NSNotification *)note;
 {
     [self stopAnimation];
+}
+
+
+- (UIInterfaceOrientation)renderOrientation;
+{
+	return self.interfaceOrientation;
+}
+
+- (BOOL)engineShouldRenderFrame:(WMEngine *)engine;
+{
+	engine.renderFramebuffer = eaglView.framebuffer;
+	engine.frame = eaglView.bounds;
+	engine.interfaceOrientation = self.renderOrientation;
+	
+	if (!engine.renderFramebuffer) return NO;
+	
+	return YES;
+}
+
+- (void)engineDidRenderFrame:(WMEngine *)engine;
+{
+	//TODO: only when changed
+	fpsLabel.text = [NSString stringWithFormat:@"%.0lf fps", engine.frameRate];
+	fpsLabel.textColor = engine.frameRate > 29.0 ? [UIColor whiteColor] : [UIColor redColor];
+}
+
+
+#elif TARGET_OS_MAC
+
+- (void)setView:(NSView *)view;
+{
+	[super setView:view];
+	eaglView = (WMView *)view;
+	WMEAGLContext *context = ((WMView *)view).context;
+	self.engine.renderContext = context;
+	
+#warning FIND ANOTHER WAY
+	int64_t delayInSeconds = 2.0;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		WMEAGLContext *context = ((WMView *)view).context;
+		[self setup];
+		self.engine.renderContext = context;
+		[self.engine start];
+	});	
+}
+
+- (void)sharedInit;
+{
+    animationFrameInterval = 1;
+
+}
+
+- (BOOL)engineShouldRenderFrame:(WMEngine *)engine;
+{
+	engine.renderFramebuffer = eaglView.framebuffer;
+	engine.frame = eaglView.bounds;
+	engine.interfaceOrientation = self.renderOrientation;
+	
+	if (!engine.renderFramebuffer) return NO;
+	
+	return YES;
+}
+
+
+
+- (void)engineDidRenderFrame:(WMEngine *)engine;
+{
+}
+
+#endif
+
+
+- (void)startAnimation
+{
+	[_engine start];
+}
+
+- (void)stopAnimation
+{
+	[_engine stop];
 }
 
 
