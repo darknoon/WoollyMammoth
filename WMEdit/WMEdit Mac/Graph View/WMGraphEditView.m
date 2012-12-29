@@ -36,8 +36,8 @@
 
 - (void)mouseDown:(NSEvent *)theEvent;
 {
-	NSLog(@"Mousedown: %@", theEvent);
 	if (!_nodeCreationPopover) {
+		
 		WMAddNodeViewController *addNodeViewController = [[WMAddNodeViewController alloc] initWithNibName:nil bundle:nil];
 		addNodeViewController.delegate = self;
 		
@@ -48,6 +48,7 @@
 		popover.appearance = NSPopoverAppearanceHUD;
 		
 		NSPoint p = theEvent.locationInWindow;
+		p = [self convertPoint:p fromView:nil];
 		[popover showRelativeToRect:(NSRect){p.x, p.y, 1, 1} ofView:self preferredEdge:CGRectMinYEdge];
 		_nodeCreationPopover = popover;
 		
@@ -73,7 +74,8 @@
 		pulseAnimation.repeatCount = HUGE_VALF;
 		[_addNodePlaceholderView.layer addAnimation:pulseAnimation forKey:@"pulse"];
 		pulseAnimation.additive = YES;
-
+	} else {
+		[super mouseDown:theEvent];
 	}
 }
 

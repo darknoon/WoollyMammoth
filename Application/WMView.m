@@ -11,20 +11,20 @@
 #import "WMView.h"
 
 #import "WMFramebuffer.h"
+#import "WMDisplayLink.h"
+#import "WMTexture2D.h"
+#import "WMRenderObject+CreateWithGeometry.h"
 
-@interface WMView (PrivateMethods)
-- (void)createFramebuffer;
-- (void)deleteFramebuffer;
+@interface WMView ()
 @end
+
+#if TARGET_OS_IPHONE
 
 @implementation WMView {
 @private
     WMEAGLContext *context;
     
 	WMFramebuffer *framebuffer;
-	
-    // The pixel dimensions of the CAEAGLLayer.
-
 }
 
 @synthesize depthBufferDepth;
@@ -72,7 +72,6 @@
 
 - (void)dealloc
 {
-    [self deleteFramebuffer];    
     
 }
 
@@ -96,19 +95,13 @@
 
 - (void)setContext:(WMEAGLContext *)newContext
 {
-    if (context != newContext)
-    {
-        [self deleteFramebuffer];
+    if (context != newContext) {
+		framebuffer = nil;
         
         context = newContext;
         
         [EAGLContext setCurrentContext:context];
     }
-}
-
-- (void)deleteFramebuffer
-{
-	framebuffer = nil;		
 }
 
 - (BOOL)presentFramebuffer
@@ -186,3 +179,126 @@
 }
 
 @end
+
+#elif TARGET_OS_MAC
+
+@implementation WMView {
+	WMDisplayLink *_displayLink;
+	WMFramebuffer *framebuffer;
+	WMRenderObject *_quad;
+	WMTexture2D *_framebufferTexture;
+}
+@synthesize context = _context;
+
+- (void)sharedInit;
+{
+	self.context = [[WMEAGLContext alloc] initWithOpenGLContext:self.openGLContext];
+	
+	_displayLink = [[WMDisplayLink alloc] initWithTargetQueue:dispatch_get_main_queue() callback:^(NSTimeInterval t, NSTimeInterval dt) {
+		
+		[self setNeedsDisplay:YES];
+		
+	}];
+}
+
+- (id)initWithFrame:(NSRect)frame;
+{
+	self = [super initWithFrame:frame];
+	if (!self) return nil;
+	
+	[self sharedInit];
+	
+	return self;
+}
+
+- (void)awakeFromNib;
+{
+	[self sharedInit];
+	[super awakeFromNib];
+}
+
+- (void)drawRect:(NSRect)dirtyRect;
+{
+	[self drawView];
+}
+
+- (void)reshape;
+{
+	[self setNeedsDisplay:YES];
+}
+
+- (void)setFrame:(NSRect)rect;
+{
+//	if (framebuffer) {
+//		framebuffer = nil;
+//		_framebufferTexture = nil;
+//	}
+	[super setFrame:rect];
+}
+
+- (void)drawView
+{
+	WMEAGLContext *context = self.context;
+	
+	if (!context || context.openGLContext != self.openGLContext) {
+		NSLog(@"Can't draw");
+		self.context = [[WMEAGLContext alloc] initWithOpenGLContext:self.openGLContext];
+		return;
+	}
+	[WMEAGLContext setCurrentContext:context];
+	
+	CGLLockContext(context.openGLContext.CGLContextObj);
+	[context wm__assumeBoundFramebufferHack];
+	
+	[context clearToColor:(GLKVector4){0, 0, 0, 0}];
+	[context clearDepth];
+
+	if (_framebufferTexture) {
+		
+		if (!_quad) {
+			_quad = [WMRenderObject quadRenderObjectWithFrame:(CGRect){-1,-1,2,2}];
+			_quad.shader = [WMShader defaultShader];
+			_quad.renderBlendState = DNGLStateBlendEnabled;
+			[_quad setValue:[NSValue valueWithGLKVector4:(GLKVector4){1,1,1,1}] forUniformWithName:@"color"];
+			[_quad setValue:[NSValue valueWithGLKMatrix4:GLKMatrix4Identity] forUniformWithName:@"wm_T"];
+		}
+		[_quad setValue:_framebufferTexture forUniformWithName:@"texture"];
+		[context renderObject:_quad];
+	}
+
+	CGLFlushDrawable([context.openGLContext CGLContextObj]);
+	
+	CGLUnlockContext(context.openGLContext.CGLContextObj);
+}
+
+- (WMFramebuffer *)framebuffer;
+{
+	if (!framebuffer) {
+		[WMEAGLContext setCurrentContext:_context];
+		NSRect rect = self.bounds;
+		_framebufferTexture = [[WMTexture2D alloc] initEmptyTextureWithPixelFormat:kWMTexture2DPixelFormat_BGRA8888 width:rect.size.width height:rect.size.height];
+		framebuffer = [[WMFramebuffer alloc] initWithTexture:_framebufferTexture depthBufferDepth:0];
+		
+		[_context renderToFramebuffer:framebuffer block:^{
+			[_context clearToColor:(GLKVector4){0,0,0,1}];;
+			[_context clearDepth];
+		}];
+		
+
+	}
+	return framebuffer;
+}
+
+- (void)setContext:(WMEAGLContext *)context;
+{
+	framebuffer = nil;
+	_framebufferTexture = nil;
+	_quad = nil;
+	_context = context;
+	
+	self.openGLContext = context.openGLContext;
+}
+
+@end
+
+#endif

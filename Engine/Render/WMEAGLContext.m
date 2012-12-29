@@ -149,9 +149,8 @@ NSString *const EAGLMacThreadDictionaryKey = @"com.darknoon.EAGLMacContext";
 	//TODO: check context compatibility
 	
 	_openGLContext = context;
-
+	
 	[self sharedInit];
-	glEnable(GL_TEXTURE_2D);
 	
 	return self;
 }
@@ -312,9 +311,11 @@ NSString *const EAGLMacThreadDictionaryKey = @"com.darknoon.EAGLMacContext";
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		}
 	}
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+#if DEBUG_OPENGL
+	if (inFramebuffer && glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
 		NSLog(@"Set framebuffer %@ invalid (%@)", inFramebuffer, [WMFramebuffer descriptionOfFramebufferStatus:glCheckFramebufferStatus(GL_FRAMEBUFFER)]);
 	}
+#endif
 }
 
 - (void)renderToFramebuffer:(WMFramebuffer *)inFramebuffer block:(void (^)())renderingOperations;

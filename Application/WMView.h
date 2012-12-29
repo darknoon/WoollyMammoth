@@ -6,21 +6,25 @@
 //  Copyright 2010 Darknoon. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
-#import <OpenGLES/EAGL.h>
-
-#import <OpenGLES/ES2/gl.h>
-#import <OpenGLES/ES2/glext.h>
-
+#import "WMRenderCommon.h"
 #import "WMEAGLContext.h"
 
+
 @class WMFramebuffer;
+
+#if TARGET_OS_IPHONE
+#import <UIKit/UIKit.h>
+#define WMViewSuperclass UIView
+#elif TARGET_OS_MAC
+#import <AppKit/AppKit.h>
+#define WMViewSuperclass NSOpenGLView
+
+#endif
 
 // This class wraps the CAEAGLLayer from CoreAnimation into a convenient UIView subclass.
 // The view content is basically an EAGL surface you render your OpenGL scene into.
 // Note that setting the view non-opaque will only work if the EAGL surface has an alpha channel.
-@interface WMView : UIView
+@interface WMView : WMViewSuperclass
 
 @property (nonatomic, strong) WMEAGLContext *context;
 
@@ -30,6 +34,7 @@
 
 @property (nonatomic) GLuint depthBufferDepth;
 
+#if TARGET_OS_IPHONE
 //You can use this in cases where you want to reclaim the memory being used by the framebuffer, such as going into the background, etc
 //The framebuffer will be recreated if necessary
 - (void)deleteFramebuffer;
@@ -38,5 +43,6 @@
 - (BOOL)presentFramebuffer;
 
 - (UIImage *)screenshotImage;
+#endif
 
 @end

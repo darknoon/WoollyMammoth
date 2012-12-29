@@ -34,6 +34,7 @@ typedef int DNGLStateDepthMask;
 @interface WMEAGLContext : NSObject
 
 - (id)initWithOpenGLContext:(NSOpenGLContext *)context;
+- (id)initWithSharegroup:(EAGLSharegroup *)sharegroup;
 
 @property (nonatomic, readonly) EAGLSharegroup *sharegroup;
 @property (nonatomic, readonly) NSOpenGLContext *openGLContext;

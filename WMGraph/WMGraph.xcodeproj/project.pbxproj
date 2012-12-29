@@ -13,6 +13,12 @@
 		492276DF168C486D002F5D85 /* WMVideoCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E7EC167296FE00FA4FCE /* WMVideoCapture.m */; };
 		492276E1168C4A52002F5D85 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 492276E0168C4A52002F5D85 /* AVFoundation.framework */; };
 		492276E6168C5F43002F5D85 /* WMRenderObject+CreateWithGeometry.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E87F167296FE00FA4FCE /* WMRenderObject+CreateWithGeometry.mm */; };
+		4924A05D168E95F6004123B7 /* WMColorFromComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E817167296FE00FA4FCE /* WMColorFromComponents.m */; };
+		4924A05E168E95F6004123B7 /* WMLFO.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E819167296FE00FA4FCE /* WMLFO.m */; };
+		4924A05F168E95F6004123B7 /* WMMathOp.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E81B167296FE00FA4FCE /* WMMathOp.m */; };
+		4924A060168E95F6004123B7 /* WMSplitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E81D167296FE00FA4FCE /* WMSplitter.m */; };
+		4924A061168E95F6004123B7 /* WMVectorFromComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E81F167296FE00FA4FCE /* WMVectorFromComponents.m */; };
+		4924A062168E95F6004123B7 /* WMVideoRecord.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E820167296FE00FA4FCE /* WMVideoRecord.h */; };
 		4956C965168E5D6B00D9E953 /* WMImageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E802167296FE00FA4FCE /* WMImageFilter.m */; };
 		4956C966168E5E3600D9E953 /* WMGaussianBlur.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 49E2E800167296FE00FA4FCE /* WMGaussianBlur.glsl */; };
 		4958CD131689903D0042FA31 /* WMGraph.h in Headers */ = {isa = PBXBuildFile; fileRef = 4958CD121689903D0042FA31 /* WMGraph.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1057,6 +1063,7 @@
 				4958CD4416899DA50042FA31 /* WMComposition.h in Headers */,
 				492276DB168C3976002F5D85 /* WMViewController.h in Headers */,
 				492276DD168C3E62002F5D85 /* WMView.h in Headers */,
+				4924A062168E95F6004123B7 /* WMVideoRecord.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1350,6 +1357,11 @@
 				492276DF168C486D002F5D85 /* WMVideoCapture.m in Sources */,
 				492276E6168C5F43002F5D85 /* WMRenderObject+CreateWithGeometry.mm in Sources */,
 				4956C965168E5D6B00D9E953 /* WMImageFilter.m in Sources */,
+				4924A05D168E95F6004123B7 /* WMColorFromComponents.m in Sources */,
+				4924A05E168E95F6004123B7 /* WMLFO.m in Sources */,
+				4924A05F168E95F6004123B7 /* WMMathOp.m in Sources */,
+				4924A060168E95F6004123B7 /* WMSplitter.m in Sources */,
+				4924A061168E95F6004123B7 /* WMVectorFromComponents.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1460,6 +1472,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
@@ -1485,6 +1498,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
@@ -1511,6 +1525,7 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DYLIB_INSTALL_NAME_BASE = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1540,6 +1555,7 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
+				DYLIB_INSTALL_NAME_BASE = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREFIX_HEADER = ../Engine/Util/WMPrefix.pch;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;

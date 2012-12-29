@@ -702,6 +702,7 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	if (!self) return nil;
 	
 	originalClassName = [inPlist objectForKey:WMPatchClassPlistName];
+	DLog(@"Missing patch class %@", originalClassName);
 	
 	return self;
 }
