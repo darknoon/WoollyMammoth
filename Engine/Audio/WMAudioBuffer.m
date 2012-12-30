@@ -57,12 +57,12 @@
 
 - (NSString *)description;
 {
-	return [NSString stringWithFormat:@"<%@ %p with %d sample buffers>", self.class, self, _sampleBuffers.count];
+	return [NSString stringWithFormat:@"<%@ %p with %d sample buffers>", self.class, self, (int)_sampleBuffers.count];
 }
 
 - (NSString *)debugDescription;
 {
-	return [NSString stringWithFormat:@"<%@ %p with %d sample buffers %@>", self.class, self, _sampleBuffers.count, _sampleBuffers.description];
+	return [NSString stringWithFormat:@"<%@ %p with %d sample buffers %@>", self.class, self, (int)_sampleBuffers.count, _sampleBuffers.description];
 }
 
 @end

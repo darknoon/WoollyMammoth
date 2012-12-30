@@ -52,16 +52,16 @@ static inline unsigned int nextPowerOf2(unsigned int v) {
 - (void)setCount:(NSUInteger)inCount;
 {
 	if (dataSize < definition.size * inCount) {
-		dataSize = nextPowerOf2(definition.size * inCount);
+		dataSize = (size_t)nextPowerOf2((unsigned int)(definition.size * inCount));
 		data = realloc(data, dataSize);
-	} else if (dataSize > nextPowerOf2(definition.size * inCount) ) {
-		dataSize = nextPowerOf2(definition.size * inCount);
+	} else if (dataSize > (size_t)nextPowerOf2((unsigned int)(definition.size * inCount))) {
+		dataSize = (size_t)nextPowerOf2((unsigned int)(definition.size * inCount));
 		if (inCount == 0) {
 			if (data)
 				free(data);
 			data = NULL;
 		} else {
-			data = realloc(data, nextPowerOf2(definition.size * inCount));
+			data = realloc(data, (size_t)nextPowerOf2((unsigned int)(definition.size * inCount)));
 			if (!data) {
 				dataSize = 0;
 			}
@@ -156,12 +156,12 @@ static inline unsigned int nextPowerOf2(unsigned int v) {
 - (NSString *)description;
 {
 	NSString *bufferObjectString = _bufferObject ? [NSString stringWithFormat:@" bufferObject: %d", _bufferObject] : @"";
-	return [NSString stringWithFormat:@"<%@ : %p = %d @ %d bytes = %d%@>", [self class], self, count, definition.size, self.dataSize, bufferObjectString];
+	return [NSString stringWithFormat:@"<%@ : %p = %d @ %d bytes = %d%@>", [self class], self, (int)count, (int)definition.size, (int)self.dataSize, bufferObjectString];
 }
 
 - (NSString *)debugDescription;
 {
-	NSMutableString *dataDesc = [NSMutableString stringWithFormat:@"<%@ : %p = %d @ %d bytes = %d [\n", [self class], self, count, definition.size, self.dataSize];
+	NSMutableString *dataDesc = [NSMutableString stringWithFormat:@"<%@ : %p = %d @ %d bytes = %d [\n", [self class], self, (int)count, (int)definition.size, (int)self.dataSize];
 	
 	const NSUInteger maxDescription = 102;
 	
@@ -170,7 +170,7 @@ static inline unsigned int nextPowerOf2(unsigned int v) {
 		[dataDesc appendString:[definition descriptionOfData:[self pointerToStructureAtIndex:i]]];
 		[dataDesc appendString:@",\n"];
 		if (i > maxDescription) {
-			[dataDesc appendFormat:@"... and %d more", count - maxDescription];
+			[dataDesc appendFormat:@"... and %d more", (int)(count - maxDescription)];
 			break;
 		}
 	}

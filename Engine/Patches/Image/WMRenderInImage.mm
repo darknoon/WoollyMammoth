@@ -12,8 +12,9 @@
 #import "WMTexture2D.h"
 #import "WMEAGLContext.h"
 #import "WMRenderObject.h"
-
-//use for +cameraMatrixWithRect:
+#import "WMRenderCommon.h"
+#import "WMTransforms.h"
+//use to get the default render size argument
 #import "WMEngine.h"
 
 @implementation WMRenderInImage {
@@ -69,10 +70,10 @@
 	unsigned int renderWidth = _inputWidth.index;
 	unsigned int renderHeight = _inputHeight.index;
 	if (renderWidth == 0) {
-		renderWidth = (NSUInteger)outputSize.width;
+		renderWidth = (unsigned int)outputSize.width;
 	}
 	if (renderHeight == 0) {
-		renderHeight = (NSUInteger)outputSize.height;
+		renderHeight = (unsigned int)outputSize.height;
 	}
 
 	if (renderWidth == 0 || renderHeight == 0) {

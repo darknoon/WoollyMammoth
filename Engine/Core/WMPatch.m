@@ -154,7 +154,7 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 - (WMPort *)portForIvar:(Ivar)inIvar key:(NSString *)inKey;
 {
 	const char* type = ivar_getTypeEncoding(inIvar);
-	const int len = strlen(type);
+	const size_t len = strlen(type);
 	
 	char *classNameStr = malloc(len + 1);
 	//Parse the type string into the className
@@ -570,8 +570,8 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 {
 	NSMutableArray *components = [NSMutableArray array];
 	[components addObject:[NSString stringWithFormat:@"key: %@", _key]];
-	if (_connections.count > 0) [components addObject: [NSString stringWithFormat:@"connections: %u", _connections.count]];
-	if (_children.count > 0) [components addObject:[NSString stringWithFormat:@"childen: %u", _children.count]];
+	if (_connections.count > 0) [components addObject: [NSString stringWithFormat:@"connections: %u", (int)_connections.count]];
+	if (_children.count > 0) [components addObject:[NSString stringWithFormat:@"childen: %u", (int)_children.count]];
 	
 	return [NSString stringWithFormat:@"<%@: %p hasSetup:%d>{%@}", NSStringFromClass([self class]), self, self.hasSetup, [components componentsJoinedByString:@", "]];
 }
@@ -709,7 +709,7 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 
 - (NSString *)description;
 {
-	return [NSString stringWithFormat:@"<%@ (was %@) : %p>{key: %@, connections: %u, childen: %u>}", NSStringFromClass([self class]), originalClassName, self, self.key, _connections.count, _children.count];
+	return [NSString stringWithFormat:@"<%@ (was %@) : %p>{key: %@, connections: %u, childen: %u>}", NSStringFromClass([self class]), originalClassName, self, self.key, (unsigned int)_connections.count, (unsigned int)_children.count];
 }
 
 

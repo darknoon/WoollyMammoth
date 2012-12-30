@@ -10,6 +10,7 @@
 
 #import <OpenGL/OpenGL.h>
 #import <AppKit/AppKit.h>
+#import <GLKit/GLKMath.h>
 
 #if WM_OGL_VERSION == 3
 

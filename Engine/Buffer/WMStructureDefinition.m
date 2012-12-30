@@ -185,7 +185,7 @@ size_t WMStructureTypeSize(WMStructureType inType) {
 
 - (NSString *)description;
 {
-	return [NSString stringWithFormat:@"<%@ : %p size:%d aligned:%d fields:%d>", [self class], self, size, self.size, fieldCount];
+	return [NSString stringWithFormat:@"<%@ : %p size:%d aligned:%d fields:%d>", [self class], self, (int)size, (int)self.size, (int)fieldCount];
 }
 
 - (void)enumerateFieldsWithBlock:(void( (^)(NSUInteger idx, const WMStructureField *field, NSUInteger offset)))inBlock;

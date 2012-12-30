@@ -19,6 +19,6 @@ enum QCBlendMode {
 @interface WMIndexPort : WMPort {
 }
 
-@property (nonatomic) NSUInteger index;
+@property (nonatomic) UInt32 index;
 
 @end

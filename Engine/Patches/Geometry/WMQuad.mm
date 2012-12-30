@@ -20,8 +20,6 @@
 
 #import "WMStructuredBuffer.h"
 
-#import <GLKit/GLKit.h>
-
 @implementation WMQuad {
 	WMStructureDefinition *quadDef;
 	WMRenderObject *renderObject;

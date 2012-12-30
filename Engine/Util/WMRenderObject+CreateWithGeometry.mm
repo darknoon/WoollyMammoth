@@ -141,8 +141,8 @@ static WMStructureField WMQuadVertex_fields[] = {
 	WMStructuredBuffer *indexBuffer = [[WMStructuredBuffer alloc] initWithDefinition:indexDef];
 	for (int v=0; v<vCount-1; v++) {
 		for (int u=0; u<uCount-1; u++) {
-			const int i = u + v * uCount;
-			const int next_i = i + uCount; //Next row
+			const NSInteger i = u + v * uCount;
+			const NSInteger next_i = i + uCount; //Next row
 			const unsigned short twoTris[] = {
 				i + 0, i + 1,       next_i + 0,
 				i + 1, next_i + 0 , next_i + 1};

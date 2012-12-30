@@ -1,9 +1,13 @@
 
+#ifndef _WMTransforms_h__
+#define _WMTransforms_h__
+
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+#import <GLKit/GLKMath.h>
 
 GLKMatrix4 cameraMatrixForRect(CGRect rect);
 
@@ -18,4 +22,7 @@ GLKMatrix4 cameraMatrixForRect(CGRect rect);
 	
 #ifdef __cplusplus
 }
+#endif
+
+
 #endif

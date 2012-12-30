@@ -80,9 +80,9 @@ Be aware that the content of the generated textures will be upside-down!
 @interface WMTexture2D : WMGLStateObject
 
 //Designated initializer
-- (id)initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;
+- (id)initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(GLuint)width pixelsHigh:(GLuint)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;
 
-- (id)initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
+- (id)initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(GLuint)width pixelsHigh:(GLuint)height contentSize:(CGSize)size;
 
 //Experimental method that creates a fixed-size texture. You cannot modify the size later with -setData
 //Only 1 mip level currently
@@ -92,8 +92,8 @@ Be aware that the content of the generated textures will be upside-down!
 @property (nonatomic, readonly) BOOL immutable;
 
 //Resize the texture to the provided size and upload new data to it
-- (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
-- (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;
+- (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(GLuint)width pixelsHigh:(GLuint)height contentSize:(CGSize)size;
+- (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(GLuint)width pixelsHigh:(GLuint)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;
 
 //Get a texture in the current context from another context's texture (changes the current texture, as you need to keep the texture name alive)
 - (void)moveToContext:(WMEAGLContext *)inContext;
@@ -105,8 +105,8 @@ Be aware that the content of the generated textures will be upside-down!
 @property (nonatomic) UIImageOrientation orientation;
 
 @property (nonatomic, readonly) WMTexture2DPixelFormat pixelFormat;
-@property (nonatomic, readonly) NSUInteger pixelsWide;
-@property (nonatomic, readonly) NSUInteger pixelsHigh;
+@property (nonatomic, readonly) GLuint pixelsWide;
+@property (nonatomic, readonly) GLuint pixelsHigh;
 
 @property (nonatomic, readonly) CGSize contentSize;
 @property (nonatomic, readonly) GLfloat maxS;

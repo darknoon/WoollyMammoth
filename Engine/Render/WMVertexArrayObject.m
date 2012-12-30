@@ -40,7 +40,7 @@ void (* const wm_glGenVertexArrays)(GLsizei n, GLuint *arrays) = &glGenVertexArr
 		return nil;
 	}
 	if ( !( (inBuffers.count == inAttributeNames.count) && (inBuffers.count == inAttributeLocations.count) ) ) {
-		DLog(@"Buffer count must equal attribute name count and attribute location count (%d %d %d)", inBuffers.count, inAttributeNames.count, inAttributeLocations.count);
+		DLog(@"Buffer count must equal attribute name count and attribute location count (%d %d %d)", (int)inBuffers.count, (int)inAttributeNames.count, (int)inAttributeLocations.count);
 		return nil;
 	}
 	
@@ -74,7 +74,7 @@ void (* const wm_glGenVertexArrays)(GLsizei n, GLuint *arrays) = &glGenVertexArr
 		WMStructureDefinition *vertexDefinition = buffer.definition;
 		NSString *attribute = [attributeNames objectAtIndex:i];
 		
-		NSInteger location = [[attributeLocations objectAtIndex:i] integerValue];
+		GLuint location = (GLuint)[[attributeLocations objectAtIndex:i] integerValue];
 		
 		WMStructureField f;
 		if (location != -1 && [vertexDefinition getFieldNamed:attribute outField:&f]) {
@@ -85,7 +85,7 @@ void (* const wm_glGenVertexArrays)(GLsizei n, GLuint *arrays) = &glGenVertexArr
 			//Set up vertex state. 
 			//TODO: check if the attributes are compatible!
 			//TODO: separate this logic out into a -[WMShader compatibleAttibributesWithDefinition] ?
-			glVertexAttribPointer(location, f.count, f.type, f.normalized, vertexDefinition.size, (void *)f.offset);
+			glVertexAttribPointer(location, f.count, f.type, f.normalized, (GLsizei)vertexDefinition.size, (void *)f.offset);
 		}
 	}
 	
@@ -119,7 +119,7 @@ void (* const wm_glGenVertexArrays)(GLsizei n, GLuint *arrays) = &glGenVertexArr
 
 - (NSString *)description;
 {
-	return [NSString stringWithFormat:@"<%@ :%p obj:%d attrib count:%d>", [self class], self, vao, attributeNames.count];
+	return [NSString stringWithFormat:@"<%@ :%p obj:%d attrib count:%d>", [self class], self, vao, (int)attributeNames.count];
 }
 
 @end

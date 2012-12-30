@@ -146,7 +146,7 @@ static dispatch_semaphore_t sem;
 	return name;
 }
 
-- (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;
+- (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(GLuint)width pixelsHigh:(GLuint)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;
 {
 	//No-op
 	ZAssert(0, @"Should not call -setData:… on WMCVTexture2D. The whole point of WMCVTexture2D is not to use pointers to data on the CPU!");

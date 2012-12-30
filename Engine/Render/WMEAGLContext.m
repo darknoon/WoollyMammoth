@@ -419,9 +419,10 @@ NSString *const EAGLMacThreadDictionaryKey = @"com.darknoon.EAGLMacContext";
 			}
 		} else if ([value isKindOfClass:[WMTexture2D class]]) {
 			//We unique the textures (one texture unit per texture) here by adding to a mutable ordered set then getting the index back out
+			//TODO: is it possible to get an NSNotFound here?
 			[textures addObject:value];
-			int textureUnit = [textures indexOfObject:value];
-			[shader setIntValue:textureUnit forUniform:uniformName];
+			NSUInteger textureUnit = [textures indexOfObject:value];
+			[shader setIntValue:(int)textureUnit forUniform:uniformName];
 		} else if (value) {
 			DLog(@"Unsupported value %@ of class %@ for uniform name %@", value, [value class], uniformName);
 		} else {
@@ -472,14 +473,14 @@ NSString *const EAGLMacThreadDictionaryKey = @"com.darknoon.EAGLMacContext";
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, inObject.indexBuffer.bufferObject);
 		
 		const void *offset = (void *)(safeRange.location * inObject.indexBuffer.definition.size);
-		glDrawElements(inObject.renderType, safeRange.length, elementBufferType, offset /*indicies from bound index buffer*/);
+		glDrawElements(inObject.renderType, (GLsizei)safeRange.length, elementBufferType, offset /*indicies from bound index buffer*/);
 		GL_CHECK_ERROR;
 				
 	} else {
 		NSRange safeRange = inObject.renderRange;
 		safeRange.length = MIN(safeRange.length, inObject.vertexBuffer.count - safeRange.location);
 
-		glDrawArrays(inObject.renderType, safeRange.location, safeRange.length);
+		glDrawArrays(inObject.renderType, (GLsizei)safeRange.location, (GLsizei)safeRange.length);
 		
 	}
 	

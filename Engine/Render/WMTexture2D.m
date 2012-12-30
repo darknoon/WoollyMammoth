@@ -122,7 +122,7 @@ GLint GLFormatForWMTexture2DPixelFormat(WMTexture2DPixelFormat format) {
 }
 
 @interface WMTexture2D ()
-- (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
+- (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(GLuint)width pixelsHigh:(GLuint)height contentSize:(CGSize)size;
 
 @property (nonatomic, readonly) GLuint name;
 
@@ -229,7 +229,7 @@ GLint GLFormatForWMTexture2DPixelFormat(WMTexture2DPixelFormat format) {
 	 
 
 
-- (id)initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;
+- (id)initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(GLuint)width pixelsHigh:(GLuint)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;
 {
 	self = [self init];
 	if (!self) return nil;
@@ -242,12 +242,12 @@ GLint GLFormatForWMTexture2DPixelFormat(WMTexture2DPixelFormat format) {
 	return self;
 }
 
-- (id)initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
+- (id)initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(GLuint)width pixelsHigh:(GLuint)height contentSize:(CGSize)size;
 {
 	return [self initWithData:data pixelFormat:pixelFormat pixelsWide:width pixelsHigh:height contentSize:size orientation:UIImageOrientationUp];
 }
 
-- (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;
+- (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(GLuint)width pixelsHigh:(GLuint)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;
 {
 	ZAssert(self.context, @"Weird! No context in which to set data!");
 	[self.context bind2DTextureNameForModification:_name inBlock:^{
@@ -289,7 +289,7 @@ GLint GLFormatForWMTexture2DPixelFormat(WMTexture2DPixelFormat format) {
 
 }
 
-- (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
+- (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(GLuint)width pixelsHigh:(GLuint)height contentSize:(CGSize)size;
 {
 	[self setData:data pixelFormat:pixelFormat pixelsWide:width pixelsHigh:height contentSize:size orientation:UIImageOrientationUp];
 }
@@ -480,8 +480,8 @@ GLint GLFormatForWMTexture2DPixelFormat(WMTexture2DPixelFormat format) {
 	imageSize = CGSizeMake(CGImageGetWidth(image) * inScale, CGImageGetHeight(image) * inScale);
 		
 	//Constrain loaded image into the maximum texture size
-	NSUInteger width = imageSize.width;
-	NSUInteger height = imageSize.height;
+	GLuint width = imageSize.width;
+	GLuint height = imageSize.height;
 	
 	while((width > maxTextureSize) || (height > maxTextureSize)) {
 		width /= 2;

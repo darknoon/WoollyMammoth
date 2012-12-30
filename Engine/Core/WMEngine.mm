@@ -366,7 +366,7 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"<%@ %p frame:%d t:%.3lf t-1:%.3lf>", [self class], self, frameNumber, t, previousAbsoluteTime];
+	return [NSString stringWithFormat:@"<%@ %p frame:%d t:%.3lf t-1:%.3lf>", [self class], self, (int)frameNumber, t, previousAbsoluteTime];
 }
 
 @end
