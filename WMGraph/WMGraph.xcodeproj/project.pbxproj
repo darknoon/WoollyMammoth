@@ -179,6 +179,10 @@
 		498EAFFC1676804C0095356A /* WMTransformPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EAFF91676804C0095356A /* WMTransformPort.m */; };
 		498EAFFD1676804C0095356A /* WMTransformPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EAFF91676804C0095356A /* WMTransformPort.m */; };
 		498EAFFE1676812E0095356A /* WMMathUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E87C167296FE00FA4FCE /* WMMathUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4990D7D5168FC23B00FC029F /* WMImageResize.h in Headers */ = {isa = PBXBuildFile; fileRef = 4990D7D3168FC23B00FC029F /* WMImageResize.h */; };
+		4990D7D6168FC23B00FC029F /* WMImageResize.h in Headers */ = {isa = PBXBuildFile; fileRef = 4990D7D3168FC23B00FC029F /* WMImageResize.h */; };
+		4990D7D7168FC23B00FC029F /* WMImageResize.m in Sources */ = {isa = PBXBuildFile; fileRef = 4990D7D4168FC23B00FC029F /* WMImageResize.m */; };
+		4990D7D8168FC23B00FC029F /* WMImageResize.m in Sources */ = {isa = PBXBuildFile; fileRef = 4990D7D4168FC23B00FC029F /* WMImageResize.m */; };
 		49AE088D1675763100748B95 /* DNAssertionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 49AE08871675763100748B95 /* DNAssertionHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49AE088E1675763100748B95 /* DNAssertionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AE08881675763100748B95 /* DNAssertionHandler.m */; };
 		49AE088F1675763100748B95 /* WMView.h in Headers */ = {isa = PBXBuildFile; fileRef = 49AE08891675763100748B95 /* WMView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -369,6 +373,8 @@
 		498EAFE116767ABD0095356A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		498EAFF81676804C0095356A /* WMTransformPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMTransformPort.h; sourceTree = "<group>"; };
 		498EAFF91676804C0095356A /* WMTransformPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMTransformPort.m; sourceTree = "<group>"; };
+		4990D7D3168FC23B00FC029F /* WMImageResize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMImageResize.h; sourceTree = "<group>"; };
+		4990D7D4168FC23B00FC029F /* WMImageResize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMImageResize.m; sourceTree = "<group>"; };
 		49AE08871675763100748B95 /* DNAssertionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNAssertionHandler.h; sourceTree = "<group>"; };
 		49AE08881675763100748B95 /* DNAssertionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNAssertionHandler.m; sourceTree = "<group>"; };
 		49AE08891675763100748B95 /* WMView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMView.h; sourceTree = "<group>"; };
@@ -790,6 +796,8 @@
 				49E2E808167296FE00FA4FCE /* WMImageSize.m */,
 				49E2E809167296FE00FA4FCE /* WMRenderInImage.h */,
 				49E2E80A167296FE00FA4FCE /* WMRenderInImage.mm */,
+				4990D7D3168FC23B00FC029F /* WMImageResize.h */,
+				4990D7D4168FC23B00FC029F /* WMImageResize.m */,
 			);
 			path = Image;
 			sourceTree = "<group>";
@@ -1064,6 +1072,7 @@
 				492276DB168C3976002F5D85 /* WMViewController.h in Headers */,
 				492276DD168C3E62002F5D85 /* WMView.h in Headers */,
 				4924A062168E95F6004123B7 /* WMVideoRecord.h in Headers */,
+				4990D7D6168FC23B00FC029F /* WMImageResize.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1163,6 +1172,7 @@
 				496232A71686822B001CA7F2 /* GLKMathCGCompatibility.h in Headers */,
 				496232AC1686D2F0001CA7F2 /* GLKMathUICompatibility.h in Headers */,
 				4958CD131689903D0042FA31 /* WMGraph.h in Headers */,
+				4990D7D5168FC23B00FC029F /* WMImageResize.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1362,6 +1372,7 @@
 				4924A05F168E95F6004123B7 /* WMMathOp.m in Sources */,
 				4924A060168E95F6004123B7 /* WMSplitter.m in Sources */,
 				4924A061168E95F6004123B7 /* WMVectorFromComponents.m in Sources */,
+				4990D7D8168FC23B00FC029F /* WMImageResize.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1440,6 +1451,7 @@
 				496232A41686822B001CA7F2 /* GLKMathCACompatibility.c in Sources */,
 				496232A61686822B001CA7F2 /* GLKMathCGCompatibility.c in Sources */,
 				496232AE1686D2F0001CA7F2 /* GLKMathUICompatibility.m in Sources */,
+				4990D7D7168FC23B00FC029F /* WMImageResize.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
