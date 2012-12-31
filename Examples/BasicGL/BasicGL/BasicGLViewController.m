@@ -68,10 +68,8 @@
 	
 	//TODO: make it more elegant to create an NSValue with a GLKVector4 from a UIColor
 	UIColor *cc = [UIColor colorWithHue:fmod(t / 1.4, 1.0) saturation:1.0f brightness:0.8f alpha:0.5 + 0.2 * cos(t / 3.0)];
-	GLKVector4 colorVector;
-	memcpy(&colorVector.v, CGColorGetComponents(cc.CGColor), sizeof(colorVector.v));
-	[_quad setValue:[NSValue valueWithGLKVector4:colorVector] forUniformWithName:@"color"];
-
+	[_quad setValue:cc forUniformWithName:@"color"];
+	
 	CGFloat distance = 0.6 * bounds.size.width;
 	double period = 20.0;
 	CGPoint position = (CGPoint){distance * sin(11.0 * t * 2.0 * M_PI / period), distance * cos(7.0 * t * 2.0 * M_PI / period)};

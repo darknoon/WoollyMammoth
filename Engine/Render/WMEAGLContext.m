@@ -13,6 +13,7 @@
 #import "WMRenderObject.h"
 #import "WMTexture2D.h"
 #import "WMTexture2D_RenderPrivate.h"
+#import "GLKMathUICompatibility.h"
 
 #import "WMStructuredBuffer_WMEAGLContext_Private.h"
 #import "WMTexture2D_WMEAGLContext_Private.h"
@@ -144,6 +145,8 @@ NSString *const EAGLMacThreadDictionaryKey = @"com.darknoon.EAGLMacContext";
 
 - (id)initWithOpenGLContext:(NSOpenGLContext *)context;
 {
+	if (!context) return nil;
+	
 	self = [self init];
 	if (!self) return nil;
 	//TODO: check context compatibility
@@ -423,6 +426,9 @@ NSString *const EAGLMacThreadDictionaryKey = @"com.darknoon.EAGLMacContext";
 			[textures addObject:value];
 			NSUInteger textureUnit = [textures indexOfObject:value];
 			[shader setIntValue:(int)textureUnit forUniform:uniformName];
+		} else if ([value isKindOfClass:[WMUIColorClass class]]) {
+			//Find out what the value wants
+			[shader setVector4Value:[(WMUIColorClass *)value componentsAsRGBAGLKVector4] forUniform:uniformName];
 		} else if (value) {
 			DLog(@"Unsupported value %@ of class %@ for uniform name %@", value, [value class], uniformName);
 		} else {

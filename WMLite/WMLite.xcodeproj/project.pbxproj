@@ -18,6 +18,11 @@
 		4962329C16867E80001CA7F2 /* GLKMathCACompatibility.c in Sources */ = {isa = PBXBuildFile; fileRef = 4962329316867E6F001CA7F2 /* GLKMathCACompatibility.c */; };
 		4962329D16867EC5001CA7F2 /* GLKMathCGCompatibility.h in Headers */ = {isa = PBXBuildFile; fileRef = 4962329516867E6F001CA7F2 /* GLKMathCGCompatibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4962329E16868182001CA7F2 /* GLKMathCGCompatibility.c in Sources */ = {isa = PBXBuildFile; fileRef = 4962329416867E6F001CA7F2 /* GLKMathCGCompatibility.c */; };
+		4990D7FB168FDABD00FC029F /* GLKMathUICompatibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 4990D7F9168FDABD00FC029F /* GLKMathUICompatibility.m */; };
+		4990D7FC168FDABD00FC029F /* GLKMathUICompatibility.h in Headers */ = {isa = PBXBuildFile; fileRef = 4990D7FA168FDABD00FC029F /* GLKMathUICompatibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4990D7FE168FDACA00FC029F /* GLKMathUICompatibility.h in Headers */ = {isa = PBXBuildFile; fileRef = 4990D7FA168FDABD00FC029F /* GLKMathUICompatibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4990D7FF168FDACE00FC029F /* GLKMathUICompatibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 4990D7F9168FDABD00FC029F /* GLKMathUICompatibility.m */; };
+		4990D800168FDB0A00FC029F /* WMLite.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E94C167299EC00FA4FCE /* WMLite.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2E7C4167296B400FA4FCE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49E2E7C2167296B400FA4FCE /* InfoPlist.strings */; };
 		49E2E882167296FE00FA4FCE /* WMStructuredBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E7D0167296FE00FA4FCE /* WMStructuredBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2E883167296FE00FA4FCE /* WMStructuredBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E7D1167296FE00FA4FCE /* WMStructuredBuffer.m */; };
@@ -81,7 +86,6 @@
 		49E2EA2E1672C2DA00FA4FCE /* WMTransforms.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49E2EA2C1672C2DA00FA4FCE /* WMTransforms.mm */; };
 		49E2EA341672C51700FA4FCE /* WMRenderObject+CreateWithGeometry.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49E2EA331672C51700FA4FCE /* WMRenderObject+CreateWithGeometry.mm */; };
 		49E2EA98167319F000FA4FCE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49E2EA96167319F000FA4FCE /* InfoPlist.strings */; };
-		49E2EAA116731A9E00FA4FCE /* WMLite.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2EA9A167319F000FA4FCE /* WMLite.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2EAA216731AC100FA4FCE /* DNAssertionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E9D31672A40000FA4FCE /* DNAssertionHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2EAA316731ACC00FA4FCE /* WMStructuredBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E7D0167296FE00FA4FCE /* WMStructuredBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2EAA416731ACC00FA4FCE /* WMStructuredBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E7D1167296FE00FA4FCE /* WMStructuredBuffer.m */; };
@@ -154,6 +158,8 @@
 		4962329416867E6F001CA7F2 /* GLKMathCGCompatibility.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GLKMathCGCompatibility.c; sourceTree = "<group>"; };
 		4962329516867E6F001CA7F2 /* GLKMathCGCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKMathCGCompatibility.h; sourceTree = "<group>"; };
 		4962329916867E7E001CA7F2 /* GLKMathCACompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKMathCACompatibility.h; sourceTree = "<group>"; };
+		4990D7F9168FDABD00FC029F /* GLKMathUICompatibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLKMathUICompatibility.m; sourceTree = "<group>"; };
+		4990D7FA168FDABD00FC029F /* GLKMathUICompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKMathUICompatibility.h; sourceTree = "<group>"; };
 		49E2E7BD167296B400FA4FCE /* WMLite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WMLite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E2E7C1167296B400FA4FCE /* WMLite-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WMLite-Info.plist"; sourceTree = "<group>"; };
 		49E2E7C3167296B400FA4FCE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -237,7 +243,6 @@
 		49E2EA92167319F000FA4FCE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		49E2EA95167319F000FA4FCE /* WMLite Mac-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WMLite Mac-Info.plist"; sourceTree = "<group>"; };
 		49E2EA97167319F000FA4FCE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		49E2EA9A167319F000FA4FCE /* WMLite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WMLite.h; sourceTree = "<group>"; };
 		49E2EAC216731C3C00FA4FCE /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/GLKit.framework; sourceTree = DEVELOPER_DIR; };
 		49E2EAC316731C3C00FA4FCE /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/OpenGL.framework; sourceTree = DEVELOPER_DIR; };
 		49E2EAC616731C7400FA4FCE /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/AppKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -408,6 +413,8 @@
 		49E2E94D16729B3000FA4FCE /* Misc */ = {
 			isa = PBXGroup;
 			children = (
+				4990D7FA168FDABD00FC029F /* GLKMathUICompatibility.h */,
+				4990D7F9168FDABD00FC029F /* GLKMathUICompatibility.m */,
 				4962329916867E7E001CA7F2 /* GLKMathCACompatibility.h */,
 				4962329316867E6F001CA7F2 /* GLKMathCACompatibility.c */,
 				4962329516867E6F001CA7F2 /* GLKMathCGCompatibility.h */,
@@ -449,7 +456,6 @@
 		49E2EA93167319F000FA4FCE /* WMLite (Mac) */ = {
 			isa = PBXGroup;
 			children = (
-				49E2EA9A167319F000FA4FCE /* WMLite.h */,
 				49E2EA94167319F000FA4FCE /* Supporting Files */,
 			);
 			name = "WMLite (Mac)";
@@ -527,6 +533,7 @@
 				49E2EA2D1672C2DA00FA4FCE /* WMTransforms.h in Headers */,
 				4962329816867E6F001CA7F2 /* GLKMathCGCompatibility.h in Headers */,
 				4962329A16867E7E001CA7F2 /* GLKMathCACompatibility.h in Headers */,
+				4990D7FC168FDABD00FC029F /* GLKMathUICompatibility.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -534,7 +541,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49E2EAA116731A9E00FA4FCE /* WMLite.h in Headers */,
 				49E2EAA216731AC100FA4FCE /* DNAssertionHandler.h in Headers */,
 				49E2EAA316731ACC00FA4FCE /* WMStructuredBuffer.h in Headers */,
 				49E2EAA516731ACC00FA4FCE /* WMStructureDefinition.h in Headers */,
@@ -577,6 +583,8 @@
 				4962329B16867E7E001CA7F2 /* GLKMathCACompatibility.h in Headers */,
 				4962329D16867EC5001CA7F2 /* GLKMathCGCompatibility.h in Headers */,
 				492276FC168D1CBA002F5D85 /* WMView.h in Headers */,
+				4990D7FE168FDACA00FC029F /* GLKMathUICompatibility.h in Headers */,
+				4990D800168FDB0A00FC029F /* WMLite.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -738,6 +746,7 @@
 				49E2EA341672C51700FA4FCE /* WMRenderObject+CreateWithGeometry.mm in Sources */,
 				4962329616867E6F001CA7F2 /* GLKMathCACompatibility.c in Sources */,
 				4962329716867E6F001CA7F2 /* GLKMathCGCompatibility.c in Sources */,
+				4990D7FB168FDABD00FC029F /* GLKMathUICompatibility.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -768,6 +777,7 @@
 				4962329C16867E80001CA7F2 /* GLKMathCACompatibility.c in Sources */,
 				4962329E16868182001CA7F2 /* GLKMathCGCompatibility.c in Sources */,
 				492276FD168D1CBD002F5D85 /* WMView.m in Sources */,
+				4990D7FF168FDACE00FC029F /* GLKMathUICompatibility.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
