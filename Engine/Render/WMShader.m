@@ -35,6 +35,40 @@ NSString *const WMDefaultShaderCacheKey = @"com.darknoon.WMShader.defaultShader"
 @synthesize vertexAttributeNames;
 @synthesize program;
 
++ (WMShader *)shaderNamed:(NSString *)name error:(NSError **)outError;
+{
+	NSString *extension = [name pathExtension];
+	if (extension.length == 0) extension = @"glsl";
+	
+	NSString *path = [[NSBundle mainBundle] pathForResource:[name stringByDeletingPathExtension] ofType:extension];
+	if (!path) {
+		return nil;
+	}
+	return [self shaderWithContentsOfFile:path error:outError];
+}
+
++ (WMShader *)shaderWithContentsOfFile:(NSString *)path error:(NSError **)outError;
+{
+	return [[self alloc] initWithContentsOfFile:path error:outError];
+}
+
+- (id)initWithContentsOfFile:(NSString *)path error:(NSError **)outError;
+{
+	NSError *error;
+	NSString *shaderString = [[NSString alloc] initWithContentsOfFile:path usedEncoding:NULL error:&error];
+	if (!shaderString) {
+		if (outError) *outError = error;
+		return nil;
+	}
+	
+	return [self initWithShaderText:shaderString error:&error];
+}
+
+
+- (id)initWithShaderText:(NSString *)inString error:(NSError **)outError;
+{
+	return [self initWithVertexShader:inString fragmentShader:inString error:outError];
+}
 
 - (id)initWithVertexShader:(NSString *)inVertexShader fragmentShader:(NSString *)inPixelShader error:(NSError **)outError;
 {

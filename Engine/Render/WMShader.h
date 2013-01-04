@@ -10,8 +10,17 @@
 
 #import "WMGLStateObject.h"
 
+//TODO: define shader error domain and some error codes
+
 @interface WMShader : WMGLStateObject
-//TODO: - (id)initWithDualShaderText:(NSString *)inString;
+//Load from main bundle as one .glsl file (Does not currently include any caching logic)
++ (WMShader *)shaderNamed:(NSString *)name error:(NSError **)outError;
++ (WMShader *)shaderWithContentsOfFile:(NSString *)path error:(NSError **)outError;
+
+- (id)initWithContentsOfFile:(NSString *)path error:(NSError **)outError;
+
+//Use #ifdef VERTEX_SHADER or FRAGMENT_SHADER to compile vertex and fragment componenents
+- (id)initWithShaderText:(NSString *)inString error:(NSError **)outError;
 
 - (id)initWithVertexShader:(NSString *)inVertexShader fragmentShader:(NSString *)inPixelShader error:(NSError **)outError;
 
