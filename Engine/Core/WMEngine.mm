@@ -104,6 +104,7 @@ NSString *const WMEngineArgumentsOutputDimensionsKey = @"outputDimensions";
 	//Call cleanup on all patches
 	[WMEAGLContext setCurrentContext:renderContext];
 	[self _cleanupRecursive:rootObject];
+	[WMEAGLContext setCurrentContext:nil];
 }
 
 - (void)_setupRecursive:(WMPatch *)inPatch;

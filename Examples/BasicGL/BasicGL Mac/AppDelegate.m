@@ -9,6 +9,13 @@
 #import "AppDelegate.h"
 
 #import <WMLite/WMLite.h>
+#import "BasicGLViewController.h"
+
+@interface AppDelegate ()
+
+@property (strong) IBOutlet BasicGLViewController *viewController;
+
+@end
 
 @implementation AppDelegate
 

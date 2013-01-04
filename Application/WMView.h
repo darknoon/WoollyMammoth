@@ -34,13 +34,13 @@
 
 @property (nonatomic) GLuint depthBufferDepth;
 
+//When you're done rendering, make sure to call -presentRenderbuffer
+- (BOOL)presentFramebuffer;
+
 #if TARGET_OS_IPHONE
 //You can use this in cases where you want to reclaim the memory being used by the framebuffer, such as going into the background, etc
 //The framebuffer will be recreated if necessary
 - (void)deleteFramebuffer;
-
-//When you're done rendering, make sure to call -presentRenderbuffer
-- (BOOL)presentFramebuffer;
 
 - (UIImage *)screenshotImage;
 #endif

@@ -18,6 +18,7 @@
 #import <WMLite/GLKMathCGCompatibility.h>
 #import <WMLite/GLKMathCACompatibility.h>
 #import <WMLite/GLKMathUICompatibility.h>
+#import <WMLite/WMTransforms.h>
 
 #import <WMLite/WMDisplayLink.h>
 #import <WMLite/WMView.h>

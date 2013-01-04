@@ -72,7 +72,6 @@
 
 - (void)dealloc
 {
-    
 }
 
 - (WMFramebuffer *)framebuffer;
@@ -187,18 +186,33 @@
 	WMFramebuffer *framebuffer;
 	WMRenderObject *_quad;
 	WMTexture2D *_framebufferTexture;
+	BOOL _hasSeenPrepareOpenGL;
 }
 @synthesize context = _context;
 
-- (void)sharedInit;
+- (void)wmSharedInit;
 {
-	self.context = [[WMEAGLContext alloc] initWithOpenGLContext:self.openGLContext];
 	
-	_displayLink = [[WMDisplayLink alloc] initWithTargetQueue:dispatch_get_main_queue() callback:^(NSTimeInterval t, NSTimeInterval dt) {
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder;
+{
+	self = [super initWithCoder:aDecoder];
+	if (!self) return nil;
+
+	[self wmSharedInit];
+
+	return self;
+}
+
+- (id)initWithFrame:(NSRect)frameRect pixelFormat:(NSOpenGLPixelFormat*)format;
+{
+	self = [super initWithFrame:frameRect pixelFormat:format];
+	if (!self) return nil;
 		
-		[self setNeedsDisplay:YES];
-		
-	}];
+	[self wmSharedInit];
+
+	return self;
 }
 
 - (id)initWithFrame:(NSRect)frame;
@@ -206,25 +220,36 @@
 	self = [super initWithFrame:frame];
 	if (!self) return nil;
 	
-	[self sharedInit];
-	
 	return self;
 }
 
 - (void)awakeFromNib;
 {
-	[self sharedInit];
 	[super awakeFromNib];
 }
 
-- (void)drawRect:(NSRect)dirtyRect;
+- (void)dealloc
 {
-	[self drawView];
+	[_context.openGLContext clearDrawable];
+	_context = nil;
+	[WMEAGLContext setCurrentContext:nil];
+}
+
+- (BOOL)presentFramebuffer;
+{
+	[self setNeedsDisplay:YES];
+	return YES;
+}
+
+- (void)prepareOpenGL;
+{
+	[super prepareOpenGL];
+	_hasSeenPrepareOpenGL = YES;
 }
 
 - (void)reshape;
 {
-	[self setNeedsDisplay:YES];
+	[super reshape];
 }
 
 - (void)setFrame:(NSRect)rect;
@@ -236,18 +261,18 @@
 	[super setFrame:rect];
 }
 
-- (void)drawView
+- (void)drawRect:(NSRect)dirtyRect;
 {
+//	NSLog(@"in drawRect %@", [self macDebugString]);
+	
 	WMEAGLContext *context = self.context;
 	
 	if (!context || context.openGLContext != self.openGLContext) {
-		NSLog(@"Can't draw");
-		self.context = [[WMEAGLContext alloc] initWithOpenGLContext:self.openGLContext];
+		NSLog(@"Can't draw! context does not match %@ %@", context.openGLContext, self.openGLContext);
 		return;
 	}
 	[WMEAGLContext setCurrentContext:context];
 	
-	CGLLockContext(context.openGLContext.CGLContextObj);
 	[context wm__assumeBoundFramebufferHack];
 	
 	[context clearToColor:(GLKVector4){0, 0, 0, 0}];
@@ -266,15 +291,12 @@
 		[context renderObject:_quad];
 	}
 
-	CGLFlushDrawable([context.openGLContext CGLContextObj]);
-	
-	CGLUnlockContext(context.openGLContext.CGLContextObj);
 }
 
 - (WMFramebuffer *)framebuffer;
 {
 	if (!framebuffer) {
-		[WMEAGLContext setCurrentContext:_context];
+		[WMEAGLContext setCurrentContext:self.context];
 		NSRect rect = self.bounds;
 		_framebufferTexture = [[WMTexture2D alloc] initEmptyTextureWithPixelFormat:kWMTexture2DPixelFormat_BGRA8888 width:rect.size.width height:rect.size.height];
 		framebuffer = [[WMFramebuffer alloc] initWithTexture:_framebufferTexture depthBufferDepth:0];
@@ -289,15 +311,66 @@
 	return framebuffer;
 }
 
+- (void)setOpenGLContext:(NSOpenGLContext *)context;
+{
+	[super setOpenGLContext:context];
+}
+
 - (void)setContext:(WMEAGLContext *)context;
 {
 	framebuffer = nil;
 	_framebufferTexture = nil;
 	_quad = nil;
 	_context = context;
-	
-	self.openGLContext = context.openGLContext;
 }
+
+- (WMEAGLContext *)context {
+	if (!_context && _hasSeenPrepareOpenGL) {
+		_context = [[WMEAGLContext alloc] initWithOpenGLContext:self.openGLContext];
+		[_context wm__assumeBoundFramebufferHack];
+	}
+	return _context;
+}
+
+- (NSString *)macDebugString;
+{
+	GLint boundFramebuffer = -1;
+	if ([NSOpenGLContext currentContext]) {
+		glGetIntegerv(GL_FRAMEBUFFER_BINDING, &boundFramebuffer);
+	}
+	
+	NSMutableString *ms = [[NSMutableString alloc] init];
+	[ms appendFormat:@"current wm context: %@", [WMEAGLContext currentContext]];
+	[ms appendString:@"\n\t"];
+	[ms appendFormat:@"self.context: %@", self.context];
+	[ms appendString:@"\n\t"];
+	[ms appendFormat:@"current opengl context: %@", [NSOpenGLContext currentContext]];
+	[ms appendString:@"\n\t"];
+	[ms appendFormat:@"self.openGLContext: %@", self.openGLContext];
+	[ms appendString:@"\n\t"];
+	[ms appendFormat:@"current opengl context: %@", [NSOpenGLContext currentContext]];
+	[ms appendString:@"\n\t"];
+	[ms appendFormat:@"bound framebuffer: %d", boundFramebuffer];
+	[ms appendString:@"\n\t"];
+	[ms appendFormat:@"wants layer: %d", (int)self.wantsLayer];
+	[ms appendString:@"\n\t"];
+	[ms appendFormat:@"wants retina surface: %d", (int)self.wantsBestResolutionOpenGLSurface];
+	[ms appendString:@"\n\t"];
+	[ms appendFormat:@"pixel format: %@", self.pixelFormat];
+	[ms appendString:@"\n\t"];
+	[ms appendFormat:@"layer: %@", self.layer];
+	[ms appendString:@"\n\t"];
+	[ms appendFormat:@"wants update layer: %d", (int)self.wantsUpdateLayer];
+	[ms appendString:@"\n"];
+	[ms appendString:@"\n"];
+	
+	NSAssert(ms, @"Hmm, string nil");
+	ms = [ms copy];
+	NSAssert(ms, @"Hmm, string copy nil");
+	
+	return ms;
+}
+
 
 @end
 

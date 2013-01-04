@@ -42,7 +42,6 @@
 		494FEA0916897A3E00EE9BE8 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494FEA0816897A3E00EE9BE8 /* Cocoa.framework */; };
 		494FEA1316897A3E00EE9BE8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 494FEA1116897A3E00EE9BE8 /* InfoPlist.strings */; };
 		494FEA1516897A3E00EE9BE8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 494FEA1416897A3E00EE9BE8 /* main.m */; };
-		494FEA1916897A3E00EE9BE8 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 494FEA1716897A3E00EE9BE8 /* Credits.rtf */; };
 		494FEA1C16897A3E00EE9BE8 /* WMBundleDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 494FEA1B16897A3E00EE9BE8 /* WMBundleDocument.m */; };
 		494FEA1F16897A3E00EE9BE8 /* WMBundleDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 494FEA1D16897A3E00EE9BE8 /* WMBundleDocument.xib */; };
 		494FEA2216897A3E00EE9BE8 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 494FEA2016897A3E00EE9BE8 /* MainMenu.xib */; };
@@ -303,7 +302,6 @@
 		494FEA1216897A3E00EE9BE8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		494FEA1416897A3E00EE9BE8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		494FEA1616897A3E00EE9BE8 /* WMEdit Mac-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WMEdit Mac-Prefix.pch"; sourceTree = "<group>"; };
-		494FEA1816897A3E00EE9BE8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		494FEA1A16897A3E00EE9BE8 /* WMBundleDocument.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WMBundleDocument.h; sourceTree = "<group>"; };
 		494FEA1B16897A3E00EE9BE8 /* WMBundleDocument.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WMBundleDocument.m; sourceTree = "<group>"; };
 		494FEA1E16897A3E00EE9BE8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/WMBundleDocument.xib; sourceTree = "<group>"; };
@@ -733,7 +731,6 @@
 				494FEA1116897A3E00EE9BE8 /* InfoPlist.strings */,
 				494FEA1416897A3E00EE9BE8 /* main.m */,
 				494FEA1616897A3E00EE9BE8 /* WMEdit Mac-Prefix.pch */,
-				494FEA1716897A3E00EE9BE8 /* Credits.rtf */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1488,7 +1485,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				494FEA1316897A3E00EE9BE8 /* InfoPlist.strings in Resources */,
-				494FEA1916897A3E00EE9BE8 /* Credits.rtf in Resources */,
 				494FEA1F16897A3E00EE9BE8 /* WMBundleDocument.xib in Resources */,
 				494FEA2216897A3E00EE9BE8 /* MainMenu.xib in Resources */,
 				4958CD5C168BB7380042FA31 /* WMAddNodeViewController.xib in Resources */,
@@ -1738,14 +1734,6 @@
 				494FEA1216897A3E00EE9BE8 /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		494FEA1716897A3E00EE9BE8 /* Credits.rtf */ = {
-			isa = PBXVariantGroup;
-			children = (
-				494FEA1816897A3E00EE9BE8 /* en */,
-			);
-			name = Credits.rtf;
 			sourceTree = "<group>";
 		};
 		494FEA1D16897A3E00EE9BE8 /* WMBundleDocument.xib */ = {

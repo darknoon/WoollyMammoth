@@ -24,7 +24,7 @@
 
 #if !TARGET_OS_IPHONE
 @interface EAGLSharegroup : NSObject
-@property (nonatomic, weak) NSOpenGLContext *context;
+@property (nonatomic, strong) NSOpenGLContext *context;
 @end
 
 @implementation EAGLSharegroup
@@ -154,10 +154,12 @@ NSString *const EAGLMacThreadDictionaryKey = @"com.darknoon.EAGLMacContext";
 	_openGLContext = context;
 	
 	[self sharedInit];
-	
+	[WMEAGLContext setCurrentContext:self];
+
 	return self;
 }
 
+#if 0
 - (id)initWithSharegroup:(EAGLSharegroup *)sharegroup;
 {
     NSOpenGLPixelFormatAttribute attrs[] =
@@ -190,15 +192,21 @@ NSString *const EAGLMacThreadDictionaryKey = @"com.darknoon.EAGLMacContext";
 	
 	return self;
 }
+#endif
+
+- (void)dealloc
+{
+	
+}
 
 + (BOOL)setCurrentContext:(WMEAGLContext *)context;
 {
 	if (context) {
 		[context.openGLContext makeCurrentContext];
-#warning excessive
 		ZAssert([NSOpenGLContext currentContext] == context.openGLContext, @"Did not set context");
 		[[[NSThread currentThread] threadDictionary] setObject:context forKey:EAGLMacThreadDictionaryKey];
 	} else {
+		[[[NSThread currentThread] threadDictionary] removeObjectForKey:EAGLMacThreadDictionaryKey];
 		[NSOpenGLContext clearCurrentContext];
 	}
 	return YES;
@@ -207,7 +215,10 @@ NSString *const EAGLMacThreadDictionaryKey = @"com.darknoon.EAGLMacContext";
 + (WMEAGLContext *)currentContext;
 {
 	WMEAGLContext *currentContext = [[[NSThread currentThread] threadDictionary] objectForKey:EAGLMacThreadDictionaryKey];
-	ZAssert([NSOpenGLContext currentContext] == currentContext.openGLContext, @"Wrong context set!");
+	if ([NSOpenGLContext currentContext] != currentContext.openGLContext) {
+		[[[NSThread currentThread] threadDictionary] removeObjectForKey:EAGLMacThreadDictionaryKey];
+		return nil;
+	}
 	return currentContext;
 }
 
@@ -217,6 +228,7 @@ NSString *const EAGLMacThreadDictionaryKey = @"com.darknoon.EAGLMacContext";
 	int boundFramebufferName = -1;
 	glGetIntegerv(GL_FRAMEBUFFER_BINDING, &boundFramebufferName);
 	if (boundFramebufferName > 0 && boundFramebufferName != boundFramebuffer.framebufferName) {
+		//DLog(@"Using assume bound hack %d", boundFramebufferName);
 		WMFramebuffer *currentFakeFramebuffer = [[WMFramebuffer alloc] initWithGLFramebufferName:boundFramebufferName deleteWhenDone:NO];
 		
 		boundFramebuffer = currentFakeFramebuffer;
@@ -281,16 +293,30 @@ NSString *const EAGLMacThreadDictionaryKey = @"com.darknoon.EAGLMacContext";
 	depthState = inDepthState;
 }
 
-- (NSString *)description;
+- (NSString *)debugDescription;
 {
 	NSMutableString *stateDesc = [NSMutableString string];
 	
 	[stateDesc appendFormat:@"\tblending %@\n", blendState & DNGLStateBlendEnabled ?  @"enabled" : @"disabled"];
 	[stateDesc appendFormat:@"\tadd mode %@\n", blendState & DNGLStateBlendModeAdd ?  @"enabled" : @"disabled"];
 	[stateDesc appendFormat:@"\tframebuffer: %@\n", boundFramebuffer];
+#if TARGET_OS_MAC && !TARGET_OS_IPHONE
+	[stateDesc appendFormat:@"\togl context: %@\n", _openGLContext];
+#endif
 	
 	return [[super description] stringByAppendingFormat:@"{\n%@\n}", stateDesc];
 }
+
+- (NSString *)description;
+{
+#if TARGET_OS_MAC && !TARGET_OS_IPHONE
+	return [NSString stringWithFormat:@"<%@ %p - %@>", self.class, self, self.openGLContext];
+#else
+	return [super description];
+#endif
+}
+
+
 
 - (void)setViewport:(CGRect)desiredViewport;
 {
@@ -356,8 +382,12 @@ NSString *const EAGLMacThreadDictionaryKey = @"com.darknoon.EAGLMacContext";
 	GL_CHECK_ERROR;
 
 	//Can't render!
-	if (!inObject.vertexBuffer || !inObject.shader) {
-		NSLog(@"Can't render invalid render object: %@", inObject);
+	if (!inObject.vertexBuffer) {
+		NSLog(@"Can't render object without vertex data: %@", inObject);
+		return;
+	}
+	if (!inObject.shader) {
+		NSLog(@"Can't render object without a shader: %@", inObject);
 		return;
 	}
 	
@@ -427,7 +457,7 @@ NSString *const EAGLMacThreadDictionaryKey = @"com.darknoon.EAGLMacContext";
 			NSUInteger textureUnit = [textures indexOfObject:value];
 			[shader setIntValue:(int)textureUnit forUniform:uniformName];
 		} else if ([value isKindOfClass:[WMUIColorClass class]]) {
-			//Find out what the value wants
+			//TODO: test support for vec3 color inputs; is this ok?
 			[shader setVector4Value:[(WMUIColorClass *)value componentsAsRGBAGLKVector4] forUniform:uniformName];
 		} else if (value) {
 			DLog(@"Unsupported value %@ of class %@ for uniform name %@", value, [value class], uniformName);
@@ -665,7 +695,7 @@ NSString *const EAGLMacThreadDictionaryKey = @"com.darknoon.EAGLMacContext";
 	[self setActiveTextureUnit:inTextureUnit];
 	int boundTexture;
 	glGetIntegerv(GL_TEXTURE_BINDING_2D, &boundTexture);
-	ZAssert(boundTexture == boundTextures2D[inTextureUnit], @"Not changed as we expected.");
+	ZAssert(boundTexture == boundTextures2D[inTextureUnit], @"Texture was not bound as we expected.");
 #endif
 }
 

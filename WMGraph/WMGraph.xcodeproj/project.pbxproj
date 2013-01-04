@@ -154,7 +154,6 @@
 		496233061687126E001CA7F2 /* WMDisplayLink_Mac.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E96316729B3000FA4FCE /* WMDisplayLink_Mac.m */; };
 		4962330716871272001CA7F2 /* WMDisplayLink.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E96116729B3000FA4FCE /* WMDisplayLink.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		496233081687127C001CA7F2 /* WMCompatibilityMac.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E95F16729B3000FA4FCE /* WMCompatibilityMac.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4962330916871284001CA7F2 /* EAGLContextMac.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E94E16729B3000FA4FCE /* EAGLContextMac.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4962330A168712AA001CA7F2 /* WMAudioBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E7CD167296FE00FA4FCE /* WMAudioBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4962330B168712C2001CA7F2 /* WMAccelerometer.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E7E7167296FE00FA4FCE /* WMAccelerometer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4962330D168712C2001CA7F2 /* WMCVTexture2D.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E7E9167296FE00FA4FCE /* WMCVTexture2D.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -183,6 +182,7 @@
 		4990D7D6168FC23B00FC029F /* WMImageResize.h in Headers */ = {isa = PBXBuildFile; fileRef = 4990D7D3168FC23B00FC029F /* WMImageResize.h */; };
 		4990D7D7168FC23B00FC029F /* WMImageResize.m in Sources */ = {isa = PBXBuildFile; fileRef = 4990D7D4168FC23B00FC029F /* WMImageResize.m */; };
 		4990D7D8168FC23B00FC029F /* WMImageResize.m in Sources */ = {isa = PBXBuildFile; fileRef = 4990D7D4168FC23B00FC029F /* WMImageResize.m */; };
+		4990D7F7168FD97400FC029F /* GLKMathUICompatibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 496232AB1686D2F0001CA7F2 /* GLKMathUICompatibility.m */; };
 		49AE088D1675763100748B95 /* DNAssertionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 49AE08871675763100748B95 /* DNAssertionHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49AE088E1675763100748B95 /* DNAssertionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AE08881675763100748B95 /* DNAssertionHandler.m */; };
 		49AE088F1675763100748B95 /* WMView.h in Headers */ = {isa = PBXBuildFile; fileRef = 49AE08891675763100748B95 /* WMView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -536,8 +536,6 @@
 		49E2E9451672989900FA4FCE /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		49E2E9471672989F00FA4FCE /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		49E2E949167298A500FA4FCE /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		49E2E94E16729B3000FA4FCE /* EAGLContextMac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLContextMac.h; sourceTree = "<group>"; };
-		49E2E94F16729B3000FA4FCE /* EAGLContextMac.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EAGLContextMac.m; sourceTree = "<group>"; };
 		49E2E95F16729B3000FA4FCE /* WMCompatibilityMac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMCompatibilityMac.h; sourceTree = "<group>"; };
 		49E2E96016729B3000FA4FCE /* WMCompatibilityMac.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMCompatibilityMac.m; sourceTree = "<group>"; };
 		49E2E96116729B3000FA4FCE /* WMDisplayLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMDisplayLink.h; sourceTree = "<group>"; };
@@ -959,8 +957,6 @@
 				496232A21686822B001CA7F2 /* GLKMathCGCompatibility.c */,
 				496232AA1686D2F0001CA7F2 /* GLKMathUICompatibility.h */,
 				496232AB1686D2F0001CA7F2 /* GLKMathUICompatibility.m */,
-				49E2E94E16729B3000FA4FCE /* EAGLContextMac.h */,
-				49E2E94F16729B3000FA4FCE /* EAGLContextMac.m */,
 				49E2E95F16729B3000FA4FCE /* WMCompatibilityMac.h */,
 				49E2E96016729B3000FA4FCE /* WMCompatibilityMac.m */,
 				49E2E96116729B3000FA4FCE /* WMDisplayLink.h */,
@@ -1040,7 +1036,6 @@
 				4958CD28168990BC0042FA31 /* WMPrefix.pch in Headers */,
 				496233081687127C001CA7F2 /* WMCompatibilityMac.h in Headers */,
 				496232E016870B49001CA7F2 /* WMTexture2D_RenderPrivate.h in Headers */,
-				4962330916871284001CA7F2 /* EAGLContextMac.h in Headers */,
 				4962330A168712AA001CA7F2 /* WMAudioBuffer.h in Headers */,
 				4958CD141689903D0042FA31 /* WMGraph.h in Headers */,
 				4958CD15168990A30042FA31 /* DNKVC.h in Headers */,
@@ -1373,6 +1368,7 @@
 				4924A060168E95F6004123B7 /* WMSplitter.m in Sources */,
 				4924A061168E95F6004123B7 /* WMVectorFromComponents.m in Sources */,
 				4990D7D8168FC23B00FC029F /* WMImageResize.m in Sources */,
+				4990D7F7168FD97400FC029F /* GLKMathUICompatibility.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

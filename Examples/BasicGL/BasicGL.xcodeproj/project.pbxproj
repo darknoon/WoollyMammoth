@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		492276FF168D1CE5002F5D85 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 492276FE168D1CE5002F5D85 /* QuartzCore.framework */; };
 		496232881682F089001CA7F2 /* WMLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49AE086B1675380400748B95 /* WMLite.framework */; };
+		4990D7F5168FD68F00FC029F /* BasicGLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4990D7F4168FD68F00FC029F /* BasicGLViewController.m */; };
 		49AE086C1675380400748B95 /* WMLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49AE086B1675380400748B95 /* WMLite.framework */; };
 		49E2E99F1672A22D00FA4FCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2E99E1672A22D00FA4FCE /* UIKit.framework */; };
 		49E2E9A11672A22D00FA4FCE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2E9A01672A22D00FA4FCE /* Foundation.framework */; };
@@ -35,14 +36,15 @@
 		49E2EB08167321F800FA4FCE /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 49E2EB06167321F800FA4FCE /* Credits.rtf */; };
 		49E2EB0B167321F800FA4FCE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2EB0A167321F800FA4FCE /* AppDelegate.m */; };
 		49E2EB0E167321F800FA4FCE /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49E2EB0C167321F800FA4FCE /* MainMenu.xib */; };
-		49E2EB2A1673278200FA4FCE /* BasicGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2EB291673278200FA4FCE /* BasicGLView.m */; };
 		49E2EB2C16732A9A00FA4FCE /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2EB2B16732A9A00FA4FCE /* OpenGL.framework */; };
 		49E2EB2E16732AA400FA4FCE /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E2EB2D16732AA400FA4FCE /* GLKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		492276FE168D1CE5002F5D85 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
-		49AE086B1675380400748B95 /* WMLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WMLite.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/WoollyMammoth-bgnqtjvmqnwalgazhysaiovvkhhp/Build/Products/Debug-iphoneos/WMLite.framework"; sourceTree = "<group>"; };
+		4990D7F3168FD68F00FC029F /* BasicGLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicGLViewController.h; sourceTree = "<group>"; };
+		4990D7F4168FD68F00FC029F /* BasicGLViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasicGLViewController.m; sourceTree = "<group>"; };
+		49AE086B1675380400748B95 /* WMLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WMLite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E2E99A1672A22D00FA4FCE /* BasicGL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BasicGL.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E2E99E1672A22D00FA4FCE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		49E2E9A01672A22D00FA4FCE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -80,8 +82,6 @@
 		49E2EB09167321F800FA4FCE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		49E2EB0A167321F800FA4FCE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		49E2EB0D167321F800FA4FCE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		49E2EB281673278200FA4FCE /* BasicGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicGLView.h; sourceTree = "<group>"; };
-		49E2EB291673278200FA4FCE /* BasicGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasicGLView.m; sourceTree = "<group>"; };
 		49E2EB2B16732A9A00FA4FCE /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/OpenGL.framework; sourceTree = DEVELOPER_DIR; };
 		49E2EB2D16732AA400FA4FCE /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/GLKit.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -205,10 +205,10 @@
 		49E2EAFD167321F800FA4FCE /* BasicGL Mac */ = {
 			isa = PBXGroup;
 			children = (
+				4990D7F3168FD68F00FC029F /* BasicGLViewController.h */,
+				4990D7F4168FD68F00FC029F /* BasicGLViewController.m */,
 				49E2EB09167321F800FA4FCE /* AppDelegate.h */,
 				49E2EB0A167321F800FA4FCE /* AppDelegate.m */,
-				49E2EB281673278200FA4FCE /* BasicGLView.h */,
-				49E2EB291673278200FA4FCE /* BasicGLView.m */,
 				49E2EB0C167321F800FA4FCE /* MainMenu.xib */,
 				49E2EAFE167321F800FA4FCE /* Supporting Files */,
 			);
@@ -332,7 +332,7 @@
 			files = (
 				49E2EB04167321F800FA4FCE /* main.m in Sources */,
 				49E2EB0B167321F800FA4FCE /* AppDelegate.m in Sources */,
-				49E2EB2A1673278200FA4FCE /* BasicGLView.m in Sources */,
+				4990D7F5168FD68F00FC029F /* BasicGLViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -466,7 +466,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
-					"\"$(SRCROOT)/../../../../../Library/Developer/Xcode/DerivedData/WoollyMammoth-bgnqtjvmqnwalgazhysaiovvkhhp/Build/Products/Debug-iphoneos\"",
 				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -489,7 +488,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
-					"\"$(SRCROOT)/../../../../../Library/Developer/Xcode/DerivedData/WoollyMammoth-bgnqtjvmqnwalgazhysaiovvkhhp/Build/Products/Debug-iphoneos\"",
 				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

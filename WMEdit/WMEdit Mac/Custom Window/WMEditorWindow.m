@@ -29,10 +29,6 @@
 	stretchableInnerShadowLayer.frame = rootLayer.bounds;
 	stretchableInnerShadowLayer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
 	[rootLayer addSublayer:stretchableInnerShadowLayer];
-	
-	
-	NSButton *closeButton = [NSWindow standardWindowButton:NSWindowCloseButton forStyleMask:NSClosableWindowMask];
-//	[self.contentView addSubview:closeButton];
 }
 
 @end

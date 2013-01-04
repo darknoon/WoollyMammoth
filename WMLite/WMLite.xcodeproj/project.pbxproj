@@ -82,7 +82,7 @@
 		49E2E9DA1672A40000FA4FCE /* DNAssertionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E9D41672A40000FA4FCE /* DNAssertionHandler.m */; };
 		49E2E9DB1672A40000FA4FCE /* WMView.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E9D51672A40000FA4FCE /* WMView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2E9DC1672A40000FA4FCE /* WMView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E9D61672A40000FA4FCE /* WMView.m */; };
-		49E2EA2D1672C2DA00FA4FCE /* WMTransforms.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2EA2B1672C2DA00FA4FCE /* WMTransforms.h */; };
+		49E2EA2D1672C2DA00FA4FCE /* WMTransforms.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2EA2B1672C2DA00FA4FCE /* WMTransforms.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2EA2E1672C2DA00FA4FCE /* WMTransforms.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49E2EA2C1672C2DA00FA4FCE /* WMTransforms.mm */; };
 		49E2EA341672C51700FA4FCE /* WMRenderObject+CreateWithGeometry.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49E2EA331672C51700FA4FCE /* WMRenderObject+CreateWithGeometry.mm */; };
 		49E2EA98167319F000FA4FCE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49E2EA96167319F000FA4FCE /* InfoPlist.strings */; };
@@ -924,6 +924,11 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ../Engine/Util/WMPrefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"DEBUG_OPENGL=1",
+					"$(inherited)",
+				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INFOPLIST_FILE = "Mac/WMLite Mac-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;

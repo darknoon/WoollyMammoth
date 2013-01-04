@@ -255,8 +255,6 @@
 {
 	[super setView:view];
 	eaglView = (WMView *)view;
-	WMEAGLContext *context = ((WMView *)view).context;
-	self.engine.renderContext = context;
 	
 #warning FIND ANOTHER WAY
 	int64_t delayInSeconds = 2.0;
@@ -290,6 +288,7 @@
 
 - (void)engineDidRenderFrame:(WMEngine *)engine;
 {
+	[eaglView presentFramebuffer];
 }
 
 #endif

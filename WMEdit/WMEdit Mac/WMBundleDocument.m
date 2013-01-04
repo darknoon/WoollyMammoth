@@ -43,9 +43,9 @@
 	
 	WMViewController *vc = [[WMViewController alloc] initWithComposition:_composition];
 	WMView *view = [[WMView alloc] initWithFrame:((NSView *)aController.window.contentView).bounds];
-	vc.view = view;
-	view.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
 	[(NSView *)aController.window.contentView addSubview:view positioned:NSWindowBelow relativeTo:self.graphScrollView];
+	view.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+	vc.view = view;
 	_previewController = vc;
 	self.previewView = view;
 }

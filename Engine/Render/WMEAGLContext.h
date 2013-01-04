@@ -34,10 +34,13 @@ typedef int DNGLStateDepthMask;
 @interface WMEAGLContext : NSObject
 
 - (id)initWithOpenGLContext:(NSOpenGLContext *)context;
-- (id)initWithSharegroup:(EAGLSharegroup *)sharegroup;
 
-@property (nonatomic, readonly) EAGLSharegroup *sharegroup;
-@property (nonatomic, readonly) NSOpenGLContext *openGLContext;
+#if 0
+- (id)initWithSharegroup:(EAGLSharegroup *)sharegroup;
+#endif
+
+@property (nonatomic, strong, readonly) EAGLSharegroup *sharegroup;
+@property (nonatomic, strong, readonly) NSOpenGLContext *openGLContext;
 
 //TODO: figure out another way to handle this
 - (void)setViewport:(CGRect)desiredViewport;
