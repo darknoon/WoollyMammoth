@@ -92,10 +92,11 @@
 
 - (void)textViewDidChange:(UITextView *)inTextView;
 {
-	if (segmentIndex == 0) {
-		self.patch.programText = self.textView.text;
-	}
-	[editViewController markDocumentDirty];
+	[editViewController modifyNodeGraphWithBlock:^(WMPatch *rootPatch) {
+		if (segmentIndex == 0) {
+			self.patch.programText = self.textView.text;
+		}
+	}];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

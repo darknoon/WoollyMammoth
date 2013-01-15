@@ -132,14 +132,15 @@
 
 - (void)textViewDidChange:(UITextView *)inTextView;
 {
-	if (segmentIndex == 0) {
-		self.patch.vertexShader = self.textView.text;
-	} else if (segmentIndex == 1) {
-		self.patch.fragmentShader = self.textView.text;
-	}
+	[editViewController modifyNodeGraphWithBlock:^(WMPatch *rootPatch) {
+		if (segmentIndex == 0) {
+			self.patch.vertexShader = self.textView.text;
+		} else if (segmentIndex == 1) {
+			self.patch.fragmentShader = self.textView.text;
+		}
+	}];
 	//Ask the shader to compile if possible
 	[patch compileShaderIfNecessary];
-	[editViewController markDocumentDirty];
 }
 
 @end

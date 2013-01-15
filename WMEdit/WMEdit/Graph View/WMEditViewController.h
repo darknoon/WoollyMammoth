@@ -27,8 +27,7 @@
 
 @property (nonatomic, strong) IBOutlet UIGestureRecognizer *addNodeRecognizer;
 
-//Indicate that a change has been made and the document is dirty
-- (void)markDocumentDirty;
+- (void)modifyNodeGraphWithBlock:(void (^)(WMPatch *))block;
 
 - (IBAction)close:(id)sender;
 - (IBAction)addNode:(UITapGestureRecognizer *)inR;

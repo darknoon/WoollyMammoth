@@ -146,7 +146,9 @@
 	[inPatch addObserver:self handler:portsChanged forKeyPath:KVC(inPatch, outputPorts) options:0 identifier:nil];
 	
 	//Make sure setup gets called before we decide on the node size
-	[rootPatch addChild:inPatch];
+	[viewController modifyNodeGraphWithBlock:^(WMPatch *p) {
+		[p addChild:inPatch];
+	}];
 
 	newNodeView.center = [self pointForEditorPosition:inPatch.editorPosition];
 	[newNodeView sizeToFit];
@@ -155,7 +157,6 @@
 	[newNodeView layoutIfNeeded];
 
 	[self updateConnectionPositions];
-	[viewController markDocumentDirty];
 }
 
 - (void)removePatch:(WMPatch *)inPatch;
@@ -165,12 +166,13 @@
 	[inPatch removeObserver:self forKeyPath:KVC(inPatch, editorPosition) identifier:nil];
 	[inPatch removeObserver:self forKeyPath:KVC(inPatch, inputPorts) identifier:nil];
 	[inPatch removeObserver:self forKeyPath:KVC(inPatch, outputPorts) identifier:nil];
-	[rootPatch removeChild:inPatch];
+	[viewController modifyNodeGraphWithBlock:^(WMPatch *p) {
+		[p removeChild:inPatch];
+	}];
 	
 	[patchViews removeObject:patchView];
 	[patchView removeFromSuperview];
 	[self updateConnectionPositions];
-	[viewController markDocumentDirty];
 }
 
 - (WMPatchView *)patchViewForKey:(NSString *)inKey;
@@ -289,8 +291,9 @@
 
 		BOOL canConnect = [hitPort canTakeValueFromPort:sourcePort];
 		if (hitPatch && hitPort && canConnect) {
-			[rootPatch addConnectionFromPort:sourcePort.key ofPatch:inView.patch.key toPort:hitPort.key ofPatch:hitPatch.key];
-			[viewController markDocumentDirty];
+			[viewController modifyNodeGraphWithBlock:^(WMPatch *graph) {
+				[graph addConnectionFromPort:sourcePort.key ofPatch:inView.patch.key toPort:hitPort.key ofPatch:hitPatch.key];
+			}];
 		}
 	}
 	[patchConnectionsView removeDraggingConnectionFromPatchView:inView];

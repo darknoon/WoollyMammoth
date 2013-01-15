@@ -221,6 +221,16 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 	}	
 }
 
+- (void)modifyNodeGraphWithBlock:(void (^)(WMPatch *))block;
+{
+	[previewController.engine beginConfiguration];
+	
+	block(rootPatch);
+	
+	[previewController.engine commitConfiguration];
+	[self markDocumentDirty];
+}
+
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)inR shouldReceiveTouch:(UITouch *)inTouch;
 {
 	if (inR == addNodeRecognizer) {
