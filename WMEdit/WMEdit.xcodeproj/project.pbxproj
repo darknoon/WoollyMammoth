@@ -188,6 +188,10 @@
 		49BACBD913EB5BDA008ED051 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5263F13D172CF004EC7F6 /* CFNetwork.framework */; };
 		49BACBDA13EB5BDD008ED051 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5263D13D172C6004EC7F6 /* QuartzCore.framework */; };
 		49BACBDB13EB5BDF008ED051 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5263B13D172BC004EC7F6 /* CoreMIDI.framework */; };
+		49C52C1C16A5EBB000A15DCD /* WMDefaultShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 49C52C1A16A5EBB000A15DCD /* WMDefaultShader.fsh */; };
+		49C52C1D16A5EBB000A15DCD /* WMDefaultShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 49C52C1A16A5EBB000A15DCD /* WMDefaultShader.fsh */; };
+		49C52C1E16A5EBB000A15DCD /* WMDefaultShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 49C52C1B16A5EBB000A15DCD /* WMDefaultShader.vsh */; };
+		49C52C1F16A5EBB000A15DCD /* WMDefaultShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 49C52C1B16A5EBB000A15DCD /* WMDefaultShader.vsh */; };
 		49D530121447AB4C00739E84 /* lapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 49D52FD71447AB4B00739E84 /* lapi.c */; };
 		49D530131447AB4C00739E84 /* lauxlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 49D52FD91447AB4B00739E84 /* lauxlib.c */; };
 		49D530141447AB4C00739E84 /* lbaselib.c in Sources */ = {isa = PBXBuildFile; fileRef = 49D52FDB1447AB4B00739E84 /* lbaselib.c */; };
@@ -518,6 +522,8 @@
 		49B792E51581F819009E81EB /* ASIS3ServiceRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIS3ServiceRequest.m; sourceTree = "<group>"; };
 		49BACB4913EB592A008ED051 /* WMEngineTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WMEngineTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		49BACB4A13EB592A008ED051 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		49C52C1A16A5EBB000A15DCD /* WMDefaultShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = WMDefaultShader.fsh; sourceTree = "<group>"; };
+		49C52C1B16A5EBB000A15DCD /* WMDefaultShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = WMDefaultShader.vsh; sourceTree = "<group>"; };
 		49D52FD71447AB4B00739E84 /* lapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lapi.c; sourceTree = "<group>"; };
 		49D52FD81447AB4B00739E84 /* lapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lapi.h; sourceTree = "<group>"; };
 		49D52FD91447AB4B00739E84 /* lauxlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lauxlib.c; sourceTree = "<group>"; };
@@ -578,7 +584,7 @@
 		49E3145613DA44F600813CE0 /* Random.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Random.cpp; sourceTree = "<group>"; };
 		49E3145713DA44F600813CE0 /* Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Random.h; sourceTree = "<group>"; };
 		49E3145813DA44F600813CE0 /* Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Types.h; sourceTree = "<group>"; };
-		49F0594C13D15F640056C506 /* WMEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WMEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		49F0594C13D15F640056C506 /* WMEdit2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WMEdit2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49F0595013D15F640056C506 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		49F0595213D15F640056C506 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		49F0595413D15F640056C506 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1151,6 +1157,8 @@
 		49A5286113D174C6004EC7F6 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				49C52C1A16A5EBB000A15DCD /* WMDefaultShader.fsh */,
+				49C52C1B16A5EBB000A15DCD /* WMDefaultShader.vsh */,
 				4979F35014478B2500D25116 /* WEPopover-Sucky */,
 				493A1A2A1400C1CB001BB458 /* background-tile~ipad.png */,
 				07C99A9013D38E8B00712EFA /* Icon-72.png */,
@@ -1332,7 +1340,7 @@
 		49F0594D13D15F640056C506 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				49F0594C13D15F640056C506 /* WMEdit.app */,
+				49F0594C13D15F640056C506 /* WMEdit2.app */,
 				49BACB4913EB592A008ED051 /* WMEngineTests.octest */,
 				494FEA0616897A3E00EE9BE8 /* WMEdit.app */,
 			);
@@ -1447,7 +1455,7 @@
 			);
 			name = WMEdit;
 			productName = WMEdit;
-			productReference = 49F0594C13D15F640056C506 /* WMEdit.app */;
+			productReference = 49F0594C13D15F640056C506 /* WMEdit2.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1485,6 +1493,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				494FEA1316897A3E00EE9BE8 /* InfoPlist.strings in Resources */,
+				49C52C1D16A5EBB000A15DCD /* WMDefaultShader.fsh in Resources */,
+				49C52C1F16A5EBB000A15DCD /* WMDefaultShader.vsh in Resources */,
 				494FEA1F16897A3E00EE9BE8 /* WMBundleDocument.xib in Resources */,
 				494FEA2216897A3E00EE9BE8 /* MainMenu.xib in Resources */,
 				4958CD5C168BB7380042FA31 /* WMAddNodeViewController.xib in Resources */,
@@ -1509,6 +1519,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49C52C1C16A5EBB000A15DCD /* WMDefaultShader.fsh in Resources */,
+				49C52C1E16A5EBB000A15DCD /* WMDefaultShader.vsh in Resources */,
 				497928AA13E2AA6800DDBD2A /* SnowParticle.fsh in Resources */,
 				497928AB13E2AA6800DDBD2A /* SnowParticle.vsh in Resources */,
 				49F0595B13D15F640056C506 /* InfoPlist.strings in Resources */,
@@ -1933,7 +1945,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/../Externals/lua-5.1.4/src\"",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME)2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1952,7 +1964,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/../Externals/lua-5.1.4/src\"",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME)2";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};
