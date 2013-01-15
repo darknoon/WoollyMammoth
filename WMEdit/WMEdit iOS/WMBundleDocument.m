@@ -10,6 +10,16 @@
 
 @implementation WMBundleDocument
 
+- (id)initWithFileURL:(NSURL *)url;
+{
+	self = [super initWithFileURL:url];
+	if (!self) return nil;
+	
+	_composition = [[WMComposition alloc] init];
+	
+	return self;
+}
+
 - (BOOL)loadFromContents:(id)contents ofType:(NSString *)typeName error:(NSError **)outError;
 {
 	if ([contents isKindOfClass:NSFileWrapper.class]) {
@@ -24,7 +34,9 @@
 
 - (id)contentsForType:(NSString *)typeName error:(NSError **)outError;
 {
-	return [_composition fileWrapperRepresentationWithError:outError];
+	if (_composition) {
+		return [_composition fileWrapperRepresentationWithError:outError];
+	}
 }
 
 @end
