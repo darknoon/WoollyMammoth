@@ -192,6 +192,8 @@
 		49C52C1D16A5EBB000A15DCD /* WMDefaultShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 49C52C1A16A5EBB000A15DCD /* WMDefaultShader.fsh */; };
 		49C52C1E16A5EBB000A15DCD /* WMDefaultShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 49C52C1B16A5EBB000A15DCD /* WMDefaultShader.vsh */; };
 		49C52C1F16A5EBB000A15DCD /* WMDefaultShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 49C52C1B16A5EBB000A15DCD /* WMDefaultShader.vsh */; };
+		49C52C2116A5ED9900A15DCD /* WMGaussianBlur.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 49C52C2016A5ED9900A15DCD /* WMGaussianBlur.glsl */; };
+		49C52C2216A5EDA500A15DCD /* WMGaussianBlur.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 49C52C2016A5ED9900A15DCD /* WMGaussianBlur.glsl */; };
 		49D530121447AB4C00739E84 /* lapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 49D52FD71447AB4B00739E84 /* lapi.c */; };
 		49D530131447AB4C00739E84 /* lauxlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 49D52FD91447AB4B00739E84 /* lauxlib.c */; };
 		49D530141447AB4C00739E84 /* lbaselib.c in Sources */ = {isa = PBXBuildFile; fileRef = 49D52FDB1447AB4B00739E84 /* lbaselib.c */; };
@@ -524,6 +526,7 @@
 		49BACB4A13EB592A008ED051 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		49C52C1A16A5EBB000A15DCD /* WMDefaultShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = WMDefaultShader.fsh; sourceTree = "<group>"; };
 		49C52C1B16A5EBB000A15DCD /* WMDefaultShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = WMDefaultShader.vsh; sourceTree = "<group>"; };
+		49C52C2016A5ED9900A15DCD /* WMGaussianBlur.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; name = WMGaussianBlur.glsl; path = ../../Engine/Patches/Image/WMGaussianBlur.glsl; sourceTree = "<group>"; };
 		49D52FD71447AB4B00739E84 /* lapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lapi.c; sourceTree = "<group>"; };
 		49D52FD81447AB4B00739E84 /* lapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lapi.h; sourceTree = "<group>"; };
 		49D52FD91447AB4B00739E84 /* lauxlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lauxlib.c; sourceTree = "<group>"; };
@@ -584,7 +587,7 @@
 		49E3145613DA44F600813CE0 /* Random.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Random.cpp; sourceTree = "<group>"; };
 		49E3145713DA44F600813CE0 /* Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Random.h; sourceTree = "<group>"; };
 		49E3145813DA44F600813CE0 /* Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Types.h; sourceTree = "<group>"; };
-		49F0594C13D15F640056C506 /* WMEdit2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WMEdit2.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		49F0594C13D15F640056C506 /* WMEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WMEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49F0595013D15F640056C506 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		49F0595213D15F640056C506 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		49F0595413D15F640056C506 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1157,6 +1160,7 @@
 		49A5286113D174C6004EC7F6 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				49C52C2016A5ED9900A15DCD /* WMGaussianBlur.glsl */,
 				49C52C1A16A5EBB000A15DCD /* WMDefaultShader.fsh */,
 				49C52C1B16A5EBB000A15DCD /* WMDefaultShader.vsh */,
 				4979F35014478B2500D25116 /* WEPopover-Sucky */,
@@ -1340,7 +1344,7 @@
 		49F0594D13D15F640056C506 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				49F0594C13D15F640056C506 /* WMEdit2.app */,
+				49F0594C13D15F640056C506 /* WMEdit.app */,
 				49BACB4913EB592A008ED051 /* WMEngineTests.octest */,
 				494FEA0616897A3E00EE9BE8 /* WMEdit.app */,
 			);
@@ -1455,7 +1459,7 @@
 			);
 			name = WMEdit;
 			productName = WMEdit;
-			productReference = 49F0594C13D15F640056C506 /* WMEdit2.app */;
+			productReference = 49F0594C13D15F640056C506 /* WMEdit.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1492,6 +1496,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49C52C2116A5ED9900A15DCD /* WMGaussianBlur.glsl in Resources */,
 				494FEA1316897A3E00EE9BE8 /* InfoPlist.strings in Resources */,
 				49C52C1D16A5EBB000A15DCD /* WMDefaultShader.fsh in Resources */,
 				49C52C1F16A5EBB000A15DCD /* WMDefaultShader.vsh in Resources */,
@@ -1577,6 +1582,7 @@
 				49F638D215742B3900BA9C39 /* WMBooleanInputPortCell.xib in Resources */,
 				497F551E167683E200209E30 /* WMAPI.lua in Resources */,
 				497F551F167683E200209E30 /* WMAPIBuffer.lua in Resources */,
+				49C52C2216A5EDA500A15DCD /* WMGaussianBlur.glsl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1945,7 +1951,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/../Externals/lua-5.1.4/src\"",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)2";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1964,7 +1970,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/../Externals/lua-5.1.4/src\"",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)2";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};
