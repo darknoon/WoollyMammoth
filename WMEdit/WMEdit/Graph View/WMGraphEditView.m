@@ -87,6 +87,8 @@
 	//Un-observe patches
 	for (WMPatch *patch in rootPatch.children) {
 		[patch removeObserver:self forKeyPath:KVC(patch, editorPosition) identifier:nil];
+		[patch removeObserver:self forKeyPath:KVC(patch, inputPorts) identifier:nil];
+		[patch removeObserver:self forKeyPath:KVC(patch, outputPorts) identifier:nil];
 	}
 }
 
