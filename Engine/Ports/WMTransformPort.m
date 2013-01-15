@@ -38,6 +38,36 @@
 	return [NSValue valueWithGLKMatrix4:_v];
 }
 
+- (id)stateValue;
+{
+	NSMutableArray *a = [[NSMutableArray alloc] initWithCapacity:16];
+	for (int i=0; i<16; i++) {
+		a[i] = @(_v.m[i]);
+	}
+	return [a copy];
+}
+
+- (BOOL)setStateValue:(id)stateValue;
+{
+	if (![stateValue isKindOfClass:[NSArray class]]) {
+		return NO;
+	}
+	NSArray *matrixValues = stateValue;
+	if (matrixValues.count != 16) {
+		return NO;
+	}
+	GLKMatrix4 rawMatrix;
+	for (int i=0; i<16; i++) {
+		id value = matrixValues[i];
+		if ([value respondsToSelector:@selector(floatValue)]) {
+			rawMatrix.m[i] = [value floatValue];
+		} else {
+			return NO;
+		}
+	}
+	return YES;
+}
+
 - (BOOL)takeValueFromPort:(WMPort *)port;
 {
 	if ([port isKindOfClass:[WMTransformPort class]]) {
