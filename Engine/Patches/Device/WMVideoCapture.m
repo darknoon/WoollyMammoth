@@ -324,7 +324,8 @@
 	[captureSession startRunning];
 #else
 	if (!simulatorDebugTimer)
-		simulatorDebugTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/30.0 target:self selector:@selector(simulatorUploadTexture) userInfo:nil repeats:YES];
+		simulatorDebugTimer = [NSTimer timerWithTimeInterval:1.0 / 15.0 target:self selector:@selector(simulatorUploadTexture) userInfo:nil repeats:YES];
+	[[NSRunLoop mainRunLoop] addTimer:simulatorDebugTimer forMode:NSRunLoopCommonModes];
 
 #endif	
 
