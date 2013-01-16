@@ -46,7 +46,6 @@
 						<string key="NSFrameSize">{455, 367}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:504</string>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
@@ -59,8 +58,11 @@ Q29vcmRpbmF0ZTsKCnZvaWQgbWFpbigpIHsKICAgIGdsX1Bvc2l0aW9uID0gbW9kZWxWaWV3UHJvamVj
 dGlvbk1hdHJpeCAqIHBvc2l0aW9uOwoJdl90ZXh0dXJlQ29vcmRpbmF0ZSA9IHZlYzIoMS4wKSAtIHRl
 eENvb3JkMC55eDsKfQo</string>
 						<object class="NSColor" key="IBUITextColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MCAwLjIwNjgxMDc0MjYgMC4zOTA3NTEwMDQyAA</bytes>
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MQA</bytes>
+							<object class="NSColorSpace" key="NSCustomColorSpace">
+								<int key="NSID">2</int>
+							</object>
 						</object>
 						<object class="IBUITextInputTraits" key="IBUITextInputTraits">
 							<int key="IBUIAutocorrectionType">1</int>
