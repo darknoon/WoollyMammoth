@@ -32,8 +32,6 @@
 
 //END HACK SUPPORT
 
-const CGSize previewSize = (CGSize){.width = 300, .height = 200};
-
 
 @interface WMEditViewController ()
 - (void)addPatchViews;
@@ -122,13 +120,14 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 		previewController.alwaysPortrait = YES;
 		previewWindow.hidden = NO;
 	} else {
+		
+
 		[self addChildViewController:previewController];
 
-		CGRect bounds = self.view.bounds;
-		previewController.view.frame = (CGRect){.origin.x = bounds.size.width - previewSize.width, .origin.y = bounds.size.height - previewSize.height, .size = previewSize};
+		previewController.view.frame = self.view.bounds;
 		previewController.view.backgroundColor = [UIColor blackColor];
-		previewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
-		[self.view addSubview:previewController.view];
+		previewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		[self.view insertSubview:previewController.view atIndex:0];
 
 		previewController.alwaysPortrait = NO;
 		UITapGestureRecognizer *enlargeRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(togglePreviewFullscreen:)];
@@ -194,7 +193,7 @@ const CGSize previewSize = (CGSize){.width = 300, .height = 200};
 			previewController.view.frame = bounds;
 			previewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		} else {
-			previewController.view.frame = (CGRect){.origin.x = bounds.size.width - previewSize.width, .origin.y = bounds.size.height - previewSize.height, .size = previewSize};
+			previewController.view.frame = bounds;
 			previewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
 		}
 	}];

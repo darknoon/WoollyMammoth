@@ -51,8 +51,8 @@
 	self.decelerationRate = UIScrollViewDecelerationRateFast;
 
 	contentView = [[UIView alloc] initWithFrame:(CGRect){.size = self.contentSize}];
-	//TODO: why doesn't this work?
-	contentView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background-tile"]];
+	contentView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"EditorBackgroundPattern.png"]];
+	self.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.2];
 	[self addSubview:contentView];
 	
 	patchViews = [[NSMutableArray alloc] init];

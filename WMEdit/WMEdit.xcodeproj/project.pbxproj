@@ -23,7 +23,6 @@
 		491C1CD11454735000554C73 /* popoverArrowUpSimple.png in Resources */ = {isa = PBXBuildFile; fileRef = 491C1CC51454735000554C73 /* popoverArrowUpSimple.png */; };
 		491D665513D630BD003C609B /* plugstrip-stretchable~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 491D665413D630BD003C609B /* plugstrip-stretchable~ipad.png */; };
 		4924A05B168E792C004123B7 /* WMGraph.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 494FEA2716897AD500EE9BE8 /* WMGraph.framework */; };
-		493A1A2B1400C1CB001BB458 /* background-tile~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 493A1A2A1400C1CB001BB458 /* background-tile~ipad.png */; };
 		493A1A2E1400E491001BB458 /* WMIndexInputPortCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 493A1A2D1400E491001BB458 /* WMIndexInputPortCell.m */; };
 		493A1A301400E4B4001BB458 /* WMIndexInputPortCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 493A1A2F1400E4B4001BB458 /* WMIndexInputPortCell.xib */; };
 		494E4D7613D24A4C00402784 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 494E4D2513D24A4C00402784 /* ASIAuthenticationDialog.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -69,7 +68,6 @@
 		49752E9713D35C2000F20447 /* plug-popover-dot~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49752E9513D35C2000F20447 /* plug-popover-dot~ipad.png */; };
 		49752E9813D35C2000F20447 /* plug-popover-highlight~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49752E9613D35C2000F20447 /* plug-popover-highlight~ipad.png */; };
 		49752EA213D3709D00F20447 /* connection-lighting~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49752EA113D3709D00F20447 /* connection-lighting~ipad.png */; };
-		49752EA513D374D100F20447 /* background~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49752EA413D374D100F20447 /* background~ipad.png */; };
 		49752EAF13D3807800F20447 /* compositions-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49752EAE13D3807800F20447 /* compositions-button~ipad.png */; };
 		497928A913E2AA6800DDBD2A /* SnowChunk.png in Resources */ = {isa = PBXBuildFile; fileRef = 497928A613E2AA6700DDBD2A /* SnowChunk.png */; };
 		497928AA13E2AA6800DDBD2A /* SnowParticle.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 497928A713E2AA6700DDBD2A /* SnowParticle.fsh */; };
@@ -194,6 +192,8 @@
 		49C52C1F16A5EBB000A15DCD /* WMDefaultShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 49C52C1B16A5EBB000A15DCD /* WMDefaultShader.vsh */; };
 		49C52C2116A5ED9900A15DCD /* WMGaussianBlur.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 49C52C2016A5ED9900A15DCD /* WMGaussianBlur.glsl */; };
 		49C52C2216A5EDA500A15DCD /* WMGaussianBlur.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 49C52C2016A5ED9900A15DCD /* WMGaussianBlur.glsl */; };
+		49C52C6916A63A6E00A15DCD /* EditorBackgroundPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 49C52C6716A63A6E00A15DCD /* EditorBackgroundPattern.png */; };
+		49C52C6A16A63A6E00A15DCD /* EditorBackgroundPattern@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49C52C6816A63A6E00A15DCD /* EditorBackgroundPattern@2x.png */; };
 		49D530121447AB4C00739E84 /* lapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 49D52FD71447AB4B00739E84 /* lapi.c */; };
 		49D530131447AB4C00739E84 /* lauxlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 49D52FD91447AB4B00739E84 /* lauxlib.c */; };
 		49D530141447AB4C00739E84 /* lbaselib.c in Sources */ = {isa = PBXBuildFile; fileRef = 49D52FDB1447AB4B00739E84 /* lbaselib.c */; };
@@ -269,7 +269,6 @@
 		491C1CC41454735000554C73 /* popoverArrowUp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popoverArrowUp@2x.png"; sourceTree = "<group>"; };
 		491C1CC51454735000554C73 /* popoverArrowUpSimple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverArrowUpSimple.png; sourceTree = "<group>"; };
 		491D665413D630BD003C609B /* plugstrip-stretchable~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plugstrip-stretchable~ipad.png"; sourceTree = "<group>"; };
-		493A1A2A1400C1CB001BB458 /* background-tile~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-tile~ipad.png"; sourceTree = "<group>"; };
 		493A1A2C1400E491001BB458 /* WMIndexInputPortCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMIndexInputPortCell.h; sourceTree = "<group>"; };
 		493A1A2D1400E491001BB458 /* WMIndexInputPortCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMIndexInputPortCell.m; sourceTree = "<group>"; };
 		493A1A2F1400E4B4001BB458 /* WMIndexInputPortCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMIndexInputPortCell.xib; sourceTree = "<group>"; };
@@ -344,7 +343,6 @@
 		49752E9513D35C2000F20447 /* plug-popover-dot~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plug-popover-dot~ipad.png"; sourceTree = "<group>"; };
 		49752E9613D35C2000F20447 /* plug-popover-highlight~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plug-popover-highlight~ipad.png"; sourceTree = "<group>"; };
 		49752EA113D3709D00F20447 /* connection-lighting~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "connection-lighting~ipad.png"; sourceTree = "<group>"; };
-		49752EA413D374D100F20447 /* background~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background~ipad.png"; sourceTree = "<group>"; };
 		49752EAE13D3807800F20447 /* compositions-button~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "compositions-button~ipad.png"; sourceTree = "<group>"; };
 		497928A613E2AA6700DDBD2A /* SnowChunk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SnowChunk.png; sourceTree = "<group>"; };
 		497928A713E2AA6700DDBD2A /* SnowParticle.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SnowParticle.fsh; sourceTree = "<group>"; };
@@ -527,6 +525,8 @@
 		49C52C1A16A5EBB000A15DCD /* WMDefaultShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = WMDefaultShader.fsh; sourceTree = "<group>"; };
 		49C52C1B16A5EBB000A15DCD /* WMDefaultShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = WMDefaultShader.vsh; sourceTree = "<group>"; };
 		49C52C2016A5ED9900A15DCD /* WMGaussianBlur.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; name = WMGaussianBlur.glsl; path = ../../Engine/Patches/Image/WMGaussianBlur.glsl; sourceTree = "<group>"; };
+		49C52C6716A63A6E00A15DCD /* EditorBackgroundPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EditorBackgroundPattern.png; sourceTree = "<group>"; };
+		49C52C6816A63A6E00A15DCD /* EditorBackgroundPattern@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EditorBackgroundPattern@2x.png"; sourceTree = "<group>"; };
 		49D52FD71447AB4B00739E84 /* lapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lapi.c; sourceTree = "<group>"; };
 		49D52FD81447AB4B00739E84 /* lapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lapi.h; sourceTree = "<group>"; };
 		49D52FD91447AB4B00739E84 /* lauxlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lauxlib.c; sourceTree = "<group>"; };
@@ -1164,14 +1164,14 @@
 				49C52C1A16A5EBB000A15DCD /* WMDefaultShader.fsh */,
 				49C52C1B16A5EBB000A15DCD /* WMDefaultShader.vsh */,
 				4979F35014478B2500D25116 /* WEPopover-Sucky */,
-				493A1A2A1400C1CB001BB458 /* background-tile~ipad.png */,
 				07C99A9013D38E8B00712EFA /* Icon-72.png */,
 				49858EB813DE85BC0061A1A8 /* Icon-Small.png */,
 				49858EB913DE85BC0061A1A8 /* Icon-Small@2x.png */,
 				49858EBA13DE85BC0061A1A8 /* Icon@2x.png */,
 				491D665413D630BD003C609B /* plugstrip-stretchable~ipad.png */,
 				49752EAE13D3807800F20447 /* compositions-button~ipad.png */,
-				49752EA413D374D100F20447 /* background~ipad.png */,
+				49C52C6716A63A6E00A15DCD /* EditorBackgroundPattern.png */,
+				49C52C6816A63A6E00A15DCD /* EditorBackgroundPattern@2x.png */,
 				49752EA113D3709D00F20447 /* connection-lighting~ipad.png */,
 				49752E9513D35C2000F20447 /* plug-popover-dot~ipad.png */,
 				49752E9613D35C2000F20447 /* plug-popover-highlight~ipad.png */,
@@ -1537,7 +1537,6 @@
 				49752E9813D35C2000F20447 /* plug-popover-highlight~ipad.png in Resources */,
 				B43F38BD13D358B4004A6A47 /* missing_effect_thumb.jpg in Resources */,
 				49752EA213D3709D00F20447 /* connection-lighting~ipad.png in Resources */,
-				49752EA513D374D100F20447 /* background~ipad.png in Resources */,
 				07C99A9113D38E8B00712EFA /* Icon-72.png in Resources */,
 				491D665513D630BD003C609B /* plugstrip-stretchable~ipad.png in Resources */,
 				49752EAF13D3807800F20447 /* compositions-button~ipad.png in Resources */,
@@ -1562,7 +1561,6 @@
 				496F554313E128A30065BB67 /* WMSetShaderSettingsController.xib in Resources */,
 				497928A913E2AA6800DDBD2A /* SnowChunk.png in Resources */,
 				49F8A94613E69778000D4A3A /* WMImageLoaderSettingsController.xib in Resources */,
-				493A1A2B1400C1CB001BB458 /* background-tile~ipad.png in Resources */,
 				493A1A301400E4B4001BB458 /* WMIndexInputPortCell.xib in Resources */,
 				4979F36B14478B8600D25116 /* popoverBg.png in Resources */,
 				4979F36C14478B8600D25116 /* popoverBg@2x.png in Resources */,
@@ -1583,6 +1581,8 @@
 				497F551E167683E200209E30 /* WMAPI.lua in Resources */,
 				497F551F167683E200209E30 /* WMAPIBuffer.lua in Resources */,
 				49C52C2216A5EDA500A15DCD /* WMGaussianBlur.glsl in Resources */,
+				49C52C6916A63A6E00A15DCD /* EditorBackgroundPattern.png in Resources */,
+				49C52C6A16A63A6E00A15DCD /* EditorBackgroundPattern@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
