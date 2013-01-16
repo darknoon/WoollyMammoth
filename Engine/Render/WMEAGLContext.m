@@ -107,7 +107,6 @@ NSString *const EAGLMacThreadDictionaryKey = @"com.darknoon.EAGLMacContext";
 	
 	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
 	
-	glEnable(GL_TEXTURE_2D);
 	GL_CHECK_ERROR;
 }
 
