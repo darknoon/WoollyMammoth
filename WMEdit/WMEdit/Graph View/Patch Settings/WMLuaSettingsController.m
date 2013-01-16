@@ -68,7 +68,7 @@
 
 - (void)close:(id)sender;
 {
-	[self dismissViewControllerAnimated:YES completion:NULL];
+	[self.editViewController dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (void)viewDidLoad

@@ -57,6 +57,8 @@
 	
 	WMPatch *rootPatch; 
     WMGraphEditView *graphicView;
+	
+	UIViewController *_presentedViewController;
 }
 
 @synthesize document = _document;
@@ -421,6 +423,43 @@
 {
     // Return YES for supported orientations
     return YES;
+}
+
+#pragma mark - Editor presentation
+
+- (UIViewController *)presentedViewController;
+{
+	return _presentedViewController;
+}
+
+//When presenting, don't actually present. Do our little funny business :D
+- (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion;
+{
+	_presentedViewController = viewControllerToPresent;
+	_presentedViewController.view.frame = self.view.bounds;
+	_presentedViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	
+	[self addChildViewController:viewControllerToPresent];
+	[self.view addSubview:viewControllerToPresent.view];
+	
+	[UIView animateWithDuration:0.2 animations:^{
+		self.graphView.alpha = 0.0;
+	} completion:^(BOOL finished) {
+		if (completion) completion();
+	}];
+}
+
+- (void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion;
+{
+	[_presentedViewController removeFromParentViewController];
+	[_presentedViewController.view removeFromSuperview];
+	_presentedViewController = nil;
+	
+	[UIView animateWithDuration:0.2 animations:^{
+		self.graphView.alpha = 1.0;
+	} completion:^(BOOL finished) {
+		if (completion) completion();
+	}];
 }
 
 #pragma mark - PopVideo hacks

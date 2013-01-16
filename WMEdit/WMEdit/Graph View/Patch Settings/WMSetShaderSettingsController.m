@@ -93,7 +93,7 @@
 
 - (void)close:(id)sender;
 {
-	[self dismissViewControllerAnimated:YES completion:NULL];
+	[self.editViewController dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (IBAction)toggleEditingVertexOrFragmentShader:(UISegmentedControl *)sender;
@@ -117,10 +117,6 @@
 	[self setTextView:nil];
 }
 
-- (CGSize)contentSizeForViewInPopover;
-{
-	return (CGSize){.width = 400, .height = 400};
-}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
 {
