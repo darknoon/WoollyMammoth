@@ -215,7 +215,7 @@ GLint GLFormatForWMTexture2DPixelFormat(WMTexture2DPixelFormat format) {
 			
 			GL_CHECK_ERROR;
 			
-			glTexStorage2DEXT(GL_TEXTURE_2D, 1, GL_BGRA8_EXT, width, height);
+			glTexStorage2DEXT(GL_TEXTURE_2D, 1, internalFormat, width, height);
 			
 			GL_CHECK_ERROR;
 		}];
