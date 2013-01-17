@@ -2,8 +2,8 @@
 //  WMCompositionLibraryViewController.m
 //  WMEdit
 //
-//  Created by Androidicus Maximus on 7/17/11.
-//  Copyright 2011 Darknoon. All rights reserved.
+//  Created by Andrew Pouliot on 1/16/13.
+//  Copyright 2013 Darknoon. All rights reserved.
 //
 
 #import "WMCompositionLibraryViewController.h"
