@@ -27,7 +27,6 @@ typedef enum {
 	
 } WMStructureType;
 
-// to compile on 4.2, llvm 3.0 lion, 'const' had to be removed - acs
 typedef struct {
 	char name[256];  //Name must be less than 256 bytes ASCII
 	WMStructureType type;  //The underlying data type of the data GLKVector3 = WMStructureTypeFloat

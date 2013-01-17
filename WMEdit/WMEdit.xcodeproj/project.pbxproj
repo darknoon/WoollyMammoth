@@ -126,7 +126,6 @@
 		498DDEE613DF469F00D10642 /* WMEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498DDEDB13DF469F00D10642 /* WMEditViewController.m */; };
 		498DDEE713DF469F00D10642 /* WMGraphEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 498DDEDD13DF469F00D10642 /* WMGraphEditView.m */; };
 		498DDEE913DF491D00D10642 /* WMEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498DDEE813DF491D00D10642 /* WMEditViewController.xib */; };
-		498DDEEC13DF496000D10642 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498DDEEA13DF496000D10642 /* MainWindow.xib */; };
 		498DDEF013DF584000D10642 /* WMCustomPopover.m in Sources */ = {isa = PBXBuildFile; fileRef = 498DDEEF13DF584000D10642 /* WMCustomPopover.m */; };
 		498DDEF613DF5BCC00D10642 /* WMCustomPopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 498DDEF513DF5BCC00D10642 /* WMCustomPopoverView.m */; };
 		498DDEFC13DF600700D10642 /* black-popover-arrow-left~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 498DDEF713DF600700D10642 /* black-popover-arrow-left~ipad.png */; };
@@ -228,11 +227,12 @@
 		49D5303B1447AC9100739E84 /* WMLuaSettingsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49D530391447AC9100739E84 /* WMLuaSettingsController.xib */; };
 		49D73A8713FEE0F60028AF22 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D73A8613FEE0F60028AF22 /* AssetsLibrary.framework */; };
 		49E3145913DA44F600813CE0 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49E3145613DA44F600813CE0 /* Random.cpp */; };
+		49ECA80F16A776A8007EB84C /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49ECA80D16A776A8007EB84C /* MainWindow.xib */; };
+		49ECA81216A776E8007EB84C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49ECA81016A776E8007EB84C /* InfoPlist.strings */; };
+		49ECA81416A776F2007EB84C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 49ECA81316A776F2007EB84C /* main.m */; };
 		49F0595113D15F640056C506 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595013D15F640056C506 /* UIKit.framework */; };
 		49F0595313D15F640056C506 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595213D15F640056C506 /* Foundation.framework */; };
 		49F0595513D15F640056C506 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F0595413D15F640056C506 /* CoreGraphics.framework */; };
-		49F0595B13D15F640056C506 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49F0595913D15F640056C506 /* InfoPlist.strings */; };
-		49F0595E13D15F640056C506 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F0595D13D15F640056C506 /* main.m */; };
 		49F638D115742B3900BA9C39 /* WMBooleanInputPortCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F638CF15742B3800BA9C39 /* WMBooleanInputPortCell.m */; };
 		49F638D215742B3900BA9C39 /* WMBooleanInputPortCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49F638D015742B3900BA9C39 /* WMBooleanInputPortCell.xib */; };
 		49F8A94513E69778000D4A3A /* WMImageLoaderSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F8A94313E69778000D4A3A /* WMImageLoaderSettingsController.m */; };
@@ -452,7 +452,6 @@
 		498DDEDC13DF469F00D10642 /* WMGraphEditView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMGraphEditView.h; sourceTree = "<group>"; };
 		498DDEDD13DF469F00D10642 /* WMGraphEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMGraphEditView.m; sourceTree = "<group>"; };
 		498DDEE813DF491D00D10642 /* WMEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMEditViewController.xib; sourceTree = "<group>"; };
-		498DDEEB13DF496000D10642 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainWindow.xib; sourceTree = "<group>"; };
 		498DDEEE13DF584000D10642 /* WMCustomPopover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMCustomPopover.h; sourceTree = "<group>"; };
 		498DDEEF13DF584000D10642 /* WMCustomPopover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMCustomPopover.m; sourceTree = "<group>"; };
 		498DDEF413DF5BCB00D10642 /* WMCustomPopoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMCustomPopoverView.h; sourceTree = "<group>"; };
@@ -587,14 +586,13 @@
 		49E3145613DA44F600813CE0 /* Random.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Random.cpp; sourceTree = "<group>"; };
 		49E3145713DA44F600813CE0 /* Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Random.h; sourceTree = "<group>"; };
 		49E3145813DA44F600813CE0 /* Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Types.h; sourceTree = "<group>"; };
+		49ECA80E16A776A8007EB84C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainWindow.xib; sourceTree = "<group>"; };
+		49ECA81116A776E8007EB84C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		49ECA81316A776F2007EB84C /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		49F0594C13D15F640056C506 /* WMEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WMEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49F0595013D15F640056C506 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		49F0595213D15F640056C506 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		49F0595413D15F640056C506 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		49F0595813D15F640056C506 /* WMEdit-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WMEdit-Info.plist"; sourceTree = "<group>"; };
-		49F0595A13D15F640056C506 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		49F0595C13D15F640056C506 /* WMEdit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WMEdit-Prefix.pch"; sourceTree = "<group>"; };
-		49F0595D13D15F640056C506 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		49F638CE15742B3800BA9C39 /* WMBooleanInputPortCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMBooleanInputPortCell.h; sourceTree = "<group>"; };
 		49F638CF15742B3800BA9C39 /* WMBooleanInputPortCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMBooleanInputPortCell.m; sourceTree = "<group>"; };
 		49F638D015742B3900BA9C39 /* WMBooleanInputPortCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMBooleanInputPortCell.xib; sourceTree = "<group>"; };
@@ -756,6 +754,9 @@
 		4958CD491689A2150042FA31 /* WMEdit iOS */ = {
 			isa = PBXGroup;
 			children = (
+				49ECA81316A776F2007EB84C /* main.m */,
+				49ECA80D16A776A8007EB84C /* MainWindow.xib */,
+				49ECA81016A776E8007EB84C /* InfoPlist.strings */,
 				4958CD4D1689A2390042FA31 /* DNDocument.h */,
 				4958CD4E1689A2390042FA31 /* DNDocument.m */,
 				4958CD4A1689A2150042FA31 /* WMBundleDocument.h */,
@@ -1389,21 +1390,8 @@
 				498DDEB413DF465400D10642 /* Util */,
 				498DDEB713DF465400D10642 /* WMEditAppDelegate.h */,
 				498DDEB813DF465400D10642 /* WMEditAppDelegate.m */,
-				498DDEEA13DF496000D10642 /* MainWindow.xib */,
-				49F0595713D15F640056C506 /* Supporting Files */,
 			);
 			path = WMEdit;
-			sourceTree = "<group>";
-		};
-		49F0595713D15F640056C506 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				49F0595813D15F640056C506 /* WMEdit-Info.plist */,
-				49F0595913D15F640056C506 /* InfoPlist.strings */,
-				49F0595C13D15F640056C506 /* WMEdit-Prefix.pch */,
-				49F0595D13D15F640056C506 /* main.m */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1528,7 +1516,6 @@
 				49C52C1E16A5EBB000A15DCD /* WMDefaultShader.vsh in Resources */,
 				497928AA13E2AA6800DDBD2A /* SnowParticle.fsh in Resources */,
 				497928AB13E2AA6800DDBD2A /* SnowParticle.vsh in Resources */,
-				49F0595B13D15F640056C506 /* InfoPlist.strings in Resources */,
 				49A5286313D174C6004EC7F6 /* connection-white~ipad.png in Resources */,
 				49A5286513D17A03004EC7F6 /* connection-shadow~ipad.png in Resources */,
 				496150C013D2D807006C8B57 /* plug-popover-arrow~ipad.png in Resources */,
@@ -1549,7 +1536,6 @@
 				49858EBD13DE85BC0061A1A8 /* Icon@2x.png in Resources */,
 				498DDEBB13DF465400D10642 /* WMCompositionLibraryViewController.xib in Resources */,
 				498DDEE913DF491D00D10642 /* WMEditViewController.xib in Resources */,
-				498DDEEC13DF496000D10642 /* MainWindow.xib in Resources */,
 				498DDEFC13DF600700D10642 /* black-popover-arrow-left~ipad.png in Resources */,
 				498DDEFD13DF600700D10642 /* black-popover-arrow-right~ipad.png in Resources */,
 				498DDEFE13DF600700D10642 /* black-popover-bottom~ipad.png in Resources */,
@@ -1583,6 +1569,8 @@
 				49C52C2216A5EDA500A15DCD /* WMGaussianBlur.glsl in Resources */,
 				49C52C6916A63A6E00A15DCD /* EditorBackgroundPattern.png in Resources */,
 				49C52C6A16A63A6E00A15DCD /* EditorBackgroundPattern@2x.png in Resources */,
+				49ECA80F16A776A8007EB84C /* MainWindow.xib in Resources */,
+				49ECA81216A776E8007EB84C /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1629,7 +1617,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49F0595E13D15F640056C506 /* main.m in Sources */,
 				49A5279413D17331004EC7F6 /* BrowserViewController.m in Sources */,
 				49A5285B13D173B8004EC7F6 /* PGMidi.mm in Sources */,
 				49A5285C13D173B8004EC7F6 /* PGMidiAllSources.mm in Sources */,
@@ -1740,6 +1727,7 @@
 				497F5523167683E200209E30 /* WMPatchLuaBridge.m in Sources */,
 				4958CD4C1689A2150042FA31 /* WMBundleDocument.m in Sources */,
 				4958CD4F1689A2390042FA31 /* DNDocument.m in Sources */,
+				49ECA81416A776F2007EB84C /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1770,18 +1758,18 @@
 			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
-		498DDEEA13DF496000D10642 /* MainWindow.xib */ = {
+		49ECA80D16A776A8007EB84C /* MainWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				498DDEEB13DF496000D10642 /* en */,
+				49ECA80E16A776A8007EB84C /* en */,
 			);
 			name = MainWindow.xib;
 			sourceTree = "<group>";
 		};
-		49F0595913D15F640056C506 /* InfoPlist.strings */ = {
+		49ECA81016A776E8007EB84C /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				49F0595A13D15F640056C506 /* en */,
+				49ECA81116A776E8007EB84C /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1944,8 +1932,8 @@
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "WMEdit/WMEdit-Prefix.pch";
-				INFOPLIST_FILE = "WMEdit/WMEdit-Info.plist";
+				GCC_PREFIX_HEADER = "WMEdit iOS/WMEdit-Prefix.pch";
+				INFOPLIST_FILE = "WMEdit iOS/WMEdit-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1963,8 +1951,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "WMEdit/WMEdit-Prefix.pch";
-				INFOPLIST_FILE = "WMEdit/WMEdit-Info.plist";
+				GCC_PREFIX_HEADER = "WMEdit iOS/WMEdit-Prefix.pch";
+				INFOPLIST_FILE = "WMEdit iOS/WMEdit-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
