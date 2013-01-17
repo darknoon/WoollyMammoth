@@ -10,15 +10,10 @@
 
 @class WMEditViewController;
 
-@interface WMEditAppDelegate : NSObject <UIApplicationDelegate> {
-
-}
+@interface WMEditAppDelegate : NSObject <UIApplicationDelegate>
 
 @property (nonatomic, strong) IBOutlet UIWindow *window;
 
-
 @property (nonatomic, strong) IBOutlet UINavigationController *navController;
-
-@property (nonatomic, strong) IBOutlet WMEditViewController *viewController;
 
 @end

@@ -2,27 +2,24 @@
 //  WMCompositionLibrary.h
 //  WMEdit
 //
-//  Created by Androidicus Maximus on 7/17/11.
-//  Copyright 2011 Darknoon. All rights reserved.
+//  Created by Andrew Pouliot on 1/16/13.
+//  Copyright 2013 Darknoon. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-#import <WMGraph/WMGraph.h>
-
 @interface WMCompositionLibrary : NSObject 
+
++ (instancetype)sharedLibrary;
+
 @property (nonatomic, readonly) NSArray *compositions;
 
-+ (WMCompositionLibrary *)compositionLibrary;
+//Re-reads the directory and sends a changed notification if relevant.
+//Yes this is a horrible hack :P
+- (void)refresh;
 
-- (NSURL *)URLForResourceShortName:(NSString *)shortName;
-- (NSString *)shortNameFromURL:(NSURL *)url;
-
-- (UIImage *)imageForCompositionPath:(NSURL *)fullComposition;
-
-- (void)addCompositionURL:(NSURL *)inFileURL;
-- (void)removeCompositionURL:(NSURL *)inFileURL;
+- (NSURL *)untitledDocumentURL;
 
 @end
 
-extern NSString *CompositionsChangedNotification;
+extern NSString *WMCompositionLibraryCompositionsChangedNotification;

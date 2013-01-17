@@ -149,15 +149,14 @@
     NSString *shortName = textField.text;
     if (shortName.length > 0) {
 		NSURL *oldFileURL = _document.fileURL;
-		NSURL *newFileURL = [[WMCompositionLibrary compositionLibrary] URLForResourceShortName:shortName];
+		NSURL *newFileURL = [[_document.fileURL URLByDeletingLastPathComponent] URLByAppendingPathComponent:shortName];
 		//TODO: should we duplicate document here?
 		[_document saveToURL:newFileURL forSaveOperation:UIDocumentSaveForCreating completionHandler:^(BOOL success) {
 			if (success) {
 				titleLabel.text = _document.localizedName;
 			}
-			//Now let the composition library know
-			[[WMCompositionLibrary compositionLibrary] removeCompositionURL:oldFileURL];
-			[[WMCompositionLibrary compositionLibrary] addCompositionURL:newFileURL];
+#warning Now let the composition library know
+			//[[WMCompositionLibrary compositionLibrary] removeCompositionURL:oldFileURL];
 		}];
     }
     [textField removeFromSuperview];
