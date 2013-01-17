@@ -34,27 +34,6 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 @end
 
 
-@interface NSString(uncamelcase)
-- (NSString *)uncamelcase;
-@end
-
-@implementation NSString(uncamelcase)
-
-- (NSString *)uncamelcase {
-    NSMutableString *s = [NSMutableString string];
-    NSCharacterSet *set = [NSCharacterSet uppercaseLetterCharacterSet];
-    for (unsigned i = 0; i < self.length; i++) {
-        unichar c = [self characterAtIndex:i];
-        if ([set characterIsMember:c]) {
-            if (i > 0) [s appendString:@" "];
-        }
-        [s appendFormat:@"%C",c];
-    }
-    return s;
-}
-
-@end
-
 @interface WMPatch ()
 - (void)_initializeStateForInputPort:(WMPort *)inPort;
 @end
@@ -679,10 +658,9 @@ NSString *WMPatchEditorPositionPlistName = @"editorPosition";
 	}
 }
 
+//Override this!
 + (NSString *)humanReadableTitle {
-    NSString *s = [NSMutableString stringWithString:NSStringFromClass(self)];
-    if ([s hasPrefix:@"WM"]) s = [s substringFromIndex:2];
-    return [s uncamelcase];
+	return NSStringFromClass(self);
 }
 
 #if TARGET_OS_IPHONE
