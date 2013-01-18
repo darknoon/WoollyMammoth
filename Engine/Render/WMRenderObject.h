@@ -50,8 +50,8 @@ extern NSString *const WMRenderObjectTransformUniformName; // wm_T is selected f
 //Default (0, NSIntegerMax) will render full buffer. Setting this property will render a subset of the input data vertices or indices (if an index buffer is specified)
 @property (nonatomic) NSRange renderRange;
 
-@property (nonatomic) DNGLStateBlendMask renderBlendState;
-@property (nonatomic) DNGLStateDepthMask renderDepthState;
+@property (nonatomic) WMBlendMode renderBlendState;
+@property (nonatomic) WMDepthMask renderDepthState;
 
 //These are applied to the WMRenderObjectTransformUniformName key, ie the transformation from VBO coords to world coords, performed in the vertex shader
 //The transform can also be set directly to a specific value if that is of use

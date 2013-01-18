@@ -9,17 +9,24 @@
 #import "WMShader.h"
 #import <GLKit/GLKMath.h>
 
-enum {
+typedef NS_ENUM(int, WMBlendMode) {
+	WMBlendModeAdd = 3,
+	WMBlendModeSourceOver = 1,
+	WMBlendModeReplace = 0,
+	
+	//Deprecated, do not use. For compatibility only!
 	DNGLStateBlendEnabled = 1 << 0,
-	DNGLStateBlendModeAdd = 1 << 1, //otherwise blend is source-over
-} ;
-typedef int DNGLStateBlendMask;
-
-enum {
-	DNGLStateDepthTestEnabled  = 1 << 0,
-	DNGLStateDepthWriteEnabled = 1 << 1,
+	DNGLStateBlendModeAdd = 1 << 1,
 };
-typedef int DNGLStateDepthMask;
+
+typedef NS_ENUM(int, WMDepthMask) {
+	WMDepthTestEnabled  = 1 << 0,
+	WMDepthWriteEnabled = 1 << 1,
+	
+	//Deprecated, do not use. For compatibility only!
+	DNGLStateDepthTestEnabled  = WMDepthTestEnabled,
+	DNGLStateDepthWriteEnabled = WMDepthWriteEnabled,
+};
 
 @class WMFramebuffer;
 @class WMTexture2D;

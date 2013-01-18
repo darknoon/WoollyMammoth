@@ -48,8 +48,8 @@
 
 @interface WMEAGLContext ()
 
-@property (nonatomic) DNGLStateBlendMask blendState;
-@property (nonatomic) DNGLStateDepthMask depthState;
+@property (nonatomic) WMBlendMode blendState;
+@property (nonatomic) WMDepthMask depthState;
 
 @property (nonatomic, strong) WMFramebuffer *boundFramebuffer;
 
@@ -59,8 +59,8 @@ NSString *const EAGLMacThreadDictionaryKey = @"com.darknoon.EAGLMacContext";
 
 @implementation WMEAGLContext {
 @public
-	DNGLStateBlendMask blendState;
-	DNGLStateDepthMask depthState;
+	WMBlendMode blendState;
+	WMDepthMask depthState;
 	WMFramebuffer *boundFramebuffer;
 	CGRect viewport;
 	
@@ -248,7 +248,7 @@ NSString *const EAGLMacThreadDictionaryKey = @"com.darknoon.EAGLMacContext";
 	[_objectCache setObject:object forKey:key];
 }
 
-- (void)setBlendState:(int)inBlendState;
+- (void)setBlendState:(WMBlendMode)inBlendState;
 {
 	if ((inBlendState & DNGLStateBlendEnabled) && !(blendState & DNGLStateBlendEnabled)) {
 		//Enable blending
@@ -268,7 +268,7 @@ NSString *const EAGLMacThreadDictionaryKey = @"com.darknoon.EAGLMacContext";
 	blendState = inBlendState;
 }
 
-- (void)setDepthState:(int)inDepthState;
+- (void)setDepthState:(WMDepthMask)inDepthState;
 {
 	if ((inDepthState & DNGLStateDepthTestEnabled) && !(depthState & DNGLStateDepthTestEnabled)) {
 		//Turn on depth testing
