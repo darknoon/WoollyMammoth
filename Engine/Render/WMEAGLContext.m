@@ -446,14 +446,18 @@ NSString *const EAGLMacThreadDictionaryKey = @"com.darknoon.EAGLMacContext";
 				GLKMatrix3 matrix;
 				[(NSValue *)value getValue:&matrix];
 				[shader setMatrix3Value:matrix forUniform:uniformName];
+			} else if (strcmp(valueType, @encode(float)) == 0) {
+				float v;
+				[(NSValue *)value getValue:&v];
+				[shader setFloatValue:v forUniform:uniformName];
 			} else {
 				NSLog(@"bad nsvalue type for uniform %@: %s", uniformName, valueType);
 			}
 		} else if ([value isKindOfClass:[WMTexture2D class]]) {
 			//We unique the textures (one texture unit per texture) here by adding to a mutable ordered set then getting the index back out
-			//TODO: is it possible to get an NSNotFound here?
 			[textures addObject:value];
 			NSUInteger textureUnit = [textures indexOfObject:value];
+			ZAssert(textureUnit != NSNotFound, @"Somehow, we lost track of a texture");
 			[shader setIntValue:(int)textureUnit forUniform:uniformName];
 		} else if ([value isKindOfClass:[WMUIColorClass class]]) {
 			//TODO: test support for vec3 color inputs; is this ok?
