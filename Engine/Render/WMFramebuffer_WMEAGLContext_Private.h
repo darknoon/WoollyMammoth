@@ -20,4 +20,10 @@
 
 @end
 
+@interface WMFramebuffer (FramebufferPrivate)
+
+- (void)bind;
+
+@end
+
 #endif

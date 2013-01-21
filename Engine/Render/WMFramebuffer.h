@@ -20,8 +20,7 @@
 
 /*!
  @abstract WMFramebuffer encapsulates state relating to an OpenGL framebuffer object. It may be used to render to a texture offscreen or to the contents of a CAEAGLLayer on iOS.
- @discussion
- Create the default WMFramebuffer with -initWithLayerRenderbufferStorage: or allow WMView to create on for you.
+ @discussion Create the default WMFramebuffer with -initWithLayerRenderbufferStorage: or allow WMView to create on for you.
  */
 @interface WMFramebuffer : WMGLStateObject {
 }
@@ -58,20 +57,17 @@
 
 /*!
  Create a framebuffer for offscreen rendering (render-to-texture) bound to the given texture.
- @discussion
- Init for rendering to the color attachment, mipmap 0 of a WMTexture2D, with an optional depth buffer
- 
  @param texture A texture object that will be rendered to
  
  @param depthBufferDepth The bit-depth of the depth buffer (if desired). Higher bit depth gives better rendering accuracy and prevents jitter between adjacent surfaces, but may increase rendering times and memory requirements.
+ 
+ @discussion Init for rendering with mipmap 0 of a WMTexture2D as the color attachment of the framebuffer, with an optional depth buffer
  
  GL_DEPTH_COMPONENT16, GL_DEPTH_COMPONENT24_OES, or GL_DEPTH_COMPONENT32_OES are valid inputs to create depth buffer on iOS.
  
  0 indicates that no depth buffer should be created.
 */
 - (id)initWithTexture:(WMTexture2D *)texture depthBufferDepth:(GLuint)depthBufferDepth;
-
-- (void)bind;
 
 //When used for display
 - (BOOL)presentRenderbuffer;
