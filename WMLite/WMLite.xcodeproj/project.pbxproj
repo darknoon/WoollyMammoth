@@ -50,7 +50,7 @@
 		49E2E8F6167296FE00FA4FCE /* WMTexture2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E850167296FE00FA4FCE /* WMTexture2D.m */; };
 		49E2E8F7167296FE00FA4FCE /* WMTexture2D_RenderPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E851167296FE00FA4FCE /* WMTexture2D_RenderPrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2E8F8167296FE00FA4FCE /* WMTexture2D_WMEAGLContext_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E852167296FE00FA4FCE /* WMTexture2D_WMEAGLContext_Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		49E2E8F9167296FE00FA4FCE /* WMTextureCubeMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E853167296FE00FA4FCE /* WMTextureCubeMap.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2E8F9167296FE00FA4FCE /* WMTextureCubeMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E853167296FE00FA4FCE /* WMTextureCubeMap.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		49E2E8FA167296FE00FA4FCE /* WMTextureCubeMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E854167296FE00FA4FCE /* WMTextureCubeMap.m */; };
 		49E2E8FB167296FE00FA4FCE /* WMVertexArrayObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E855167296FE00FA4FCE /* WMVertexArrayObject.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		49E2E8FC167296FE00FA4FCE /* WMVertexArrayObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E856167296FE00FA4FCE /* WMVertexArrayObject.m */; };
@@ -113,7 +113,7 @@
 		49E2EABA16731AD200FA4FCE /* WMTexture2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E850167296FE00FA4FCE /* WMTexture2D.m */; };
 		49E2EABB16731AD200FA4FCE /* WMTexture2D_RenderPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E851167296FE00FA4FCE /* WMTexture2D_RenderPrivate.h */; };
 		49E2EABC16731AD200FA4FCE /* WMTexture2D_WMEAGLContext_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E852167296FE00FA4FCE /* WMTexture2D_WMEAGLContext_Private.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		49E2EABD16731AD200FA4FCE /* WMTextureCubeMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E853167296FE00FA4FCE /* WMTextureCubeMap.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49E2EABD16731AD200FA4FCE /* WMTextureCubeMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E853167296FE00FA4FCE /* WMTextureCubeMap.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		49E2EABE16731AD200FA4FCE /* WMTextureCubeMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E854167296FE00FA4FCE /* WMTextureCubeMap.m */; };
 		49E2EABF16731AD200FA4FCE /* WMVertexArrayObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E855167296FE00FA4FCE /* WMVertexArrayObject.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		49E2EAC016731AD200FA4FCE /* WMVertexArrayObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E856167296FE00FA4FCE /* WMVertexArrayObject.m */; };
@@ -383,8 +383,8 @@
 				49E2E874167296FE00FA4FCE /* GLKVector4_cpp.h */,
 				49E2E877167296FE00FA4FCE /* NSValue+GLKVector.h */,
 				49E2E878167296FE00FA4FCE /* NSValue+GLKVector.m */,
-				49E2E87B167296FE00FA4FCE /* WMMathUtil.c */,
 				49E2E87C167296FE00FA4FCE /* WMMathUtil.h */,
+				49E2E87B167296FE00FA4FCE /* WMMathUtil.c */,
 				49E2E87D167296FE00FA4FCE /* WMPrefix.pch */,
 				49E2E87E167296FE00FA4FCE /* WMRenderObject+CreateWithGeometry.h */,
 				49E2EA331672C51700FA4FCE /* WMRenderObject+CreateWithGeometry.mm */,
