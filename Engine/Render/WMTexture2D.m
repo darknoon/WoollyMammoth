@@ -344,22 +344,23 @@ GLint GLFormatForWMTexture2DPixelFormat(WMTexture2DPixelFormat format) {
 
 @end
 
+#if TARGET_OS_IPHONE
+
 @implementation WMTexture2D (File)
 
 - (id)initWithContentsOfFile:(NSString *)inFilePath;
 {
-#if TARGET_OS_IPHONE
 	NSString *extension = [inFilePath pathExtension];
 	if ([extension isEqualToString:@"png"]) {
 		UIImage *image = [UIImage imageWithContentsOfFile:inFilePath];
 		return [self initWithImage:image];
 	}
-#else
-#endif
 	return nil;
 }
 
 @end
+
+#endif
 
 @implementation WMTexture2D (CGBitmapContext)
 

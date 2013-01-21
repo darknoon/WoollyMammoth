@@ -20,6 +20,7 @@
 #import "WMRenderObject_WMEAGLContext_Private.h"
 #import "WMGLStateObject_WMEAGLContext_Private.h"
 #import "WMShader_WMEAGLContext_Private.h"
+#import "WMFramebuffer_WMEAGLContext_Private.h"
 #import "WMVertexArrayObject.h"
 
 #if !TARGET_OS_IPHONE
@@ -63,6 +64,10 @@ NSString *const EAGLMacThreadDictionaryKey = @"com.darknoon.EAGLMacContext";
 	WMDepthMask depthState;
 	WMFramebuffer *boundFramebuffer;
 	CGRect viewport;
+	
+#if TARGET_OS_MAC && !TARGET_OS_IPHONE
+	NSOpenGLContext *_openGLContext;
+#endif
 	
 	WMVertexArrayObject *boundVAO;
 	
@@ -117,6 +122,11 @@ NSString *const EAGLMacThreadDictionaryKey = @"com.darknoon.EAGLMacContext";
 	EAGLContext *ctx = [super currentContext];
 	ZAssert(!ctx || [ctx isKindOfClass:[WMEAGLContext class]], @"Not the expected context type!");
 	return (WMEAGLContext *)ctx;
+}
+
++ (BOOL)setCurrentContext:(WMEAGLContext *)context;
+{
+	return [super setCurrentContext:context];
 }
 
 - (id)initWithAPI:(EAGLRenderingAPI)api;
@@ -571,6 +581,21 @@ NSString *const EAGLMacThreadDictionaryKey = @"com.darknoon.EAGLMacContext";
 
 @end
 
+#if TARGET_OS_MAC && !TARGET_OS_IPHONE
+@implementation WMEAGLContext (Mac)
+
+- (NSOpenGLContext *)openGLContext;
+{
+	return _openGLContext;
+}
+- (void)setOpenGLContext:(NSOpenGLContext *)context;
+{
+	_openGLContext = context;
+}
+
+@end
+
+#endif
 
 @implementation WMStructuredBuffer (WMStructuredBuffer_WMEAGLContext_Private)
 
