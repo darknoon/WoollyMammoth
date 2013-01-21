@@ -41,32 +41,78 @@ extern size_t WMStructureFieldSize(WMStructureField inField);
 //Size of one element of this field ie float = 4 bytes
 extern size_t WMStructureTypeSize(WMStructureType inType);
 
-
-
+/**
+ @abstract Defines metadata about a structured buffer
+ @discussion 
+ */
 @interface WMStructureDefinition : NSObject
 
+/**
+ @abstract Create a structured buffer from a C array of fields.
+ @discussion The total size must be provided, as the alignment requirements of the struct may require.
+ */
 - (id)initWithFields:(const WMStructureField *)inFields count:(NSUInteger)inCount totalSize:(size_t)totalSize;
 
+/**
+ @abstract Create a structured buffer with a single field type
+ @discussion This is useful for any buffer with a single type of data like int[], unsigned short[], etc.
+ */
 - (id)initWithAnonymousFieldOfType:(WMStructureType)inType;
 
-//If yes, you don't need to ask about fields, it's just a single type (ie, single field with count = 1)
+/**
+ @abstract Whether the buffer is of type X[] rather than struct{X, Y, S}[]
+ @discussion If yes, you don't need to ask about fields, it's just a single type (ie, single field with count = 1)
+ */
 @property (nonatomic, readonly) BOOL isSingleType;
 
-//Default is NO. If YES, additional empty bytes are added to pad out the structure if needed. Your compiler may have already done this for you.
+/**
+ @abstract Whether to pad the structure to a multiple of 4 bytes
+ @discussion Default is NO. If set to YES, additional empty bytes are added to pad out the structure if needed. Your compiler may have already done this for you if you used sizeof(struct blah) */
 @property (nonatomic) BOOL shouldAlignTo4ByteBoundary;
 
+/**
+ @abstract The total size of the represented structure
+ */
 @property (nonatomic, readonly) NSUInteger size;
 
-//-1 = not found
-- (NSInteger)offsetOfField:(NSString *)inField;
-- (NSInteger)sizeOfField:(NSString *)inField;
+/**
+ @abstract Get the offset of a named field in the structure
+ @param field The name of a field
+ @returns offset in bytes or -1 if not found
+ */
+- (NSInteger)offsetOfField:(NSString *)field;
+
+/**
+ @abstract Get the size of a named field in the structure
+ @param field The name of a field
+ @returns Size in bytes or -1 if not found
+ */
+- (NSInteger)sizeOfField:(NSString *)field;
 
 //TODO: - (BOOL)getValueOfField:(NSString *)inField asType:(WMStructureType)inOutputType outBytes:(void *)outPtr;
 
-- (NSString *)descriptionOfData:(const void *)inData;
+/**
+ @abstract A sort of souped-up description for structured data
+ @param data The raw data to describe, when interpreted as being in the format of the reciever. data must contain at least size bytes.
+ @returns A string describing the values in the data, suitable for debugging.
+ */
+- (NSString *)descriptionOfData:(const void *)data;
 
-- (BOOL)getFieldNamed:(NSString *)inField outField:(WMStructureField *)outField;
-- (BOOL)getFieldNamedUTF8:(const char *)inFieldName outField:(WMStructureField *)outField;
+/**
+ @abstract Get all info about a field in the structure
+ @param field The name of a field
+ @param outField A pointer to write the field struct into
+ @returns Whether the field was found in the structure definition. If NO is returned, the contents of outField are undefined.
+ */
+- (BOOL)getFieldNamed:(NSString *)field outField:(WMStructureField *)outField;
+
+/**
+ @abstract Get all info about a field in the structure
+ @param field The name of a field as a C string
+ @param outField A pointer to write the field struct into
+ @returns Whether the field was found in the structure definition. If NO is returned, the contents of outField are undefined.
+ */
+- (BOOL)getFieldNamedUTF8:(const char *)fieldCString outField:(WMStructureField *)outField;
 
 
 @end

@@ -18,13 +18,36 @@
 
 @class WMTexture2D;
 
+/*!
+ @abstract WMFramebuffer encapsulates state relating to an OpenGL framebuffer object. It may be used to render to a texture offscreen or to the contents of a CAEAGLLayer on iOS.
+ @discussion
+ Create the default WMFramebuffer with -initWithLayerRenderbufferStorage: or allow WMView to create on for you.
+ */
 @interface WMFramebuffer : WMGLStateObject {
 }
 
 #if TARGET_OS_IPHONE
-//Use this initializer when being used for display
-- (id)initWithLayerRenderbufferStorage:(CAEAGLLayer *)inLayer;
-- (id)initWithLayerRenderbufferStorage:(CAEAGLLayer *)inLayer depthBufferDepth:(GLuint)inDepthBufferDepth;
+/*!
+ @abstract Use this initializer when being used for display to a CAEAGLLayer when no depth buffer is desired.
+ 
+ @param layer The CAEAGLLayer whose renderbuffer rendering should affect.
+ */
+- (id)initWithLayerRenderbufferStorage:(CAEAGLLayer *)layer;
+
+/*!
+ @abstract Create a default framebuffer with a depth buffer attached.
+ 
+ Use this initializer when being used for display to a CAEAGLLayer when no depth buffer is desired.
+ 
+ @param layer The CAEAGLLayer whose renderbuffer rendering should affect.
+ @param depthBufferDepth The bit-depth of the depth buffer (if desired). Higher bit depth gives better rendering accuracy and prevents jitter between adjacent surfaces, but may increase rendering times and memory requirements.
+ 
+ GL_DEPTH_COMPONENT16, GL_DEPTH_COMPONENT24_OES, or GL_DEPTH_COMPONENT32_OES are valid inputs to create depth buffer on iOS.
+ 
+ 0 indicates that no depth buffer should be created.
+
+ */
+- (id)initWithLayerRenderbufferStorage:(CAEAGLLayer *)layer depthBufferDepth:(GLuint)depthBufferDepth;
 #elif TARGET_OS_MAC
 
 - (id)initWithGLFramebufferName:(GLuint)framebufferName deleteWhenDone:(BOOL)deleteWhenDone;
@@ -33,9 +56,20 @@
 
 + (NSString *)descriptionOfFramebufferStatus:(GLenum)inStatus;
 
-//Init for rendering to the color attachment, mipmap 0 of a WMTexture2D, with an optional depth buffer
-//Pass in depthBufferDepth = GL_DEPTH_COMPONENT16 or GL_DEPTH_COMPONENT32_OES for a depth buffer, 0 otherwise
-- (id)initWithTexture:(WMTexture2D *)inTexture depthBufferDepth:(GLuint)inDepthBufferDepth;
+/*!
+ Create a framebuffer for offscreen rendering (render-to-texture) bound to the given texture.
+ @discussion
+ Init for rendering to the color attachment, mipmap 0 of a WMTexture2D, with an optional depth buffer
+ 
+ @param texture A texture object that will be rendered to
+ 
+ @param depthBufferDepth The bit-depth of the depth buffer (if desired). Higher bit depth gives better rendering accuracy and prevents jitter between adjacent surfaces, but may increase rendering times and memory requirements.
+ 
+ GL_DEPTH_COMPONENT16, GL_DEPTH_COMPONENT24_OES, or GL_DEPTH_COMPONENT32_OES are valid inputs to create depth buffer on iOS.
+ 
+ 0 indicates that no depth buffer should be created.
+*/
+- (id)initWithTexture:(WMTexture2D *)texture depthBufferDepth:(GLuint)depthBufferDepth;
 
 - (void)bind;
 

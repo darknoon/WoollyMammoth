@@ -11,9 +11,16 @@
 #import "WMRenderCommon.h"
 
 @class WMEAGLContext;
+/**
+ @discussion An abstract base class of objects that belong to a WMEAGLContext.
+ It is not recommended to create your own subclasses of WMGLStateObject.
+ */
 @interface WMGLStateObject : NSObject
 
-//Every state object is associated with the context that it was created in
+/**
+ @abstract The associated GL context
+ @discussion Every state object is associated with the context that it was created in. This provides safety in mating the object-oriented API with the OpenGL state machine.
+ */
 @property (nonatomic, weak, readonly) WMEAGLContext *context;
 
 @end

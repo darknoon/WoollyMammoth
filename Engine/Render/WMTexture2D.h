@@ -1,48 +1,7 @@
-/*
+/**
 
-File: WMTexture2D.h
-Abstract: Creates OpenGL 2D textures from images or text.
-
-Version: 1.7
-
-Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple Inc.
-("Apple") in consideration of your agreement to the following terms, and your
-use, installation, modification or redistribution of this Apple software
-constitutes acceptance of these terms.  If you do not agree with these terms,
-please do not use, install, modify or redistribute this Apple software.
-
-In consideration of your agreement to abide by the following terms, and subject
-to these terms, Apple grants you a personal, non-exclusive license, under
-Apple's copyrights in this original Apple software (the "Apple Software"), to
-use, reproduce, modify and redistribute the Apple Software, with or without
-modifications, in source and/or binary forms; provided that if you redistribute
-the Apple Software in its entirety and without modifications, you must retain
-this notice and the following text and disclaimers in all such redistributions
-of the Apple Software.
-Neither the name, trademarks, service marks or logos of Apple Inc. may be used
-to endorse or promote products derived from the Apple Software without specific
-prior written permission from Apple.  Except as expressly stated in this notice,
-no other rights or licenses, express or implied, are granted by Apple herein,
-including but not limited to any patent rights that may be infringed by your
-derivative works or by other works in which the Apple Software may be
-incorporated.
-
-The Apple Software is provided by Apple on an "AS IS" basis.  APPLE MAKES NO
-WARRANTIES, EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION THE IMPLIED
-WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-PURPOSE, REGARDING THE APPLE SOFTWARE OR ITS USE AND OPERATION ALONE OR IN
-COMBINATION WITH YOUR PRODUCTS.
-
-IN NO EVENT SHALL APPLE BE LIABLE FOR ANY SPECIAL, INDIRECT, INCIDENTAL OR
-CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
-GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-ARISING IN ANY WAY OUT OF THE USE, REPRODUCTION, MODIFICATION AND/OR
-DISTRIBUTION OF THE APPLE SOFTWARE, HOWEVER CAUSED AND WHETHER UNDER THEORY OF
-CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY OR OTHERWISE, EVEN IF
-APPLE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-Copyright (C) 2008 Apple Inc. All Rights Reserved.
-
+ File: WMTexture2D.h
+ Abstract: Creates OpenGL 2D textures from images or text.
 */
 
 #import <Foundation/Foundation.h>
@@ -54,8 +13,9 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 #import "WMGLStateObject.h"
 
-//CONSTANTS:
-
+/**
+ Pixel formats
+ */
 typedef enum {
 	kWMTexture2DPixelFormat_Automatic = 0,
 	kWMTexture2DPixelFormat_RGBA8888,
@@ -72,79 +32,146 @@ typedef enum {
 	_WMTexture2DPixelFormat_count
 } WMTexture2DPixelFormat;
 
-/*
-This class allows to easily create OpenGL 2D textures from images, text or raw data.
-Depending on how you create the WMTexture2D object, the actual image area of the texture might be smaller than the texture dimensions i.e. "contentSize" != (pixelsWide, pixelsHigh) and (maxS, maxT) != (1.0, 1.0).
-Be aware that the content of the generated textures will be upside-down!
-*/
+/**
+ @abstract Represents an OpenGL texture.
+ @discussion WMTexture2D provides methods to create textures from images, text, raw data, and CoreGraphics routines.
+ 
+ Depending on how you create the WMTexture2D object, the actual image area of the texture might be smaller than the texture dimensions i.e. "contentSize" != (pixelsWide, pixelsHigh) and (maxS, maxT) != (1.0, 1.0).
+ Be aware that the content of the generated textures will be upside-down!
+ 
+ This is focused on textures with a single mip-level. Please file a bug if you are doing mip-mapping!
+ 
+ Roughly based off of the now-defunct Texture2D sample code from Apple, but including a great many additions and changes.
+ */
 @interface WMTexture2D : WMGLStateObject
 
-//Designated initializer
+/** 
+ @abstract Create a new texture with raw data
+ @param data A pointer to image data in the correct pixel format, or NULL. If NULL, allocate a backing of the provided size with no content.
+ @param pixelFormat What pixel format the texture should have
+ @param width The new width of the texture
+ @param height The new height of the texture
+ @param orientation The new orientation of the texture
+ */
 - (id)initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(GLuint)width pixelsHigh:(GLuint)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;
 
 - (id)initWithData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(GLuint)width pixelsHigh:(GLuint)height contentSize:(CGSize)size;
 
-//Experimental method that creates a fixed-size texture. You cannot modify the size later with -setData
+//
 //Only 1 mip level currently
+
+/**
+ @abstract Experimental method that creates a fixed-size texture. 
+ @discussion You cannot modify the size later with -setData. 
+ Use this when you're creating a texture to back a render-to-texture operation. Textures created with this method are immutable. 
+ @param pixelFormat What pixel format the texture should have
+ @param width The new width of the texture
+ @param height The new height of the texture
+ */
 - (id)initEmptyTextureWithPixelFormat:(WMTexture2DPixelFormat)pixelFormat width:(GLuint)width height:(GLuint)height;
 
-//Indicates that the width or height of the texture may not be modified by one of the -setData APIs
+/** @abstract If true, width or height of the texture may not be modified by one of the -setData APIs */
 @property (nonatomic, readonly) BOOL immutable;
 
-//Resize the texture to the provided size and upload new data to it
+/** @abstract Resize the texture to the provided size and upload new data to it, setting the orientation.
+ @param data A pointer to image data in the correct pixel format, or NULL. If NULL, allocate a backing of the provided size with no content.
+ @param pixelFormat What pixel format the texture should have
+ @param width The new width of the texture
+ @param height The new height of the texture
+ @param orientation The new orientation of the texture
+ */
+- (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(GLuint)width pixelsHigh:(GLuint)height contentSize:(CGSize)size orientation:(UIImageOrientation)orientation;
 - (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(GLuint)width pixelsHigh:(GLuint)height contentSize:(CGSize)size;
-- (void)setData:(const void*)data pixelFormat:(WMTexture2DPixelFormat)pixelFormat pixelsWide:(GLuint)width pixelsHigh:(GLuint)height contentSize:(CGSize)size orientation:(UIImageOrientation)inOrientation;
 
-//Get a texture in the current context from another context's texture (changes the current texture, as you need to keep the texture name alive)
+
+
+/**
+ @abstract Move a texture to the current context from another context.
+ @discussion This method changes the texture's context. You can use this method to set up producer-consumer schemes for texture streaming, etc.
+ */
+
 - (void)moveToContext:(WMEAGLContext *)inContext;
 
-//Equivalent to binding the texture and glTexImage2D with NULL data
+/** @abstract Equivalent to binding the texture and glTexImage2D with NULL data */
 - (void)discardData;
 
 //This is just metadata that's used by WMQuad and possibly other patches to determine how to interpret the image
 @property (nonatomic) UIImageOrientation orientation;
 
+/** @abstract The current pixelFormat of the texture. This may change after a call to -setData... */
 @property (nonatomic, readonly) WMTexture2DPixelFormat pixelFormat;
+
+/** @abstract The internal width of the texture */
 @property (nonatomic, readonly) GLuint pixelsWide;
+/** @abstract The internal height of the texture */
 @property (nonatomic, readonly) GLuint pixelsHigh;
 
+/** @abstract The nominal size of the texture in points. */
 @property (nonatomic, readonly) CGSize contentSize;
+
+/** @abstract The maximum S coordinate of the texture. Usually 1.0. */
 @property (nonatomic, readonly) GLfloat maxS;
+
+/** @abstract The maximum H coordinate of the texture. Usually 1.0. */
 @property (nonatomic, readonly) GLfloat maxT;
 @end
 
+#if TARGET_OS_IPHONE
 @interface WMTexture2D (File)
+/** @abstract Create a BGRA8888 texture from a PNG file. */
 - (id)initWithContentsOfFile:(NSString *)inFilePath;
 @end
+#endif
 
 @interface WMTexture2D (CGBitmapContext)
-//For now, this is restricted to kWMTexture2DPixelFormat_BGRA8888
-//Use this to draw arbitrary CPU graphics into a texture
+/**
+ @abstract Convenience method to create a texture by drawing into a CGBitmapContext
+ @discussion Use this to draw arbitrary CPU graphics into a texture.
+ */
 - (id)initWithBitmapSize:(CGSize)size block:(void(^)(CGContextRef ctx))block;
 
+/**
+ @abstract Convenience method to create a texture by drawing into a CGBitmapContext
+ @discussion Use this to draw arbitrary CPU graphics into a texture.
+ @param format The pixel format to use. At the moment, only kWMTexture2DPixelFormat_BGRA8888 and kWMTexture2DPixelFormat_R8 are supported (where available).
+ */
 - (id)initWithBitmapSize:(CGSize)size format:(WMTexture2DPixelFormat)format block:(void(^)(CGContextRef ctx))block;
 
 @end
 
 
-/*
-Extensions to make it easy to create a WMTexture2D object from an image file.
-Note that RGBA type textures will have their alpha premultiplied - use the blending mode (GL_ONE, GL_ONE_MINUS_SRC_ALPHA).
-*/
 @interface WMTexture2D (Image)
 #if TARGET_OS_IPHONE
-- (id)initWithImage:(UIImage *)uiImage;
-- (id)initWithImage:(UIImage *)uiImage scale:(CGFloat)inScale;
+/**
+ @abstract Create a WMTexture2D object from a UIImage.
+ @discussion RGBA type textures will have their alpha premultiplied.
+ @param image The image to upload. Must be non-null.
+ */
+- (id)initWithImage:(UIImage *)image;
+
+/**
+ @abstract Scale up or down a UIImage to create a WMTexture2D.
+ @discussion RGBA type textures will have their alpha premultiplied.
+ @param image The image to upload. Must be non-null.
+ @param scale The scale factor. Must be > 0.0 */
+- (id)initWithImage:(UIImage *)image scale:(CGFloat)scale;
 #endif
-- (id)initWithCGImage:(CGImageRef)image scale:(CGFloat)inScale orientation:(UIImageOrientation)inOrientation;
+
+/**
+ @abstract Scale up or down a CGImageRef to create a WMTexture2D.
+ @discussion RGBA type textures will have their alpha premultiplied.
+ @param image The image to upload. Must be non-null.
+ @param scale The scale factor. Must be > 0.0
+ @param orientation The image orientation */
+- (id)initWithCGImage:(CGImageRef)image scale:(CGFloat)scale orientation:(UIImageOrientation)inOrientation;
 @end
 
 #if TARGET_OS_IPHONE
-/*
-Extensions to make it easy to create a WMTexture2D object from a string of text.
-Note that the generated textures are of type A8 - use the blending mode (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA).
-*/
 @interface WMTexture2D (Text)
+/**
+ @abstract Create a WMTexture2D object by drawing a string of text.
+ @discussion Note that the generated textures are of type kWMTexture2DPixelFormat_A8.
+ */
 - (id)initWithString:(NSString*)string dimensions:(CGSize)dimensions alignment:(UITextAlignment)alignment fontName:(NSString*)name fontSize:(CGFloat)size;
 @end
 

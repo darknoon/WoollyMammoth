@@ -10,10 +10,12 @@
 
 
 /*!
- @abstract   Presents a unified display-link API on Mac and iOS.
- @discussion This class is still being worked on. Specifically, the dispatch-based API may change to a runloop one.
+ Presents a unified display-link API on Mac and iOS.
+ 
+ In the future, the dispatch-based API may change to a runloop one.
  On iOS, this uses CADisplayLink, whereas on Mac it uses CVDisplayLink.
- For now, display links will target the main screen.
+
+ The display link targets the main screen.
  */
 @interface WMDisplayLink : NSObject
 
