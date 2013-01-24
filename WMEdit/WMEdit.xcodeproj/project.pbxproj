@@ -120,7 +120,6 @@
 		49A5264813D172FB004EC7F6 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5264713D172FB004EC7F6 /* Security.framework */; };
 		49A5264A13D17302004EC7F6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5264913D17301004EC7F6 /* SystemConfiguration.framework */; };
 		49A5264C13D17308004EC7F6 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A5264B13D17308004EC7F6 /* AudioToolbox.framework */; };
-		49A5279413D17331004EC7F6 /* BrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A5265013D17330004EC7F6 /* BrowserViewController.m */; };
 		49A5286313D174C6004EC7F6 /* connection-white~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49A5286213D174C6004EC7F6 /* connection-white~ipad.png */; };
 		49A5286513D17A03004EC7F6 /* connection-shadow~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 49A5286413D17A03004EC7F6 /* connection-shadow~ipad.png */; };
 		49B792D01581F1E8009E81EB /* DNZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B792C21581F1E8009E81EB /* DNZipArchive.m */; };
@@ -358,8 +357,6 @@
 		49A5264713D172FB004EC7F6 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		49A5264913D17301004EC7F6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		49A5264B13D17308004EC7F6 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		49A5264F13D17330004EC7F6 /* BrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowserViewController.h; sourceTree = "<group>"; };
-		49A5265013D17330004EC7F6 /* BrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowserViewController.m; sourceTree = "<group>"; };
 		49A5286213D174C6004EC7F6 /* connection-white~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "connection-white~ipad.png"; sourceTree = "<group>"; };
 		49A5286413D17A03004EC7F6 /* connection-shadow~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "connection-shadow~ipad.png"; sourceTree = "<group>"; };
 		49B792C01581F1E8009E81EB /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
@@ -780,21 +777,11 @@
 				4979F37114479E7100D25116 /* KVO-Notification-Manager */,
 				4979F33D144783A400D25116 /* WEPopover */,
 				494E4D2313D24A4C00402784 /* ASIHTTPRequest */,
-				49A5264E13D17330004EC7F6 /* Apple */,
 				49E3145513DA44F600813CE0 /* Math */,
 				49B792BF1581F1E8009E81EB /* ZipFile-OC */,
 			);
 			name = Externals;
 			path = ../Externals;
-			sourceTree = "<group>";
-		};
-		49A5264E13D17330004EC7F6 /* Apple */ = {
-			isa = PBXGroup;
-			children = (
-				49A5264F13D17330004EC7F6 /* BrowserViewController.h */,
-				49A5265013D17330004EC7F6 /* BrowserViewController.m */,
-			);
-			path = Apple;
 			sourceTree = "<group>";
 		};
 		49A5286113D174C6004EC7F6 /* Resources */ = {
@@ -1181,7 +1168,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49A5279413D17331004EC7F6 /* BrowserViewController.m in Sources */,
 				494E4D7613D24A4C00402784 /* ASIAuthenticationDialog.m in Sources */,
 				494E4D7713D24A4C00402784 /* ASIDataCompressor.m in Sources */,
 				494E4D7813D24A4C00402784 /* ASIDataDecompressor.m in Sources */,
