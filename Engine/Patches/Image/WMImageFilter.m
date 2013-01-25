@@ -108,10 +108,9 @@ NSString *WMImageFilterCacheKey = @"WMImageFilterShader";
 	if (!shader) {
 		NSError *error = nil;
 		
-		
-#warning Fix this for framework build target on iOS
 #if TARGET_OS_IPHONE
-		NSBundle *resourceBundle = [NSBundle mainBundle];
+		NSBundle *resourceBundle = [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"WMGraph" ofType:@"bundle"]];
+		ZAssert(resourceBundle, @"Must include WMGraph.bundle in app resources to use WMImageFilter");
 #elif TARGET_OS_MAC
 		NSBundle *resourceBundle = [NSBundle bundleForClass:self.class];
 #endif

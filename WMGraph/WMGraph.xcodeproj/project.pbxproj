@@ -19,6 +19,7 @@
 		4924A060168E95F6004123B7 /* WMSplitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E81D167296FE00FA4FCE /* WMSplitter.m */; };
 		4924A061168E95F6004123B7 /* WMVectorFromComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E81F167296FE00FA4FCE /* WMVectorFromComponents.m */; };
 		4924A062168E95F6004123B7 /* WMVideoRecord.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E820167296FE00FA4FCE /* WMVideoRecord.h */; };
+		49417ABF16B1E6DA00F13269 /* WMGaussianBlur.glsl in Copy Files */ = {isa = PBXBuildFile; fileRef = 49E2E800167296FE00FA4FCE /* WMGaussianBlur.glsl */; };
 		4956C965168E5D6B00D9E953 /* WMImageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E802167296FE00FA4FCE /* WMImageFilter.m */; };
 		4956C966168E5E3600D9E953 /* WMGaussianBlur.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 49E2E800167296FE00FA4FCE /* WMGaussianBlur.glsl */; };
 		4958CD131689903D0042FA31 /* WMGraph.h in Headers */ = {isa = PBXBuildFile; fileRef = 4958CD121689903D0042FA31 /* WMGraph.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -232,7 +233,6 @@
 		49E2E8A8167296FE00FA4FCE /* WMSphere.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E7FC167296FE00FA4FCE /* WMSphere.mm */; };
 		49E2E8A9167296FE00FA4FCE /* WMWireframe.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E7FD167296FE00FA4FCE /* WMWireframe.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		49E2E8AA167296FE00FA4FCE /* WMWireframe.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E7FE167296FE00FA4FCE /* WMWireframe.m */; };
-		49E2E8AB167296FE00FA4FCE /* WMGaussianBlur.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 49E2E800167296FE00FA4FCE /* WMGaussianBlur.glsl */; };
 		49E2E8AC167296FE00FA4FCE /* WMImageFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E801167296FE00FA4FCE /* WMImageFilter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2E8AD167296FE00FA4FCE /* WMImageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E802167296FE00FA4FCE /* WMImageFilter.m */; };
 		49E2E8AE167296FE00FA4FCE /* WMImageLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E803167296FE00FA4FCE /* WMImageLoader.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -347,6 +347,20 @@
 		49E2E97B16729B3000FA4FCE /* WMFrameCounter.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E96416729B3000FA4FCE /* WMFrameCounter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2E97C16729B3000FA4FCE /* WMFrameCounter.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E96516729B3000FA4FCE /* WMFrameCounter.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		49417ABE16B1E6B800F13269 /* Copy Files */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = WMGraph.bundle;
+			dstSubfolderSpec = 1;
+			files = (
+				49417ABF16B1E6DA00F13269 /* WMGaussianBlur.glsl in Copy Files */,
+			);
+			name = "Copy Files";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		492276E0168C4A52002F5D85 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
@@ -1200,6 +1214,7 @@
 				49E2E7B6167296B400FA4FCE /* Sources */,
 				49E2E7B7167296B400FA4FCE /* Frameworks */,
 				49E2E7B8167296B400FA4FCE /* Headers */,
+				49417ABE16B1E6B800F13269 /* Copy Files */,
 				49E2E7B9167296B400FA4FCE /* Resources */,
 				49E2E7BA167296B400FA4FCE /* ShellScript */,
 				49E2E7BB167296B400FA4FCE /* ShellScript */,
@@ -1254,7 +1269,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49E2E8AB167296FE00FA4FCE /* WMGaussianBlur.glsl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

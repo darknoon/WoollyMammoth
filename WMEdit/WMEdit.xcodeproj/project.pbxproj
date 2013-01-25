@@ -25,6 +25,7 @@
 		4924A05B168E792C004123B7 /* WMGraph.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 494FEA2716897AD500EE9BE8 /* WMGraph.framework */; };
 		493A1A2E1400E491001BB458 /* WMIndexInputPortCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 493A1A2D1400E491001BB458 /* WMIndexInputPortCell.m */; };
 		493A1A301400E4B4001BB458 /* WMIndexInputPortCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 493A1A2F1400E4B4001BB458 /* WMIndexInputPortCell.xib */; };
+		49417AC416B1E7D400F13269 /* WMGraph.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 49417AC316B1E7D400F13269 /* WMGraph.bundle */; };
 		494E4D7613D24A4C00402784 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 494E4D2513D24A4C00402784 /* ASIAuthenticationDialog.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		494E4D7713D24A4C00402784 /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 494E4D2813D24A4C00402784 /* ASIDataCompressor.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		494E4D7813D24A4C00402784 /* ASIDataDecompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 494E4D2A13D24A4C00402784 /* ASIDataDecompressor.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -155,8 +156,6 @@
 		49C52C1D16A5EBB000A15DCD /* WMDefaultShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 49C52C1A16A5EBB000A15DCD /* WMDefaultShader.fsh */; };
 		49C52C1E16A5EBB000A15DCD /* WMDefaultShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 49C52C1B16A5EBB000A15DCD /* WMDefaultShader.vsh */; };
 		49C52C1F16A5EBB000A15DCD /* WMDefaultShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 49C52C1B16A5EBB000A15DCD /* WMDefaultShader.vsh */; };
-		49C52C2116A5ED9900A15DCD /* WMGaussianBlur.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 49C52C2016A5ED9900A15DCD /* WMGaussianBlur.glsl */; };
-		49C52C2216A5EDA500A15DCD /* WMGaussianBlur.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 49C52C2016A5ED9900A15DCD /* WMGaussianBlur.glsl */; };
 		49C52C6916A63A6E00A15DCD /* EditorBackgroundPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 49C52C6716A63A6E00A15DCD /* EditorBackgroundPattern.png */; };
 		49C52C6A16A63A6E00A15DCD /* EditorBackgroundPattern@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49C52C6816A63A6E00A15DCD /* EditorBackgroundPattern@2x.png */; };
 		49D73A8713FEE0F60028AF22 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D73A8613FEE0F60028AF22 /* AssetsLibrary.framework */; };
@@ -206,6 +205,7 @@
 		493A1A2C1400E491001BB458 /* WMIndexInputPortCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMIndexInputPortCell.h; sourceTree = "<group>"; };
 		493A1A2D1400E491001BB458 /* WMIndexInputPortCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMIndexInputPortCell.m; sourceTree = "<group>"; };
 		493A1A2F1400E4B4001BB458 /* WMIndexInputPortCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMIndexInputPortCell.xib; sourceTree = "<group>"; };
+		49417AC316B1E7D400F13269 /* WMGraph.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = WMGraph.bundle; path = WMGraph.framework/WMGraph.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		494E4D2413D24A4C00402784 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
 		494E4D2513D24A4C00402784 /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIAuthenticationDialog.m; sourceTree = "<group>"; };
 		494E4D2613D24A4C00402784 /* ASICacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASICacheDelegate.h; sourceTree = "<group>"; };
@@ -388,7 +388,6 @@
 		49BACB4A13EB592A008ED051 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		49C52C1A16A5EBB000A15DCD /* WMDefaultShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = WMDefaultShader.fsh; sourceTree = "<group>"; };
 		49C52C1B16A5EBB000A15DCD /* WMDefaultShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = WMDefaultShader.vsh; sourceTree = "<group>"; };
-		49C52C2016A5ED9900A15DCD /* WMGaussianBlur.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; name = WMGaussianBlur.glsl; path = ../../Engine/Patches/Image/WMGaussianBlur.glsl; sourceTree = "<group>"; };
 		49C52C6716A63A6E00A15DCD /* EditorBackgroundPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EditorBackgroundPattern.png; sourceTree = "<group>"; };
 		49C52C6816A63A6E00A15DCD /* EditorBackgroundPattern@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EditorBackgroundPattern@2x.png"; sourceTree = "<group>"; };
 		49D73A8613FEE0F60028AF22 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
@@ -787,7 +786,7 @@
 		49A5286113D174C6004EC7F6 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				49C52C2016A5ED9900A15DCD /* WMGaussianBlur.glsl */,
+				49417AC316B1E7D400F13269 /* WMGraph.bundle */,
 				49C52C1A16A5EBB000A15DCD /* WMDefaultShader.fsh */,
 				49C52C1B16A5EBB000A15DCD /* WMDefaultShader.vsh */,
 				4979F35014478B2500D25116 /* WEPopover-Sucky */,
@@ -1045,7 +1044,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49C52C2116A5ED9900A15DCD /* WMGaussianBlur.glsl in Resources */,
 				494FEA1316897A3E00EE9BE8 /* InfoPlist.strings in Resources */,
 				49C52C1D16A5EBB000A15DCD /* WMDefaultShader.fsh in Resources */,
 				49C52C1F16A5EBB000A15DCD /* WMDefaultShader.vsh in Resources */,
@@ -1117,11 +1115,11 @@
 				491C1CD01454735000554C73 /* popoverArrowUp@2x.png in Resources */,
 				491C1CD11454735000554C73 /* popoverArrowUpSimple.png in Resources */,
 				49F638D215742B3900BA9C39 /* WMBooleanInputPortCell.xib in Resources */,
-				49C52C2216A5EDA500A15DCD /* WMGaussianBlur.glsl in Resources */,
 				49C52C6916A63A6E00A15DCD /* EditorBackgroundPattern.png in Resources */,
 				49C52C6A16A63A6E00A15DCD /* EditorBackgroundPattern@2x.png in Resources */,
 				49ECA80F16A776A8007EB84C /* MainWindow.xib in Resources */,
 				49ECA81216A776E8007EB84C /* InfoPlist.strings in Resources */,
+				49417AC416B1E7D400F13269 /* WMGraph.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
