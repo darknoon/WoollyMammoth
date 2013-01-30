@@ -34,25 +34,25 @@
 		49E2E8E6167296FE00FA4FCE /* WMEAGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E840167296FE00FA4FCE /* WMEAGLContext.m */; };
 		49E2E8E7167296FE00FA4FCE /* WMFramebuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E841167296FE00FA4FCE /* WMFramebuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2E8E8167296FE00FA4FCE /* WMFramebuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E842167296FE00FA4FCE /* WMFramebuffer.m */; };
-		49E2E8E9167296FE00FA4FCE /* WMFramebuffer_WMEAGLContext_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E843167296FE00FA4FCE /* WMFramebuffer_WMEAGLContext_Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		49E2E8E9167296FE00FA4FCE /* WMFramebuffer_WMEAGLContext_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E843167296FE00FA4FCE /* WMFramebuffer_WMEAGLContext_Private.h */; settings = {ATTRIBUTES = (); }; };
 		49E2E8EA167296FE00FA4FCE /* WMGLStateObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E844167296FE00FA4FCE /* WMGLStateObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2E8EB167296FE00FA4FCE /* WMGLStateObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E845167296FE00FA4FCE /* WMGLStateObject.m */; };
-		49E2E8EC167296FE00FA4FCE /* WMGLStateObject_WMEAGLContext_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E846167296FE00FA4FCE /* WMGLStateObject_WMEAGLContext_Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		49E2E8EC167296FE00FA4FCE /* WMGLStateObject_WMEAGLContext_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E846167296FE00FA4FCE /* WMGLStateObject_WMEAGLContext_Private.h */; settings = {ATTRIBUTES = (); }; };
 		49E2E8ED167296FE00FA4FCE /* WMRenderCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E847167296FE00FA4FCE /* WMRenderCommon.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2E8EE167296FE00FA4FCE /* WMRenderObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E848167296FE00FA4FCE /* WMRenderObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2E8EF167296FE00FA4FCE /* WMRenderObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E849167296FE00FA4FCE /* WMRenderObject.m */; };
-		49E2E8F0167296FE00FA4FCE /* WMRenderObject_WMEAGLContext_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E84A167296FE00FA4FCE /* WMRenderObject_WMEAGLContext_Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		49E2E8F0167296FE00FA4FCE /* WMRenderObject_WMEAGLContext_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E84A167296FE00FA4FCE /* WMRenderObject_WMEAGLContext_Private.h */; settings = {ATTRIBUTES = (); }; };
 		49E2E8F1167296FE00FA4FCE /* WMShader.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E84B167296FE00FA4FCE /* WMShader.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2E8F2167296FE00FA4FCE /* WMShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E84C167296FE00FA4FCE /* WMShader.m */; };
-		49E2E8F3167296FE00FA4FCE /* WMShader_WMEAGLContext_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E84D167296FE00FA4FCE /* WMShader_WMEAGLContext_Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		49E2E8F4167296FE00FA4FCE /* WMStructuredBuffer_WMEAGLContext_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E84E167296FE00FA4FCE /* WMStructuredBuffer_WMEAGLContext_Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		49E2E8F3167296FE00FA4FCE /* WMShader_WMEAGLContext_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E84D167296FE00FA4FCE /* WMShader_WMEAGLContext_Private.h */; settings = {ATTRIBUTES = (); }; };
+		49E2E8F4167296FE00FA4FCE /* WMStructuredBuffer_WMEAGLContext_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E84E167296FE00FA4FCE /* WMStructuredBuffer_WMEAGLContext_Private.h */; settings = {ATTRIBUTES = (); }; };
 		49E2E8F5167296FE00FA4FCE /* WMTexture2D.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E84F167296FE00FA4FCE /* WMTexture2D.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2E8F6167296FE00FA4FCE /* WMTexture2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E850167296FE00FA4FCE /* WMTexture2D.m */; };
 		49E2E8F7167296FE00FA4FCE /* WMTexture2D_RenderPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E851167296FE00FA4FCE /* WMTexture2D_RenderPrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		49E2E8F8167296FE00FA4FCE /* WMTexture2D_WMEAGLContext_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E852167296FE00FA4FCE /* WMTexture2D_WMEAGLContext_Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		49E2E8F9167296FE00FA4FCE /* WMTextureCubeMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E853167296FE00FA4FCE /* WMTextureCubeMap.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		49E2E8F8167296FE00FA4FCE /* WMTexture2D_WMEAGLContext_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E852167296FE00FA4FCE /* WMTexture2D_WMEAGLContext_Private.h */; settings = {ATTRIBUTES = (); }; };
+		49E2E8F9167296FE00FA4FCE /* WMTextureCubeMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E853167296FE00FA4FCE /* WMTextureCubeMap.h */; settings = {ATTRIBUTES = (); }; };
 		49E2E8FA167296FE00FA4FCE /* WMTextureCubeMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E854167296FE00FA4FCE /* WMTextureCubeMap.m */; };
-		49E2E8FB167296FE00FA4FCE /* WMVertexArrayObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E855167296FE00FA4FCE /* WMVertexArrayObject.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		49E2E8FB167296FE00FA4FCE /* WMVertexArrayObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E855167296FE00FA4FCE /* WMVertexArrayObject.h */; settings = {ATTRIBUTES = (); }; };
 		49E2E8FC167296FE00FA4FCE /* WMVertexArrayObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E856167296FE00FA4FCE /* WMVertexArrayObject.m */; };
 		49E2E90B167296FE00FA4FCE /* DNKVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E868167296FE00FA4FCE /* DNKVC.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E2E90C167296FE00FA4FCE /* DNMemoryInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E869167296FE00FA4FCE /* DNMemoryInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -502,8 +502,6 @@
 				49E2E8F1167296FE00FA4FCE /* WMShader.h in Headers */,
 				49E2E8F5167296FE00FA4FCE /* WMTexture2D.h in Headers */,
 				49E2E8F7167296FE00FA4FCE /* WMTexture2D_RenderPrivate.h in Headers */,
-				49E2E8F9167296FE00FA4FCE /* WMTextureCubeMap.h in Headers */,
-				49E2E8FB167296FE00FA4FCE /* WMVertexArrayObject.h in Headers */,
 				49E2E90B167296FE00FA4FCE /* DNKVC.h in Headers */,
 				49E2E90C167296FE00FA4FCE /* DNMemoryInfo.h in Headers */,
 				49E2E90E167296FE00FA4FCE /* DNTimingMacros.h in Headers */,
@@ -519,14 +517,8 @@
 				49E2E91F167296FE00FA4FCE /* WMMathUtil.h in Headers */,
 				49E2E920167296FE00FA4FCE /* WMPrefix.pch in Headers */,
 				49E2E921167296FE00FA4FCE /* WMRenderObject+CreateWithGeometry.h in Headers */,
-				49E2E8E9167296FE00FA4FCE /* WMFramebuffer_WMEAGLContext_Private.h in Headers */,
-				49E2E8EC167296FE00FA4FCE /* WMGLStateObject_WMEAGLContext_Private.h in Headers */,
-				49E2E8F0167296FE00FA4FCE /* WMRenderObject_WMEAGLContext_Private.h in Headers */,
 				49E2E97816729B3000FA4FCE /* WMDisplayLink.h in Headers */,
 				49E2E97B16729B3000FA4FCE /* WMFrameCounter.h in Headers */,
-				49E2E8F3167296FE00FA4FCE /* WMShader_WMEAGLContext_Private.h in Headers */,
-				49E2E8F4167296FE00FA4FCE /* WMStructuredBuffer_WMEAGLContext_Private.h in Headers */,
-				49E2E8F8167296FE00FA4FCE /* WMTexture2D_WMEAGLContext_Private.h in Headers */,
 				49E2E98E1672A0E900FA4FCE /* WMLite.h in Headers */,
 				49E2E9D91672A40000FA4FCE /* DNAssertionHandler.h in Headers */,
 				49E2E9DB1672A40000FA4FCE /* WMView.h in Headers */,
@@ -534,6 +526,14 @@
 				4962329816867E6F001CA7F2 /* GLKMathCGCompatibility.h in Headers */,
 				4962329A16867E7E001CA7F2 /* GLKMathCACompatibility.h in Headers */,
 				4990D7FC168FDABD00FC029F /* GLKMathUICompatibility.h in Headers */,
+				49E2E8F9167296FE00FA4FCE /* WMTextureCubeMap.h in Headers */,
+				49E2E8FB167296FE00FA4FCE /* WMVertexArrayObject.h in Headers */,
+				49E2E8E9167296FE00FA4FCE /* WMFramebuffer_WMEAGLContext_Private.h in Headers */,
+				49E2E8EC167296FE00FA4FCE /* WMGLStateObject_WMEAGLContext_Private.h in Headers */,
+				49E2E8F0167296FE00FA4FCE /* WMRenderObject_WMEAGLContext_Private.h in Headers */,
+				49E2E8F3167296FE00FA4FCE /* WMShader_WMEAGLContext_Private.h in Headers */,
+				49E2E8F4167296FE00FA4FCE /* WMStructuredBuffer_WMEAGLContext_Private.h in Headers */,
+				49E2E8F8167296FE00FA4FCE /* WMTexture2D_WMEAGLContext_Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -47,7 +47,7 @@ extern NSString *const WMRenderObjectTransformUniformName; // wm_T is selected f
  @warning While this class declares itself to conform to NSCopying, this is strictly for internal use only. Copying WMRenderObject is not recommended.
 
  */
-@interface WMRenderObject : WMGLStateObject <NSCopying>
+@interface WMRenderObject : WMGLStateObject
 
 /** @name Creation */
 

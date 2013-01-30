@@ -364,6 +364,7 @@
 
 /* Begin PBXFileReference section */
 		492276E0168C4A52002F5D85 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
+		49417B1116B258AF00F13269 /* WMRenderObject_WMGraphPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WMRenderObject_WMGraphPrivate.h; sourceTree = "<group>"; };
 		4958CD121689903D0042FA31 /* WMGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMGraph.h; sourceTree = "<group>"; };
 		496232A01686822B001CA7F2 /* GLKMathCACompatibility.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GLKMathCACompatibility.c; sourceTree = "<group>"; };
 		496232A11686822B001CA7F2 /* GLKMathCACompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKMathCACompatibility.h; sourceTree = "<group>"; };
@@ -907,6 +908,7 @@
 				49E2E854167296FE00FA4FCE /* WMTextureCubeMap.m */,
 				49E2E855167296FE00FA4FCE /* WMVertexArrayObject.h */,
 				49E2E856167296FE00FA4FCE /* WMVertexArrayObject.m */,
+				49417B1116B258AF00F13269 /* WMRenderObject_WMGraphPrivate.h */,
 			);
 			path = Render;
 			sourceTree = "<group>";
