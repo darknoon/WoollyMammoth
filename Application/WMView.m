@@ -87,6 +87,11 @@
 	return framebuffer;
 }
 
+- (void)deleteFramebuffer;
+{
+	framebuffer = nil;
+}
+
 - (WMEAGLContext *)context
 {
     return context;
