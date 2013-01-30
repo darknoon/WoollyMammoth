@@ -11,13 +11,13 @@
 /** A simple FPS counter. */
 @interface WMFrameCounter : NSObject
 
-/** @abstract How often the FPS is updated */
+/** @abstract How often the frame-per-second count is updated */
 @property (nonatomic) double updateInterval;
 
-/** @abstract Get the frames per second. */
+/** @abstract The number frames per second over the most recent updateInterval. */
 @property (nonatomic, readonly) double fps;
 
-/** @abstract Get the last duration. */
+/** @abstract The most recent duration passed into -recordFrameWithTime:duration: . */
 @property (nonatomic, readonly) double lastDuration;
 
 /** @abstract Record a frame
