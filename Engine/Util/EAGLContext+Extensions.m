@@ -12,7 +12,7 @@
 
 NSString *WMEAGLContextCachedExtensionsKey = @"WM.extensions";
 
-@implementation WMEAGLContext (EAGLContext_Extensions)
+@implementation WMEAGLContext (Extensions)
 
 - (NSSet *)supportedExtensions;
 {

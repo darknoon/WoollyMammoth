@@ -18,10 +18,9 @@
 /**
  @discussion WMEAGLContext wraps the context for the current platform (EAGLContext on iOS, NSOpenGLContext on Mac), providing a level of abstraction around OpenGL calls.
  
- ie WMStructuredBuffer only has gl backing when actually being used to render, transparent to the user
- ie WMRenderObject only has a VAO backing when actually going to be rendered to the screen
+ @warning It is not recommended to use the OpenGL C apis in the same OpenGL context as the WMEAGLContext APIs. WMEAGLContext caches the internal state of the OpenGL state machine, so modifying the state outside the supported API may result in persistent inconsistencies or errors in rendering.
  
- @warning Do not use the OpenGL C apis in the same OpenGL context as the WMEAGLContext APIs. WMEAGLContext caches the internal state of the OpenGL state machine, so modifying the state outside the supported API may result in persistent inconsistencies or errors in rendering. If you need to do your own rendering, it is recommended to get OpenGL state before doing custom rendering and set it back to the same values after rendering.
+ If there is no alternative, get OpenGL state before doing custom rendering and set it back to the same values after rendering.
  */
 
 #if TARGET_OS_IPHONE
@@ -105,13 +104,13 @@
 /** @name Debugging */
 
 /** @abstract Push a debug group marker (iOS)
- @discussion Groups calls in between -pushDebugGroup: and -popDebugGroup calls into a folder when debugging with the OpenGL ES debugger
+ @discussion Groups calls in between -pushDebugGroup: and -popDebugGroup calls into a folder when viewed with the OpenGL ES debugger
  @param group An NSString representable with ASCII characters
  */
 - (void)pushDebugGroup:(NSString *)group;
 
 /** @abstract Pop the current debug group marker (iOS)
- @discussion Groups calls in between -pushDebugGroup: and -popDebugGroup calls into a folder when debugging with the OpenGL ES debugger
+ @discussion Groups calls in between -pushDebugGroup: and -popDebugGroup calls into a folder when viewed with the OpenGL ES debugger
  */
 - (void)popDebugGroup;
 

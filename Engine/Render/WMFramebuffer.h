@@ -18,9 +18,10 @@
 
 @class WMTexture2D;
 
-/*!
- @abstract WMFramebuffer encapsulates state relating to an OpenGL framebuffer object. It may be used to render to a texture offscreen or to the contents of a CAEAGLLayer on iOS.
- @discussion Create the default WMFramebuffer with -initWithLayerRenderbufferStorage: or allow WMView to create on for you.
+/**
+ WMFramebuffer encapsulates state relating to an OpenGL framebuffer object. It may be used to render to a texture offscreen or to the contents of a CAEAGLLayer on iOS.
+ 
+ Create the default WMFramebuffer with -initWithLayerRenderbufferStorage: or allow WMView to create it for you.
  */
 @interface WMFramebuffer : WMGLStateObject {
 }
