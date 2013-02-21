@@ -1,0 +1,344 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		49171F3816CD677C009AB13D /* WMSimpleCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 49171F3716CD677C009AB13D /* WMSimpleCamera.m */; };
+		49171F3A16CD67D5009AB13D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49171F3916CD67D5009AB13D /* AVFoundation.framework */; };
+		49171F4516CD6BEF009AB13D /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49171F4416CD6BEF009AB13D /* CoreVideo.framework */; };
+		49171F4716CD6BFC009AB13D /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49171F4616CD6BFC009AB13D /* CoreMedia.framework */; };
+		496EE8D016B8C37D00556A8F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 496EE8CF16B8C37D00556A8F /* UIKit.framework */; };
+		496EE8D216B8C37D00556A8F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 496EE8D116B8C37D00556A8F /* Foundation.framework */; };
+		496EE8D416B8C37D00556A8F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 496EE8D316B8C37D00556A8F /* CoreGraphics.framework */; };
+		496EE8DA16B8C37D00556A8F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 496EE8D816B8C37D00556A8F /* InfoPlist.strings */; };
+		496EE8DC16B8C37D00556A8F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 496EE8DB16B8C37D00556A8F /* main.m */; };
+		496EE8E016B8C37D00556A8F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 496EE8DF16B8C37D00556A8F /* AppDelegate.m */; };
+		496EE8E216B8C37D00556A8F /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 496EE8E116B8C37D00556A8F /* Default.png */; };
+		496EE8E416B8C37D00556A8F /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 496EE8E316B8C37D00556A8F /* Default@2x.png */; };
+		496EE8E616B8C37D00556A8F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 496EE8E516B8C37D00556A8F /* Default-568h@2x.png */; };
+		496EE8E916B8C37D00556A8F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 496EE8E816B8C37D00556A8F /* ViewController.m */; };
+		496EE8F716B8D1D400556A8F /* DNSmoothHexGeometry.mm in Sources */ = {isa = PBXBuildFile; fileRef = 496EE8F616B8D1D400556A8F /* DNSmoothHexGeometry.mm */; };
+		49FE1B0F16CAE1DC00CC54E8 /* WMLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49FE1B0E16CAE1DC00CC54E8 /* WMLite.framework */; };
+		49FE1B1116CB10EF00CC54E8 /* SmoothHex.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 49FE1B1016CB10EF00CC54E8 /* SmoothHex.glsl */; };
+		49FE1B1316CC79AE00CC54E8 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49FE1B1216CC79AE00CC54E8 /* GLKit.framework */; };
+		49FE1B1516CC79B400CC54E8 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49FE1B1416CC79B400CC54E8 /* OpenGLES.framework */; };
+		49FE1B1716CC79C000CC54E8 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49FE1B1616CC79C000CC54E8 /* QuartzCore.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		49171F3616CD677C009AB13D /* WMSimpleCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSimpleCamera.h; sourceTree = "<group>"; };
+		49171F3716CD677C009AB13D /* WMSimpleCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSimpleCamera.m; sourceTree = "<group>"; };
+		49171F3916CD67D5009AB13D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		49171F4416CD6BEF009AB13D /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		49171F4616CD6BFC009AB13D /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		496EE8CC16B8C37D00556A8F /* SmoothHex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmoothHex.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		496EE8CF16B8C37D00556A8F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		496EE8D116B8C37D00556A8F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		496EE8D316B8C37D00556A8F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		496EE8D716B8C37D00556A8F /* SmoothHex-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SmoothHex-Info.plist"; sourceTree = "<group>"; };
+		496EE8D916B8C37D00556A8F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		496EE8DB16B8C37D00556A8F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		496EE8DD16B8C37D00556A8F /* SmoothHex-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SmoothHex-Prefix.pch"; sourceTree = "<group>"; };
+		496EE8DE16B8C37D00556A8F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		496EE8DF16B8C37D00556A8F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		496EE8E116B8C37D00556A8F /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		496EE8E316B8C37D00556A8F /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		496EE8E516B8C37D00556A8F /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		496EE8E716B8C37D00556A8F /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		496EE8E816B8C37D00556A8F /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		496EE8F516B8D1D400556A8F /* DNSmoothHexGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNSmoothHexGeometry.h; sourceTree = "<group>"; };
+		496EE8F616B8D1D400556A8F /* DNSmoothHexGeometry.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DNSmoothHexGeometry.mm; sourceTree = "<group>"; };
+		49FE1B0E16CAE1DC00CC54E8 /* WMLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WMLite.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/WoollyMammoth-bgnqtjvmqnwalgazhysaiovvkhhp/Build/Products/Debug-iphoneos/WMLite.framework"; sourceTree = "<group>"; };
+		49FE1B1016CB10EF00CC54E8 /* SmoothHex.glsl */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = SmoothHex.glsl; sourceTree = "<group>"; };
+		49FE1B1216CC79AE00CC54E8 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		49FE1B1416CC79B400CC54E8 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		49FE1B1616CC79C000CC54E8 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		496EE8C916B8C37D00556A8F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49171F4716CD6BFC009AB13D /* CoreMedia.framework in Frameworks */,
+				49171F4516CD6BEF009AB13D /* CoreVideo.framework in Frameworks */,
+				49171F3A16CD67D5009AB13D /* AVFoundation.framework in Frameworks */,
+				49FE1B1716CC79C000CC54E8 /* QuartzCore.framework in Frameworks */,
+				49FE1B1516CC79B400CC54E8 /* OpenGLES.framework in Frameworks */,
+				49FE1B1316CC79AE00CC54E8 /* GLKit.framework in Frameworks */,
+				49FE1B0F16CAE1DC00CC54E8 /* WMLite.framework in Frameworks */,
+				496EE8D016B8C37D00556A8F /* UIKit.framework in Frameworks */,
+				496EE8D216B8C37D00556A8F /* Foundation.framework in Frameworks */,
+				496EE8D416B8C37D00556A8F /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		496EE8C316B8C37D00556A8F = {
+			isa = PBXGroup;
+			children = (
+				496EE8D516B8C37D00556A8F /* SmoothHex */,
+				496EE8CE16B8C37D00556A8F /* Frameworks */,
+				496EE8CD16B8C37D00556A8F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		496EE8CD16B8C37D00556A8F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				496EE8CC16B8C37D00556A8F /* SmoothHex.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		496EE8CE16B8C37D00556A8F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				49171F4616CD6BFC009AB13D /* CoreMedia.framework */,
+				49171F4416CD6BEF009AB13D /* CoreVideo.framework */,
+				49171F3916CD67D5009AB13D /* AVFoundation.framework */,
+				49FE1B1616CC79C000CC54E8 /* QuartzCore.framework */,
+				49FE1B1416CC79B400CC54E8 /* OpenGLES.framework */,
+				49FE1B1216CC79AE00CC54E8 /* GLKit.framework */,
+				49FE1B0E16CAE1DC00CC54E8 /* WMLite.framework */,
+				496EE8CF16B8C37D00556A8F /* UIKit.framework */,
+				496EE8D116B8C37D00556A8F /* Foundation.framework */,
+				496EE8D316B8C37D00556A8F /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		496EE8D516B8C37D00556A8F /* SmoothHex */ = {
+			isa = PBXGroup;
+			children = (
+				496EE8DE16B8C37D00556A8F /* AppDelegate.h */,
+				496EE8DF16B8C37D00556A8F /* AppDelegate.m */,
+				496EE8E716B8C37D00556A8F /* ViewController.h */,
+				496EE8E816B8C37D00556A8F /* ViewController.m */,
+				496EE8F516B8D1D400556A8F /* DNSmoothHexGeometry.h */,
+				496EE8F616B8D1D400556A8F /* DNSmoothHexGeometry.mm */,
+				49171F3616CD677C009AB13D /* WMSimpleCamera.h */,
+				49171F3716CD677C009AB13D /* WMSimpleCamera.m */,
+				49FE1B1016CB10EF00CC54E8 /* SmoothHex.glsl */,
+				496EE8D616B8C37D00556A8F /* Supporting Files */,
+			);
+			path = SmoothHex;
+			sourceTree = "<group>";
+		};
+		496EE8D616B8C37D00556A8F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				496EE8D716B8C37D00556A8F /* SmoothHex-Info.plist */,
+				496EE8D816B8C37D00556A8F /* InfoPlist.strings */,
+				496EE8DB16B8C37D00556A8F /* main.m */,
+				496EE8DD16B8C37D00556A8F /* SmoothHex-Prefix.pch */,
+				496EE8E116B8C37D00556A8F /* Default.png */,
+				496EE8E316B8C37D00556A8F /* Default@2x.png */,
+				496EE8E516B8C37D00556A8F /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		496EE8CB16B8C37D00556A8F /* SmoothHex */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 496EE8F216B8C37D00556A8F /* Build configuration list for PBXNativeTarget "SmoothHex" */;
+			buildPhases = (
+				496EE8C816B8C37D00556A8F /* Sources */,
+				496EE8C916B8C37D00556A8F /* Frameworks */,
+				496EE8CA16B8C37D00556A8F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SmoothHex;
+			productName = SmoothHex;
+			productReference = 496EE8CC16B8C37D00556A8F /* SmoothHex.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		496EE8C416B8C37D00556A8F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = Darknoon;
+			};
+			buildConfigurationList = 496EE8C716B8C37D00556A8F /* Build configuration list for PBXProject "SmoothHex" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 496EE8C316B8C37D00556A8F;
+			productRefGroup = 496EE8CD16B8C37D00556A8F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				496EE8CB16B8C37D00556A8F /* SmoothHex */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		496EE8CA16B8C37D00556A8F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				496EE8DA16B8C37D00556A8F /* InfoPlist.strings in Resources */,
+				496EE8E216B8C37D00556A8F /* Default.png in Resources */,
+				496EE8E416B8C37D00556A8F /* Default@2x.png in Resources */,
+				496EE8E616B8C37D00556A8F /* Default-568h@2x.png in Resources */,
+				49FE1B1116CB10EF00CC54E8 /* SmoothHex.glsl in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		496EE8C816B8C37D00556A8F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				496EE8DC16B8C37D00556A8F /* main.m in Sources */,
+				496EE8E016B8C37D00556A8F /* AppDelegate.m in Sources */,
+				496EE8E916B8C37D00556A8F /* ViewController.m in Sources */,
+				496EE8F716B8D1D400556A8F /* DNSmoothHexGeometry.mm in Sources */,
+				49171F3816CD677C009AB13D /* WMSimpleCamera.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		496EE8D816B8C37D00556A8F /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				496EE8D916B8C37D00556A8F /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		496EE8F016B8C37D00556A8F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++98";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		496EE8F116B8C37D00556A8F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++98";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		496EE8F316B8C37D00556A8F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SmoothHex/SmoothHex-Prefix.pch";
+				INFOPLIST_FILE = "SmoothHex/SmoothHex-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		496EE8F416B8C37D00556A8F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SmoothHex/SmoothHex-Prefix.pch";
+				INFOPLIST_FILE = "SmoothHex/SmoothHex-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		496EE8C716B8C37D00556A8F /* Build configuration list for PBXProject "SmoothHex" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				496EE8F016B8C37D00556A8F /* Debug */,
+				496EE8F116B8C37D00556A8F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		496EE8F216B8C37D00556A8F /* Build configuration list for PBXNativeTarget "SmoothHex" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				496EE8F316B8C37D00556A8F /* Debug */,
+				496EE8F416B8C37D00556A8F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 496EE8C416B8C37D00556A8F /* Project object */;
+}

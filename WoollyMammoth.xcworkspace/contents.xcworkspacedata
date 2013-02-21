@@ -16,4 +16,7 @@
    <FileRef
       location = "group:Examples/ParticleCascade/ParticleCascade.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:Examples/SmoothHex/SmoothHex.xcodeproj">
+   </FileRef>
 </Workspace>
