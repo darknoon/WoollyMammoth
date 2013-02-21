@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		49171F4016CD6B69009AB13D /* WMCVTexture2D.h in Headers */ = {isa = PBXBuildFile; fileRef = 49171F3E16CD6B69009AB13D /* WMCVTexture2D.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49171F4116CD6B69009AB13D /* WMCVTexture2D.h in Headers */ = {isa = PBXBuildFile; fileRef = 49171F3E16CD6B69009AB13D /* WMCVTexture2D.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49171F4216CD6B69009AB13D /* WMCVTexture2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 49171F3F16CD6B69009AB13D /* WMCVTexture2D.m */; };
+		49171F4316CD6B69009AB13D /* WMCVTexture2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 49171F3F16CD6B69009AB13D /* WMCVTexture2D.m */; };
 		492276FC168D1CBA002F5D85 /* WMView.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E2E9D51672A40000FA4FCE /* WMView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		492276FD168D1CBD002F5D85 /* WMView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E9D61672A40000FA4FCE /* WMView.m */; };
 		49227702168D1D2D002F5D85 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49227701168D1D2D002F5D85 /* QuartzCore.framework */; };
@@ -153,6 +157,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		49171F3E16CD6B69009AB13D /* WMCVTexture2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WMCVTexture2D.h; path = ../Patches/Device/WMCVTexture2D.h; sourceTree = "<group>"; };
+		49171F3F16CD6B69009AB13D /* WMCVTexture2D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WMCVTexture2D.m; path = ../Patches/Device/WMCVTexture2D.m; sourceTree = "<group>"; };
 		49227701168D1D2D002F5D85 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		4962329316867E6F001CA7F2 /* GLKMathCACompatibility.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GLKMathCACompatibility.c; sourceTree = "<group>"; };
 		4962329416867E6F001CA7F2 /* GLKMathCGCompatibility.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GLKMathCGCompatibility.c; sourceTree = "<group>"; };
@@ -355,6 +361,8 @@
 				49E2E850167296FE00FA4FCE /* WMTexture2D.m */,
 				49E2E851167296FE00FA4FCE /* WMTexture2D_RenderPrivate.h */,
 				49E2E852167296FE00FA4FCE /* WMTexture2D_WMEAGLContext_Private.h */,
+				49171F3E16CD6B69009AB13D /* WMCVTexture2D.h */,
+				49171F3F16CD6B69009AB13D /* WMCVTexture2D.m */,
 				49E2E853167296FE00FA4FCE /* WMTextureCubeMap.h */,
 				49E2E854167296FE00FA4FCE /* WMTextureCubeMap.m */,
 				49E2E855167296FE00FA4FCE /* WMVertexArrayObject.h */,
@@ -534,6 +542,7 @@
 				49E2E8F3167296FE00FA4FCE /* WMShader_WMEAGLContext_Private.h in Headers */,
 				49E2E8F4167296FE00FA4FCE /* WMStructuredBuffer_WMEAGLContext_Private.h in Headers */,
 				49E2E8F8167296FE00FA4FCE /* WMTexture2D_WMEAGLContext_Private.h in Headers */,
+				49171F4016CD6B69009AB13D /* WMCVTexture2D.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -585,6 +594,7 @@
 				492276FC168D1CBA002F5D85 /* WMView.h in Headers */,
 				4990D7FE168FDACA00FC029F /* GLKMathUICompatibility.h in Headers */,
 				4990D800168FDB0A00FC029F /* WMLite.h in Headers */,
+				49171F4116CD6B69009AB13D /* WMCVTexture2D.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -747,6 +757,7 @@
 				4962329616867E6F001CA7F2 /* GLKMathCACompatibility.c in Sources */,
 				4962329716867E6F001CA7F2 /* GLKMathCGCompatibility.c in Sources */,
 				4990D7FB168FDABD00FC029F /* GLKMathUICompatibility.m in Sources */,
+				49171F4216CD6B69009AB13D /* WMCVTexture2D.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -778,6 +789,7 @@
 				4962329E16868182001CA7F2 /* GLKMathCGCompatibility.c in Sources */,
 				492276FD168D1CBD002F5D85 /* WMView.m in Sources */,
 				4990D7FF168FDACE00FC029F /* GLKMathUICompatibility.m in Sources */,
+				49171F4316CD6B69009AB13D /* WMCVTexture2D.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

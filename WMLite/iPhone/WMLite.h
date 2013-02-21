@@ -36,5 +36,6 @@
 #import <WMLite/WMStructuredBuffer.h>
 #import <WMLite/WMStructureDefinition.h>
 #import <WMLite/WMTexture2D.h>
+#import <WMLite/WMCVTexture2D.h>
 
 #endif
